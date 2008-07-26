@@ -1,0 +1,115 @@
+<ui version="4.0" >
+ <class>MyFirstForm</class>
+ <widget class="QWidget" name="MyFirstForm" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>837</width>
+    <height>692</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string comment="Точно точно" >Мое первое приложение</string>
+  </property>
+  <layout class="QGridLayout" >
+   <item rowspan="4" row="0" column="0" >
+    <widget class="QEidosTreeWidget" name="treeWidget" >
+     <column>
+      <property name="text" >
+       <string>Наименование</string>
+      </property>
+     </column>
+     <column>
+      <property name="text" >
+       <string>ID</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item rowspan="4" row="0" column="1" >
+    <widget class="QTextEdit" name="textEdit" >
+     <property name="autoFormatting" >
+      <set>QTextEdit::AutoAll</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="2" >
+    <widget class="QPushButton" name="ExitButton" >
+     <property name="text" >
+      <string>Выход</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" >
+    <widget class="QPushButton" name="GoButton" >
+     <property name="text" >
+      <string>Поехали</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2" >
+    <widget class="QPushButton" name="GridButton" >
+     <property name="text" >
+      <string>GRID</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2" >
+    <spacer>
+     <property name="orientation" >
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0" >
+      <size>
+       <width>75</width>
+       <height>201</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0" colspan="3" >
+    <widget class="QTableView" name="tableView" >
+     <property name="autoFillBackground" >
+      <bool>true</bool>
+     </property>
+     <property name="styleSheet" >
+      <string notr="true" >gridline-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 178, 102, 255), stop:0.55 rgba(235, 148, 61, 255), stop:0.98 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 0, 0));</string>
+     </property>
+     <property name="alternatingRowColors" >
+      <bool>true</bool>
+     </property>
+     <property name="verticalScrollMode" >
+      <enum>QAbstractItemView::ScrollPerItem</enum>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QEidosTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>qeidostreewidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>ExitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MyFirstForm</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>310</x>
+     <y>157</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>310</x>
+     <y>223</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
