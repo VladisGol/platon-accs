@@ -33,13 +33,15 @@
 
 #include <QtGui/QWidget>
 #include <QAbstractTableModel>
-#include <QDateTime>
+#include <QDate>
 #include <string>
 
 //#include "ui_hypotesismodel.h"
 #include "EssentialClass.h"
+#include <QMessageBox>
+#include <QObject>
 
-const int BufferCapacity =8;
+const int BufferCapacity =100;
 
 class HypotesisModel : public QAbstractTableModel
 {

@@ -7,6 +7,7 @@
 
 
 
+
 firstformAPP::firstformAPP(QWidget *parent)
     : QWidget(parent)
 
@@ -90,7 +91,7 @@ void firstformAPP::Go()
 	}
 	delete MyEidosIter;
 */
-	platon::Eidos* MyEidos=new platon::Eidos(MyDB,7171);
+	platon::Eidos* MyEidos=new platon::Eidos(MyDB,9);
 	HypotesisModel* MyModel=new HypotesisModel(MyEidos, this);
 	tableView->setModel(MyModel);
 
