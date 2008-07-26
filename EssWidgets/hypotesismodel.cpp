@@ -68,21 +68,21 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 	//вставл€ет в буфер начина€ со строки в буфере RowInBuffer в количестве RowCount строк
 	//возвращаетс€ число прочитанных записей
 
-	//SkipTo(RowInit);	//ѕеремещаемс€ к записи с искомым номером
+	SkipTo(RowInit);	//ѕеремещаемс€ к записи с искомым номером
 
 	int ReadedRow=0;
 
 	while(ReadedRow<RowCount)
 	{
-		/*
+
 		if(MyIterator->Fetched())
 		{
 			platon::Hypotesis* MyHyp= new platon::Hypotesis(ForEidos, MyIterator->GetID());
-			*/
+
 			for(int i=0;i<NumCol;i++)
 			{
-				QVariant OneValue=RowInit+ReadedRow;
-				/*std::string curFieldName=ForEidos->HypotesisSQL->AttributesList[i].FieldName;
+				QVariant OneValue;
+				std::string curFieldName=ForEidos->HypotesisSQL->AttributesList[i].FieldName;
 
 				//ѕолучаем ссылку на текущий экстраатрибут в составе рекордсета
 				platon::ExtraAttribute* OneEA = ForEidos->GetEAByFieldName(curFieldName);
@@ -112,11 +112,18 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 					case platon::ft_DateTime:
 					{
 						IBPP::Timestamp MyTs =MyHyp->GetEAByFieldName(curFieldName)->GetDateTimeValue();
-						QDateTime LocAlValue=QDateTime::currentDateTime();
-						LocAlValue.addYears(MyTs.Year());
-						LocAlValue.addMonths(MyTs.Month());
-						LocAlValue.addDays(MyTs.Day());
+						QString year=QString::number(MyTs.Year());
+						QString month=QString("0"+QString::number(MyTs.Month())).right(2);
+						QString day=QString("0"+QString::number(MyTs.Day())).right(2);
+						QDateTime LocAlValue=QDateTime::fromString(year+month+day,"yyyyMMdd");
 						LocAlValue.addSecs(MyTs.Hours()*3600+MyTs.Minutes()*60+MyTs.Seconds());
+
+/*						 QMessageBox msgBox;
+						 msgBox.setText (LocAlValue.toString("dd-MM-yyyy"));
+
+				         QPushButton *abortButton = msgBox.addButton(QMessageBox::Abort);
+				         msgBox.exec();*/
+
 						OneValue=LocAlValue;
 						break;
 					}
@@ -138,21 +145,21 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 					default:
 						throw("”казанный тип данных не поддерживаетс€");
 
-				}*/
+				}
 
 				Buffer[GetOffset(RowInBuffer+ReadedRow,i)]=OneValue;
 
 			}
-/*
+
 				delete MyHyp;
 		}
 		else
 		{
 			break;	// ƒанные закончились
 		}
-		*/
+
 		ReadedRow++;
-		//MyIterator->Next();
+		MyIterator->Next();
 	}
 	return ReadedRow;
 }
@@ -176,14 +183,20 @@ int HypotesisModel::SkipTo(int RowNumber)const
 		}
 		return MyIterator->GetRowNum()-1;
 	}
-	//ќсталось условие по которому итератор уже считал больше записей чем требовалось, необходимо перейти на начало и спуститьс€ ниже
-	MyIterator->First();
-	while(MyIterator->GetRowNum()-1<RowNumber)
+	else
 	{
-		MyIterator->Next();
-		if(!MyIterator->Fetched()) break;
+		//ќсталось условие по которому итератор уже считал больше записей чем требовалось, необходимо перейти на начало и спуститьс€ ниже
+		MyIterator->First();
+		while(MyIterator->GetRowNum()-1<RowNumber)
+		{
+			MyIterator->Next();
+			if(!MyIterator->Fetched())
+			{
+				break;
+			}
+		}
+		return MyIterator->GetRowNum()-1;
 	}
-	return MyIterator->GetRowNum()-1;
 }
 
 int HypotesisModel::columnCount(const QModelIndex & index) const
