@@ -14,10 +14,10 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-Contacts: e-mail vladisgol@rambler.ru 
+Contacts: e-mail vladisgol@rambler.ru
 
 Ядро системы учета "Платон".
-Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г. 
+Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г.
 Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать
 в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU,
 опубликованной Free Software Foundation.
@@ -65,6 +65,7 @@ namespace platon
                         NewRec.AliasName="t_"+NewRec.FieldName;
                         NewRec.FieldForRetVal="MEANING";
                         LocalST->Get("ID",(int32_t*)&NewRec.EAID);
+                        LocalST->Get("FIELDTYPE",NewRec.FieldType);
                         AttributesList.push_back(NewRec);
                 }
                 else
@@ -80,6 +81,8 @@ namespace platon
 	            NewRec.AliasName="t_"+NewRec.FieldName;
 	            NewRec.FieldForRetVal="MEANING";
 	            NewRec.EAID=EA->GetEAID();
+	            NewRec.FieldType=EA->type;
+
 	            AttributesList.push_back(NewRec);
         }
         void SQLManager::AddFieldKeyValue(std::string FieldName)
@@ -97,6 +100,7 @@ namespace platon
                         NewRec.AliasName="t_"+NewRec.FieldName;
                         NewRec.FieldForRetVal="KEYVALUE";
                         LocalST->Get("ID",(int32_t*)&NewRec.EAID);
+                        LocalST->Get("FIELDTYPE",NewRec.FieldType);
                         AttributesList.push_back(NewRec);
                 }
                 else
@@ -112,6 +116,7 @@ namespace platon
                 NewRec.AliasName="t_"+NewRec.FieldName;
                 NewRec.FieldForRetVal="KEYVALUE";
                 NewRec.EAID=EA->GetEAID();
+                NewRec.FieldType=EA->type;
                 AttributesList.push_back(NewRec);
         }
 	HypotesisSQLManager::HypotesisSQLManager(Eidos* Ei):SQLManager(Ei){;}

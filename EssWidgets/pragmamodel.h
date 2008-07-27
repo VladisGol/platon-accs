@@ -28,50 +28,21 @@
 **
 ****************************************************************************/
 
-#ifndef HYPOTESISMODEL_H
-#define HYPOTESISMODEL_H
-
-#include <QtGui/QWidget>
-#include <QAbstractTableModel>
-#include <QDate>
-#include <string>
-#include "EssentialClass.h"
+#ifndef PRAGMAMODEL_H
+#define PRAGMAMODEL_H
 
 
+#include "hypotesismodel.h"
 
-class HypotesisModel : public QAbstractTableModel
+class PragmaModel : public HypotesisModel
 {
     Q_OBJECT
 
 public:
-    HypotesisModel(platon::Eidos*, QWidget *parent = 0);
-    ~HypotesisModel();
-
-    int rowCount(const QModelIndex &parent = QModelIndex())const;
-    int columnCount(const QModelIndex & index) const;
-    QVariant data(const QModelIndex &index, int role) const;
-    QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const;
-    QVariant GetDataFromBuffer(const QModelIndex &index) const;
-
-protected:
-	static const int BufferCapacity =100;
-	platon::Eidos* ForEidos;
-	platon::iterHypotesis* MyIterator;	// Итератор для перемещения по БД
-
-	mutable QVector <QVariant> Buffer;			// Массив элементов для сохранения кэша записей из БД
-
-	int GetOffset(int Row,int Col) const;		// Расчет смещения в массиве
-	mutable int NumCol;							// Число полей в запросе
-	mutable int BufferStartRow;					// Номер записи базы соответствующей первой в буфере
-	mutable int BufferLastRow;					// Номер записи базы соответствующей последней в буфере
-	mutable int LastRequestedReccount;
-	int ReadToBuffer(int RowInit, int RowInBuffer, int RowCount)const;		// Процедура считывает в буфер записи начиная с RowInit записи
-	int SkipTo(int RowInit)const;			// Процедура перемещается в итераторе на строку с заданным номером, возвращая номер строки в которую удалось переместиться
-
-	void shiftBuffer(const QModelIndex &index) const;
-	mutable platon::Hypotesis* MyHyp;
+	PragmaModel(platon::Eidos*, QWidget *parent = 0);
+private:
 	platon::Hypotesis* GetHypotesys(const long id) const;	//Получить новую гипотезу, функция нужна чтобы переопределить в наследниках
 	void GetFieldNamenType(const int i,std::string &fname,int &ftype) const;
 };
 
-#endif // HYPOTESISMODEL_H
+#endif // PRAGMAMODEL_H
