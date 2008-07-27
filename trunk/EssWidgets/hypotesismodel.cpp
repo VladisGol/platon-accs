@@ -37,9 +37,9 @@ HypotesisModel::HypotesisModel(platon::Eidos* InEidos, QWidget *parent)
 	//Инициализируем переменные и объекты
 	ForEidos =InEidos;
 	MyIterator=new platon::iterHypotesis(InEidos);							//Создаем итератор по базе
-	//MyIterator->SQL_string=InEidos->HypotesisSQL->SQLString();				//в нем заменяем строку запроса на полную из Eidos-а
+	//MyIterator->SQL_string=InEidos->HypotesisSQL->SQLString();			//в нем заменяем строку запроса на полную из Eidos-а
 
-	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//Получаем количество полей в запросе
+	NumCol=InEidos->HypotesisSQL->AttributesList.size();											//Получаем количество полей в запросе
 	Buffer.resize(BufferCapacity * NumCol);									//Устанавливаем размер вектора
 
 	BufferStartRow=0;														//Начало
@@ -74,20 +74,21 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 
 	while(ReadedRow<RowCount)
 	{
-
 		if(MyIterator->Fetched())
 		{
-			platon::Hypotesis* MyHyp= new platon::Hypotesis(ForEidos, MyIterator->GetID());
+			MyHyp= GetHypotesys(MyIterator->GetID());
 
 			for(int i=0;i<NumCol;i++)
 			{
 				QVariant OneValue;
-				std::string curFieldName=ForEidos->HypotesisSQL->AttributesList[i].FieldName;
+
+				//Получаем имя поля и его тип по номеру
+				std::string curFieldName;
+				int EA_type;
+				GetFieldNamenType(i,curFieldName,EA_type);
 
 				//Получаем ссылку на текущий экстраатрибут в составе рекордсета
-				platon::ExtraAttribute* OneEA = ForEidos->GetEAByFieldName(curFieldName);
-
-				switch(OneEA->type)
+				switch(EA_type)
 				{
 					case platon::ft_String:
 					{
@@ -118,12 +119,6 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 						QDateTime LocAlValue=QDateTime::fromString(year+month+day,"yyyyMMdd");
 						LocAlValue.addSecs(MyTs.Hours()*3600+MyTs.Minutes()*60+MyTs.Seconds());
 
-/*						 QMessageBox msgBox;
-						 msgBox.setText (LocAlValue.toString("dd-MM-yyyy"));
-
-				         QPushButton *abortButton = msgBox.addButton(QMessageBox::Abort);
-				         msgBox.exec();*/
-
 						OneValue=LocAlValue;
 						break;
 					}
@@ -136,10 +131,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 					case platon::ft_LinkHypotesis:
 					case platon::ft_LinkPragma:
 					{
-						if(OneEA->Multilnk==false)
-						{
-							OneValue=tr(MyHyp->GetEAByFieldName(curFieldName)->GetStringValue().c_str());
-						}
+						OneValue=tr(MyHyp->GetEAByFieldName(curFieldName)->GetStringValue().c_str());
 						break;
 					}
 					default:
@@ -151,7 +143,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 
 			}
 
-				delete MyHyp;
+			delete MyHyp;
 		}
 		else
 		{
@@ -163,6 +155,17 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 	}
 	return ReadedRow;
 }
+
+platon::Hypotesis* HypotesisModel::GetHypotesys(const long id) const
+{
+	return new platon::Hypotesis(ForEidos,id);
+}
+void HypotesisModel::GetFieldNamenType(const int i,std::string &fname,int &ftype) const
+{
+	fname = ForEidos->HypotesisSQL->AttributesList[i].FieldName;
+	ftype = ForEidos->HypotesisSQL->AttributesList[i].FieldType;
+}
+
 
 int HypotesisModel::SkipTo(int RowNumber)const
 {

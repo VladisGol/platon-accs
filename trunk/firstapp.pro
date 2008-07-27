@@ -37,6 +37,7 @@ HEADERS += EssentialClass.h \
            EssClasses/sqlmanager.h \
            EssClasses/transactionstru.h \
            EssWidgets/hypotesismodel.h \
+           EssWidgets/pragmamodel.h \
            ibpp/core/_ibpp.h \
            ibpp/core/ibase.h \
            ibpp/core/iberror.h \
@@ -83,6 +84,7 @@ SOURCES += firstFormapp.cpp \
            EssClasses/restype.cpp \
            EssClasses/sqlmanager.cpp \
            EssWidgets/hypotesismodel.cpp \
+           EssWidgets/pragmamodel.cpp \           
            ibpp/core/_dpb.cpp \
            ibpp/core/_ibpp.cpp \
            ibpp/core/_ibs.cpp \

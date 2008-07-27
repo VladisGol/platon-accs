@@ -14,18 +14,18 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-Contacts: e-mail vladisgol@rambler.ru 
+Contacts: e-mail vladisgol@rambler.ru
 
 Ядро системы учета "Платон".
-Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г. 
-Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать 
-в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU, 
-опубликованной Free Software Foundation. 
-Мы распространяем эту программу в надежде на то, что она будет вам полезной, 
-однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и 
-ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ. 
-Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного 
-Применений GNU.  
+Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г.
+Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать
+в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU,
+опубликованной Free Software Foundation.
+Мы распространяем эту программу в надежде на то, что она будет вам полезной,
+однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и
+ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ.
+Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного
+Применений GNU.
 Связаться с авторами программы вы можете по e-mail vladisgol@rambler.ru
 */
 
@@ -149,7 +149,7 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
                 LocalST->Get("FIELDTYPE",OneRecord->type);
                 LocalST->Get("ID",(int32_t*)&OneRecord->id);
                 LocalST->Get("CAPTION",OneRecord->Caption);
-		OneRecord->id_Class  =InObj->id;
+                OneRecord->id_Class  =InObj->id;
                 LocalST->Get("ID_BELONGFOR",(int32_t*)&OneRecord->belongTo);
                 LocalST->Get("ID_RB_DESCRIBER",(int32_t*)&OneRecord->ID_RB_Describer);
                 LocalST->Get("DLL_FILENAME",OneRecord->DLL_FileName);
