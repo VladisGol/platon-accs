@@ -34,9 +34,9 @@ namespace platon
 {
 	SQLManager::SQLManager(Eidos* Ei)
 	{
-		DB=Ei->DB;
-                EidosID=Ei->GetID();
-                Initialize();
+			DB=Ei->DB;
+			EidosID=Ei->GetID();
+			Initialize();
 	}
         SQLManager::~SQLManager()
         {
@@ -66,7 +66,10 @@ namespace platon
                         NewRec.FieldForRetVal="MEANING";
                         LocalST->Get("ID",(int32_t*)&NewRec.EAID);
                         LocalST->Get("FIELDTYPE",NewRec.FieldType);
+                        LocalST->Get("CAPTION",NewRec.Caption);
+
                         AttributesList.push_back(NewRec);
+
                 }
                 else
                 {
@@ -82,6 +85,7 @@ namespace platon
 	            NewRec.FieldForRetVal="MEANING";
 	            NewRec.EAID=EA->GetEAID();
 	            NewRec.FieldType=EA->type;
+	            NewRec.Caption=EA->GetEACaption();
 
 	            AttributesList.push_back(NewRec);
         }
@@ -101,6 +105,7 @@ namespace platon
                         NewRec.FieldForRetVal="KEYVALUE";
                         LocalST->Get("ID",(int32_t*)&NewRec.EAID);
                         LocalST->Get("FIELDTYPE",NewRec.FieldType);
+                        LocalST->Get("CAPTION",NewRec.Caption);
                         AttributesList.push_back(NewRec);
                 }
                 else
@@ -117,7 +122,9 @@ namespace platon
                 NewRec.FieldForRetVal="KEYVALUE";
                 NewRec.EAID=EA->GetEAID();
                 NewRec.FieldType=EA->type;
+                NewRec.Caption=EA->GetEACaption();
                 AttributesList.push_back(NewRec);
+                EA->GetEACaption();
         }
 	HypotesisSQLManager::HypotesisSQLManager(Eidos* Ei):SQLManager(Ei){;}
         const std::string HypotesisSQLManager::SQLString()

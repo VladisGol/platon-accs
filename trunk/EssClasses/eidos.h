@@ -14,18 +14,18 @@ Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-Contacts: e-mail vladisgol@rambler.ru 
+Contacts: e-mail vladisgol@rambler.ru
 
 Ядро системы учета "Платон".
-Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г. 
-Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать 
-в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU, 
-опубликованной Free Software Foundation. 
-Мы распространяем эту программу в надежде на то, что она будет вам полезной, 
-однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и 
-ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ. 
-Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного 
-Применений GNU.  
+Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г.
+Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать
+в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU,
+опубликованной Free Software Foundation.
+Мы распространяем эту программу в надежде на то, что она будет вам полезной,
+однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и
+ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ.
+Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного
+Применений GNU.
 Связаться с авторами программы вы можете по e-mail vladisgol@rambler.ru
 */
 #ifndef EIDOSH
@@ -54,32 +54,32 @@ class Eidos
 {
 private:
 	long id;         		//Идентификатор объекта
-        long id_parent;                 //Ссылка на предшественника
+    long id_parent;                 //Ссылка на предшественника
 
-        std::string Name;
-        std::string FullName;
+    std::string Name;
+    std::string FullName;
 
 	void Initialize();
 	void GetData(Eidos* InClass,long ID_IN);
 	void QueryForExtraAttrib(Eidos* InObj);
 	void CleanExtraAttributes();
 
-        IBPP::Transaction LocalTR;
+    IBPP::Transaction LocalTR;
 
 	void GetExtraAttributesSet();
 
 protected:
-        std::string Species;
+    std::string Species;
 
 public:
-        IBPP::Database DB;            //База данных IBPP
-        IBPP::Timestamp DT;           //Дата время
+    IBPP::Database DB;            //База данных IBPP
+    IBPP::Timestamp DT;           //Дата время
 
 	Eidos(IBPP::Database MyDB);
 	Eidos(IBPP::Database MyDB, long ID_IN);
 	~Eidos();
 
-        std::vector <ExtraAttribute*> Attributes;
+	std::vector <ExtraAttribute*> Attributes;
 
 	void Save();
 
