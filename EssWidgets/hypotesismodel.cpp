@@ -35,12 +35,13 @@ HypotesisModel::HypotesisModel(platon::Eidos* InEidos, QWidget *parent)
 {
 	//ui.setupUi(this);
 	//Инициализируем переменные и объекты
+	setObjectName("HypotesisModel");
 	ForEidos =InEidos;
 	MyIterator=new platon::iterHypotesis(InEidos);							//Создаем итератор по базе
 	//MyIterator->SQL_string=InEidos->HypotesisSQL->SQLString();			//в нем заменяем строку запроса на полную из Eidos-а
 
-	NumCol=InEidos->HypotesisSQL->AttributesList.size();											//Получаем количество полей в запросе
-	Buffer.resize(BufferCapacity * NumCol);									//Устанавливаем размер вектора
+	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//Получаем количество полей в запросе
+	Buffer.resize(BufferCapacity * (NumCol+1));								//Устанавливаем размер вектора = числу полей экстраатрибутов + ID
 
 	BufferStartRow=0;														//Начало
 	BufferLastRow=ReadToBuffer(BufferStartRow,0,BufferCapacity);			//Читаем из базы первые BufferCapacity записей
@@ -72,11 +73,17 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 
 	int ReadedRow=0;
 
+	int ReservedColumns=0;
+	if(this->objectName()=="HypotesisModel") ReservedColumns=1;
+	if(this->objectName()=="PragmaModel") ReservedColumns=2;
+
 	while(ReadedRow<RowCount)
 	{
 		if(MyIterator->Fetched())
 		{
 			MyHyp= GetHypotesys(MyIterator->GetID());
+			if(ReservedColumns>0) Buffer[GetOffset(RowInBuffer+ReadedRow,0)]=QString::number(MyHyp->GetID());
+			if(ReservedColumns==2) Buffer[GetOffset(RowInBuffer+ReadedRow,1)]=QString::fromStdString(MyHyp->GetHypotesName());
 
 			for(int i=0;i<NumCol;i++)
 			{
@@ -124,10 +131,6 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 					}
 					case platon::ft_RB:
 					case platon::ft_DLL:
-					{
-						OneValue=tr(MyHyp->GetEAByFieldName(curFieldName)->GetStringValue().c_str());
-						break;
-					}
 					case platon::ft_LinkHypotesis:
 					case platon::ft_LinkPragma:
 					{
@@ -139,7 +142,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 
 				}
 
-				Buffer[GetOffset(RowInBuffer+ReadedRow,i)]=OneValue;
+				Buffer[GetOffset(RowInBuffer+ReadedRow,i+ReservedColumns)]=OneValue;
 
 			}
 
@@ -205,7 +208,11 @@ int HypotesisModel::SkipTo(int RowNumber)const
 int HypotesisModel::columnCount(const QModelIndex & index) const
 {
 	//Процедура возвращает число столбцов (полей)
-	return this->NumCol;
+	int ReservedColumns=0;
+	if(this->objectName()=="HypotesisModel") ReservedColumns=1;
+	if(this->objectName()=="PragmaModel") ReservedColumns=2;
+
+	return this->NumCol+ReservedColumns;
 }
 
 int HypotesisModel::rowCount(const QModelIndex &parent) const
@@ -217,9 +224,25 @@ int HypotesisModel::rowCount(const QModelIndex &parent) const
 QVariant HypotesisModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
 	//Процедура выводит значения надписей столбцов и строк
+
+	if (role != Qt::DisplayRole)
+	         return QVariant();
+
 	if (orientation==Qt::Horizontal)
 	{
-		return QString::fromStdString(this->ForEidos->HypotesisSQL->AttributesList[section].FieldName);
+		int ReservedColumns=0;
+		if(this->objectName()=="HypotesisModel")
+		{
+			ReservedColumns=1;
+			if(section==0) return "ID";
+		}
+		if(this->objectName()=="PragmaModel")
+		{
+			ReservedColumns=2;
+			if(section==0) return "ID";
+			if(section==1) return "Hipotesys Name";
+		}
+		return tr(this->ForEidos->HypotesisSQL->AttributesList[section-ReservedColumns].Caption.c_str());
 	}
 	else
 	{

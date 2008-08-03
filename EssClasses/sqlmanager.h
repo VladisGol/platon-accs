@@ -53,6 +53,8 @@ namespace platon
 			std::string FieldName;
 			std::string AliasName;
 			std::string FieldForRetVal;
+			std::string Caption;
+
 			int FieldType;
 			long EAID;
 

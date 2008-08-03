@@ -34,11 +34,11 @@ PragmaModel::PragmaModel(platon::Eidos* InEidos, QWidget *parent)
     : HypotesisModel(InEidos, parent)
 {
 	//Инициализируем переменные и объекты
-	ForEidos =InEidos;
-	MyIterator=new platon::iterHypotesis(InEidos);								//Создаем итератор по базе
+	setObjectName("PragmaModel");
+	MyIterator=new platon::iterHypotesis(InEidos);							//Создаем итератор по базе
 
-	NumCol=InEidos->HypotesisSQL->AttributesList.size();											//Получаем количество полей в запросе
-	Buffer.resize(BufferCapacity * NumCol);									//Устанавливаем размер вектора
+	NumCol=InEidos->PragmaSQL->AttributesList.size();						//Получаем количество полей в запросе
+	Buffer.resize(BufferCapacity * (NumCol+2));								//Устанавливаем размер вектора = числу полей экстраатрибутов + ID+HipotesysName
 
 	BufferStartRow=0;														//Начало
 	BufferLastRow=ReadToBuffer(BufferStartRow,0,BufferCapacity);			//Читаем из базы первые BufferCapacity записей
