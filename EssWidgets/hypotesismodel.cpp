@@ -145,8 +145,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 				Buffer[GetOffset(RowInBuffer+ReadedRow,i+ReservedColumns)]=OneValue;
 
 			}
-
-			delete MyHyp;
+			DeleteHypotesis(MyHyp);
 		}
 		else
 		{
@@ -163,6 +162,11 @@ platon::Hypotesis* HypotesisModel::GetHypotesys(const long id) const
 {
 	return new platon::Hypotesis(ForEidos,id);
 }
+void HypotesisModel::DeleteHypotesis(platon::Hypotesis*Fd) const
+{
+	delete Fd;
+}
+
 void HypotesisModel::GetFieldNamenType(const int i,std::string &fname,int &ftype) const
 {
 	fname = ForEidos->HypotesisSQL->AttributesList[i].FieldName;

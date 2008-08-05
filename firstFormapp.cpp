@@ -39,8 +39,8 @@ void firstformAPP::Go()
 	platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
 
 	platon::Eidos* MyEidos=new platon::Eidos(MyDB,9);
-	HypotesisModel* MyModel=new HypotesisModel(MyEidos, this);
-	//PragmaModel* MyModel=new PragmaModel(MyEidos, this);
+	//HypotesisModel* MyModel=new HypotesisModel(MyEidos, this);
+	PragmaModel* MyModel=new PragmaModel(MyEidos, this);
 
 	tableView->setModel(MyModel);
 
