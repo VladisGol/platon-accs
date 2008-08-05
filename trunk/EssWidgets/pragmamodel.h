@@ -42,6 +42,7 @@ public:
 	PragmaModel(platon::Eidos*, QWidget *parent = 0);
 private:
 	platon::Hypotesis* GetHypotesys(const long id) const;	//Получить новую гипотезу, функция нужна чтобы переопределить в наследниках
+	void DeleteHypotesis(platon::Hypotesis*Fd) const;
 	void GetFieldNamenType(const int i,std::string &fname,int &ftype) const;
 };
 

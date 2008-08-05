@@ -151,6 +151,14 @@ namespace platon
         SQL_string="select ID, MEANING TITLE from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
         SQL_string_forreccount="select count(GET_LINKED_PRAGMA_LIST.id) recordscount from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
 	}
+
+	iterAllPragmaForEidos::iterAllPragmaForEidos(Eidos* InEidos)
+	{
+		this->DB=InEidos->DB;
+        Initialize();
+        SQL_string="select * from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+        SQL_string_forreccount="select count(id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+	}
 }
 
 

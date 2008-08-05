@@ -35,7 +35,7 @@ PragmaModel::PragmaModel(platon::Eidos* InEidos, QWidget *parent)
 {
 	//Инициализируем переменные и объекты
 	setObjectName("PragmaModel");
-	MyIterator=new platon::iterHypotesis(InEidos);							//Создаем итератор по базе
+	MyIterator=new platon::iterAllPragmaForEidos(InEidos);							//Создаем итератор по базе
 
 	NumCol=InEidos->PragmaSQL->AttributesList.size();						//Получаем количество полей в запросе
 	Buffer.resize(BufferCapacity * (NumCol+2));								//Устанавливаем размер вектора = числу полей экстраатрибутов + ID+HipotesysName
@@ -50,10 +50,21 @@ PragmaModel::PragmaModel(platon::Eidos* InEidos, QWidget *parent)
 
 platon::Hypotesis* PragmaModel::GetHypotesys(const long id) const
 {
-	return new platon::Hypotesis(ForEidos,id);
+	long ID_Hyp,ID_Eidos,ID_Pragma;
+	platon::Pragma::GetEidosHypotesisIDS(ForEidos->DB,id,ID_Eidos,ID_Hyp,ID_Pragma);
+	platon::Hypotesis* tmpHyp=platon::Hypotesis(ForEidos,ID_Hyp);
+	platon::Pragma* forRet=new platon::Pragma(tmpHyp,id);
+	return forRet;
 }
+void HypotesisModel::DeleteHypotesis(platon::Hypotesis*Fd) const
+{
+	platon::Hypotesis* tmpHyp=(platon::Pragma*)Fd->HostHypotesis;
+	delete Fd;
+	delete tmpHyp;
+}
+
 void PragmaModel::GetFieldNamenType(const int i,std::string &fname,int &ftype) const
 {
-	fname = ForEidos->HypotesisSQL->AttributesList[i].FieldName;
-	ftype = ForEidos->HypotesisSQL->AttributesList[i].FieldType;
+	fname = ForEidos->PragmaSQL->AttributesList[i].FieldName;
+	ftype = ForEidos->PragmaSQL->AttributesList[i].FieldType;
 }
