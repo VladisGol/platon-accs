@@ -56,7 +56,7 @@ public:
 protected:
 	static const int BufferCapacity =100;
 	platon::Eidos* ForEidos;
-	platon::iterHypotesis* MyIterator;	// Итератор для перемещения по БД
+	platon::pIterator* MyIterator;	// Итератор для перемещения по БД
 
 	mutable QVector <QVariant> Buffer;			// Массив элементов для сохранения кэша записей из БД
 
@@ -70,9 +70,6 @@ protected:
 
 	void shiftBuffer(const QModelIndex &index) const;
 	mutable platon::Hypotesis* MyHyp;
-	platon::Hypotesis* GetHypotesys(const long id) const;	//Получить новую гипотезу, функция нужна чтобы переопределить в наследниках
-	void DeleteHypotesis(platon::Hypotesis*Fd) const;
-	void GetFieldNamenType(const int i,std::string &fname,int &ftype) const;
 };
 
 #endif // HYPOTESISMODEL_H

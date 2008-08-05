@@ -81,9 +81,21 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 	{
 		if(MyIterator->Fetched())
 		{
-			MyHyp= GetHypotesys(MyIterator->GetID());
+			//
+			if(this->objectName()=="HypotesisModel")
+			{
+				MyHyp=new platon::Hypotesis(ForEidos,MyIterator->GetID());
+			}
+			if(this->objectName()=="PragmaModel")
+			{
+				long ID_Hyp,ID_Eidos;
+				platon::Pragma::GetEidosHypotesisIDS(ForEidos->DB,MyIterator->GetID(),ID_Eidos,ID_Hyp);
+				platon::Hypotesis* tmpHyp=new platon::Hypotesis(ForEidos,ID_Hyp);
+				MyHyp=new platon::Pragma(tmpHyp,MyIterator->GetID());
+			}
+			//
 			if(ReservedColumns>0) Buffer[GetOffset(RowInBuffer+ReadedRow,0)]=QString::number(MyHyp->GetID());
-			if(ReservedColumns==2) Buffer[GetOffset(RowInBuffer+ReadedRow,1)]=QString::fromStdString(MyHyp->GetHypotesName());
+			//if(ReservedColumns==2) Buffer[GetOffset(RowInBuffer+ReadedRow,1)]=QString::fromStdString(MyHyp->GetHypotesName());
 
 			for(int i=0;i<NumCol;i++)
 			{
@@ -92,7 +104,17 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 				//Получаем имя поля и его тип по номеру
 				std::string curFieldName;
 				int EA_type;
-				GetFieldNamenType(i,curFieldName,EA_type);
+
+				if(this->objectName()=="HypotesisModel")
+				{
+					curFieldName = ForEidos->HypotesisSQL->AttributesList[i].FieldName;
+					EA_type = ForEidos->HypotesisSQL->AttributesList[i].FieldType;
+				}
+				if(this->objectName()=="PragmaModel")
+				{
+					curFieldName = ForEidos->PragmaSQL->AttributesList[i].FieldName;
+					EA_type = ForEidos->PragmaSQL->AttributesList[i].FieldType;
+				}
 
 				//Получаем ссылку на текущий экстраатрибут в составе рекордсета
 				switch(EA_type)
@@ -145,7 +167,12 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 				Buffer[GetOffset(RowInBuffer+ReadedRow,i+ReservedColumns)]=OneValue;
 
 			}
-			DeleteHypotesis(MyHyp);
+			if(this->objectName()=="PragmaModel")
+			{
+				platon::Hypotesis* tmpHyp=((platon::Pragma*)MyHyp)->HostHypotesis;
+				delete tmpHyp;
+			}
+			delete MyHyp;
 		}
 		else
 		{
@@ -156,21 +183,6 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 		MyIterator->Next();
 	}
 	return ReadedRow;
-}
-
-platon::Hypotesis* HypotesisModel::GetHypotesys(const long id) const
-{
-	return new platon::Hypotesis(ForEidos,id);
-}
-void HypotesisModel::DeleteHypotesis(platon::Hypotesis*Fd) const
-{
-	delete Fd;
-}
-
-void HypotesisModel::GetFieldNamenType(const int i,std::string &fname,int &ftype) const
-{
-	fname = ForEidos->HypotesisSQL->AttributesList[i].FieldName;
-	ftype = ForEidos->HypotesisSQL->AttributesList[i].FieldType;
 }
 
 
@@ -246,7 +258,8 @@ QVariant HypotesisModel::headerData(int section, Qt::Orientation orientation,int
 			if(section==0) return "ID";
 			if(section==1) return "Hipotesys Name";
 		}
-		return tr(this->ForEidos->HypotesisSQL->AttributesList[section-ReservedColumns].Caption.c_str());
+		if(this->objectName()=="HypotesisModel") return tr(this->ForEidos->HypotesisSQL->AttributesList[section-ReservedColumns].Caption.c_str());
+		if(this->objectName()=="PragmaModel") return tr(this->ForEidos->PragmaSQL->AttributesList[section-ReservedColumns].Caption.c_str());
 	}
 	else
 	{
