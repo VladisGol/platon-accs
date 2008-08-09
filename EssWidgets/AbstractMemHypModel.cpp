@@ -14,8 +14,8 @@ namespace platon
 AbstractMemHypModel::~AbstractMemHypModel()
 {
 	// TODO Auto-generated destructor stub
-	for(int i==0; i<FieldsInModel->size();i++)
-			delete FieldsInModel[i];
+	for(int i=0; i<FieldsInModel->size();i++)
+			delete FieldsInModel->at(i);
 	delete FieldsInModel;
 	delete Id_records;
 }
@@ -46,33 +46,36 @@ QVariant AbstractMemHypModel::data(const QModelIndex &index, int role) const
 	         return QVariant();
 }
 
-AbstractMemHypModel::ReadToBuffer() const
+void AbstractMemHypModel::ReadToBuffer() const
 {
 	//Процедура считывает в буфер по полям записи из БД
 	//Заполняем значения в массиве идентификаторов записей
 	iterHypotesis* MyIterator=new iterHypotesis(ForEidos);
 	Id_records->clear();
 	MyIterator->First();
+	LastRequestedReccount=0;
 	while(MyIterator->Fetched())
 	{
 		Id_records->append(MyIterator->GetID());
+		LastRequestedReccount++;
 		MyIterator->Next();
 	}
 
 	//Считываем поля экстраатрибутов
 	for(int i=0;i<NumCol;i++)
 	{
-		GetOneFieldInBuffer(i, FieldsInModel[i]);
+		GetOneFieldInBuffer(i, FieldsInModel->at(i));
 	}
 }
 
-void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVariant>* OneMap)
+void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVariant>* OneMap) const
 {
 	//Процедура заполняет QMap переданный в параметре значениями поля
 
 	OneMap->clear();
 	iterHypotesis* MyIterator=new iterHypotesis(ForEidos);
 	ExtraAttribute* MyEA;
+	long Key;
 
 	MyEA=getEAFromEidos(FieldNumber);	//Получаем экстраатрибут
 
@@ -85,7 +88,6 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 	while(MyIterator->Fetched())
 	{
 			QVariant OneValue;
-			long Key;
 
 			switch(MyEA->type)
 			{
@@ -152,7 +154,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					throw("Указанный тип данных не поддерживается");
 
 			}
-			OneMap->insert(key,OneValue);
+			OneMap->insert(Key,OneValue);
 			MyIterator->Next();
 	}
 
@@ -163,10 +165,10 @@ QVariant AbstractMemHypModel::GetDataFromBuffer(const QModelIndex &index)const
 	int row=index.row();
 	int col=index.column();
 
-	if(row==0) return Id_records[col];
+	if(row==0) return QVariant::fromValue(Id_records->at(col));
 
-	QMap<long,QVariant>* OneMap=FieldsInModel[row];
-	return OneMap.take(Id_records[col]);
+	QMap<long,QVariant>* OneMap=FieldsInModel->at(row);
+	return OneMap->take(Id_records->at(col));
 }
 
 }
