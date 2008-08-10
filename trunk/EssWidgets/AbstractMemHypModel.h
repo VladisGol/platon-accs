@@ -5,14 +5,15 @@
  *      Author: slava
  */
 
+#ifndef ABSTRACTMEMHYPMODEL_H_
+#define ABSTRACTMEMHYPMODEL_H_
+
 #include <QAbstractTableModel>
 #include <QVector>
 #include <QMap>
 #include <QDate>
 #include "EssentialClass.h"
 
-#ifndef ABSTRACTMEMHYPMODEL_H_
-#define ABSTRACTMEMHYPMODEL_H_
 
 namespace platon
 {
@@ -20,13 +21,12 @@ namespace platon
 class AbstractMemHypModel : public QAbstractTableModel
 {
 public:
-	AbstractMemHypModel(QObject * parent):QAbstractTableModel(parent){};
+	AbstractMemHypModel(QObject * parent);
 	virtual ~AbstractMemHypModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex())const;
     int columnCount(const QModelIndex & index) const;
     QVariant data(const QModelIndex &index, int role) const;
-
 
 protected:
 	mutable QVector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel
@@ -41,7 +41,8 @@ protected:
 
 	Eidos* ForEidos;										//Ссылка на Eidos, по которому идет обработка
 
-	virtual ExtraAttribute* getEAFromEidos(int i) const {return NULL;};		//Процедура возвращает ссылку на экстраатрибут по номеру
+	virtual ExtraAttribute* getEAFromEidos(int i) const {return NULL;};			//Функция возвращает ссылку на экстраатрибут по номеру
+	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const {return "";};	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
 };
 
 }

@@ -5,6 +5,7 @@
 #include "phipotesystablemodel.h"
 #include "hypotesismodel.h"
 #include "pragmamodel.h"
+#include "HypotesisMemModel.h"
 
 
 
@@ -39,8 +40,9 @@ void firstformAPP::Go()
 	platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
 
 	platon::Eidos* MyEidos=new platon::Eidos(MyDB,9);
+	platon::HypotesysMemModel* MyModel=new platon::HypotesysMemModel(MyEidos, this);
 	//HypotesisModel* MyModel=new HypotesisModel(MyEidos, this);
-	PragmaModel* MyModel=new PragmaModel(MyEidos, this);
+	//PragmaModel* MyModel=new PragmaModel(MyEidos, this);
 
 	tableView->setModel(MyModel);
 

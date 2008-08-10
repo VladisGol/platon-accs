@@ -19,7 +19,9 @@ INCLUDEPATH += . \
     EssWidgets
 
 # Input
-HEADERS += EssWidgets/AbstractMemHypModel.h \
+HEADERS += EssWidgets/HypotesisMemModel.h \
+    EssWidgets/HypotesisMemModel.h \
+    EssWidgets/AbstractMemHypModel.h \
     EssentialClass.h \
     firstFormapp.h \
     phipotesystablemodel.h \
@@ -68,7 +70,9 @@ HEADERS += EssWidgets/AbstractMemHypModel.h \
     ibpp/core/transaction.cpp \
     ibpp/core/user.cpp
 FORMS += MyFirstForm.ui
-SOURCES += EssWidgets/AbstractMemHypModel.cpp \
+SOURCES += EssWidgets/HypotesisMemModel.cpp \
+    EssWidgets/HypotesisMemModel.cpp \
+    EssWidgets/AbstractMemHypModel.cpp \
     firstFormapp.cpp \
     main.cpp \
     phipotesystablemodel.cpp \

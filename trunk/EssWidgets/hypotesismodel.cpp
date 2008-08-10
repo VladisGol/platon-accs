@@ -287,7 +287,6 @@ QVariant HypotesisModel::GetDataFromBuffer(const QModelIndex &index)const
 	int row=index.row();
 	int col=index.column();
 
-
 	if (row >=BufferStartRow && row <BufferLastRow)	//Строка в диапазоне номеров, вошедших в буфер
 	{
 		return Buffer[GetOffset(row-BufferStartRow,col)];

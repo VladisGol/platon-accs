@@ -9,8 +9,11 @@
 
 namespace platon
 {
-
-
+AbstractMemHypModel::AbstractMemHypModel(QObject * parent)
+			:QAbstractTableModel(parent)
+{
+	;
+}
 AbstractMemHypModel::~AbstractMemHypModel()
 {
 	// TODO Auto-generated destructor stub
@@ -78,11 +81,9 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 	long Key;
 
 	MyEA=getEAFromEidos(FieldNumber);	//Получаем экстраатрибут
+	QString SQLString= getSQLstringforEA(MyEA);
 
-	QString SQLString;
-	SQLString="select * from "+QString::fromStdString(MyEA->NameStoredProc())+"("+QString::number(ForEidos->GetID())+");";
 	MyIterator->SQL_string=SQLString.toStdString();
-
 	MyIterator->First();
 
 	while(MyIterator->Fetched())
@@ -95,8 +96,8 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 				{
 					std::string tmpValue;
 					MyIterator->LocalST->Get("MEANING",tmpValue);
-					OneValue=QString::fromStdString(tmpValue);
-					Key=MyIterator->LocalST->Get("id_link",(int32_t*)&Key);
+					OneValue=tr(tmpValue.c_str());
+					Key=MyIterator->GetID();
 					break;
 				}
 				case platon::ft_Integer:
@@ -104,7 +105,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					int tmpValue;
 					MyIterator->LocalST->Get("MEANING",(int32_t*)&tmpValue);
 					OneValue=tmpValue;
-					Key=MyIterator->LocalST->Get("id_link",(int32_t*)&Key);
+					Key=MyIterator->GetID();
 					break;
 				}
 				case platon::ft_Boolean:
@@ -112,7 +113,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					bool tmpValue;
 					MyIterator->LocalST->Get("MEANING",tmpValue);
 					OneValue=tmpValue;
-					Key=MyIterator->LocalST->Get("id_link",(int32_t*)&Key);
+					Key=MyIterator->GetID();
 					break;
 				}
 				case platon::ft_Float:
@@ -120,14 +121,14 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					float tmpValue;
 					MyIterator->LocalST->Get("MEANING",tmpValue);
 					OneValue=tmpValue;
-					Key=MyIterator->LocalST->Get("id_link",(int32_t*)&Key);
+					Key=MyIterator->GetID();
 					break;
 				}
 				case platon::ft_DateTime:
 				{
 					IBPP::Timestamp MyTs;
 					MyIterator->LocalST->Get("MEANING",MyTs);
-					Key=MyIterator->LocalST->Get("id_link",(int32_t*)&Key);
+					Key=MyIterator->GetID();
 
 					QString year=QString::number(MyTs.Year());
 					QString month=QString("0"+QString::number(MyTs.Month())).right(2);
@@ -145,8 +146,8 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 				{
 					std::string tmpValue;
 					MyIterator->LocalST->Get("MEANING",tmpValue);
-					OneValue=QString::fromStdString(tmpValue);
-					Key=MyIterator->LocalST->Get("id_link",(int32_t*)&Key);
+					OneValue=tr(tmpValue.c_str());
+					Key=MyIterator->GetID();
 
 					break;
 				}
@@ -157,7 +158,6 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 			OneMap->insert(Key,OneValue);
 			MyIterator->Next();
 	}
-
 }
 QVariant AbstractMemHypModel::GetDataFromBuffer(const QModelIndex &index)const
 {
@@ -165,10 +165,12 @@ QVariant AbstractMemHypModel::GetDataFromBuffer(const QModelIndex &index)const
 	int row=index.row();
 	int col=index.column();
 
-	if(row==0) return QVariant::fromValue(Id_records->at(col));
+	if(col==0) return QVariant::fromValue(Id_records->at(row));
 
-	QMap<long,QVariant>* OneMap=FieldsInModel->at(row);
-	return OneMap->take(Id_records->at(col));
+	QMap<long,QVariant>* OneMap=FieldsInModel->at(col-1);
+	long key=Id_records->at(row);
+	QVariant ForReturn = OneMap->value(key);
+	return ForReturn;
 }
 
 }
