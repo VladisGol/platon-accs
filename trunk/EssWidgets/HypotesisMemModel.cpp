@@ -7,13 +7,14 @@
 
 #include "HypotesisMemModel.h"
 
+
 namespace platon
 {
 
-HypotesysMemModel::HypotesysMemModel(Eidos* InEidos, QObject * parent)
+HypotesisMemModel::HypotesisMemModel(Eidos* InEidos, QObject * parent)
 					:AbstractMemHypModel(parent)
 {
-	setObjectName("HypotesysMemModel");
+	setObjectName("HypotesisMemModel");
 	ForEidos =InEidos;
 
 	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//Получаем количество полей в запросе
@@ -26,18 +27,14 @@ HypotesysMemModel::HypotesysMemModel(Eidos* InEidos, QObject * parent)
 	ReadToBuffer();															//Считываем значения в буфер
 }
 
-HypotesysMemModel::~HypotesysMemModel()
-{
-	// TODO Auto-generated destructor stub
-}
 
-ExtraAttribute* HypotesysMemModel::getEAFromEidos(int i) const
+ExtraAttribute* HypotesisMemModel::getEAFromEidos(int i) const
 {
 	std::string FieldName = this->ForEidos->HypotesisSQL->AttributesList[i].FieldName;
 	return ForEidos->GetEAByFieldName(FieldName);
 }
 
-QString HypotesysMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
+QString HypotesisMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 {
 	QString SQLString;
 	SQLString="select GET_HYPOTESIS_LIST.ID id, id_link, meaning from GET_HYPOTESIS_LIST("+QString::number(ForEidos->GetID())+") inner join ";
@@ -46,7 +43,7 @@ QString HypotesysMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 	return SQLString;
 }
 
-QVariant HypotesysMemModel::headerData(int section, Qt::Orientation orientation,int role) const
+QVariant HypotesisMemModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
 	//Процедура выводит значения надписей столбцов и строк
 
@@ -66,3 +63,4 @@ QVariant HypotesysMemModel::headerData(int section, Qt::Orientation orientation,
 	}
 }
 }
+
