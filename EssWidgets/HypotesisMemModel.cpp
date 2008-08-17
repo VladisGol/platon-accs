@@ -24,6 +24,7 @@ HypotesisMemModel::HypotesisMemModel(Eidos* InEidos, QObject * parent)
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol;i++) FieldsInModel->append(new QMap<long,QVariant>);
 
+	KeyIterator=new iterHypotesis(ForEidos);								//Выставляем итератор ключей записей
 	ReadToBuffer();															//Считываем значения в буфер
 }
 

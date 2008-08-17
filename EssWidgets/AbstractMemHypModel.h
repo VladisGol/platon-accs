@@ -27,6 +27,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex())const;
     int columnCount(const QModelIndex & index) const;
     QVariant data(const QModelIndex &index, int role) const;
+	pIterator* KeyIterator;
 
 protected:
 	mutable QVector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel

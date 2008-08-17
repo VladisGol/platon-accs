@@ -21,6 +21,7 @@ AbstractMemHypModel::~AbstractMemHypModel()
 			delete FieldsInModel->at(i);
 	delete FieldsInModel;
 	delete Id_records;
+	delete KeyIterator;
 }
 
 int AbstractMemHypModel::columnCount(const QModelIndex & index) const
@@ -53,15 +54,15 @@ void AbstractMemHypModel::ReadToBuffer() const
 {
 	//Процедура считывает в буфер по полям записи из БД
 	//Заполняем значения в массиве идентификаторов записей
-	iterHypotesis* MyIterator=new iterHypotesis(ForEidos);
+
 	Id_records->clear();
-	MyIterator->First();
+	KeyIterator->First();
 	LastRequestedReccount=0;
-	while(MyIterator->Fetched())
+	while(KeyIterator->Fetched())
 	{
-		Id_records->append(MyIterator->GetID());
+		Id_records->append(KeyIterator->GetID());
 		LastRequestedReccount++;
-		MyIterator->Next();
+		KeyIterator->Next();
 	}
 
 	//Считываем поля экстраатрибутов

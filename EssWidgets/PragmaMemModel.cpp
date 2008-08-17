@@ -27,7 +27,7 @@ PragmaMemModel::PragmaMemModel(Hypotesis* InHyp, QObject * parent)
 	Id_records = new QVector <long>;										//Выделяем необходимую память
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol;i++) FieldsInModel->append(new QMap<long,QVariant>);
-
+	KeyIterator=new iterPragma(MyHyp);										//Выставляем итератор ключей записей
 	ReadToBuffer();															//Считываем значения в буфер
 
 }
