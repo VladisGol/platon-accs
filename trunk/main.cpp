@@ -1,12 +1,12 @@
 #include <QApplication>
-#include "firstFormapp.h"
+#include "mainWin.h"
 #include <QTextCodec>
 
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    firstformAPP myAPP;
+    mainWin myAPP;
 
     QTextCodec *codec = QTextCodec::codecForName("CP1251");
     QTextCodec::setCodecForTr(codec);
