@@ -38,8 +38,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>858</width>
-         <height>624</height>
+         <width>840</width>
+         <height>420</height>
         </rect>
        </property>
        <attribute name="title" >
@@ -69,8 +69,8 @@
            <property name="orientation" >
             <enum>Qt::Vertical</enum>
            </property>
-           <widget class="QTableView" name="tableView_2" />
-           <widget class="QTableView" name="tableView" />
+           <widget class="QTableView" name="tableViewHypotesis" />
+           <widget class="QTableView" name="tableViewPragma" />
           </widget>
          </widget>
         </item>
@@ -95,7 +95,17 @@
     </property>
     <addaction name="action_quit" />
    </widget>
+   <widget class="QMenu" name="menu_2" >
+    <property name="title" >
+     <string>Вид</string>
+    </property>
+    <addaction name="action" />
+    <addaction name="action_2" />
+    <addaction name="action_3" />
+    <addaction name="action_4" />
+   </widget>
    <addaction name="menu" />
+   <addaction name="menu_2" />
   </widget>
   <widget class="QStatusBar" name="statusbar" >
    <property name="geometry" >
@@ -135,6 +145,38 @@
    </property>
    <property name="text" >
     <string>Выход</string>
+   </property>
+  </action>
+  <action name="action" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Полный список объектов</string>
+   </property>
+  </action>
+  <action name="action_2" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Объекты учета</string>
+   </property>
+  </action>
+  <action name="action_3" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Действия</string>
+   </property>
+  </action>
+  <action name="action_4" >
+   <property name="checkable" >
+    <bool>true</bool>
+   </property>
+   <property name="text" >
+    <string>Ресурсы</string>
    </property>
   </action>
  </widget>
