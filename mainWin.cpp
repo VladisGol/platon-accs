@@ -37,7 +37,7 @@ void mainWin::SetHypotesysView()
 }
 void mainWin::SetPragmaView()
 {
-
+	long id_hypotesys;
 }
 
 

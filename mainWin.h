@@ -3,6 +3,7 @@
 
 #include "ui_mainwindow.h"
 #include <QtGui>
+#include <QModelIndexList>
 #include "EssentialClass.h"
 #include "ibpp.h"
 #include "HypotesisMemModel.h"
