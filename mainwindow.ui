@@ -19,6 +19,9 @@
       <property name="cursor" >
        <cursorShape>WaitCursor</cursorShape>
       </property>
+      <property name="styleSheet" >
+       <string notr="true" >font: 10pt "Albany AMT";</string>
+      </property>
       <property name="currentIndex" >
        <number>1</number>
       </property>
@@ -43,7 +46,26 @@
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
-          <widget class="QTreeWidget" name="treeWidget" />
+          <widget class="QEidosTreeWidget" name="EidosTreeWidget" >
+           <property name="styleSheet" >
+            <string notr="true" >font: 10pt "Arial";</string>
+           </property>
+           <column>
+            <property name="text" >
+             <string>Name</string>
+            </property>
+           </column>
+           <column>
+            <property name="text" >
+             <string>ID</string>
+            </property>
+           </column>
+           <column>
+            <property name="text" >
+             <string>Parent_ID</string>
+            </property>
+           </column>
+          </widget>
           <widget class="QSplitter" name="splitter" >
            <property name="orientation" >
             <enum>Qt::Vertical</enum>
@@ -51,8 +73,17 @@
            <widget class="QTableView" name="tableViewHypotesis" >
             <property name="font" >
              <font>
+              <family>Arial</family>
+              <pointsize>10</pointsize>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+              <stylestrategy>PreferAntialias</stylestrategy>
               <kerning>false</kerning>
              </font>
+            </property>
+            <property name="styleSheet" >
+             <string notr="true" >font: 10pt "Arial";</string>
             </property>
            </widget>
            <widget class="QTableView" name="tableViewPragma" />
@@ -148,6 +179,13 @@
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QEidosTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>qeidostreewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
@@ -163,6 +201,22 @@
     <hint type="destinationlabel" >
      <x>399</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>EidosTreeWidget</sender>
+   <signal>itemEntered(QTreeWidgetItem*,int)</signal>
+   <receiver>EidosTreeWidget</receiver>
+   <slot>expandAll()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>223</x>
+     <y>400</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>223</x>
+     <y>400</y>
     </hint>
    </hints>
   </connection>

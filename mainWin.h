@@ -26,10 +26,12 @@ private slots:
 	void Go();    // Слот для кнопки Go
 	void GoGrid();// Слот для кнопки Grid
 	void SetPragmaView(const QModelIndex & index);
+	void SetHypotesysView(const QTreeWidgetItem*CurItem , int Column);
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
-	void SetHypotesysView();
+	IBPP::Database MyDB;
+
 
 
 };
