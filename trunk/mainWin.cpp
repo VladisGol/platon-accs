@@ -4,8 +4,13 @@ mainWin::mainWin(QWidget *parent)
     : QMainWindow(parent)
 
 {
+		QTextCodec * codec = QTextCodec::codecForName("CP1251");
+		QTextCodec::setCodecForTr(codec);
+		QTextCodec::setCodecForCStrings(codec);
+		//QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF8"));
+
+
 		setupUi(this);
-//	QObject::connect(GridButton, SIGNAL(clicked()), this, SLOT(GoGrid()));
 
 		MyDB = IBPP::DatabaseFactory("vladisgol",
 	                                        "platon",
@@ -26,14 +31,16 @@ mainWin::mainWin(QWidget *parent)
 		//QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		//QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-		QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem, int)), this, SLOT(SetHypotesysView(QTreeWidgetItem, int)));
+		QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*, int)));
+//		QObject::connect(EidosTreeWidget, SIGNAL(itemEntered(QTreeWidgetItem*,int)), EidosTreeWidget, SLOT(expandAll()));
 
 }
-void mainWin::SetHypotesysView(const QTreeWidgetItem*CurItem , int Column)
+void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 {
 	platon::HypotesisMemModel* keep4delete=NULL;
 
-	long id_eidos=QVariant(CurItem->data(2,Qt::DisplayRole)).toInt();
+	long id_eidos=CurItem->text(1).toLong();
+	//long id_eidos=QVariant(CurItem->data(2,Qt::DisplayRole)).toInt();
 
 	if(LocalEidos!=NULL)
 	{
