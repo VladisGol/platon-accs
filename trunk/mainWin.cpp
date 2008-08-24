@@ -4,10 +4,10 @@ mainWin::mainWin(QWidget *parent)
     : QMainWindow(parent)
 
 {
-	setupUi(this);
+		setupUi(this);
 //	QObject::connect(GridButton, SIGNAL(clicked()), this, SLOT(GoGrid()));
 
-	IBPP::Database MyDB = IBPP::DatabaseFactory("vladisgol",
+		MyDB = IBPP::DatabaseFactory("vladisgol",
 	                                        "platon",
 	                                        "sysdba",
 	                                        "u+3LS2Tc",
@@ -16,26 +16,36 @@ mainWin::mainWin(QWidget *parent)
 	                                        "DEFAULT CHARACTER SET WIN1251");//Доп параметры
 		MyDB->Connect();
 
-		platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
+		//platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
+		EidosTreeWidget->SetSpecies("ALL");
+		EidosTreeWidget->AttachToDB(MyDB);
 
-		LocalEidos=new platon::Eidos(MyDB,9);
-		platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
-
-		//HypotesisModel* MyModel=new HypotesisModel(MyEidos, this);
-		//PragmaModel* MyModel=new PragmaModel(MyEidos, this);
-		//platon::Hypotesis* MyHypotes= new platon::Hypotesis(MyEidos, 6757);
-		//platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(MyHypotes, this);
-		tableViewHypotesis->setModel(MyModel);
+		LocalEidos=NULL;
 		LocalHypotesis=NULL;
+
 		//QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		//QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+		QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem, int)), this, SLOT(SetHypotesysView(QTreeWidgetItem, int)));
 
 }
-void mainWin::SetHypotesysView()
+void mainWin::SetHypotesysView(const QTreeWidgetItem*CurItem , int Column)
 {
-	long id_eidos;
+	platon::HypotesisMemModel* keep4delete=NULL;
 
+	long id_eidos=QVariant(CurItem->data(2,Qt::DisplayRole)).toInt();
+
+	if(LocalEidos!=NULL)
+	{
+		delete LocalEidos;
+		keep4delete=(platon::HypotesisMemModel*)tableViewHypotesis->model();
+	}
+
+	LocalEidos=new platon::Eidos(MyDB,id_eidos);
+	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
+	tableViewHypotesis->setModel(MyModel);
+	if(keep4delete!=NULL)
+		delete keep4delete;
 }
 
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
