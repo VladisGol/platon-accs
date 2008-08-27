@@ -22,19 +22,44 @@ mainWin::mainWin(QWidget *parent)
 		MyDB->Connect();
 
 		//platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
-		EidosTreeWidget->SetSpecies("ALL");
-		EidosTreeWidget->AttachToDB(MyDB);
 
 		LocalEidos=NULL;
 		LocalHypotesis=NULL;
 
-		//QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+		QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-		//QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+		QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*, int)));
-//		QObject::connect(EidosTreeWidget, SIGNAL(itemEntered(QTreeWidgetItem*,int)), EidosTreeWidget, SLOT(expandAll()));
+		//QObject::connect(EidosTreeWidget, SIGNAL(itemEntered(QTreeWidgetItem*,int)), EidosTreeWidget, SLOT(expandAll()));
+		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
+		SetEidosView(0);
+}
+
+void mainWin::SetEidosView(int Row)
+{
+	switch (Row)
+	{
+	case 0:
+		EidosTreeWidget->SetSpecies("ALL");
+		break;
+	case 1:
+		EidosTreeWidget->SetSpecies("OBJ");
+		break;
+	case 2:
+		EidosTreeWidget->SetSpecies("ACT");
+		break;
+	case 3:
+		EidosTreeWidget->SetSpecies("RES");
+		break;
+	case 4:
+		EidosTreeWidget->SetSpecies("NSI");
+	}
+
+	EidosTreeWidget->AttachToDB(MyDB);
+	//SetHypotesysView(EidosTreeWidget->currentItem(),0);
 
 }
+
 void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 {
 	platon::HypotesisMemModel* keep4delete=NULL;
@@ -53,6 +78,10 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	tableViewHypotesis->setModel(MyModel);
 	if(keep4delete!=NULL)
 		delete keep4delete;
+
+	if(tableViewHypotesis->model()->rowCount()>0)
+		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
+
 }
 
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)

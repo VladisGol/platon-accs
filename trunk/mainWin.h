@@ -27,6 +27,7 @@ private slots:
 	void GoGrid();// Слот для кнопки Grid
 	void SetPragmaView(const QModelIndex & index);
 	void SetHypotesysView(QTreeWidgetItem*,int);
+	void SetEidosView(int Row);
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
