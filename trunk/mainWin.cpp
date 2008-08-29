@@ -12,13 +12,23 @@ mainWin::mainWin(QWidget *parent)
 
 		setupUi(this);
 
-		MyDB = IBPP::DatabaseFactory("vladisgol",
-	                                        "platon",
-	                                        "sysdba",
-	                                        "u+3LS2Tc",
-	                                        "",//Role
-	                                        "WIN1251",//codepage
-	                                        "DEFAULT CHARACTER SET WIN1251");//Доп параметры
+#ifdef IBPP_WINDOWS
+                MyDB = IBPP::DatabaseFactory("vladisgol",
+                                                "platon",
+                                                "sysdba",
+                                                "masterkey",
+                                                "",//Role
+                                                "WIN1251",//codepage
+                                                "DEFAULT CHARACTER SET WIN1251");//Доп параметры
+#else
+                MyDB = IBPP::DatabaseFactory("vladisgol",
+                                                "platon",
+                                                "sysdba",
+                                                "u+3LS2Tc",
+                                                "",//Role
+                                                "WIN1251",//codepage
+                                                "DEFAULT CHARACTER SET WIN1251");//Доп параметры
+#endif
 		MyDB->Connect();
 
 		//platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
