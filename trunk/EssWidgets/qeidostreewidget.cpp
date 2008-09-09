@@ -4,6 +4,7 @@
 QEidosTreeWidget::QEidosTreeWidget(QWidget* parent)
 				:QTreeWidget(parent)
 {
+	Species="ALL";
 }
 
 void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
@@ -42,14 +43,15 @@ void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 			__item->setText(0, tr( MyEidosIter->GetTitle().c_str()));
     			__item->setText(1,QString::number(MyEidosIter->GetID()));
 			__item->setText(2,QString::number(MyEidosIter->GetParentID()));
-		}	
-	}	
+		}
+	}
+	delete MyEidosIter;
+	delete MyETC;
 }
 
 QEidosTreeWidget::~QEidosTreeWidget()
 {
 	SaveAppearance();
-	delete MyETC;
 };
 
 
@@ -61,10 +63,11 @@ void QEidosTreeWidget::SetSpecies(const QString InSpecies)
 void QEidosTreeWidget::SaveAppearance()
 {
 //Процедура сохраняет значения внешнего вида виджета
+	MyETC=new platon::DbEtc(this->MyDB);
 	MyETC->OpenKey(QString("WidgetAppearance\\QEidosTreeWidget\\"+this->parent()->objectName ()).toStdString(),true,-1);
 	MyETC->WriteInteger("Column_Name_width", this->columnWidth (0));
 	MyETC->WriteInteger("Column_ID_width", this->columnWidth (1));
 	MyETC->WriteInteger("Column_ID_PARENT_width", this->columnWidth (2));
 	MyETC->CloseKey();
-
+	delete MyETC;
 }
