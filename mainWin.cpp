@@ -24,7 +24,7 @@ mainWin::mainWin(QWidget *parent)
                 MyDB = IBPP::DatabaseFactory("vladisgol",
                                                 "platon",
                                                 "sysdba",
-                                                "u+3LS2Tc",
+                                                "5PQHoo+J",
                                                 "",//Role
                                                 "WIN1251",//codepage
                                                 "DEFAULT CHARACTER SET WIN1251");//Доп параметры
@@ -43,6 +43,7 @@ mainWin::mainWin(QWidget *parent)
 		//QObject::connect(EidosTreeWidget, SIGNAL(itemEntered(QTreeWidgetItem*,int)), EidosTreeWidget, SLOT(expandAll()));
 		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
 		SetEidosView(0);
+		//QApplication::restoreOverrideCursor();
 }
 
 void mainWin::SetEidosView(int Row)
