@@ -17,10 +17,10 @@
     <item row="0" column="0" >
      <widget class="QTabWidget" name="tabWidget" >
       <property name="cursor" >
-       <cursorShape>WaitCursor</cursorShape>
+       <cursorShape>ArrowCursor</cursorShape>
       </property>
       <property name="styleSheet" >
-       <string>font: 10pt "Albany AMT";</string>
+       <string notr="true" >font: 10pt "Albany AMT";</string>
       </property>
       <property name="currentIndex" >
        <number>1</number>
@@ -83,7 +83,7 @@
           </property>
           <widget class="QEidosTreeWidget" name="EidosTreeWidget" >
            <property name="styleSheet" >
-            <string>font: 10pt "Arial";</string>
+            <string notr="true" >font: 10pt "Arial";</string>
            </property>
            <column>
             <property name="text" >
@@ -116,7 +116,7 @@
              </font>
             </property>
             <property name="styleSheet" >
-             <string>font: 10pt "Arial";</string>
+             <string notr="true" >font: 10pt "Arial";</string>
             </property>
            </widget>
            <widget class="QTableView" name="tableViewPragma" />
@@ -135,7 +135,7 @@
      <x>0</x>
      <y>0</y>
      <width>874</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu" >
@@ -170,7 +170,8 @@
   </widget>
   <action name="action_quit" >
    <property name="icon" >
-    <iconset>images/exit.png</iconset>
+    <iconset>
+     <normaloff>images/exit.png</normaloff>images/exit.png</iconset>
    </property>
    <property name="text" >
     <string>Выход</string>
@@ -178,7 +179,8 @@
   </action>
   <action name="action_Hronology" >
    <property name="icon" >
-    <iconset>images/Tempor.png</iconset>
+    <iconset>
+     <normaloff>images/Tempor.png</normaloff>images/Tempor.png</iconset>
    </property>
    <property name="text" >
     <string>Показать хронологию</string>
