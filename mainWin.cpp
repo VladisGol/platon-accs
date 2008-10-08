@@ -42,6 +42,7 @@ mainWin::mainWin(QWidget *parent)
 		QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*, int)));
 		//QObject::connect(EidosTreeWidget, SIGNAL(itemEntered(QTreeWidgetItem*,int)), EidosTreeWidget, SLOT(expandAll()));
 		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
+		QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
 		SetEidosView(0);
 		//QApplication::restoreOverrideCursor();
 }
@@ -121,6 +122,16 @@ void mainWin::GoGrid()
 
 void mainWin::Go()
 {
+
+	return ;
+}
+
+void mainWin::EditItem()
+{
+	//QMessageBox::aboutQt(this);
+	HypEditDialog* md=new HypEditDialog(this);
+	md->exec();
+	delete md;
 
 	return ;
 }

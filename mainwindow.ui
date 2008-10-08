@@ -13,6 +13,14 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>57</y>
+     <width>874</width>
+     <height>664</height>
+    </rect>
+   </property>
    <layout class="QGridLayout" >
     <item row="0" column="0" >
      <widget class="QTabWidget" name="tabWidget" >
@@ -32,11 +40,27 @@
        </size>
       </property>
       <widget class="QWidget" name="tab_search" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>840</width>
+         <height>420</height>
+        </rect>
+       </property>
        <attribute name="title" >
         <string>Поиск</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="tab_explore" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>852</width>
+         <height>618</height>
+        </rect>
+       </property>
        <attribute name="title" >
         <string>Объектное представление</string>
        </attribute>
@@ -146,14 +170,32 @@
    </widget>
    <widget class="QMenu" name="menu_2" >
     <property name="title" >
-     <string>Вид</string>
+     <string>Запись</string>
     </property>
+    <addaction name="action_edit" />
    </widget>
    <addaction name="menu" />
    <addaction name="menu_2" />
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>721</y>
+     <width>874</width>
+     <height>23</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QToolBar" name="toolBar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>23</y>
+     <width>874</width>
+     <height>34</height>
+    </rect>
+   </property>
    <property name="windowTitle" >
     <string>toolBar</string>
    </property>
@@ -167,6 +209,7 @@
    <addaction name="action_quit" />
    <addaction name="separator" />
    <addaction name="action_Hronology" />
+   <addaction name="action_edit" />
   </widget>
   <action name="action_quit" >
    <property name="icon" >
@@ -184,6 +227,11 @@
    </property>
    <property name="text" >
     <string>Показать хронологию</string>
+   </property>
+  </action>
+  <action name="action_edit" >
+   <property name="text" >
+    <string>Редактировать</string>
    </property>
   </action>
  </widget>
