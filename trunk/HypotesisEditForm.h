@@ -5,13 +5,13 @@
 #include <QtGui>
 
 
-class HypEditDialog  :public QDialog, public Ui_Dialog
+class HypotesisEditForm  :public QDialog, public Ui_HypotesisEditForm
 {
     Q_OBJECT
 
 public:
-    HypEditDialog(QWidget * parent = 0): QDialog(parent){};
-
+	HypotesisEditForm(QWidget * parent = 0);
+    long id_hypotesys;
 
 };
 

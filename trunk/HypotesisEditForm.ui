@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>Dialog</class>
- <widget class="QDialog" name="Dialog" >
+ <class>HypotesisEditForm</class>
+ <widget class="QDialog" name="HypotesisEditForm" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -24,6 +24,9 @@
      </item>
      <item row="1" column="0" >
       <widget class="QScrollArea" name="scrollArea" >
+       <property name="accessibleName" >
+        <string>SA</string>
+       </property>
        <property name="widgetResizable" >
         <bool>true</bool>
        </property>
