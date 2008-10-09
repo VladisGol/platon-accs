@@ -129,7 +129,7 @@ void mainWin::Go()
 void mainWin::EditItem()
 {
 	//QMessageBox::aboutQt(this);
-	HypotesisEditForm* md=new HypotesisEditForm(this);
+	HypotesisEditForm* md=new HypotesisEditForm();
 
 	md->exec();
 	delete md;
