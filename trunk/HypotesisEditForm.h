@@ -3,6 +3,7 @@
 
 #include "ui_HypotesisEditForm.h"
 #include <QtGui>
+#include "EAOneFrame.h"
 
 
 class HypotesisEditForm  :public QDialog, public Ui_HypotesisEditForm
