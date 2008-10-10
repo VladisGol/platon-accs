@@ -12,8 +12,11 @@
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QToolButton>
+#include <QtGui/QLineEdit>
+#include "EssentialClass.h"
 
-
+namespace platon
+{
 class EA_OneFrame :public QFrame
 {
 public:
@@ -22,11 +25,16 @@ public:
     QLabel *label;
     QFrame *frame;
     QToolButton *toolButton;
+    QWidget* EditableWidget;
+    AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
 
-    EA_OneFrame(QWidget *parent);
+    EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA);
     ~EA_OneFrame();
+protected:
+    void fillVisibleWidget();	//Заполнение значением
+    QVariant KeepValue;
 
 };
-
+}
 
 #endif

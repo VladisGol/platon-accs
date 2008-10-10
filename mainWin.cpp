@@ -129,7 +129,7 @@ void mainWin::Go()
 void mainWin::EditItem()
 {
 	//QMessageBox::aboutQt(this);
-	HypotesisEditForm* md=new HypotesisEditForm();
+	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB);
 
 	md->exec();
 	delete md;
