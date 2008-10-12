@@ -13,14 +13,33 @@
 #include <QtGui/QLabel>
 #include <QtGui/QToolButton>
 #include <QtGui/QLineEdit>
+#include <QtGui/QDateTimeEdit>
+#include <QtGui/QCheckBox>
+#include <QtGui/QComboBox>
+#include <QtGui/QSpinBox>
+#include <QtGui/QDoubleSpinBox>
+#include <QtGui/QMessageBox>
 #include "EssentialClass.h"
 
 namespace platon
 {
+QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal);
+IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal);
+
 class EA_OneFrame :public QFrame
 {
 public:
-    QGridLayout *gridLayout;
+
+    EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA);
+    void Save();
+    ~EA_OneFrame();
+public slots:
+	void CallDllRoutine();
+protected:
+    void fillVisibleWidget();	//Заполнение значением
+    QVariant KeepValue;
+
+    QHBoxLayout *topLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QFrame *frame;
@@ -28,14 +47,12 @@ public:
     QWidget* EditableWidget;
     QGridLayout* gridLayoutInFrame;
     AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
-
-    EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA);
-    ~EA_OneFrame();
-protected:
-    void fillVisibleWidget();	//Заполнение значением
-    QVariant KeepValue;
+    //QAction DllCalling;
 
 };
 }
+
+
+
 
 #endif
