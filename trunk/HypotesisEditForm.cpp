@@ -2,26 +2,29 @@
 
 namespace platon
 {
-HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB): QDialog(parent)
+HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys): QDialog(parent)
 {
 	setupUi(this);
-	//6819
+
 	this->DB=InDB;
 	long EidosID,HypotesysID;
-	Hypotesis::GetEidosHypotesisIDS(DB, 6819,EidosID,HypotesysID);
-
-	LocalEidos= new Eidos(DB, EidosID);
-	LocalHypotesis=new Hypotesis(LocalEidos,6819);
-
-	for(unsigned int i =0;i<LocalHypotesis->Attributes.size();i++)
+	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
+	if(ID_Hypotesys==HypotesysID)	//Проверяем найдены ли среди гипотез заданная в параметре
 	{
-        AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];
-		if(tmpAttrib->EA->type!=platon::ft_Security && tmpAttrib->EA->Visible)
+		LocalEidos= new Eidos(DB, EidosID);
+		LocalHypotesis=new Hypotesis(LocalEidos,HypotesysID);
+
+		for(unsigned int i =0;i<LocalHypotesis->Attributes.size();i++)
 		{
-			EA_OneFrame* my =new EA_OneFrame(this,tmpAttrib);
-			my->setObjectName("Frame"+QString::number(i));
-			verticalLayout->addWidget(my);
+			AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];
+			if(tmpAttrib->EA->type!=platon::ft_Security && tmpAttrib->EA->Visible)
+			{
+				EA_OneFrame* my =new EA_OneFrame(this,tmpAttrib);
+				my->setObjectName("Frame"+QString::number(i));
+				verticalLayout->addWidget(my);
+			}
 		}
 	}
+	else throw "Объект на который указывает идентификатор из параметра не существует";
 }
 }

@@ -14,7 +14,7 @@ class HypotesisEditForm  :public QDialog, public Ui_HypotesisEditForm
     Q_OBJECT
 
 public:
-	HypotesisEditForm(QWidget * parent, IBPP::Database InDB);
+	HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys);
     long id_hypotesys;
 protected:
     IBPP::Database DB;

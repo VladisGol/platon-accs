@@ -26,6 +26,7 @@ public:
     QFrame *frame;
     QToolButton *toolButton;
     QWidget* EditableWidget;
+    QGridLayout* gridLayoutInFrame;
     AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
 
     EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA);

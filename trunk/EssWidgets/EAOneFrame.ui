@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>847</width>
-    <height>48</height>
+    <width>862</width>
+    <height>68</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -30,12 +30,42 @@
      </item>
      <item>
       <widget class="QFrame" name="frame" >
+       <property name="sizePolicy" >
+        <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="font" >
+        <font>
+         <kerning>false</kerning>
+        </font>
+       </property>
        <property name="frameShape" >
-        <enum>QFrame::StyledPanel</enum>
+        <enum>QFrame::NoFrame</enum>
        </property>
        <property name="frameShadow" >
-        <enum>QFrame::Raised</enum>
+        <enum>QFrame::Plain</enum>
        </property>
+       <property name="lineWidth" >
+        <number>0</number>
+       </property>
+       <property name="midLineWidth" >
+        <number>0</number>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_2" >
+        <item row="0" column="0" >
+         <layout class="QVBoxLayout" name="verticalLayout" >
+          <item>
+           <widget class="QDateTimeEdit" name="dateTimeEdit" >
+            <property name="calendarPopup" >
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
