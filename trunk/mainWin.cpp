@@ -129,7 +129,8 @@ void mainWin::Go()
 void mainWin::EditItem()
 {
 	//QMessageBox::aboutQt(this);
-	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,6819);
+	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->currentIndex())).toInt();
+	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
 
 	md->exec();
 	delete md;

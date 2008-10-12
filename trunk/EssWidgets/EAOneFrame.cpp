@@ -6,15 +6,16 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
 	:QFrame(parent)
 {
     if (this->objectName().isEmpty())
-    	this->setObjectName(QString::fromUtf8("EA_OneFrame"));
-    this->resize(847, 48);
+    	this->setObjectName("EA_OneFrame");
     this->setFrameShape(QFrame::StyledPanel);
     this->setFrameShadow(QFrame::Plain);
-    this->setContentsMargins(0,0,0,1);
-    gridLayout = new QGridLayout(this);
-    gridLayout->setObjectName("gridLayout");
+    this->setContentsMargins(0,0,0,5);
+    topLayout = new QHBoxLayout(this);// new QGridLayout(this);
+    topLayout->setObjectName("gridLayout");
+    topLayout->setContentsMargins(0,0,0,0);
     horizontalLayout = new QHBoxLayout();
     horizontalLayout->setObjectName("horizontalLayout");
+    horizontalLayout->setContentsMargins(0,0,0,0);
     label = new QLabel(this);
     label->setObjectName("label");
 
@@ -26,15 +27,15 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
     frame->setFrameShadow(QFrame::Plain);
     frame->setContentsMargins(0,0,0,0);
     gridLayoutInFrame = new QGridLayout(frame);
+    gridLayoutInFrame->setContentsMargins(0,0,0,0);
     gridLayoutInFrame->setObjectName("gridLayoutInFrame");
 
     horizontalLayout->addWidget(frame);
 
-    toolButton = new QToolButton(this);
-    toolButton->setObjectName("toolButton");
+    topLayout->addLayout(horizontalLayout);//, 0, 0, 1, 1);
 
-    horizontalLayout->addWidget(toolButton);
-    gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
+    //DllCalling=new QAction(this);
+    //QObject::connect(DllCalling, SIGNAL(activated()), this, SLOT(CallDllRoutine())));
 
     //Разбираемся с типом экстраатрибута
     this->EAA=InEAA;
@@ -43,11 +44,11 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
 
 EA_OneFrame::~EA_OneFrame()
 {
-	delete gridLayout;
+	delete topLayout;
 	delete horizontalLayout;
 	delete label;
 	delete frame;
-	delete toolButton;
+	delete EditableWidget;
 }
 
 void EA_OneFrame::fillVisibleWidget()
@@ -66,37 +67,72 @@ void EA_OneFrame::fillVisibleWidget()
 		}
 		case platon::ft_Integer:
 		{
+			EditableWidget=new QSpinBox(frame);
+			gridLayoutInFrame->addWidget(EditableWidget);
+			((QSpinBox*)EditableWidget)->setMinimum(-65536/2);
+			((QSpinBox*)EditableWidget)->setMaximum(65536/2);
+
+ 			((QSpinBox*)EditableWidget)->setValue(EAA->GetIntValue());
+			KeepValue=((QSpinBox*)EditableWidget)->value();
 			break;
+
 		}
 		case platon::ft_Boolean:
 		{
+			EditableWidget=new QCheckBox(frame);
+			gridLayoutInFrame->addWidget(EditableWidget);
+
+ 			((QCheckBox*)EditableWidget)->setChecked(EAA->GetBoolValue());
+			KeepValue=((QCheckBox*)EditableWidget)->checkState();
 			break;
+
 		}
 		case platon::ft_Float:
 		{
+			EditableWidget=new QDoubleSpinBox(frame);
+			gridLayoutInFrame->addWidget(EditableWidget);
+
+ 			((QDoubleSpinBox*)EditableWidget)->setValue(EAA->GetFloatValue());
+			KeepValue=((QDoubleSpinBox*)EditableWidget)->value();
 			break;
 		}
 		case platon::ft_DateTime:
 		{
-			/*
-			IBPP::Timestamp MyTs;
-			MyIterator->LocalST->Get("MEANING",MyTs);
-			Key=MyIterator->GetID();
 
-			QString year=QString::number(MyTs.Year());
-			QString month=QString("0"+QString::number(MyTs.Month())).right(2);
-			QString day=QString("0"+QString::number(MyTs.Day())).right(2);
-			QDateTime LocAlValue=QDateTime::fromString(year+month+day,"yyyyMMdd");
-			LocAlValue.addSecs(MyTs.Hours()*3600+MyTs.Minutes()*60+MyTs.Seconds());
+			EditableWidget=new QDateTimeEdit(frame);
+			((QDateTimeEdit*)EditableWidget)->setDisplayFormat("dd.MM.yyyy H:mm");
+			((QDateTimeEdit*)EditableWidget)->setCalendarPopup(true);
+			gridLayoutInFrame->addWidget(EditableWidget);
 
-			OneValue=LocAlValue;*/
+ 			((QDateTimeEdit*)EditableWidget)->setDateTime(IBPPTimestamp2QDateTime(EAA->GetDateTimeValue()));
+			KeepValue=((QDateTimeEdit*)EditableWidget)->dateTime();
 			break;
 		}
 		case platon::ft_RB:
 		case platon::ft_DLL:
+			toolButton = new QToolButton(this);
+		    toolButton->setObjectName("toolButton");
+		    horizontalLayout->addWidget(toolButton);
+			EditableWidget=new QLineEdit(frame);
+			gridLayoutInFrame->addWidget(EditableWidget);
+
+ 			((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
+			KeepValue=((QLineEdit*)EditableWidget)->text();
+			//toolButton->addAction(DllCalling);
+
+		    break;
 		case platon::ft_LinkHypotesis:
 		case platon::ft_LinkPragma:
 		{
+			EditableWidget=new QLineEdit(frame);
+			gridLayoutInFrame->addWidget(EditableWidget);
+
+ 			((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
+			KeepValue=((QLineEdit*)EditableWidget)->text();
+
+			toolButton = new QToolButton(this);
+		    toolButton->setObjectName("toolButton");
+		    horizontalLayout->addWidget(toolButton);
 
 			break;
 		}
@@ -107,116 +143,86 @@ void EA_OneFrame::fillVisibleWidget()
 
 }
 
-/*
-
-#ifndef EAONEFRAMELH4050_H
-#define EAONEFRAMELH4050_H
-
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QDateTimeEdit>
-#include <QtGui/QFrame>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QLabel>
-#include <QtGui/QToolButton>
-#include <QtGui/QVBoxLayout>
-
-QT_BEGIN_NAMESPACE
-
-class Ui_Form
+void EA_OneFrame::Save()
 {
-public:
-    QGridLayout *gridLayout;
-    QHBoxLayout *horizontalLayout;
-    QLabel *label;
-    QFrame *frame;
-    QGridLayout *gridLayout_2;
-    QVBoxLayout *verticalLayout;
-    QDateTimeEdit *dateTimeEdit;
-    QToolButton *toolButton;
+	//Процедура записывает измененное значение фрейма
+	switch(EAA->EA->type)
+	{
+		case platon::ft_String:
+		{
+			if (KeepValue!=((QLineEdit*)EditableWidget)->text())
+				EAA->SetStringValue(((QLineEdit*)EditableWidget)->text().toStdString());
+			break;
+		}
+		case platon::ft_Integer:
+		{
+			if(KeepValue!=((QSpinBox*)EditableWidget)->value())
+				EAA->SetIntValue(((QSpinBox*)EditableWidget)->value());
+			break;
 
-    void setupUi(QFrame *Form)
-    {
-    if (Form->objectName().isEmpty())
-        Form->setObjectName(QString::fromUtf8("Form"));
-    Form->resize(862, 68);
-    Form->setFrameShape(QFrame::StyledPanel);
-    Form->setFrameShadow(QFrame::Raised);
-    gridLayout = new QGridLayout(Form);
-    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-    horizontalLayout = new QHBoxLayout();
-    horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
-    label = new QLabel(Form);
-    label->setObjectName(QString::fromUtf8("label"));
+		}
+		case platon::ft_Boolean:
+		{
+			if(KeepValue!=((QCheckBox*)EditableWidget)->checkState())
+				EAA->SetBoolValue(((QCheckBox*)EditableWidget)->checkState());
+			break;
 
-    horizontalLayout->addWidget(label);
+		}
+		case platon::ft_Float:
+		{
+			if(KeepValue!=((QDoubleSpinBox*)EditableWidget)->value())
+				EAA->SetFloatValue(((QDoubleSpinBox*)EditableWidget)->value());
+			break;
+		}
+		case platon::ft_DateTime:
+		{
+			if(KeepValue!=((QDateTimeEdit*)EditableWidget)->dateTime())
+				EAA->SetDateTimeValue(QDateTime2IBPPTimestamp(((QDateTimeEdit*)EditableWidget)->dateTime()));
+			break;
+		}
+		case platon::ft_RB:
+		case platon::ft_DLL:
+		case platon::ft_LinkHypotesis:
+		case platon::ft_LinkPragma:
+		{
+			if(KeepValue!=((QLineEdit*)EditableWidget)->text())
+				;
+			break;
+		}
+		default:
+			throw("Указанный тип данных не поддерживается");
 
-    frame = new QFrame(Form);
-    frame->setObjectName(QString::fromUtf8("frame"));
-    QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
-    frame->setSizePolicy(sizePolicy);
-    QFont font;
-    font.setKerning(false);
-    frame->setFont(font);
-    frame->setFrameShape(QFrame::NoFrame);
-    frame->setFrameShadow(QFrame::Plain);
-    frame->setLineWidth(0);
-    frame->setMidLineWidth(0);
-    gridLayout_2 = new QGridLayout(frame);
-    gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
-    verticalLayout = new QVBoxLayout();
-    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-    dateTimeEdit = new QDateTimeEdit(frame);
-    dateTimeEdit->setObjectName(QString::fromUtf8("dateTimeEdit"));
-    dateTimeEdit->setCalendarPopup(true);
+	}
 
-    verticalLayout->addWidget(dateTimeEdit);
+}
+void EA_OneFrame::CallDllRoutine()
+{
+	//Функция вызывает процедуру из динамической библиотеки
+	QMessageBox::information(this,"Imitation","Called procedure");
+}
 
+QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal)
+{
+//Функция переводит дату время из формата IBPP::Timestamp в формат QDateTime
+	QString year=QString::number(InVal.Year());
+	QString month=QString("0"+QString::number(InVal.Month())).right(2);
+	QString day=QString("0"+QString::number(InVal.Day())).right(2);
+	QDateTime LocAlValue=QDateTime::fromString(year+month+day,"yyyyMMdd");
+	LocAlValue.addSecs(InVal.Hours()*3600+InVal.Minutes()*60+InVal.Seconds());
+	return LocAlValue;
+}
 
-    gridLayout_2->addLayout(verticalLayout, 0, 0, 1, 1);
+IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal)
+{
+//Функция переводит дату время из формата QDateTime в формат IBPP::Timestamp
 
-
-    horizontalLayout->addWidget(frame);
-
-    toolButton = new QToolButton(Form);
-    toolButton->setObjectName(QString::fromUtf8("toolButton"));
-
-    horizontalLayout->addWidget(toolButton);
-
-
-    gridLayout->addLayout(horizontalLayout, 0, 0, 1, 1);
-
-
-    retranslateUi(Form);
-
-    QMetaObject::connectSlotsByName(Form);
-    } // setupUi
-
-    void retranslateUi(QFrame *Form)
-    {
-    Form->setWindowTitle(QApplication::translate("Form", "Form", 0, QApplication::UnicodeUTF8));
-    label->setText(QApplication::translate("Form", "TextLabel", 0, QApplication::UnicodeUTF8));
-    toolButton->setText(QApplication::translate("Form", "...", 0, QApplication::UnicodeUTF8));
-    Q_UNUSED(Form);
-    } // retranslateUi
-
-};
-
-namespace Ui {
-    class Form: public Ui_Form {};
-} // namespace Ui
-
-QT_END_NAMESPACE
-
-#endif // EAONEFRAMELH4050_H
-
- */
-
-
+	int y, mo, d, h, mi, s;
+	y=QString(InVal.toString("yyyy")).toInt();
+	mo=QString(InVal.toString("MM")).toInt();
+	d=QString(InVal.toString("dd")).toInt();
+	h=QString(InVal.toString("hh")).toInt();
+	mi=QString(InVal.toString("mm")).toInt();
+	s=QString(InVal.toString("ss")).toInt();
+	return IBPP::Timestamp(y, mo, d, h, mi, s);
+}
 }
