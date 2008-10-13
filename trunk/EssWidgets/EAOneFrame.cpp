@@ -44,11 +44,12 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
 
 EA_OneFrame::~EA_OneFrame()
 {
-	delete topLayout;
+	/*delete topLayout;
 	delete horizontalLayout;
 	delete label;
 	delete frame;
-	delete EditableWidget;
+	delete EditableWidget;*/
+	;
 }
 
 void EA_OneFrame::fillVisibleWidget()
@@ -102,6 +103,7 @@ void EA_OneFrame::fillVisibleWidget()
 			EditableWidget=new QDateTimeEdit(frame);
 			((QDateTimeEdit*)EditableWidget)->setDisplayFormat("dd.MM.yyyy H:mm");
 			((QDateTimeEdit*)EditableWidget)->setCalendarPopup(true);
+			((QDateEdit*)EditableWidget)->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
 			gridLayoutInFrame->addWidget(EditableWidget);
 
  			((QDateTimeEdit*)EditableWidget)->setDateTime(IBPPTimestamp2QDateTime(EAA->GetDateTimeValue()));
