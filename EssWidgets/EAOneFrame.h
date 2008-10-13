@@ -19,6 +19,7 @@
 #include <QtGui/QSpinBox>
 #include <QtGui/QDoubleSpinBox>
 #include <QtGui/QMessageBox>
+#include <QtGui/QCalendarWidget>
 #include "EssentialClass.h"
 
 namespace platon
