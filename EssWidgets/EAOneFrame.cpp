@@ -15,10 +15,9 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
     topLayout->setContentsMargins(0,0,0,0);
     horizontalLayout = new QHBoxLayout();
     horizontalLayout->setObjectName("horizontalLayout");
-    horizontalLayout->setContentsMargins(0,0,0,0);
+    horizontalLayout->setContentsMargins(5,0,0,0);
     label = new QLabel(this);
     label->setObjectName("label");
-
     horizontalLayout->addWidget(label);
 
     frame = new QFrame(this);
