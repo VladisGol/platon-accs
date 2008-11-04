@@ -14,7 +14,7 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long
 		LocalEidos= new Eidos(DB, EidosID);
 		LocalHypotesis=new Hypotesis(LocalEidos,HypotesysID);
 
-		for(unsigned int i =0;i<LocalHypotesis->Attributes.size();i++)
+		for(int i =LocalHypotesis->Attributes.size()-1;i>=0;i--)
 		{
 			AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];
 			if(tmpAttrib->EA->type!=platon::ft_Security && tmpAttrib->EA->Visible)

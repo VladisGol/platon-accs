@@ -128,8 +128,8 @@ void mainWin::Go()
 
 void mainWin::EditItem()
 {
-	//QMessageBox::aboutQt(this);
-	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->currentIndex())).toInt();
+	int myrow=tableViewHypotesis->currentIndex().row();
+	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
 
 	md->exec();
