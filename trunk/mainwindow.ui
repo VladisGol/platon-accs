@@ -13,14 +13,6 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>57</y>
-     <width>874</width>
-     <height>664</height>
-    </rect>
-   </property>
    <layout class="QGridLayout" >
     <item row="0" column="0" >
      <widget class="QTabWidget" name="tabWidget" >
@@ -31,7 +23,7 @@
        <string notr="true" >font: 10pt "Albany AMT";</string>
       </property>
       <property name="currentIndex" >
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="iconSize" >
        <size>
@@ -40,27 +32,11 @@
        </size>
       </property>
       <widget class="QWidget" name="tab_search" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>840</width>
-         <height>420</height>
-        </rect>
-       </property>
        <attribute name="title" >
         <string>Поиск</string>
        </attribute>
       </widget>
       <widget class="QWidget" name="tab_explore" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>852</width>
-         <height>618</height>
-        </rect>
-       </property>
        <attribute name="title" >
         <string>Объектное представление</string>
        </attribute>
@@ -159,7 +135,7 @@
      <x>0</x>
      <y>0</y>
      <width>874</width>
-     <height>23</height>
+     <height>28</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu" >
@@ -177,25 +153,8 @@
    <addaction name="menu" />
    <addaction name="menu_2" />
   </widget>
-  <widget class="QStatusBar" name="statusbar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>721</y>
-     <width>874</width>
-     <height>23</height>
-    </rect>
-   </property>
-  </widget>
+  <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="toolBar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>23</y>
-     <width>874</width>
-     <height>34</height>
-    </rect>
-   </property>
    <property name="windowTitle" >
     <string>toolBar</string>
    </property>
@@ -223,13 +182,17 @@
   <action name="action_Hronology" >
    <property name="icon" >
     <iconset>
-     <normaloff>images/Tempor.png</normaloff>images/Tempor.png</iconset>
+     <normaloff>images/clock.png</normaloff>images/clock.png</iconset>
    </property>
    <property name="text" >
     <string>Показать хронологию</string>
    </property>
   </action>
   <action name="action_edit" >
+   <property name="icon" >
+    <iconset>
+     <normaloff>images/edit.png</normaloff>images/edit.png</iconset>
+   </property>
    <property name="text" >
     <string>Редактировать</string>
    </property>
