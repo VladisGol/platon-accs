@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'EAOneFrame.ui'
 **
-** Created: Fri Oct 10 22:40:10 2008
-**      by: Qt User Interface Compiler version 4.4.0
+** Created: Wed Nov 5 21:47:04 2008
+**      by: Qt User Interface Compiler version 4.4.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -14,11 +14,13 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
+#include <QtGui/QDateTimeEdit>
 #include <QtGui/QFrame>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHBoxLayout>
 #include <QtGui/QLabel>
 #include <QtGui/QToolButton>
+#include <QtGui/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 
@@ -29,13 +31,16 @@ public:
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QFrame *frame;
+    QGridLayout *gridLayout_2;
+    QVBoxLayout *verticalLayout;
+    QDateTimeEdit *dateTimeEdit;
     QToolButton *toolButton;
 
     void setupUi(QFrame *Form)
     {
     if (Form->objectName().isEmpty())
         Form->setObjectName(QString::fromUtf8("Form"));
-    Form->resize(847, 48);
+    Form->resize(862, 68);
     Form->setFrameShape(QFrame::StyledPanel);
     Form->setFrameShadow(QFrame::Raised);
     gridLayout = new QGridLayout(Form);
@@ -49,8 +54,31 @@ public:
 
     frame = new QFrame(Form);
     frame->setObjectName(QString::fromUtf8("frame"));
-    frame->setFrameShape(QFrame::StyledPanel);
-    frame->setFrameShadow(QFrame::Raised);
+    QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(frame->sizePolicy().hasHeightForWidth());
+    frame->setSizePolicy(sizePolicy);
+    QFont font;
+    font.setKerning(false);
+    frame->setFont(font);
+    frame->setFrameShape(QFrame::NoFrame);
+    frame->setFrameShadow(QFrame::Plain);
+    frame->setLineWidth(0);
+    frame->setMidLineWidth(0);
+    gridLayout_2 = new QGridLayout(frame);
+    gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
+    verticalLayout = new QVBoxLayout();
+    verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+    dateTimeEdit = new QDateTimeEdit(frame);
+    dateTimeEdit->setObjectName(QString::fromUtf8("dateTimeEdit"));
+    dateTimeEdit->setCalendarPopup(true);
+
+    verticalLayout->addWidget(dateTimeEdit);
+
+
+    gridLayout_2->addLayout(verticalLayout, 0, 0, 1, 1);
+
 
     horizontalLayout->addWidget(frame);
 

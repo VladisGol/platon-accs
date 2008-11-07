@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading ui file 'mainwindow.ui'
 **
-** Created: Fri Oct 10 22:40:10 2008
-**      by: Qt User Interface Compiler version 4.4.0
+** Created: Wed Nov 5 21:47:04 2008
+**      by: Qt User Interface Compiler version 4.4.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling ui file!
 ********************************************************************************/
@@ -66,13 +66,15 @@ public:
     action_Hronology = new QAction(MainWindow);
     action_Hronology->setObjectName(QString::fromUtf8("action_Hronology"));
     QIcon icon1;
-    icon1.addPixmap(QPixmap(QString::fromUtf8("images/Tempor.png")), QIcon::Normal, QIcon::Off);
+    icon1.addPixmap(QPixmap(QString::fromUtf8("images/clock.png")), QIcon::Normal, QIcon::Off);
     action_Hronology->setIcon(icon1);
     action_edit = new QAction(MainWindow);
     action_edit->setObjectName(QString::fromUtf8("action_edit"));
+    QIcon icon2;
+    icon2.addPixmap(QPixmap(QString::fromUtf8("images/edit.png")), QIcon::Normal, QIcon::Off);
+    action_edit->setIcon(icon2);
     centralwidget = new QWidget(MainWindow);
     centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-    centralwidget->setGeometry(QRect(0, 57, 874, 664));
     gridLayout = new QGridLayout(centralwidget);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
     tabWidget = new QTabWidget(centralwidget);
@@ -82,11 +84,9 @@ public:
     tabWidget->setIconSize(QSize(24, 24));
     tab_search = new QWidget();
     tab_search->setObjectName(QString::fromUtf8("tab_search"));
-    tab_search->setGeometry(QRect(0, 0, 840, 420));
     tabWidget->addTab(tab_search, QString());
     tab_explore = new QWidget();
     tab_explore->setObjectName(QString::fromUtf8("tab_explore"));
-    tab_explore->setGeometry(QRect(0, 0, 852, 618));
     gridLayout1 = new QGridLayout(tab_explore);
     gridLayout1->setObjectName(QString::fromUtf8("gridLayout1"));
     comboBox_Species = new QComboBox(tab_explore);
@@ -130,7 +130,7 @@ public:
     MainWindow->setCentralWidget(centralwidget);
     menubar = new QMenuBar(MainWindow);
     menubar->setObjectName(QString::fromUtf8("menubar"));
-    menubar->setGeometry(QRect(0, 0, 874, 23));
+    menubar->setGeometry(QRect(0, 0, 874, 28));
     menu = new QMenu(menubar);
     menu->setObjectName(QString::fromUtf8("menu"));
     menu_2 = new QMenu(menubar);
@@ -138,11 +138,9 @@ public:
     MainWindow->setMenuBar(menubar);
     statusbar = new QStatusBar(MainWindow);
     statusbar->setObjectName(QString::fromUtf8("statusbar"));
-    statusbar->setGeometry(QRect(0, 721, 874, 23));
     MainWindow->setStatusBar(statusbar);
     toolBar = new QToolBar(MainWindow);
     toolBar->setObjectName(QString::fromUtf8("toolBar"));
-    toolBar->setGeometry(QRect(0, 23, 874, 34));
     MainWindow->addToolBar(Qt::TopToolBarArea, toolBar);
 
     menubar->addAction(menu->menuAction());
@@ -158,7 +156,7 @@ public:
     retranslateUi(MainWindow);
     QObject::connect(action_quit, SIGNAL(activated()), MainWindow, SLOT(close()));
 
-    tabWidget->setCurrentIndex(1);
+    tabWidget->setCurrentIndex(0);
 
 
     QMetaObject::connectSlotsByName(MainWindow);
@@ -171,6 +169,7 @@ public:
     action_Hronology->setText(QApplication::translate("MainWindow", "\320\237\320\276\320\272\320\260\320\267\320\260\321\202\321\214 \321\205\321\200\320\276\320\275\320\276\320\273\320\276\320\263\320\270\321\216", 0, QApplication::UnicodeUTF8));
     action_edit->setText(QApplication::translate("MainWindow", "\320\240\320\265\320\264\320\260\320\272\321\202\320\270\321\200\320\276\320\262\320\260\321\202\321\214", 0, QApplication::UnicodeUTF8));
     tabWidget->setTabText(tabWidget->indexOf(tab_search), QApplication::translate("MainWindow", "\320\237\320\276\320\270\321\201\320\272", 0, QApplication::UnicodeUTF8));
+    comboBox_Species->clear();
     comboBox_Species->insertItems(0, QStringList()
      << QApplication::translate("MainWindow", "\320\222\321\201\320\265", 0, QApplication::UnicodeUTF8)
      << QApplication::translate("MainWindow", "\320\236\320\261\321\212\320\265\320\272\321\202\321\213", 0, QApplication::UnicodeUTF8)
