@@ -132,8 +132,7 @@ void mainWin::EditItem()
 	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
 
-	md->exec();
-	delete md;
+	md->show();
 
 	return ;
 }
