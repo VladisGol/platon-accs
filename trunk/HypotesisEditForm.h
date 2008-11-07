@@ -9,7 +9,7 @@
 
 namespace platon
 {
-class HypotesisEditForm  :public QDialog, public Ui_HypotesisEditForm
+class HypotesisEditForm  :public QMainWindow, public Ui_HypotesisWindow
 {
     Q_OBJECT
 

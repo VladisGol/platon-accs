@@ -2,7 +2,7 @@
 
 namespace platon
 {
-HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys): QDialog(parent)
+HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys): QMainWindow(parent)
 {
 	setupUi(this);
 
