@@ -21,6 +21,10 @@ protected:
     Eidos* LocalEidos;
     Hypotesis*LocalHypotesis;
 
+private slots:
+	void ExitWithSave();
+	void ExitByCancel();
+
 };
 }
 
