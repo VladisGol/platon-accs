@@ -23,7 +23,7 @@
        <string notr="true" >font: 10pt "Albany AMT";</string>
       </property>
       <property name="currentIndex" >
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="iconSize" >
        <size>
@@ -63,10 +63,18 @@
            <property name="text" >
             <string>Действия</string>
            </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>images/ruota_dentata_2_architet_01.png</normaloff>images/ruota_dentata_2_architet_01.png</iconset>
+           </property>
           </item>
           <item>
            <property name="text" >
             <string>Ресурсы</string>
+           </property>
+           <property name="icon" >
+            <iconset>
+             <normaloff>images/diamond_juliane_krug_01.png</normaloff>images/diamond_juliane_krug_01.png</iconset>
            </property>
           </item>
           <item>
@@ -149,6 +157,8 @@
      <string>Запись</string>
     </property>
     <addaction name="action_edit" />
+    <addaction name="action_add" />
+    <addaction name="action_del" />
    </widget>
    <addaction name="menu" />
    <addaction name="menu_2" />
@@ -167,8 +177,9 @@
    <addaction name="separator" />
    <addaction name="action_quit" />
    <addaction name="separator" />
-   <addaction name="action_Hronology" />
    <addaction name="action_edit" />
+   <addaction name="action_add" />
+   <addaction name="action_del" />
   </widget>
   <action name="action_quit" >
    <property name="icon" >
@@ -179,15 +190,6 @@
     <string>Выход</string>
    </property>
   </action>
-  <action name="action_Hronology" >
-   <property name="icon" >
-    <iconset>
-     <normaloff>images/clock.png</normaloff>images/clock.png</iconset>
-   </property>
-   <property name="text" >
-    <string>Показать хронологию</string>
-   </property>
-  </action>
   <action name="action_edit" >
    <property name="icon" >
     <iconset>
@@ -195,6 +197,24 @@
    </property>
    <property name="text" >
     <string>Редактировать</string>
+   </property>
+  </action>
+  <action name="action_add" >
+   <property name="icon" >
+    <iconset>
+     <normaloff>images/edit_add.png</normaloff>images/edit_add.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Добавить</string>
+   </property>
+  </action>
+  <action name="action_del" >
+   <property name="icon" >
+    <iconset>
+     <normaloff>images/trashcan_full.png</normaloff>images/trashcan_full.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Удалить</string>
    </property>
   </action>
  </widget>
