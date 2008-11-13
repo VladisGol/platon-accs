@@ -15,14 +15,14 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long
 		LocalHypotesis=new Hypotesis(LocalEidos,HypotesysID);
 		LocalHypotesis->Autocommited=false;	//Сами управляем подтверждением транзакции
 
-		for(int i =LocalHypotesis->Attributes.size()-1;i>=0;i--)
+		for(unsigned int i =0; i<LocalHypotesis->Attributes.size();i++)
 		{
 			AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];
 			if(tmpAttrib->EA->type!=platon::ft_Security && tmpAttrib->EA->Visible)
 			{
 				EA_OneFrame* my =new EA_OneFrame(this,tmpAttrib);
 				my->setObjectName("EA_Frame"+QString::number(i));
-				verticalLayout->addWidget(my);
+				verticalLayout->insertWidget(0,my); //Заносим в форму фреймы с нулевого индекса, чтобы последние были вверху
 			}
 		}
 	}
