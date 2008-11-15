@@ -20,6 +20,7 @@
 #include <QtGui/QDoubleSpinBox>
 #include <QtGui/QMessageBox>
 #include <QtGui/QCalendarWidget>
+#include <QtGui/QIcon>
 #include "EssentialClass.h"
 
 namespace platon
@@ -44,7 +45,9 @@ protected:
     QHBoxLayout *horizontalLayout;
     QLabel *label;
     QFrame *frame;
-    QToolButton *toolButton;
+    QToolButton *LNKButton;
+    QToolButton* HronologyButton;
+    QToolButton* DLLButton;
     QWidget* EditableWidget;
     QGridLayout* gridLayoutInFrame;
     AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
