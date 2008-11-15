@@ -36,16 +36,62 @@ mainWin::mainWin(QWidget *parent)
 		LocalEidos=NULL;
 		LocalHypotesis=NULL;
 
+		QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
 		QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+
+		QObject::connect(tableViewHypotesis, SIGNAL(pressed(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+		//QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-		QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem*, int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*, int)));
-		//QObject::connect(EidosTreeWidget, SIGNAL(itemEntered(QTreeWidgetItem*,int)), EidosTreeWidget, SLOT(expandAll()));
+
+
 		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
 		QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
 		SetEidosView(0);
+
+		this->EidosTreeWidget->installEventFilter(this);
+		this->tableViewHypotesis->installEventFilter(this);
+		this->tableViewPragma->installEventFilter(this);
+		CurrentObjectLevel=0;
+
 		//QApplication::restoreOverrideCursor();
 }
+
+bool mainWin::eventFilter(QObject *obj, QEvent *event)
+{
+	if (obj == EidosTreeWidget)
+	{
+		if(event->type()==QEvent::FocusIn)
+		{
+			this->action_add->setEnabled(false);
+			this->action_del->setEnabled(false);
+			this->action_edit->setEnabled(false);
+		}
+	}
+	if (obj == tableViewHypotesis)
+	{
+		if(event->type()==QEvent::FocusIn)
+		{
+			this->action_add->setEnabled(true);
+			this->action_del->setEnabled(true);
+			this->action_edit->setEnabled(true);
+			CurrentObjectLevel=Level_Hypotesis;
+		}
+	}
+	if (obj == tableViewPragma)
+	{
+		if(event->type()==QEvent::FocusIn)
+		{
+			this->action_add->setEnabled(true);
+			this->action_del->setEnabled(true);
+			this->action_edit->setEnabled(true);
+			CurrentObjectLevel=Level_Pragma;
+		}
+	}
+
+	return false;
+}
+
 
 void mainWin::SetEidosView(int Row)
 {
@@ -68,8 +114,6 @@ void mainWin::SetEidosView(int Row)
 	}
 
 	EidosTreeWidget->AttachToDB(MyDB);
-	//SetHypotesysView(EidosTreeWidget->currentItem(),0);
-
 }
 
 void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
@@ -93,6 +137,9 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
+	else
+		tableViewPragma->setModel(NULL);
+
 
 }
 
@@ -114,25 +161,16 @@ void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 		delete keep4delete;
 }
 
-
-void mainWin::GoGrid()
-{
-	return ;
-}
-
-void mainWin::Go()
-{
-
-	return ;
-}
-
 void mainWin::EditItem()
 {
-	int myrow=tableViewHypotesis->currentIndex().row();
-	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
-
-	md->show();
+	if(CurrentObjectLevel==Level_Hypotesis)
+	{
+		int myrow=tableViewHypotesis->currentIndex().row();
+		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
+		md->mapToParent(QPoint(1,1));
+		md->show();
+	}
 
 	return ;
 }

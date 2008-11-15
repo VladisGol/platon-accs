@@ -23,9 +23,8 @@ class mainWin : public QMainWindow, public Ui::MainWindow
 public:
     mainWin(QWidget * parent = 0);
 
+
 private slots:
-	void Go();    // Слот для кнопки Go
-	void GoGrid();// Слот для кнопки Grid
 	void SetPragmaView(const QModelIndex & index);
 	void SetHypotesysView(QTreeWidgetItem*,int);
 	void SetEidosView(int Row);
@@ -34,8 +33,10 @@ private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
 	IBPP::Database MyDB;
-
-
+protected:
+	bool eventFilter(QObject *obj, QEvent *ev);
+	int CurrentObjectLevel;
+	enum ObjectLevel {Level_Hypotesis,Level_Pragma};
 
 };
 

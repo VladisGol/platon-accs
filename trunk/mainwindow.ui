@@ -12,6 +12,10 @@
   <property name="windowTitle" >
    <string>MainWindow</string>
   </property>
+  <property name="windowIcon" >
+   <iconset>
+    <normaloff>images/browser.png</normaloff>images/browser.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
     <item row="0" column="0" >
@@ -40,51 +44,76 @@
        <attribute name="title" >
         <string>Объектное представление</string>
        </attribute>
-       <layout class="QGridLayout" >
-        <item row="0" column="0" >
-         <widget class="QComboBox" name="comboBox_Species" >
-          <property name="minimumSize" >
-           <size>
-            <width>0</width>
-            <height>23</height>
-           </size>
-          </property>
+       <layout class="QVBoxLayout" name="verticalLayout" >
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout" >
           <item>
-           <property name="text" >
-            <string>Все</string>
-           </property>
+           <widget class="QComboBox" name="comboBox_Species" >
+            <property name="minimumSize" >
+             <size>
+              <width>0</width>
+              <height>24</height>
+             </size>
+            </property>
+            <item>
+             <property name="text" >
+              <string>Все</string>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Объекты</string>
+             </property>
+             <property name="icon" >
+              <iconset>
+               <normaloff>images/blockdevice.png</normaloff>images/blockdevice.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Действия</string>
+             </property>
+             <property name="icon" >
+              <iconset>
+               <normaloff>images/blacksmiti_ganson.png</normaloff>images/blacksmiti_ganson.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>Ресурсы</string>
+             </property>
+             <property name="icon" >
+              <iconset>
+               <normaloff>images/diamond_juliane_krug_01.png</normaloff>images/diamond_juliane_krug_01.png</iconset>
+             </property>
+            </item>
+            <item>
+             <property name="text" >
+              <string>НСИ</string>
+             </property>
+             <property name="icon" >
+              <iconset>
+               <normaloff>images/stack_of_books_01.png</normaloff>images/stack_of_books_01.png</iconset>
+             </property>
+            </item>
+           </widget>
           </item>
           <item>
-           <property name="text" >
-            <string>Объекты</string>
-           </property>
+           <spacer name="horizontalSpacer" >
+            <property name="orientation" >
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0" >
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
-          <item>
-           <property name="text" >
-            <string>Действия</string>
-           </property>
-           <property name="icon" >
-            <iconset>
-             <normaloff>images/ruota_dentata_2_architet_01.png</normaloff>images/ruota_dentata_2_architet_01.png</iconset>
-           </property>
-          </item>
-          <item>
-           <property name="text" >
-            <string>Ресурсы</string>
-           </property>
-           <property name="icon" >
-            <iconset>
-             <normaloff>images/diamond_juliane_krug_01.png</normaloff>images/diamond_juliane_krug_01.png</iconset>
-           </property>
-          </item>
-          <item>
-           <property name="text" >
-            <string>НСИ</string>
-           </property>
-          </item>
-         </widget>
+         </layout>
         </item>
-        <item row="1" column="0" >
+        <item>
          <widget class="QSplitter" name="splitter_2" >
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
@@ -92,6 +121,15 @@
           <widget class="QEidosTreeWidget" name="EidosTreeWidget" >
            <property name="styleSheet" >
             <string notr="true" >font: 10pt "Arial";</string>
+           </property>
+           <property name="editTriggers" >
+            <set>QAbstractItemView::AllEditTriggers</set>
+           </property>
+           <property name="selectionMode" >
+            <enum>QAbstractItemView::ExtendedSelection</enum>
+           </property>
+           <property name="selectionBehavior" >
+            <enum>QAbstractItemView::SelectItems</enum>
            </property>
            <column>
             <property name="text" >
@@ -125,6 +163,21 @@
             </property>
             <property name="styleSheet" >
              <string notr="true" >font: 10pt "Arial";</string>
+            </property>
+            <property name="editTriggers" >
+             <set>QAbstractItemView::AllEditTriggers</set>
+            </property>
+            <property name="tabKeyNavigation" >
+             <bool>false</bool>
+            </property>
+            <property name="alternatingRowColors" >
+             <bool>true</bool>
+            </property>
+            <property name="selectionMode" >
+             <enum>QAbstractItemView::SingleSelection</enum>
+            </property>
+            <property name="selectionBehavior" >
+             <enum>QAbstractItemView::SelectItems</enum>
             </property>
            </widget>
            <widget class="QTableView" name="tableViewPragma" />

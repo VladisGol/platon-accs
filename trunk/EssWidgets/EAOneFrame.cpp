@@ -111,9 +111,13 @@ void EA_OneFrame::fillVisibleWidget()
 		}
 		case platon::ft_RB:
 		case platon::ft_DLL:
-			toolButton = new QToolButton(this);
-		    toolButton->setObjectName("toolButton");
-		    horizontalLayout->addWidget(toolButton);
+		{
+			DLLButton = new QToolButton(this);
+			DLLButton->setObjectName("DLLButton");
+		    QIcon icon1;
+		    icon1.addPixmap(QPixmap(QString::fromUtf8("images/exec.png")), QIcon::Normal, QIcon::Off);
+		    DLLButton->setIcon(icon1);
+		    horizontalLayout->addWidget(DLLButton);
 			EditableWidget=new QLineEdit(frame);
 			gridLayoutInFrame->addWidget(EditableWidget);
 
@@ -122,6 +126,7 @@ void EA_OneFrame::fillVisibleWidget()
 			//toolButton->addAction(DllCalling);
 
 		    break;
+		}
 		case platon::ft_LinkHypotesis:
 		case platon::ft_LinkPragma:
 		{
@@ -131,17 +136,29 @@ void EA_OneFrame::fillVisibleWidget()
  			((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
 			KeepValue=((QLineEdit*)EditableWidget)->text();
 
-			toolButton = new QToolButton(this);
-		    toolButton->setObjectName("toolButton");
-		    horizontalLayout->addWidget(toolButton);
+			LNKButton = new QToolButton(this);
+			LNKButton->setObjectName("LNKButton");
+		    QIcon icon1;
+		    icon1.addPixmap(QPixmap(QString::fromUtf8("images/connect_creating.png")), QIcon::Normal, QIcon::Off);
+		    LNKButton->setIcon(icon1);
+
+		    horizontalLayout->addWidget(LNKButton);
 
 			break;
 		}
 		default:
 			throw("Указанный тип данных не поддерживается");
-
 	}
-
+	// Добавляем кнопку хронологического вывода по атрибутам
+	if(EAA->EA->Temporality==true)
+	{
+		HronologyButton = new QToolButton(this);
+		HronologyButton->setObjectName("HronologyButton");
+		QIcon icon2;
+		icon2.addPixmap(QPixmap(QString::fromUtf8("images/clock.png")), QIcon::Normal, QIcon::Off);
+		HronologyButton->setIcon(icon2);
+		horizontalLayout->addWidget(HronologyButton);
+	}
 }
 
 void EA_OneFrame::Save()
