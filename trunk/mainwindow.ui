@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>MainWindow</string>
+   <string>Система эксплуатационного учета "Платон"</string>
   </property>
   <property name="windowIcon" >
    <iconset>
@@ -66,7 +66,7 @@
              </property>
              <property name="icon" >
               <iconset>
-               <normaloff>images/blockdevice.png</normaloff>images/blockdevice.png</iconset>
+               <normaloff>images/browser.png</normaloff>images/browser.png</iconset>
              </property>
             </item>
             <item>
@@ -75,7 +75,7 @@
              </property>
              <property name="icon" >
               <iconset>
-               <normaloff>images/blacksmiti_ganson.png</normaloff>images/blacksmiti_ganson.png</iconset>
+               <normaloff>images/ruota_dentata_2_architet_01.png</normaloff>images/ruota_dentata_2_architet_01.png</iconset>
              </property>
             </item>
             <item>

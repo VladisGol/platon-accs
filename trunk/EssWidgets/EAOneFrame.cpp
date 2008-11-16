@@ -139,7 +139,7 @@ void EA_OneFrame::fillVisibleWidget()
 			LNKButton = new QToolButton(this);
 			LNKButton->setObjectName("LNKButton");
 		    QIcon icon1;
-		    icon1.addPixmap(QPixmap(QString::fromUtf8("images/connect_creating.png")), QIcon::Normal, QIcon::Off);
+		    icon1.addPixmap(QPixmap(QString::fromUtf8("images/chain_nicu_buculei_01.png")), QIcon::Normal, QIcon::Off);
 		    LNKButton->setIcon(icon1);
 
 		    horizontalLayout->addWidget(LNKButton);
@@ -159,59 +159,80 @@ void EA_OneFrame::fillVisibleWidget()
 		HronologyButton->setIcon(icon2);
 		horizontalLayout->addWidget(HronologyButton);
 	}
+	// Изменяем начертание шрифта для отображения обязательных для заполнения атрибутов
+	if(EAA->EA->Required==true)
+	{
+		QFont font=label->font();
+		font.setBold(true);
+		font.setWeight(75);
+		label->setFont(font);
+	}
+	//Изменяем шрифт для блокированный значений фреймов
+	if(EAA->EA->Locked==true)
+	{
+		EditableWidget->setEnabled(false);
+		QFont font=label->font();
+		font.setItalic(true);
+		label->setFont(font);
+
+	}
+
 }
 
 void EA_OneFrame::Save()
 {
 	//Процедура записывает измененное значение фрейма
-	switch(EAA->EA->type)
+	if(EAA->EA->Locked==false)	//Только для незакрытых значений фреймов
 	{
-		case platon::ft_String:
+		EAA->EA->DTValue=platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime());	//Изменение времени на системное для темпоральных значений
+		switch(EAA->EA->type)
 		{
-			if (KeepValue!=((QLineEdit*)EditableWidget)->text())
-				EAA->SetStringValue(((QLineEdit*)EditableWidget)->text().toStdString());
-			break;
-		}
-		case platon::ft_Integer:
-		{
-			if(KeepValue!=((QSpinBox*)EditableWidget)->value())
-				EAA->SetIntValue(((QSpinBox*)EditableWidget)->value());
-			break;
+			case platon::ft_String:
+			{
+				if (KeepValue!=((QLineEdit*)EditableWidget)->text())
+					EAA->SetStringValue(((QLineEdit*)EditableWidget)->text().toStdString());
+				break;
+			}
+			case platon::ft_Integer:
+			{
+				if(KeepValue!=((QSpinBox*)EditableWidget)->value())
+					EAA->SetIntValue(((QSpinBox*)EditableWidget)->value());
+				break;
+
+			}
+			case platon::ft_Boolean:
+			{
+				if(KeepValue!=((QCheckBox*)EditableWidget)->checkState())
+					EAA->SetBoolValue(((QCheckBox*)EditableWidget)->checkState());
+				break;
+
+			}
+			case platon::ft_Float:
+			{
+				if(KeepValue!=((QDoubleSpinBox*)EditableWidget)->value())
+					EAA->SetFloatValue(((QDoubleSpinBox*)EditableWidget)->value());
+				break;
+			}
+			case platon::ft_DateTime:
+			{
+				if(KeepValue!=((QDateTimeEdit*)EditableWidget)->dateTime())
+					EAA->SetDateTimeValue(QDateTime2IBPPTimestamp(((QDateTimeEdit*)EditableWidget)->dateTime()));
+				break;
+			}
+			case platon::ft_RB:
+			case platon::ft_DLL:
+			case platon::ft_LinkHypotesis:
+			case platon::ft_LinkPragma:
+			{
+				if(KeepValue!=((QLineEdit*)EditableWidget)->text())
+					;
+				break;
+			}
+			default:
+				throw("Указанный тип данных не поддерживается");
 
 		}
-		case platon::ft_Boolean:
-		{
-			if(KeepValue!=((QCheckBox*)EditableWidget)->checkState())
-				EAA->SetBoolValue(((QCheckBox*)EditableWidget)->checkState());
-			break;
-
-		}
-		case platon::ft_Float:
-		{
-			if(KeepValue!=((QDoubleSpinBox*)EditableWidget)->value())
-				EAA->SetFloatValue(((QDoubleSpinBox*)EditableWidget)->value());
-			break;
-		}
-		case platon::ft_DateTime:
-		{
-			if(KeepValue!=((QDateTimeEdit*)EditableWidget)->dateTime())
-				EAA->SetDateTimeValue(QDateTime2IBPPTimestamp(((QDateTimeEdit*)EditableWidget)->dateTime()));
-			break;
-		}
-		case platon::ft_RB:
-		case platon::ft_DLL:
-		case platon::ft_LinkHypotesis:
-		case platon::ft_LinkPragma:
-		{
-			if(KeepValue!=((QLineEdit*)EditableWidget)->text())
-				;
-			break;
-		}
-		default:
-			throw("Указанный тип данных не поддерживается");
-
 	}
-
 }
 void EA_OneFrame::CallDllRoutine()
 {

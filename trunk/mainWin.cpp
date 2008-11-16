@@ -44,9 +44,12 @@ mainWin::mainWin(QWidget *parent)
 		//QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 		QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 
-
+		//Привязываем элементы управления к событиям
 		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
 		QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
+		QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
+		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DelItem()));
+
 		SetEidosView(0);
 
 		this->EidosTreeWidget->installEventFilter(this);
@@ -55,6 +58,7 @@ mainWin::mainWin(QWidget *parent)
 		CurrentObjectLevel=0;
 
 		//QApplication::restoreOverrideCursor();
+		platon::SetTimestampTemporalCompareFor(MyDB, platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime()));
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -82,9 +86,19 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 	{
 		if(event->type()==QEvent::FocusIn)
 		{
-			this->action_add->setEnabled(true);
-			this->action_del->setEnabled(true);
-			this->action_edit->setEnabled(true);
+			QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
+			if(Species=="OBJ")
+			{
+				this->action_add->setEnabled(true);
+				this->action_del->setEnabled(true);
+				this->action_edit->setEnabled(true);
+			}
+			else
+			{
+				this->action_add->setEnabled(false);
+				this->action_del->setEnabled(true);
+				this->action_edit->setEnabled(true);
+			}
 			CurrentObjectLevel=Level_Pragma;
 		}
 	}
@@ -168,9 +182,57 @@ void mainWin::EditItem()
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
-		md->mapToParent(QPoint(1,1));
+		md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
 		md->show();
 	}
-
+	if(CurrentObjectLevel==Level_Pragma)
+	{
+		int myrow=tableViewPragma->currentIndex().row();
+		long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
+		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,MyDB,id_pragma);
+		md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
+		md->show();
+	}
 	return ;
 }
+void mainWin::AddItem()
+{
+	QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
+	platon::Eidos* formEidos=new platon::Eidos(LocalEidos->DB,LocalEidos->GetID());
+	platon::Hypotesis* formHypotesis;
+
+	if(CurrentObjectLevel==Level_Hypotesis)
+	{
+		//Создаем экземпляры объектов для формы
+
+		if(Species=="OBJ") formHypotesis= ((platon::OBJClass*)formEidos)->AddOBJType();
+		if(Species=="ACT") formHypotesis= ((platon::ACTClass*)formEidos)->AddACTType();
+		if(Species=="RES") formHypotesis= ((platon::RESClass*)formEidos)->AddRESType();
+		if(Species=="NSI") formHypotesis=new platon::Hypotesis(formEidos,QString(tr("Новый тип нормативно-справочной информации")).toStdString());
+
+		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,formHypotesis);
+		md->setWindowTitle(tr("Создание объекта \"Тип\""));
+		md->show();
+	}
+	if(CurrentObjectLevel==Level_Pragma)
+	{
+		int myrow=tableViewHypotesis->currentIndex().row();
+		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+
+		formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
+		platon::Pragma*formPragma;
+
+		//Создаем экземпляры объектов для формы
+
+		if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
+		//if(Species=="ACT") formHypotesis= ((platon::ACTType*)formHypotesis)->AddACTCopy(); //Необходимо выбрать на какой объект списываем
+		//if(Species=="RES") formHypotesis= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Необходимо выбрать на какое действие списываем
+		//if(Species=="NSI") formPragma = new platon::Pragma(formHypotesis,platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime()));
+
+	}
+	return ;
+}
+void mainWin::DeleteItem()
+{
+}
+
