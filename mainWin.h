@@ -13,6 +13,8 @@
 #include "HypotesisMemModel.h"
 #include "PragmaMemModel.h"
 #include "HypotesisEditForm.h"
+#include "PragmaEditForm.h"
+#include "EAOneFrame.h"
 
 
 class mainWin : public QMainWindow, public Ui::MainWindow
@@ -29,6 +31,8 @@ private slots:
 	void SetHypotesysView(QTreeWidgetItem*,int);
 	void SetEidosView(int Row);
 	void EditItem();// Слот для редактирования текущего объекта
+	void AddItem();// Слот для добавления объекта
+	void DeleteItem();// Слот для удаления объекта
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;

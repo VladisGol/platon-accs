@@ -1,5 +1,5 @@
-#ifndef HypotesisEditForm_H
-#define HypotesisEditForm_H
+#ifndef abstracthipeditform_H
+#define abstracthipeditform_H
 
 #include "ui_HypotesisEditForm.h"
 #include <QtGui>
@@ -7,24 +7,24 @@
 #include "EssentialClass.h"
 #include "ibpp.h"
 
+
 namespace platon
 {
-class HypotesisEditForm  :public QMainWindow, public Ui_HypotesisWindow
+class AbstarctHipEditForm  :public QMainWindow, public Ui_HypotesisWindow
 {
     Q_OBJECT
 
 public:
-	HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys);
-    long id_hypotesys;
-protected:
+	AbstarctHipEditForm(QWidget * parent);
+
     IBPP::Database DB;
     Eidos* LocalEidos;
     Hypotesis*LocalHypotesis;
+    void FormFillFrames();
 
-private slots:
+public slots:
 	void ExitWithSave();
 	void ExitByCancel();
-
 };
 }
 
