@@ -49,6 +49,7 @@ mainWin::mainWin(QWidget *parent)
 		QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
 		QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
 		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DelItem()));
+		QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
 
 		SetEidosView(0);
 
@@ -234,5 +235,11 @@ void mainWin::AddItem()
 }
 void mainWin::DeleteItem()
 {
+}
+void mainWin::RefreshViews()
+{
+//Процедура обновляет значения в окнах отображения гипотез и прагм
+	if(CurrentObjectLevel==Level_Hypotesis) ((platon::AbstractMemHypModel*)this->tableViewHypotesis->model())->ReadToBuffer();
+	if(CurrentObjectLevel==Level_Pragma) 	((platon::AbstractMemHypModel*)this->tableViewPragma->model())->ReadToBuffer();
 }
 

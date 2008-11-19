@@ -28,6 +28,7 @@ public:
     int columnCount(const QModelIndex & index) const;
     QVariant data(const QModelIndex &index, int role) const;
 	pIterator* KeyIterator;
+	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
 
 protected:
 	mutable QVector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel
@@ -37,7 +38,6 @@ protected:
 
 	int ReservedColumns;									//Зарезервированное число полей
     QVariant GetDataFromBuffer(const QModelIndex &index) const;
-	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
 	void GetOneFieldInBuffer(int FieldNumber, QMap<long,QVariant>* OneMap) const;
 
 	Eidos* ForEidos;										//Ссылка на Eidos, по которому идет обработка
