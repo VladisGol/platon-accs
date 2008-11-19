@@ -33,6 +33,7 @@ private slots:
 	void EditItem();// Слот для редактирования текущего объекта
 	void AddItem();// Слот для добавления объекта
 	void DeleteItem();// Слот для удаления объекта
+	void RefreshViews();
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;

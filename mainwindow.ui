@@ -209,9 +209,9 @@
     <property name="title" >
      <string>Запись</string>
     </property>
-    <addaction name="action_edit" />
     <addaction name="action_add" />
     <addaction name="action_del" />
+    <addaction name="action_refresh" />
    </widget>
    <addaction name="menu" />
    <addaction name="menu_2" />
@@ -233,6 +233,8 @@
    <addaction name="action_edit" />
    <addaction name="action_add" />
    <addaction name="action_del" />
+   <addaction name="separator" />
+   <addaction name="action_refresh" />
   </widget>
   <action name="action_quit" >
    <property name="icon" >
@@ -268,6 +270,15 @@
    </property>
    <property name="text" >
     <string>Удалить</string>
+   </property>
+  </action>
+  <action name="action_refresh" >
+   <property name="icon" >
+    <iconset>
+     <normaloff>images/reload.png</normaloff>images/reload.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Обновить</string>
    </property>
   </action>
  </widget>
