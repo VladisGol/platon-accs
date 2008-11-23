@@ -51,8 +51,8 @@ struct LNK_Value;
 //интерфейс работы с экстраатрибутами
 class AssociatedExtraAttribute
 {
-        Hypotesis* OwnerHypotesis;
 public:
+		Hypotesis* OwnerHypotesis;
         ExtraAttribute* EA;
         AssociatedExtraAttribute(ExtraAttribute* InEA, Hypotesis* InHyp);
 

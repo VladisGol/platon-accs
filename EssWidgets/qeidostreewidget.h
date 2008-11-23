@@ -1,3 +1,6 @@
+#ifndef QEidosTreeWidget_H
+#define QEidosTreeWidget_H
+
 #include <QtGui>
 #include "EssentialClass.h"
 #include "ibpp.h"
@@ -17,3 +20,4 @@ class QEidosTreeWidget: public QTreeWidget
 		void SetSpecies(const QString InSpecies);
 		void SaveAppearance();
 };
+#endif

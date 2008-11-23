@@ -1,5 +1,3 @@
-
-
 #ifndef EA_OneFrame_H
 #define EA_OneFrame_H
 
@@ -22,25 +20,24 @@
 #include <QtGui/QCalendarWidget>
 #include <QtGui/QIcon>
 #include "EssentialClass.h"
+#include "DialogchoiceEidos.h"
 
 namespace platon
 {
-QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal);
-IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal);
 
 class EA_OneFrame :public QFrame
 {
+    Q_OBJECT
 public:
-
     EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA);
     void Save();
-    ~EA_OneFrame();
 public slots:
 	void CallDllRoutine();
+	void LNKClick();
+	void HronologyClick();
 protected:
     void fillVisibleWidget();	//Заполнение значением
     QVariant KeepValue;
-
     QHBoxLayout *topLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *label;
@@ -51,9 +48,9 @@ protected:
     QWidget* EditableWidget;
     QGridLayout* gridLayoutInFrame;
     AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
-    //QAction DllCalling;
-
 };
+QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal);
+IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal);
 }
 
 

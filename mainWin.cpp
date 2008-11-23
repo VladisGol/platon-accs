@@ -24,7 +24,7 @@ mainWin::mainWin(QWidget *parent)
                 MyDB = IBPP::DatabaseFactory("vladisgol",
                                                 "platon",
                                                 "sysdba",
-                                                "5PQHoo+J",
+                                                "ymIyiAdV",
                                                 "",//Role
                                                 "WIN1251",//codepage
                                                 "DEFAULT CHARACTER SET WIN1251");//Доп параметры
@@ -48,7 +48,7 @@ mainWin::mainWin(QWidget *parent)
 		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
 		QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
 		QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
-		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DelItem()));
+		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
 		QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
 
 		SetEidosView(0);

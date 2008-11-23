@@ -5,6 +5,10 @@ namespace platon
 EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
 	:QFrame(parent)
 {
+    LNKButton=NULL;
+    HronologyButton=NULL;
+    DLLButton=NULL;
+
     if (this->objectName().isEmpty())
     	this->setObjectName("EA_OneFrame");
     this->setFrameShape(QFrame::StyledPanel);
@@ -33,22 +37,14 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
 
     topLayout->addLayout(horizontalLayout);//, 0, 0, 1, 1);
 
-    //DllCalling=new QAction(this);
-    //QObject::connect(DllCalling, SIGNAL(activated()), this, SLOT(CallDllRoutine())));
-
     //Разбираемся с типом экстраатрибута
     this->EAA=InEAA;
     fillVisibleWidget();
-}
+    //Присоединяем обработку сигалов к слотам
+    if(LNKButton!=NULL)   		QObject::connect(LNKButton, SIGNAL(clicked()), this, SLOT(LNKClick()));
+    if(HronologyButton!=NULL)	QObject::connect(HronologyButton, SIGNAL(clicked()), this, SLOT(HronologyClick()));
+    if(DLLButton!=NULL)			QObject::connect(DLLButton, SIGNAL(clicked()), this, SLOT(CallDllRoutine()));
 
-EA_OneFrame::~EA_OneFrame()
-{
-	/*delete topLayout;
-	delete horizontalLayout;
-	delete label;
-	delete frame;
-	delete EditableWidget;*/
-	;
 }
 
 void EA_OneFrame::fillVisibleWidget()
@@ -234,11 +230,6 @@ void EA_OneFrame::Save()
 		}
 	}
 }
-void EA_OneFrame::CallDllRoutine()
-{
-	//Функция вызывает процедуру из динамической библиотеки
-	QMessageBox::information(this,"Imitation","Called procedure");
-}
 
 QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal)
 {
@@ -264,4 +255,20 @@ IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal)
 	s=QString(InVal.toString("ss")).toInt();
 	return IBPP::Timestamp(y, mo, d, h, mi, s);
 }
+void EA_OneFrame::LNKClick()
+{
+	ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,0);
+	Localdialog->exec();
+
+}
+void EA_OneFrame::HronologyClick()
+{
+}
+
+void EA_OneFrame::CallDllRoutine()
+{
+	//Функция вызывает процедуру из динамической библиотеки
+	QMessageBox::information(this,"Imitation","Called procedure");
+}
+
 }
