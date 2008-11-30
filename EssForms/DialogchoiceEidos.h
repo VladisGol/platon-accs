@@ -10,6 +10,8 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QTreeWidget>
 #include "qeidostreewidget.h"
+namespace platon
+{
 
 class ChoiceEidos_Dialog:public QDialog
 {
@@ -18,10 +20,12 @@ public:
     QGridLayout *gridLayout;
     QEidosTreeWidget *treeWidget;
     QDialogButtonBox *buttonBox;
-    ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB, long ID_in);
+    ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QString Species, long ID_in);
     long Out_value;
+    bool find(long ID_searchfor);
+
 public slots:
 	void ExitWithAccept();
 };
-
+}
 #endif

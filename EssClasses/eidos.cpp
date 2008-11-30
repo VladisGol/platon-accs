@@ -378,6 +378,20 @@ long Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBelong)
         return ID_ForReturn;
 
 }
+std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos)
+{
+//Функция возвращает тип Эйдоса (ACT, OBJ)
+	std::string ForReturn;
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE GET_EIDOS(?);");
+    TmpST->Set(1,(int32_t*)&id_eidos);
+    TmpST->Execute();
+    TmpST->Get("SPECIES",ForReturn);
+    TmpTR->Commit();
+    return platon::Rtrim(ForReturn);
+}
 
 void BranchDisassemble(const std::string NameOfBranch, std::vector<std::string> &Elements)
 {
