@@ -21,6 +21,7 @@
 #include <QtGui/QIcon>
 #include "EssentialClass.h"
 #include "DialogchoiceEidos.h"
+#include "DialogchoiceHypotesis.h"
 
 namespace platon
 {

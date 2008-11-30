@@ -106,6 +106,7 @@ long Get_EAID_ByName(IBPP::Database MyDB,std::string NameOfEA);
 long Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBelong);
 void BranchDisassemble(const std::string NameOfBranch, std::vector<std::string> &Elements);
 long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBranch);
+std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos);
 }
 
 #endif

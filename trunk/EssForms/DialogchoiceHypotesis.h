@@ -9,15 +9,26 @@
 #include <QtGui/QDialogButtonBox>
 #include <QtGui/QGridLayout>
 #include <QtGui/QTreeWidget>
+#include <QtGui/QTableView>
+#include "HypotesisMemModel.h"
 
-
-class ChoiceHypotesis_Dialog
+namespace platon
 {
+class ChoiceHypotesis_Dialog: public QDialog
+{
+	Q_OBJECT
 public:
     QGridLayout *gridLayout;
-    QTreeWidget *treeWidget;
+    QTableView *TableView;
+    HypotesisMemModel* Model;
     QDialogButtonBox *buttonBox;
-    ChoiceHypotesis_Dialog();
-};
+    ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* InEidos, long ID_in);
+    long Out_value;
+    bool find(long ID_searchfor);
 
+public slots:
+	void ExitWithAccept();
+
+};
+}
 #endif

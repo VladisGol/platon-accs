@@ -257,10 +257,63 @@ IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal)
 }
 void EA_OneFrame::LNKClick()
 {
-	ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,0);
-	Localdialog->exec();
+	long ID_Eidos, ID_Hypotesis;
 
+	if(EAA->EA->LinkedLevelHP>0)	//Если определен уровень к которому следует отнести текущий
+	{
+		if(EAA->EA->type==platon::ft_LinkHypotesis)	//Ссылка указывает на объект Hypotesis
+			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LinkedLevelHP,ID_Eidos, ID_Hypotesis);
+		if(EAA->EA->type==platon::ft_LinkPragma)	//Ссылка указывает на объект Pragma
+			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LinkedLevelHP,ID_Eidos, ID_Hypotesis);
+
+		if(ID_Eidos==0)
+		{
+			QString Species="ALL";
+			if(EAA->EA->LinkedSpecies==0) Species="OBJ";	//Херня какая то нужно переделать - внести прямо в БД в виде строки
+			if(EAA->EA->LinkedSpecies==1) Species="ACT";
+			if(EAA->EA->LinkedSpecies==2) Species="RES";
+			if(EAA->EA->LinkedSpecies==3) Species="NSI";
+
+			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,Species,0);
+			Localdialog->exec();
+			ID_Eidos=Localdialog->Out_value;
+			if(ID_Eidos==0) return;	//Ничего не выбрано
+			if(EAA->EA->type==platon::ft_LinkHypotesis)
+			{
+				platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
+				ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,0);
+				HypotesisDialog->exec();
+				delete localEidos;
+			}
+		}
+	}
+	else	//Уровень не предопределен, значит следует в любом случае получать подтверждение пользователя
+	{
+		if(EAA->EA->type==platon::ft_LinkHypotesis)	//Ссылка указывает на объект Hypotesis
+			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2HValue().LinkTo,ID_Eidos, ID_Hypotesis);
+		if(EAA->EA->type==platon::ft_LinkPragma)	//Ссылка указывает на объект Pragma
+			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2PValue().LinkTo,ID_Eidos, ID_Hypotesis);
+
+		QString Species="ALL";
+		if(ID_Eidos>0)
+			Species.fromStdString(platon::GetEidosSpecies(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos));
+
+		ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,Species,ID_Eidos);
+		Localdialog->exec();
+		ID_Eidos=Localdialog->Out_value;
+		if(ID_Eidos==0) return;	//Ничего не выбрано
+		//Далее вызывается форма для выбора из числа объектов
+		if(EAA->EA->type==platon::ft_LinkHypotesis)
+		{
+			platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
+			ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,ID_Hypotesis);
+			HypotesisDialog->exec();
+			QMessageBox::information(this,"Imitation",QString::number(HypotesisDialog->Out_value));
+			delete localEidos;
+		}
+	}
 }
+
 void EA_OneFrame::HronologyClick()
 {
 }
