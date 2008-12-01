@@ -24,7 +24,7 @@ class mainWin : public QMainWindow, public Ui::MainWindow
 
 public:
     mainWin(QWidget * parent = 0);
-
+	QDateTime ProgramDateTime;
 
 private slots:
 	void SetPragmaView(const QModelIndex & index);
@@ -34,10 +34,12 @@ private slots:
 	void AddItem();// Слот для добавления объекта
 	void DeleteItem();// Слот для удаления объекта
 	void RefreshViews();
+	void BaseTimeShift();//Слот для установки в базе данных времени работы в программе
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
 	IBPP::Database MyDB;
+	QTimer* DTBaseShifter;
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	int CurrentObjectLevel;

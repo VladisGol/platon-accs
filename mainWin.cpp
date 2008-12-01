@@ -58,8 +58,12 @@ mainWin::mainWin(QWidget *parent)
 		this->tableViewPragma->installEventFilter(this);
 		CurrentObjectLevel=0;
 
-		//QApplication::restoreOverrideCursor();
-		platon::SetTimestampTemporalCompareFor(MyDB, platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime()));
+		//Программное время
+		this->ProgramDateTime = QDateTime::currentDateTime();
+		DTBaseShifter=new QTimer(this);
+		connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
+		BaseTimeShift();
+		DTBaseShifter->start(60*1000);	//Устанавливаем время обновления
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -242,4 +246,14 @@ void mainWin::RefreshViews()
 	if(CurrentObjectLevel==Level_Hypotesis) ((platon::AbstractMemHypModel*)this->tableViewHypotesis->model())->ReadToBuffer();
 	if(CurrentObjectLevel==Level_Pragma) 	((platon::AbstractMemHypModel*)this->tableViewPragma->model())->ReadToBuffer();
 }
-
+void mainWin::BaseTimeShift()
+{
+//Процедура - слот производит перевод текущего системного времени в базе данных для корректировки выборок по темпоральным значениям
+	//Проверяем попадает ли установка даты времени в диапазо +-5 минут от системного времени
+	if(QDateTime::currentDateTime() < this->ProgramDateTime.addSecs(5*60) && QDateTime::currentDateTime().addSecs(5*60) > this->ProgramDateTime)
+	{
+		ProgramDateTime= QDateTime::currentDateTime();
+	}
+	platon::SetTimestampTemporalCompareFor(MyDB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
+	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy mm:ss")));
+}
