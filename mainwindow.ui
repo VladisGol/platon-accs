@@ -65,8 +65,8 @@
               <string>Объекты</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>images/browser.png</normaloff>images/browser.png</iconset>
+              <iconset resource="images/resources.qrc" >
+               <normaloff>:/PICS/browser.png</normaloff>:/PICS/browser.png</iconset>
              </property>
             </item>
             <item>
@@ -74,8 +74,8 @@
               <string>Действия</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>images/ruota_dentata_2_architet_01.png</normaloff>images/ruota_dentata_2_architet_01.png</iconset>
+              <iconset resource="images/resources.qrc" >
+               <normaloff>:/PICS/ruota_dentata_2_architet_01.png</normaloff>:/PICS/ruota_dentata_2_architet_01.png</iconset>
              </property>
             </item>
             <item>
@@ -83,8 +83,8 @@
               <string>Ресурсы</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>images/diamond_juliane_krug_01.png</normaloff>images/diamond_juliane_krug_01.png</iconset>
+              <iconset resource="images/resources.qrc" >
+               <normaloff>:/PICS/diamond_juliane_krug_01.png</normaloff>:/PICS/diamond_juliane_krug_01.png</iconset>
              </property>
             </item>
             <item>
@@ -92,8 +92,8 @@
               <string>НСИ</string>
              </property>
              <property name="icon" >
-              <iconset>
-               <normaloff>images/stack_of_books_01.png</normaloff>images/stack_of_books_01.png</iconset>
+              <iconset resource="images/resources.qrc" >
+               <normaloff>:/PICS/contents.png</normaloff>:/PICS/contents.png</iconset>
              </property>
             </item>
            </widget>
@@ -242,8 +242,8 @@
   </widget>
   <action name="action_quit" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/exit.png</normaloff>images/exit.png</iconset>
+    <iconset resource="images/resources.qrc" >
+     <normaloff>:/PICS/exit.png</normaloff>:/PICS/exit.png</iconset>
    </property>
    <property name="text" >
     <string>Выход</string>
@@ -251,8 +251,8 @@
   </action>
   <action name="action_edit" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/edit.png</normaloff>images/edit.png</iconset>
+    <iconset resource="images/resources.qrc" >
+     <normaloff>:/PICS/edit.png</normaloff>:/PICS/edit.png</iconset>
    </property>
    <property name="text" >
     <string>Редактировать</string>
@@ -260,8 +260,8 @@
   </action>
   <action name="action_add" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/edit_add.png</normaloff>images/edit_add.png</iconset>
+    <iconset resource="images/resources.qrc" >
+     <normaloff>:/PICS/edit_add.png</normaloff>:/PICS/edit_add.png</iconset>
    </property>
    <property name="text" >
     <string>Добавить</string>
@@ -269,8 +269,8 @@
   </action>
   <action name="action_del" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/trashcan_full.png</normaloff>images/trashcan_full.png</iconset>
+    <iconset resource="images/resources.qrc" >
+     <normaloff>:/PICS/trashcan_full.png</normaloff>:/PICS/trashcan_full.png</iconset>
    </property>
    <property name="text" >
     <string>Удалить</string>
@@ -278,8 +278,8 @@
   </action>
   <action name="action_refresh" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/reload.png</normaloff>images/reload.png</iconset>
+    <iconset resource="images/resources.qrc" >
+     <normaloff>:/PICS/reload.png</normaloff>:/PICS/reload.png</iconset>
    </property>
    <property name="text" >
     <string>Обновить</string>
@@ -293,7 +293,9 @@
    <header>qeidostreewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="images/resources.qrc" />
+ </resources>
  <connections>
   <connection>
    <sender>action_quit</sender>
