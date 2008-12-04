@@ -11,23 +11,21 @@
 namespace platon
 {
 
-HypPragmaMemModel::HypPragmaMemModel(Hypotesis* InHyp, QObject * parent)
+HypPragmaMemModel::HypPragmaMemModel(Eidos* InEidos, QObject * parent)
 					:AbstractMemHypModel(parent)
 {
 	// TODO Auto-generated constructor stub
-	setObjectName("PragmaMemModel");
+	setObjectName("HypPragmaMemModel");
 
-	ForEidos =InHyp->HostEidos;
+	ForEidos =InEidos;
 
-	MyHyp=InHyp;
-
-	NumCol=InHyp->HostEidos->PragmaSQL->AttributesList.size();				//Получаем количество полей в запросе
-	ReservedColumns=1;														//Одно зарезервированное поле ID
+	NumCol=ForEidos->PragmaSQL->AttributesList.size();				//Получаем количество полей в запросе
+	ReservedColumns=2;														//Одно зарезервированное поле ID
 
 	Id_records = new QVector <long>;										//Выделяем необходимую память
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
-	for(int i=0;i<NumCol;i++) FieldsInModel->append(new QMap<long,QVariant>);
-	KeyIterator=new iterPragma(MyHyp);										//Выставляем итератор ключей записей
+	for(int i=0;i<NumCol+1;i++) FieldsInModel->append(new QMap<long,QVariant>);
+	KeyIterator=new iterHypPragma(ForEidos);									//Выставляем итератор ключей записей
 	ReadToBuffer();															//Считываем значения в буфер
 
 }
@@ -41,9 +39,9 @@ ExtraAttribute* HypPragmaMemModel::getEAFromEidos(int i) const
 QString HypPragmaMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 {
 	QString SQLString;
-	SQLString="select GET_PRAGMA_LIST.ID id, id_link, meaning from GET_PRAGMA_LIST("+QString::number(ForEidos->GetID())+", "+QString::number(MyHyp->GetID())+") inner join ";
+	SQLString="select GET_PRAGMA_WITH_HIPOTESIS_LIST.ID id, id_link, meaning from GET_PRAGMA_WITH_HIPOTESIS_LIST("+QString::number(ForEidos->GetID())+") inner join ";
 	SQLString=SQLString+QString::fromStdString(MyEA->NameStoredProc())+"("+QString::number(MyEA->GetEAID())+")";
-	SQLString=SQLString+" on GET_PRAGMA_LIST.ID="+QString::fromStdString(MyEA->NameStoredProc())+".ID_LINK;";
+	SQLString=SQLString+" on GET_PRAGMA_WITH_HIPOTESIS_LIST.ID="+QString::fromStdString(MyEA->NameStoredProc())+".ID_LINK;";
 	return SQLString;
 }
 
@@ -57,13 +55,41 @@ QVariant HypPragmaMemModel::headerData(int section, Qt::Orientation orientation,
 	if (orientation==Qt::Horizontal)
 	{
 		if(section==0)
-			return "ID";
+			return tr("ID");
+		if(section==1)
+			return tr("Тип");
 		else
 			return tr(this->ForEidos->PragmaSQL->AttributesList[section-ReservedColumns].Caption.c_str());
 	}
 	else
 	{
 		return QString::number(section);
+	}
+}
+void HypPragmaMemModel::ReadToBuffer() const
+{
+	//Процедура считывает в буфер по полям записи из БД
+	//Заполняем значения в массиве идентификаторов записей
+
+	Id_records->clear();
+	KeyIterator->First();
+	LastRequestedReccount=0;
+	QMap<long,QVariant>* NameMap = FieldsInModel->at(0);//Нулевое поле - наименование Hypotesis
+
+	while(KeyIterator->Fetched())
+	{
+		long idrecord=KeyIterator->GetID();
+		QVariant Name_Val=tr(((iterHypPragma*)KeyIterator)->GetTitle().c_str());
+		Id_records->append(idrecord);
+		NameMap->insert(idrecord,Name_Val);
+		LastRequestedReccount++;
+		KeyIterator->Next();
+	}
+
+	//Считываем поля экстраатрибутов
+	for(int i=1;i<NumCol+1;i++)
+	{
+		GetOneFieldInBuffer(i-1, FieldsInModel->at(i));
 	}
 }
 

@@ -22,6 +22,7 @@
 #include "EssentialClass.h"
 #include "DialogchoiceEidos.h"
 #include "DialogchoiceHypotesis.h"
+#include "DialogchoicePragma.h"
 
 namespace platon
 {

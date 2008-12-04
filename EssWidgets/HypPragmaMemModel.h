@@ -17,8 +17,10 @@ namespace platon
 class HypPragmaMemModel: public platon::AbstractMemHypModel
 {
 public:
-	HypPragmaMemModel(Hypotesis* InHyp, QObject * parent);
+	HypPragmaMemModel(Eidos* InEidos, QObject * parent);
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const;
+
+    void ReadToBuffer() const;
 protected:
 	Hypotesis* MyHyp;
 	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру

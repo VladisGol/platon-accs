@@ -75,14 +75,6 @@ namespace platon
         if(IsFetched) LocalST->Get("ID",(int32_t*)&RetVal);
 		return RetVal;
 	}
-	std::string pIterator::GetTitle()
-	{
-		//Процедура возвращает значение наименования объекта, по которому выстраивается цикл
-		//ВНИМАНИЕ, для корректного отображения поля необходимо действительное имя в базе переопределить псевдонимом TITLE
-        std::string RetVal="";
-        if(IsFetched) LocalST->Get("TITLE",RetVal);
-		return RetVal;
-	}
 	long pIterator::GetRowNum()
 	{
 		return this->RowNum;
@@ -114,41 +106,64 @@ namespace platon
         if(IsFetched) LocalST->Get("ID_PARENT",(int32_t*)&RetVal);
 		return RetVal;
 	}
+	std::string iterEidos::GetTitle()
+	{
+		//Процедура возвращает значение наименования объекта, по которому выстраивается цикл
+		//ВНИМАНИЕ, для корректного отображения поля необходимо действительное имя в базе переопределить псевдонимом TITLE
+        std::string RetVal="";
+        if(IsFetched) LocalST->Get("TITLE",RetVal);
+		return RetVal;
+	}
+
 	iterHypotesis::iterHypotesis(Eidos* InEidos)
 	{
 		this->DB=InEidos->DB;
         Initialize();
-        SQL_string="select get_hypotesis_list.id, get_hypotesis_name_list.meaning TITLE from get_hypotesis_list("+ToString(InEidos->GetID())+") inner join get_hypotesis_name_list on (get_hypotesis_list.id=get_hypotesis_name_list.id);";
-        SQL_string_forreccount="select count(get_hypotesis_list.id) recordscount from get_hypotesis_list("+ToString(InEidos->GetID())+") inner join get_hypotesis_name_list on (get_hypotesis_list.id=get_hypotesis_name_list.id);";
+        SQL_string="select get_hypotesis_list.id from get_hypotesis_list("+ToString(InEidos->GetID())+");";
+        SQL_string_forreccount="select count(get_hypotesis_list.id) recordscount from get_hypotesis_list("+ToString(InEidos->GetID())+");";
 	}
 	iterHypotesis::iterHypotesis(IBPP::Database inDB,long ID_Eidos)
 	{
 		this->DB=inDB;
         Initialize();
-        SQL_string="select get_hypotesis_list.id, get_hypotesis_name_list.meaning TITLE from get_hypotesis_list("+ToString(ID_Eidos)+") inner join get_hypotesis_name_list on (get_hypotesis_list.id=get_hypotesis_name_list.id);";
-        SQL_string_forreccount="select count(get_hypotesis_list.id) recordscount from get_hypotesis_list("+ToString(ID_Eidos)+") inner join get_hypotesis_name_list on (get_hypotesis_list.id=get_hypotesis_name_list.id);";
+        SQL_string="select get_hypotesis_list.id from get_hypotesis_list("+ToString(ID_Eidos)+");";
+        SQL_string_forreccount="select count(get_hypotesis_list.id) recordscount from get_hypotesis_list("+ToString(ID_Eidos)+");";
 	}
 	iterPragma::iterPragma(Hypotesis* InHyp)
 	{
         this->DB=InHyp->HostEidos->DB;
         Initialize();
-        SQL_string="select get_pragma_list.id, get_pragma_name_list.meaning TITLE from get_pragma_list("+ToString(InHyp->HostEidos->GetID())+", "+ToString(InHyp->GetID())+") inner join get_pragma_name_list on (get_pragma_list.id=get_pragma_name_list.id);";
-        SQL_string_forreccount="select count(get_pragma_list.id) recordscount from get_pragma_list("+ToString(InHyp->HostEidos->GetID())+", "+ToString(InHyp->GetID())+") inner join get_pragma_name_list on (get_pragma_list.id=get_pragma_name_list.id);";
+        SQL_string="select get_pragma_list.id from get_pragma_list("+ToString(InHyp->HostEidos->GetID())+", "+ToString(InHyp->GetID())+");";
+        SQL_string_forreccount="select count(get_pragma_list.id) recordscount from get_pragma_list("+ToString(InHyp->HostEidos->GetID())+", "+ToString(InHyp->GetID())+");";
 	}
 
 	iterPragma::iterPragma(IBPP::Database inDB,long ID_Eidos, long ID_Hypotesis)
 	{
         this->DB=inDB;
         Initialize();
-        SQL_string="select get_pragma_list.id, get_pragma_name_list.meaning TITLE from get_pragma_list("+ToString(ID_Eidos)+", "+ToString(ID_Hypotesis)+") inner join get_pragma_name_list on (get_pragma_list.id=get_pragma_name_list.id);";
-        SQL_string_forreccount="select count(get_pragma_list.id) recordscount from get_pragma_list("+ToString(ID_Eidos)+", "+ToString(ID_Hypotesis)+") inner join get_pragma_name_list on (get_pragma_list.id=get_pragma_name_list.id);";
+        SQL_string="select get_pragma_list.id from get_pragma_list("+ToString(ID_Eidos)+", "+ToString(ID_Hypotesis)+");";
+        SQL_string_forreccount="select count(get_pragma_list.id) recordscount from get_pragma_list("+ToString(ID_Eidos)+", "+ToString(ID_Hypotesis)+");";
 	}
+	iterHypPragma::iterHypPragma(Eidos* InEidos)
+	{
+		this->DB=InEidos->DB;
+		Initialize();
+		SQL_string="SELECT GET_PRAGMA_WITH_HIPOTESIS_LIST.ID ID, GET_PRAGMA_WITH_HIPOTESIS_LIST.HYP_NAME TITLE  FROM GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+		SQL_string_forreccount="select count(GET_PRAGMA_WITH_HIPOTESIS_LIST.id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+	}
+	std::string iterHypPragma::GetTitle()
+	{
+        std::string RetVal="";
+        if(IsFetched) LocalST->Get("TITLE",RetVal);
+		return RetVal;
+	}
+
 	iterLinkedPragma::iterLinkedPragma(Pragma* InPragma, std::string NameEA)
 	{
         //Получается список многих объектов, ссылающихся на указанную прагму
         this->DB=InPragma->HostEidos->DB;
         Initialize();
-        SQL_string="select ID, MEANING TITLE from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
+        SQL_string="select ID from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
         SQL_string_forreccount="select count(GET_LINKED_PRAGMA_LIST.id) recordscount from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
 	}
 
