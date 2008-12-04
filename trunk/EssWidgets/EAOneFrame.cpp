@@ -285,6 +285,13 @@ void EA_OneFrame::LNKClick()
 				HypotesisDialog->exec();
 				delete localEidos;
 			}
+			if(EAA->EA->type==platon::ft_LinkPragma)
+			{
+				platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
+				ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,0);
+				PragmaDialog->exec();
+				delete localEidos;
+			}
 		}
 	}
 	else	//Уровень не предопределен, значит следует в любом случае получать подтверждение пользователя
@@ -311,6 +318,15 @@ void EA_OneFrame::LNKClick()
 			QMessageBox::information(this,"Imitation",QString::number(HypotesisDialog->Out_value));
 			delete localEidos;
 		}
+		if(EAA->EA->type==platon::ft_LinkPragma)
+		{
+			platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
+			ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,EAA->GetLink2PValue().LinkTo);
+			PragmaDialog->exec();
+			QMessageBox::information(this,"Imitation",QString::number(PragmaDialog->Out_value));
+			delete localEidos;
+		}
+
 	}
 }
 

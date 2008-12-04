@@ -61,7 +61,6 @@ namespace platon
                 long Next();
                 bool Fetched();
                 long GetID();
-                std::string GetTitle();
                 long GetRowNum();
                 long GetRowCount();
 
@@ -71,6 +70,7 @@ namespace platon
 	{
 	public:
 		iterEidos(IBPP::Database inDB,std::string Species);
+        std::string GetTitle();
 		long GetParentID();
 	};
 	class iterHypotesis :public pIterator
@@ -84,7 +84,16 @@ namespace platon
 	public:
 		iterPragma(Hypotesis* InHyp);
 		iterPragma(IBPP::Database inDB,long ID_Eidos, long ID_Hypotesis);
+		iterPragma(Eidos* InEidos);
+        std::string GetTitle();
 	};
+	class iterHypPragma :public pIterator
+	{
+	public:
+		iterHypPragma(Eidos* InEidos);
+        std::string GetTitle();
+	};
+
 	class iterLinkedPragma:public pIterator
 	{
 	public:

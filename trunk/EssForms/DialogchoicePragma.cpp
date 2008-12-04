@@ -1,64 +1,60 @@
-#ifndef CHOICEEIDOSTJ5648_H
-#define CHOICEEIDOSTJ5648_H
-
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QDialog>
-#include <QtGui/QDialogButtonBox>
-#include <QtGui/QGridLayout>
-#include <QtGui/QTreeWidget>
-
-QT_BEGIN_NAMESPACE
-
-class Ui_Dialog
+#include "DialogchoicePragma.h"
+namespace platon
 {
-public:
-    QGridLayout *gridLayout;
-    QTreeWidget *treeWidget;
-    QDialogButtonBox *buttonBox;
 
-    void setupUi(QDialog *Dialog)
-    {
-    if (Dialog->objectName().isEmpty())
-        Dialog->setObjectName(QString::fromUtf8("Dialog"));
-    Dialog->resize(434, 348);
-    gridLayout = new QGridLayout(Dialog);
+ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEidos, long ID_in): QDialog(parent)
+{
+    if (this->objectName().isEmpty())
+    	this->setObjectName(QString::fromUtf8("ChoicePragma_Dialog"));
+    this->resize(434, 348);
+
+    gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-    treeWidget = new QTreeWidget(Dialog);
-    treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
 
-    gridLayout->addWidget(treeWidget, 0, 0, 1, 1);
+    TableView= new QTableView(this);
+    Model=new HypPragmaMemModel(InEidos,this);
+    TableView->setModel(Model);
 
-    buttonBox = new QDialogButtonBox(Dialog);
+    TableView->setObjectName(QString::fromUtf8("TableView"));
+
+    gridLayout->addWidget(TableView, 0, 0, 1, 1);
+
+    buttonBox = new QDialogButtonBox(this);
     buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
 
     gridLayout->addWidget(buttonBox, 1, 0, 1, 1);
 
+    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(ExitWithAccept()));
+    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
-    retranslateUi(Dialog);
-    QObject::connect(buttonBox, SIGNAL(accepted()), Dialog, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), Dialog, SLOT(reject()));
+    if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
-    QMetaObject::connectSlotsByName(Dialog);
-    } // setupUi
+    this->setWindowTitle(tr("Укажите экземпляр"));
 
-    void retranslateUi(QDialog *Dialog)
+}
+void ChoicePragma_Dialog::ExitWithAccept()
+{
+	//Выход с возвратом значения выбранного объекта
+
+	int row=this->TableView->currentIndex().row();
+	int col=0;
+	Out_value=QVariant(TableView->model()->data(Model->index(row,col,QModelIndex()))).toInt();
+
+	this->accept();
+}
+bool ChoicePragma_Dialog::find(long ID_searchfor)
+{
+	/*
+	//QList<QTreeWidgetItem *> FoundedItem = this->treeWidget->findItems (QString::number(ID_searchfor), Qt::MatchExactly | Qt::MatchRecursive,1 );
+    if(FoundedItem.count()>0)      //Найден искомый элемент
     {
-    Dialog->setWindowTitle(QApplication::translate("Dialog", "\320\222\321\213\320\261\320\276\321\200 \320\272\320\273\320\260\321\201\321\201\320\260", 0, QApplication::UnicodeUTF8));
-    treeWidget->headerItem()->setText(0, QApplication::translate("Dialog", "1", 0, QApplication::UnicodeUTF8));
-    Q_UNUSED(Dialog);
-    } // retranslateUi
+    	//this->treeWidget->setCurrentItem(FoundedItem.at(0));	//Найденный элемент выводим текущим
+    	return true;
+    }
+    else*/
+    	return false;
 
-};
-
-namespace Ui {
-    class Dialog: public Ui_Dialog {};
-} // namespace Ui
-
-QT_END_NAMESPACE
-
-#endif // CHOICEEIDOSTJ5648_H
+}
+}
