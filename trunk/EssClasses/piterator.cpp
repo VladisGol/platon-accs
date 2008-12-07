@@ -174,6 +174,18 @@ namespace platon
         SQL_string="select * from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
         SQL_string_forreccount="select count(id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
 	}
+	iterTemporalityListofOneEA::iterTemporalityListofOneEA(AssociatedExtraAttribute* OneAEA)
+	{
+		this->DB=OneAEA->OwnerHypotesis->HostEidos->DB;
+		Initialize();
+        SQL_string="select ID, DATE_TIME, MEANING from "+OneAEA->EA->TemporalListSPName()+"("+ToString(OneAEA->OwnerHypotesis->GetID())+","+ ToString(OneAEA->EA->GetEAID())+");";
+	}
+	IBPP::Timestamp iterTemporalityListofOneEA::GetGateTime()
+	{
+		IBPP::Timestamp RetVal;
+		if(IsFetched) LocalST->Get("DATE_TIME",RetVal);
+		return RetVal;
+	}
 }
 
 

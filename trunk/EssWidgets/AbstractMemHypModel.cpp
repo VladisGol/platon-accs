@@ -130,14 +130,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					IBPP::Timestamp MyTs;
 					MyIterator->LocalST->Get("MEANING",MyTs);
 					Key=MyIterator->GetID();
-
-					QString year=QString::number(MyTs.Year());
-					QString month=QString("0"+QString::number(MyTs.Month())).right(2);
-					QString day=QString("0"+QString::number(MyTs.Day())).right(2);
-					QDateTime LocAlValue=QDateTime::fromString(year+month+day,"yyyyMMdd");
-					LocAlValue.addSecs(MyTs.Hours()*3600+MyTs.Minutes()*60+MyTs.Seconds());
-
-					OneValue=LocAlValue;
+					OneValue=IBPPTimestamp2QDateTime(MyTs);
 					break;
 				}
 				case platon::ft_RB:
