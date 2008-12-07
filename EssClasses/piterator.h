@@ -32,7 +32,7 @@ Contacts: e-mail vladisgol@rambler.ru
 #define PlatonIteratorH
 
 #include "eidos.h"
-#include "extraatrib.h"
+#include "associatedextraattribute.h"
 #include "hypotesis.h"
 #include "pragma.h"
 
@@ -103,6 +103,12 @@ namespace platon
 	{
 	public:
 		iterAllPragmaForEidos(Eidos* InEidos);        //Итератор для получения списка ссылающихся прагм и имени гипотезы по указанному эйдосу
+	};
+	class iterTemporalityListofOneEA:public pIterator
+	{
+	public:
+		iterTemporalityListofOneEA(AssociatedExtraAttribute* OneAEA);
+		IBPP::Timestamp GetGateTime();
 	};
 }
 

@@ -23,6 +23,8 @@
 #include "DialogchoiceEidos.h"
 #include "DialogchoiceHypotesis.h"
 #include "DialogchoicePragma.h"
+#include "DialogEditHronologyEA.h"
+#include "commonroutines.h"
 
 namespace platon
 {
@@ -51,8 +53,7 @@ protected:
     QGridLayout* gridLayoutInFrame;
     AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
 };
-QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal);
-IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal);
+
 }
 
 

@@ -96,7 +96,7 @@ void EA_OneFrame::fillVisibleWidget()
 		{
 
 			EditableWidget=new QDateTimeEdit(frame);
-			((QDateTimeEdit*)EditableWidget)->setDisplayFormat("dd.MM.yyyy H:mm");
+			((QDateTimeEdit*)EditableWidget)->setDisplayFormat("dd.MM.yyyy HH:mm");
 			((QDateTimeEdit*)EditableWidget)->setCalendarPopup(true);
 			((QDateEdit*)EditableWidget)->calendarWidget()->setFirstDayOfWeek(Qt::Monday);
 			gridLayoutInFrame->addWidget(EditableWidget);
@@ -231,30 +231,6 @@ void EA_OneFrame::Save()
 	}
 }
 
-QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal)
-{
-//Функция переводит дату время из формата IBPP::Timestamp в формат QDateTime
-	QString year=QString::number(InVal.Year());
-	QString month=QString("0"+QString::number(InVal.Month())).right(2);
-	QString day=QString("0"+QString::number(InVal.Day())).right(2);
-	QDateTime LocAlValue=QDateTime::fromString(year+month+day,"yyyyMMdd");
-	LocAlValue.addSecs(InVal.Hours()*3600+InVal.Minutes()*60+InVal.Seconds());
-	return LocAlValue;
-}
-
-IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal)
-{
-//Функция переводит дату время из формата QDateTime в формат IBPP::Timestamp
-
-	int y, mo, d, h, mi, s;
-	y=QString(InVal.toString("yyyy")).toInt();
-	mo=QString(InVal.toString("MM")).toInt();
-	d=QString(InVal.toString("dd")).toInt();
-	h=QString(InVal.toString("hh")).toInt();
-	mi=QString(InVal.toString("mm")).toInt();
-	s=QString(InVal.toString("ss")).toInt();
-	return IBPP::Timestamp(y, mo, d, h, mi, s);
-}
 void EA_OneFrame::LNKClick()
 {
 	long ID_Eidos, ID_Hypotesis;
@@ -332,6 +308,8 @@ void EA_OneFrame::LNKClick()
 
 void EA_OneFrame::HronologyClick()
 {
+	DialogEditHronologyEA* HronologyDialog=new DialogEditHronologyEA(this,EAA);
+	HronologyDialog->exec();
 }
 
 void EA_OneFrame::CallDllRoutine()

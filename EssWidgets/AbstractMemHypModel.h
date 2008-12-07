@@ -13,6 +13,7 @@
 #include <QMap>
 #include <QDate>
 #include "EssentialClass.h"
+#include "commonroutines.h"
 
 
 namespace platon
