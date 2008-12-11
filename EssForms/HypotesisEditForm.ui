@@ -78,8 +78,8 @@
   </widget>
   <action name="action_saveNexit" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/apply.png</normaloff>images/apply.png</iconset>
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/apply.png</normaloff>:/PICS/apply.png</iconset>
    </property>
    <property name="text" >
     <string>Сохранить и выйти</string>
@@ -87,14 +87,16 @@
   </action>
   <action name="action_Cancel" >
    <property name="icon" >
-    <iconset>
-     <normaloff>images/cancel.png</normaloff>images/cancel.png</iconset>
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/cancel.png</normaloff>:/PICS/cancel.png</iconset>
    </property>
    <property name="text" >
     <string>Выйти без сохранения</string>
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../images/resources.qrc" />
+ </resources>
  <connections/>
 </ui>

@@ -103,11 +103,13 @@ public:
     bool	Temporality;		//(только для экстраатрибутов, принадлежащих к Embodiment) Темпоральный (или хронологический) экстраатрибут
     IBPP::Timestamp DTValue;        //Значение даты времени для темпорального атрибута
     bool    Required;               //Обязательный параметр к заполнению
-    int     LinkedSpecies;          //Ссылка на объект учета, действие или ресурс (0 - OBJ 1 - ACT 2 - RES)
-    long    LinkedLevelHP;          //Идентификатор корреспондирующего объекта (например используется как предустановленное значение Hypotesis для Pragma)
     bool    Visible;                //Отображение атрибута в гриде и в виде фрейма в форме
     bool    Locked;                 //Записание экстраатрибута от возможности изменения
     bool    Multilnk;               //Используется ли в ссылочном атрибуте множественная связь
+    std::string	LNK_species;
+    long 	LNK_EidosID;
+    long 	LNK_HypID;
+    bool	LNK_NeedList;
 
 	long 	Save();
 	ExtraAttribute();
