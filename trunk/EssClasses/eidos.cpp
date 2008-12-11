@@ -157,14 +157,18 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
                 LocalST->Get("FIELDNAME",OneRecord->FieldName);
                 LocalST->Get("TEMPORALITY",OneRecord->Temporality);
                 LocalST->Get("REQUIRED",OneRecord->Required);
-                LocalST->Get("LINKEDOBJACT",(int32_t*)&OneRecord->LinkedSpecies);
-                LocalST->Get("LinkedLevelHP",(int32_t*)&OneRecord->LinkedLevelHP);
                 LocalST->Get("VISIBLE",OneRecord->Visible);
                 LocalST->Get("LOCKED",OneRecord->Locked);
                 LocalST->Get("NAMESTOREDPROC",OneRecord->sNameStoredProc);
                 OneRecord->sNameStoredProc=Rtrim(OneRecord->sNameStoredProc);
                 LocalST->Get("TEMPORALLISTSPNAME",OneRecord->sTemporalListSPName);
                 LocalST->Get("Multilnk",OneRecord->Multilnk);
+                LocalST->Get("LNK_species",OneRecord->LNK_species);
+                LocalST->Get("LNK_EidosID",(int32_t*)&OneRecord->LNK_EidosID);
+                LocalST->Get("LNK_HypID",(int32_t*)&OneRecord->LNK_HypID);
+                LocalST->Get("LNK_NeedList",OneRecord->LNK_NeedList);
+
+
                 OneRecord->HostEidos=this;
                 OneRecord->DTValue=this->DT;
                 OneRecord->strClass_NodeName =InObj->Name;

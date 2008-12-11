@@ -111,7 +111,7 @@ void EA_OneFrame::fillVisibleWidget()
 			DLLButton = new QToolButton(this);
 			DLLButton->setObjectName("DLLButton");
 		    QIcon icon1;
-		    icon1.addPixmap(QPixmap(QString::fromUtf8("images/exec.png")), QIcon::Normal, QIcon::Off);
+		    icon1.addPixmap(QPixmap(QString::fromUtf8((":/PICS/exec.png"))), QIcon::Normal, QIcon::Off);
 		    DLLButton->setIcon(icon1);
 		    horizontalLayout->addWidget(DLLButton);
 			EditableWidget=new QLineEdit(frame);
@@ -135,7 +135,7 @@ void EA_OneFrame::fillVisibleWidget()
 			LNKButton = new QToolButton(this);
 			LNKButton->setObjectName("LNKButton");
 		    QIcon icon1;
-		    icon1.addPixmap(QPixmap(QString::fromUtf8("images/chain_nicu_buculei_01.png")), QIcon::Normal, QIcon::Off);
+		    icon1.addPixmap(QPixmap(QString::fromUtf8(":/PICS/chain_nicu_buculei_01.png")), QIcon::Normal, QIcon::Off);
 		    LNKButton->setIcon(icon1);
 
 		    horizontalLayout->addWidget(LNKButton);
@@ -151,7 +151,7 @@ void EA_OneFrame::fillVisibleWidget()
 		HronologyButton = new QToolButton(this);
 		HronologyButton->setObjectName("HronologyButton");
 		QIcon icon2;
-		icon2.addPixmap(QPixmap(QString::fromUtf8("images/clock.png")), QIcon::Normal, QIcon::Off);
+		icon2.addPixmap(QPixmap(QString::fromUtf8(":/PICS/clock.png")), QIcon::Normal, QIcon::Off);
 		HronologyButton->setIcon(icon2);
 		horizontalLayout->addWidget(HronologyButton);
 	}
@@ -235,20 +235,17 @@ void EA_OneFrame::LNKClick()
 {
 	long ID_Eidos, ID_Hypotesis;
 
-	if(EAA->EA->LinkedLevelHP>0)	//Если определен уровень к которому следует отнести текущий
+	if(EAA->EA->LNK_HypID>0)	//Если определен уровень к которому следует отнести текущий
 	{
 		if(EAA->EA->type==platon::ft_LinkHypotesis)	//Ссылка указывает на объект Hypotesis
-			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LinkedLevelHP,ID_Eidos, ID_Hypotesis);
+			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_HypID,ID_Eidos, ID_Hypotesis);
 		if(EAA->EA->type==platon::ft_LinkPragma)	//Ссылка указывает на объект Pragma
-			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LinkedLevelHP,ID_Eidos, ID_Hypotesis);
+			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_HypID,ID_Eidos, ID_Hypotesis);
 
 		if(ID_Eidos==0)
 		{
 			QString Species="ALL";
-			if(EAA->EA->LinkedSpecies==0) Species="OBJ";	//Херня какая то нужно переделать - внести прямо в БД в виде строки
-			if(EAA->EA->LinkedSpecies==1) Species="ACT";
-			if(EAA->EA->LinkedSpecies==2) Species="RES";
-			if(EAA->EA->LinkedSpecies==3) Species="NSI";
+			if(QString::fromStdString(EAA->EA->LNK_species)!="") Species=QString::fromStdString(EAA->EA->LNK_species);
 
 			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,Species,0);
 			Localdialog->exec();
