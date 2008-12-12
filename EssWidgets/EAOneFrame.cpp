@@ -220,8 +220,7 @@ void EA_OneFrame::Save()
 			case platon::ft_LinkHypotesis:
 			case platon::ft_LinkPragma:
 			{
-				if(KeepValue!=((QLineEdit*)EditableWidget)->text())
-					;
+				//Данные значения обрабатываются в процедурах вызова кнопок
 				break;
 			}
 			default:
@@ -233,73 +232,59 @@ void EA_OneFrame::Save()
 
 void EA_OneFrame::LNKClick()
 {
-	long ID_Eidos, ID_Hypotesis;
-
-	if(EAA->EA->LNK_HypID>0)	//Если определен уровень к которому следует отнести текущий
+	long ID_Eidos, ID_Hyp;
+	if(EAA->EA->type==platon::ft_LinkHypotesis)
 	{
-		if(EAA->EA->type==platon::ft_LinkHypotesis)	//Ссылка указывает на объект Hypotesis
-			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_HypID,ID_Eidos, ID_Hypotesis);
-		if(EAA->EA->type==platon::ft_LinkPragma)	//Ссылка указывает на объект Pragma
-			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_HypID,ID_Eidos, ID_Hypotesis);
-
-		if(ID_Eidos==0)
+		if(EAA->EA->LNK_EidosID==0)	//Выводим список эйдосов
 		{
-			QString Species="ALL";
-			if(QString::fromStdString(EAA->EA->LNK_species)!="") Species=QString::fromStdString(EAA->EA->LNK_species);
+			QString spec=QString::fromStdString(EAA->EA->LNK_species);
+			if(spec=="")spec="ALL";
+			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2HValue().LinkTo,ID_Eidos, ID_Hyp);
 
-			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,Species,0);
+			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,spec,ID_Eidos);
 			Localdialog->exec();
 			ID_Eidos=Localdialog->Out_value;
-			if(ID_Eidos==0) return;	//Ничего не выбрано
-			if(EAA->EA->type==platon::ft_LinkHypotesis)
-			{
-				platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
-				ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,0);
-				HypotesisDialog->exec();
-				delete localEidos;
-			}
-			if(EAA->EA->type==platon::ft_LinkPragma)
-			{
-				platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
-				ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,0);
-				PragmaDialog->exec();
-				delete localEidos;
-			}
 		}
+		else ID_Eidos=EAA->EA->LNK_EidosID;
+		if(ID_Eidos==0)	return;
+
+		//Выводим список гипотез для выбора
+		platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
+		ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,EAA->GetLink2HValue().LinkTo);
+		HypotesisDialog->exec();
+		platon::LNK_Value localLNKVal;
+		localLNKVal.LinkTo=HypotesisDialog->Out_value;
+		localLNKVal.Ratio=EAA->GetLink2HValue().Ratio;
+		if(localLNKVal.LinkTo>0) EAA->SetLink2HValue(localLNKVal);
+		delete localEidos;
+		((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
 	}
-	else	//Уровень не предопределен, значит следует в любом случае получать подтверждение пользователя
+	if(EAA->EA->type==platon::ft_LinkPragma)
 	{
-		if(EAA->EA->type==platon::ft_LinkHypotesis)	//Ссылка указывает на объект Hypotesis
-			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2HValue().LinkTo,ID_Eidos, ID_Hypotesis);
-		if(EAA->EA->type==platon::ft_LinkPragma)	//Ссылка указывает на объект Pragma
-			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2PValue().LinkTo,ID_Eidos, ID_Hypotesis);
-
-		QString Species="ALL";
-		if(ID_Eidos>0)
-			Species.fromStdString(platon::GetEidosSpecies(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos));
-
-		ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,Species,ID_Eidos);
-		Localdialog->exec();
-		ID_Eidos=Localdialog->Out_value;
-		if(ID_Eidos==0) return;	//Ничего не выбрано
-		//Далее вызывается форма для выбора из числа объектов
-		if(EAA->EA->type==platon::ft_LinkHypotesis)
+		if(EAA->EA->LNK_EidosID==0)	//Выводим список эйдосов
 		{
-			platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
-			ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,ID_Hypotesis);
-			HypotesisDialog->exec();
-			QMessageBox::information(this,"Imitation",QString::number(HypotesisDialog->Out_value));
-			delete localEidos;
-		}
-		if(EAA->EA->type==platon::ft_LinkPragma)
-		{
-			platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
-			ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,EAA->GetLink2PValue().LinkTo);
-			PragmaDialog->exec();
-			QMessageBox::information(this,"Imitation",QString::number(PragmaDialog->Out_value));
-			delete localEidos;
-		}
+			QString spec=QString::fromStdString(EAA->EA->LNK_species);
+			if(spec=="")spec="ALL";
+			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2PValue().LinkTo,ID_Eidos, ID_Hyp);
 
+			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,spec,ID_Eidos);
+			Localdialog->exec();
+			ID_Eidos=Localdialog->Out_value;
+		}
+		else ID_Eidos=EAA->EA->LNK_EidosID;
+		if(ID_Eidos==0)	return;
+
+		//Выводим список прагм с наименованиями гипотез для выбора
+		platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
+		ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,EAA->GetLink2PValue().LinkTo);
+		PragmaDialog->exec();
+		platon::LNK_Value localLNKVal;
+		localLNKVal.LinkTo=PragmaDialog->Out_value;
+		localLNKVal.Ratio=EAA->GetLink2HValue().Ratio;
+
+		if(localLNKVal.LinkTo>0) EAA->SetLink2PValue(localLNKVal);
+		delete localEidos;
+		((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
 	}
 }
 

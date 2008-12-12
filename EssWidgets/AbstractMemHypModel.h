@@ -30,6 +30,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 	pIterator* KeyIterator;
 	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
+	QModelIndex GetQModelIndexByID(long ID_in);				// Функция возвращает значение индекса модели по идентификатору записи
 
 protected:
 	mutable QVector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel

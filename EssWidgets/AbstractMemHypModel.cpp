@@ -166,5 +166,9 @@ QVariant AbstractMemHypModel::GetDataFromBuffer(const QModelIndex &index)const
 	QVariant ForReturn = OneMap->value(key);
 	return ForReturn;
 }
+QModelIndex AbstractMemHypModel::GetQModelIndexByID(long ID_in)
+{
+	return this->index(Id_records->indexOf(ID_in),0,QModelIndex());
+}
 
 }
