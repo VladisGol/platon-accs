@@ -46,15 +46,9 @@ void ChoiceHypotesis_Dialog::ExitWithAccept()
 }
 bool ChoiceHypotesis_Dialog::find(long ID_searchfor)
 {
-	/*
-	//QList<QTreeWidgetItem *> FoundedItem = this->treeWidget->findItems (QString::number(ID_searchfor), Qt::MatchExactly | Qt::MatchRecursive,1 );
-    if(FoundedItem.count()>0)      //Найден искомый элемент
-    {
-    	//this->treeWidget->setCurrentItem(FoundedItem.at(0));	//Найденный элемент выводим текущим
-    	return true;
-    }
-    else*/
-    	return false;
-
+	QModelIndex founded_item= Model->GetQModelIndexByID(ID_searchfor);
+	if(founded_item.row()==0) return false;
+	this->TableView->setCurrentIndex(founded_item);
+	return true;
 }
 }
