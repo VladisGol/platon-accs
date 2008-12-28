@@ -94,6 +94,15 @@ namespace platon
         std::string GetTitle();
 	};
 
+	class iterLinkedHyp:public pIterator
+	{
+		long IDfor;
+	public:
+		iterLinkedHyp(IBPP::Database inDB,long ID_in);      //Итератор для получения списка ссылающихся гипотез на объект с идентификатором ID_in
+		void SetIterEidos();								//Процедура устанавливает перебор эйдосов
+		void SetIterHyp();									//Процедура устанавливает перебор по гипотезам
+	};
+
 	class iterLinkedPragma:public pIterator
 	{
 	public:

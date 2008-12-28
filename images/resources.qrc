@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="PICS" >
+    <file>chains.png</file>
     <file>contents.png</file>
     <file>edit.png</file>
     <file>blockdevice.png</file>

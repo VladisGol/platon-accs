@@ -186,6 +186,23 @@ namespace platon
 		if(IsFetched) LocalST->Get("DATE_TIME",RetVal);
 		return RetVal;
 	}
+	iterLinkedHyp::iterLinkedHyp(IBPP::Database inDB,long ID_in)
+	{
+		this->DB=inDB;
+		Initialize();
+		IDfor=ID_in;
+	}
+	void iterLinkedHyp::SetIterEidos()
+	{
+        SQL_string="select ID_EIDOS ID from GET_LINKED_HYPLIST("+ToString(IDfor)+") GROUP BY ID_EIDOS;";
+        SQL_string_forreccount="select count(id) from (select id_eidos id from GET_LINKED_HYPLIST("+ToString(IDfor)+") group by id_eidos)";
+	}
+	void iterLinkedHyp::SetIterHyp()
+	{
+        SQL_string="select ID_EIDOS, ID_HYPOTESIS from GET_LINKED_HYPLIST("+ToString(IDfor)+");";
+        //SQL_string_forreccount="select count(id)
+	}
+
 }
 
 

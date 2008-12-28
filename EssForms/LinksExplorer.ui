@@ -1,0 +1,79 @@
+<ui version="4.0" >
+ <class>LinksExplorer</class>
+ <widget class="QMainWindow" name="LinksExplorer" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1006</width>
+    <height>612</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Ссылки из других объектоа системы</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <layout class="QGridLayout" name="gridLayout" >
+    <item row="0" column="0" >
+     <widget class="QSplitter" name="splitter" >
+      <property name="orientation" >
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <widget class="QEidosTreeWidget" name="EidosTreeWidget" >
+       <column>
+        <property name="text" >
+         <string>1</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QTabWidget" name="tabWidget_Prg" >
+       <property name="currentIndex" >
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tab_Hypotesis" >
+        <attribute name="title" >
+         <string>Ссылки из объектов ТИП</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_2" >
+         <item row="0" column="0" >
+          <widget class="QTableView" name="tableView_Hyp" />
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_Pragma" >
+        <attribute name="title" >
+         <string>Ссылки из объектов ЭКЗЕМПЛЯР</string>
+        </attribute>
+        <layout class="QGridLayout" name="gridLayout_3" >
+         <item row="0" column="0" >
+          <widget class="QTableView" name="tableView_2" />
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1006</width>
+     <height>28</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar" />
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QEidosTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>qeidostreewidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

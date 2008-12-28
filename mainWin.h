@@ -15,6 +15,7 @@
 #include "HypotesisEditForm.h"
 #include "PragmaEditForm.h"
 #include "EAOneFrame.h"
+#include "LinksExplorer.h"
 
 
 class mainWin : public QMainWindow, public Ui::MainWindow
@@ -35,6 +36,7 @@ private slots:
 	void DeleteItem();// Слот для удаления объекта
 	void RefreshViews();
 	void BaseTimeShift();//Слот для установки в базе данных времени работы в программе
+	void Showlinks();// Слот для вызова формы отображения ссылок на текущую запись
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
@@ -43,7 +45,7 @@ private:
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	int CurrentObjectLevel;
-	enum ObjectLevel {Level_Hypotesis,Level_Pragma};
+	enum ObjectLevel {Level_Hypotesis=1,Level_Pragma=2};
 
 };
 

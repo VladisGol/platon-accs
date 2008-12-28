@@ -50,6 +50,7 @@ mainWin::mainWin(QWidget *parent)
 		QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
 		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
 		QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
+		QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
 
 		SetEidosView(0);
 
@@ -63,7 +64,7 @@ mainWin::mainWin(QWidget *parent)
 		DTBaseShifter=new QTimer(this);
 		connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
 		BaseTimeShift();
-		DTBaseShifter->start(60*1000);	//Устанавливаем время обновления
+		DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -75,6 +76,7 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 			this->action_add->setEnabled(false);
 			this->action_del->setEnabled(false);
 			this->action_edit->setEnabled(false);
+			this->action_links->setEnabled(false);
 		}
 	}
 	if (obj == tableViewHypotesis)
@@ -84,6 +86,7 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 			this->action_add->setEnabled(true);
 			this->action_del->setEnabled(true);
 			this->action_edit->setEnabled(true);
+			this->action_links->setEnabled(true);
 			CurrentObjectLevel=Level_Hypotesis;
 		}
 	}
@@ -97,12 +100,14 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 				this->action_add->setEnabled(true);
 				this->action_del->setEnabled(true);
 				this->action_edit->setEnabled(true);
+				this->action_links->setEnabled(false);
 			}
 			else
 			{
 				this->action_add->setEnabled(false);
 				this->action_del->setEnabled(true);
 				this->action_edit->setEnabled(true);
+				this->action_links->setEnabled(false);
 			}
 			CurrentObjectLevel=Level_Pragma;
 		}
@@ -240,6 +245,18 @@ void mainWin::AddItem()
 void mainWin::DeleteItem()
 {
 }
+void mainWin::Showlinks()
+{
+	if(CurrentObjectLevel==Level_Hypotesis)
+	{
+		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this);
+		LnkForm->show();
+	}
+	if(CurrentObjectLevel==Level_Pragma)
+	{
+	}
+}
+
 void mainWin::RefreshViews()
 {
 //Процедура обновляет значения в окнах отображения гипотез и прагм

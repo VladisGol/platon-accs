@@ -212,6 +212,7 @@
     <addaction name="action_add" />
     <addaction name="action_del" />
     <addaction name="action_refresh" />
+    <addaction name="action_links" />
    </widget>
    <addaction name="menu" />
    <addaction name="menu_2" />
@@ -239,6 +240,7 @@
    <addaction name="action_del" />
    <addaction name="separator" />
    <addaction name="action_refresh" />
+   <addaction name="action_links" />
   </widget>
   <action name="action_quit" >
    <property name="icon" >
@@ -283,6 +285,15 @@
    </property>
    <property name="text" >
     <string>Обновить</string>
+   </property>
+  </action>
+  <action name="action_links" >
+   <property name="icon" >
+    <iconset resource="images/resources.qrc" >
+     <normaloff>:/PICS/chains.png</normaloff>:/PICS/chains.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Ссылки в базе</string>
    </property>
   </action>
  </widget>
