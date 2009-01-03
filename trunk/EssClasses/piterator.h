@@ -94,31 +94,47 @@ namespace platon
         std::string GetTitle();
 	};
 
-	class iterLinkedHyp:public pIterator
-	{
-		long IDfor;
-	public:
-		iterLinkedHyp(IBPP::Database inDB,long ID_in);      //Итератор для получения списка ссылающихся гипотез на объект с идентификатором ID_in
-		void SetIterEidos();								//Процедура устанавливает перебор эйдосов
-		void SetIterHyp();									//Процедура устанавливает перебор по гипотезам
-	};
-
-	class iterLinkedPragma:public pIterator
-	{
-	public:
-		iterLinkedPragma(Pragma* InPragma, std::string NameEA);        //Итератор для получения списка ссылающихся прагм по экстраатрибуту
-	};
 	class iterAllPragmaForEidos:public pIterator
 	{
 	public:
 		iterAllPragmaForEidos(Eidos* InEidos);        //Итератор для получения списка ссылающихся прагм и имени гипотезы по указанному эйдосу
 	};
+	//Классы итераторов для обслуживания темпоральных значений
 	class iterTemporalityListofOneEA:public pIterator
 	{
 	public:
 		iterTemporalityListofOneEA(AssociatedExtraAttribute* OneAEA);
 		IBPP::Timestamp GetGateTime();
 	};
+
+	//Классы итераторов, для обслуживания ссылок
+	class iterLNKS_Hyp :public pIterator
+	{
+	public:
+		iterLNKS_Hyp(IBPP::Database inDB);
+		void MasterChanged(long LEidosID,long ID_in);
+		long EidosID;
+		long ID_in;
+	};
+
+	class iterLNKS_Eidos :public pIterator
+	{
+	public:
+		iterLNKS_Eidos(IBPP::Database inDB,long ID_in);
+		iterLNKS_Hyp* DetailIter;
+	};
+
+	class LinkedHypotesys
+	{
+	public:
+		long IDfor;
+		IBPP::Database DB;
+	 	LinkedHypotesys(IBPP::Database inDB, long ID_in);
+		~LinkedHypotesys();
+		iterLNKS_Eidos* LEidos;	//Итератор по объектам эйдосов, ссылающимся на указанный идентификатор объекта
+		iterLNKS_Hyp* LHyp;	//Итератор по объектам гипотез, ссылающимся на указанный идентификатор объекта
+	};
+
 }
 
 

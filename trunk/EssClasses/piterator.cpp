@@ -158,15 +158,6 @@ namespace platon
 		return RetVal;
 	}
 
-	iterLinkedPragma::iterLinkedPragma(Pragma* InPragma, std::string NameEA)
-	{
-        //Получается список многих объектов, ссылающихся на указанную прагму
-        this->DB=InPragma->HostEidos->DB;
-        Initialize();
-        SQL_string="select ID from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
-        SQL_string_forreccount="select count(GET_LINKED_PRAGMA_LIST.id) recordscount from GET_LINKED_PRAGMA_LIST("+ToString(InPragma->GetID())+", "+ToString(Get_EAID_ByName(InPragma->HostEidos->DB,NameEA))+");";
-	}
-
 	iterAllPragmaForEidos::iterAllPragmaForEidos(Eidos* InEidos)
 	{
 		this->DB=InEidos->DB;
@@ -186,23 +177,43 @@ namespace platon
 		if(IsFetched) LocalST->Get("DATE_TIME",RetVal);
 		return RetVal;
 	}
-	iterLinkedHyp::iterLinkedHyp(IBPP::Database inDB,long ID_in)
+
+	LinkedHypotesys::LinkedHypotesys(IBPP::Database inDB,long ID_in)
 	{
 		this->DB=inDB;
-		Initialize();
-		IDfor=ID_in;
-	}
-	void iterLinkedHyp::SetIterEidos()
-	{
-        SQL_string="select ID_EIDOS ID from GET_LINKED_HYPLIST("+ToString(IDfor)+") GROUP BY ID_EIDOS;";
-        SQL_string_forreccount="select count(id) from (select id_eidos id from GET_LINKED_HYPLIST("+ToString(IDfor)+") group by id_eidos)";
-	}
-	void iterLinkedHyp::SetIterHyp()
-	{
-        SQL_string="select ID_EIDOS, ID_HYPOTESIS from GET_LINKED_HYPLIST("+ToString(IDfor)+");";
-        //SQL_string_forreccount="select count(id)
+		this->IDfor=ID_in;
+		this->LEidos=new iterLNKS_Eidos(inDB,ID_in);
+		this->LHyp=new iterLNKS_Hyp(inDB);
 	}
 
+	LinkedHypotesys::~LinkedHypotesys()
+	{
+		delete LEidos;
+		delete LHyp;
+	}
+	iterLNKS_Eidos::iterLNKS_Eidos(IBPP::Database inDB,long ID_in)
+	{
+        this->DB=inDB;
+        Initialize();
+        DetailIter=NULL;
+		SQL_string="select ID_EIDOS ID from GET_LINKED_HYPLIST("+ToString(ID_in)+") GROUP BY ID_EIDOS;";
+        SQL_string_forreccount="select count(id) recordscount from (select id_eidos id from GET_LINKED_HYPLIST("+ToString(ID_in)+") group by id_eidos)";
+	}
+	iterLNKS_Hyp::iterLNKS_Hyp(IBPP::Database inDB)
+	{
+        this->DB=inDB;
+		this->EidosID=0;
+		this->ID_in=0;
+
+	}
+	void iterLNKS_Hyp::MasterChanged(long LEidosID,long ID_in_par)
+	{
+		this->EidosID=LEidosID;
+		this->ID_in=ID_in_par;
+        Initialize();
+		SQL_string="select ID_HYPOTESIS ID from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
+        SQL_string_forreccount="select count(ID_HYPOTESIS) recordscount from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
+	}
 }
 
 

@@ -23,6 +23,7 @@ public:
 protected:
 	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру
 	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
+	HypotesisMemModel(QObject * parent);
 };
 
 }

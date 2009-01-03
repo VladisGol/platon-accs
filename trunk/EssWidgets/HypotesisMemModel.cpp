@@ -10,6 +10,9 @@
 
 namespace platon
 {
+HypotesisMemModel::HypotesisMemModel(QObject * parent)
+					:AbstractMemHypModel(parent)
+{;}
 
 HypotesisMemModel::HypotesisMemModel(Eidos* InEidos, QObject * parent)
 					:AbstractMemHypModel(parent)
