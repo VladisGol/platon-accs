@@ -34,14 +34,14 @@ void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 		{
 			QTreeWidgetItem *__item = new QTreeWidgetItem(this);
 			__item->setText(0, tr( MyEidosIter->GetTitle().c_str()));
-    			__item->setText(1,QString::number(MyEidosIter->GetID()));
+    		__item->setText(1,QString::number(MyEidosIter->GetID()));
 			__item->setText(2,QString::number(MyEidosIter->GetParentID()));
 		}
 		else
 		{
 			QTreeWidgetItem *__item = new QTreeWidgetItem(FoundedItem.at(0));
 			__item->setText(0, tr( MyEidosIter->GetTitle().c_str()));
-    			__item->setText(1,QString::number(MyEidosIter->GetID()));
+    		__item->setText(1,QString::number(MyEidosIter->GetID()));
 			__item->setText(2,QString::number(MyEidosIter->GetParentID()));
 		}
 	}

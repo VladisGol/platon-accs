@@ -249,7 +249,9 @@ void mainWin::Showlinks()
 {
 	if(CurrentObjectLevel==Level_Hypotesis)
 	{
-		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this);
+		int myrow=tableViewHypotesis->currentIndex().row();
+		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,MyDB,id_hypotesys);
 		LnkForm->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
