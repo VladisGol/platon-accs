@@ -11,7 +11,9 @@ LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_Hypo
 	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
 	if(EidosID>0)	//Проверяем найдены ли среди гипотез заданная в параметре
 	{
-		LH=new LinkedHypotesys(DB,ID_Hypotesys);
+		LEidos=new iterLNKS_HEidos(DB,ID_Hypotesys);
+		LHyp= new iterLNKS_Hyp(DB);
+	    IDFor=ID_Hypotesys;
 
 		EidosTreeWidget->SetSpecies("ALL");
 		EidosTreeWidget->AttachToDB(DB);
@@ -55,10 +57,10 @@ void LinksExplorer::PaintingEidos()
 	    ++it;
 	}
 	//После чего устанавливаем в раскрытое состояние и подкрашиваем его BOLD-ом
-	LH->LEidos->First();
-	while(LH->LEidos->Fetched())
+	LEidos->First();
+	while(LEidos->Fetched())
 	{
-		QTreeWidgetItem * OneItem=FindEidosByID(LH->LEidos->GetID());
+		QTreeWidgetItem * OneItem=FindEidosByID(LEidos->GetID());
 
 		QFont fn=OneItem->font(0);
 		fn.setBold(true);
@@ -71,7 +73,7 @@ void LinksExplorer::PaintingEidos()
 			if(idparent<=0) break;
 			OneItem=FindEidosByID(idparent);
 		}
-		LH->LEidos->Next();
+		LEidos->Next();
 	}
 }
 QTreeWidgetItem * LinksExplorer::FindEidosByID(long ID)
@@ -96,8 +98,8 @@ void LinksExplorer::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	}
 
 	LocalEidos=new platon::Eidos(DB,id_eidos);
-	LH->LHyp->MasterChanged(id_eidos,LH->IDfor);
-	platon::LnkdHypMemModel* MyModel=new platon::LnkdHypMemModel(LocalEidos,LH->LHyp, this);
+	LHyp->MasterChanged(id_eidos,IDFor);
+	platon::LnkdHypMemModel* MyModel=new platon::LnkdHypMemModel(LocalEidos,LHyp, this);
 	tableView_Hyp->setModel(MyModel);
 	if(keep4delete!=NULL)
 		delete keep4delete;

@@ -178,20 +178,7 @@ namespace platon
 		return RetVal;
 	}
 
-	LinkedHypotesys::LinkedHypotesys(IBPP::Database inDB,long ID_in)
-	{
-		this->DB=inDB;
-		this->IDfor=ID_in;
-		this->LEidos=new iterLNKS_Eidos(inDB,ID_in);
-		this->LHyp=new iterLNKS_Hyp(inDB);
-	}
-
-	LinkedHypotesys::~LinkedHypotesys()
-	{
-		delete LEidos;
-		delete LHyp;
-	}
-	iterLNKS_Eidos::iterLNKS_Eidos(IBPP::Database inDB,long ID_in)
+	iterLNKS_HEidos::iterLNKS_HEidos(IBPP::Database inDB,long ID_in)
 	{
         this->DB=inDB;
         Initialize();
@@ -214,6 +201,24 @@ namespace platon
 		SQL_string="select ID_HYPOTESIS ID from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
         SQL_string_forreccount="select count(ID_HYPOTESIS) recordscount from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
 	}
+
+	iterLNKS_PEidos::iterLNKS_PEidos(IBPP::Database inDB,long ID_in)
+	{
+        this->DB=inDB;
+        Initialize();
+        DetailIter=NULL;
+		SQL_string="select ID_EIDOS ID from GET_LINKED_PRAGMALIST("+ToString(ID_in)+") GROUP BY ID_EIDOS;";
+        SQL_string_forreccount="select count(id) recordscount from (select id_eidos id from GET_LINKED_PRAGMALIST("+ToString(ID_in)+") group by id_eidos)";
+	}
+	void iterLNKS_Pragma::MasterChanged(long LEidosID,long ID_in_par)
+	{
+		this->EidosID=LEidosID;
+		this->ID_in=ID_in_par;
+        Initialize();
+		SQL_string="select ID_HYPOTESIS ID from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
+        SQL_string_forreccount="select count(ID_HYPOTESIS) recordscount from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
+	}
+
 }
 
 

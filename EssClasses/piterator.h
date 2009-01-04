@@ -117,26 +117,26 @@ namespace platon
 		long ID_in;
 	};
 
-	class iterLNKS_Eidos :public pIterator
+	class iterLNKS_HEidos :public pIterator
 	{
 	public:
-		iterLNKS_Eidos(IBPP::Database inDB,long ID_in);
+		iterLNKS_HEidos(IBPP::Database inDB,long ID_in);
 		iterLNKS_Hyp* DetailIter;
 	};
 
-	class LinkedHypotesys
+	class iterLNKS_Pragma :public iterLNKS_Hyp
 	{
 	public:
-		long IDfor;
-		IBPP::Database DB;
-	 	LinkedHypotesys(IBPP::Database inDB, long ID_in);
-		~LinkedHypotesys();
-		iterLNKS_Eidos* LEidos;	//Итератор по объектам эйдосов, ссылающимся на указанный идентификатор объекта
-		iterLNKS_Hyp* LHyp;	//Итератор по объектам гипотез, ссылающимся на указанный идентификатор объекта
+		void MasterChanged(long LEidosID,long ID_in);
+	};
+
+	class iterLNKS_PEidos :public pIterator
+	{
+	public:
+		iterLNKS_PEidos(IBPP::Database inDB,long ID_in);
+		iterLNKS_Pragma* DetailIter;
 	};
 
 }
-
-
 
 #endif

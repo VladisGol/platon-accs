@@ -23,7 +23,11 @@ public:
     IBPP::Database DB;
     Eidos* LocalEidos;
     Hypotesis*LocalHypotesis;
-    LinkedHypotesys* LH;
+
+    iterLNKS_Hyp* LHyp;
+    iterLNKS_HEidos* LEidos;
+    long IDFor;
+
 
     void PaintingEidos();
     QTreeWidgetItem * FindEidosByID(long ID);
