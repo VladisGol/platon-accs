@@ -89,6 +89,8 @@ namespace platon
 	};
 	class iterHypPragma :public pIterator
 	{
+	protected:
+		iterHypPragma(){;};
 	public:
 		iterHypPragma(Eidos* InEidos);
         std::string GetTitle();
@@ -124,10 +126,13 @@ namespace platon
 		iterLNKS_Hyp* DetailIter;
 	};
 
-	class iterLNKS_Pragma :public iterLNKS_Hyp
+	class iterLNKS_Pragma :public iterHypPragma
 	{
 	public:
+		iterLNKS_Pragma(IBPP::Database inDB);
 		void MasterChanged(long LEidosID,long ID_in);
+		long EidosID;
+		long ID_in;
 	};
 
 	class iterLNKS_PEidos :public pIterator

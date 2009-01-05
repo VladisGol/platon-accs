@@ -2,48 +2,55 @@
 
 namespace platon
 {
-LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys): QMainWindow(parent)
+LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, QString InSpecies): QMainWindow(parent)
 {
 	setupUi(this);
 
 	this->DB=InDB;
-	long EidosID,HypotesysID;
-	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
-	if(EidosID>0)	//Проверяем найдены ли среди гипотез заданная в параметре
-	{
-		LEidos=new iterLNKS_HEidos(DB,ID_Hypotesys);
-		LHyp= new iterLNKS_Hyp(DB);
-	    IDFor=ID_Hypotesys;
 
-		EidosTreeWidget->SetSpecies("ALL");
-		EidosTreeWidget->AttachToDB(DB);
+	LocalEidosH=NULL;
+	LocalEidosP=NULL;
 
-		PaintingEidos();
-	}
-	else throw "Объект на который указывает идентификатор из параметра не существует";
+	IEidosH=new iterLNKS_HEidos(DB,ID_in);
+	IEidosP=new iterLNKS_PEidos(DB,ID_in);
+
+	IHyp= new iterLNKS_Hyp(DB);
+	IPragma=new iterLNKS_Pragma(DB);
+
+	IDFor=ID_in;
+
+	HEidosTreeWidget->SetSpecies("ALL");
+	HEidosTreeWidget->AttachToDB(DB);
+	PEidosTreeWidget->SetSpecies("ALL");
+	PEidosTreeWidget->AttachToDB(DB);
 
 
-	QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
+	QObject::connect(HEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
+	QObject::connect(PEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
+
 //	QObject::connect(action_Cancel, SIGNAL(activated()), this, SLOT(ExitByCancel()));
 //	QObject::connect(action_saveNexit, SIGNAL(activated()), this, SLOT(ExitWithSave()));
+
+    PaintingEidos(this->HEidosTreeWidget,IEidosH);
+	PaintingEidos(this->PEidosTreeWidget,IEidosP);
+
 }
 
 void LinksExplorer::ExitWithSave()
 {
-	this->LocalHypotesis->TransactionIBPP->Commit();
 	this->close();
 }
 void LinksExplorer::ExitByCancel()
 {
-	this->LocalHypotesis->TransactionIBPP->Rollback();
 	this->close();
 }
 LinksExplorer::~LinksExplorer()
 {
-	delete LocalEidos;
+	if(LocalEidosH!=NULL) delete LocalEidosH;
+	if(LocalEidosP!=NULL) delete LocalEidosP;
 	delete LocalHypotesis;
 }
-void LinksExplorer::PaintingEidos()
+void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 {
 //Процедура раскрашивает элементы эйдосов
 	//Сначала все элементы устанавливаем в выключенное состояние
@@ -57,26 +64,28 @@ void LinksExplorer::PaintingEidos()
 	    ++it;
 	}
 	//После чего устанавливаем в раскрытое состояние и подкрашиваем его BOLD-ом
-	LEidos->First();
-	while(LEidos->Fetched())
+	iter->First();
+	while(iter->Fetched())
 	{
-		QTreeWidgetItem * OneItem=FindEidosByID(LEidos->GetID());
-
-		QFont fn=OneItem->font(0);
-		fn.setBold(true);
-		OneItem->setFont(0,fn);
-
-		while(true)
+		QTreeWidgetItem * OneItem=FindEidosByID(EidosTreeWidget, iter->GetID());
+		if(OneItem!=NULL)					//Если найдено значение
 		{
-			OneItem->setExpanded(true);
-			long idparent =	OneItem->text(2).toInt();
-			if(idparent<=0) break;
-			OneItem=FindEidosByID(idparent);
+			QFont fn=OneItem->font(0);
+			fn.setBold(true);
+			OneItem->setFont(0,fn);			//Устанавливаем элемент в BOLD
+
+			while(true)
+			{
+				OneItem->setExpanded(true);	//Раскрываем все предшествующие элементы списка
+				long idparent =	OneItem->text(2).toInt();
+				if(idparent<=0) break;
+				OneItem=FindEidosByID(EidosTreeWidget, idparent);
+			}
+			iter->Next();
 		}
-		LEidos->Next();
 	}
 }
-QTreeWidgetItem * LinksExplorer::FindEidosByID(long ID)
+QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, long ID)
 {
 	QList<QTreeWidgetItem *> FoundedItem = EidosTreeWidget->findItems (QString::number(ID), Qt::MatchExactly | Qt::MatchRecursive,1 );
 	if(FoundedItem.count()>0)      //Найден искомый элемент
@@ -86,21 +95,38 @@ QTreeWidgetItem * LinksExplorer::FindEidosByID(long ID)
 	return NULL;
 }
 
-void LinksExplorer::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
+void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 {
 	platon::LnkdHypMemModel* keep4delete=NULL;
 	long id_eidos=CurItem->text(1).toLong();
 
-	if(LocalEidos!=NULL)
+	if(LocalEidosH!=NULL)
 	{
-		delete LocalEidos;
+		delete LocalEidosH;
 		keep4delete=(platon::LnkdHypMemModel*)tableView_Hyp->model();
 	}
 
-	LocalEidos=new platon::Eidos(DB,id_eidos);
-	LHyp->MasterChanged(id_eidos,IDFor);
-	platon::LnkdHypMemModel* MyModel=new platon::LnkdHypMemModel(LocalEidos,LHyp, this);
+	LocalEidosH=new platon::Eidos(DB,id_eidos);
+	platon::LnkdHypMemModel* MyModel=new platon::LnkdHypMemModel(LocalEidosH,IDFor, this);
 	tableView_Hyp->setModel(MyModel);
+	if(keep4delete!=NULL)
+		delete keep4delete;
+}
+
+void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
+{
+	platon::LnkdHypPragmaMemModel* keep4delete=NULL;
+	long id_eidos=CurItem->text(1).toLong();
+
+	if(LocalEidosP!=NULL)
+	{
+		delete LocalEidosP;
+		keep4delete=(platon::LnkdHypPragmaMemModel*)tableView_Pragma->model();
+	}
+
+	LocalEidosP=new platon::Eidos(DB,id_eidos);
+	platon::LnkdHypPragmaMemModel* MyModel=new platon::LnkdHypPragmaMemModel(LocalEidosP,IDFor, this);
+	tableView_Pragma->setModel(MyModel);
 	if(keep4delete!=NULL)
 		delete keep4delete;
 }

@@ -15,41 +15,53 @@
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" name="gridLayout" >
     <item row="0" column="0" >
-     <widget class="QSplitter" name="splitter" >
-      <property name="orientation" >
-       <enum>Qt::Horizontal</enum>
+     <widget class="QTabWidget" name="tabWidget_Prg" >
+      <property name="currentIndex" >
+       <number>0</number>
       </property>
-      <widget class="QEidosTreeWidget" name="EidosTreeWidget" >
-       <column>
-        <property name="text" >
-         <string>1</string>
-        </property>
-       </column>
-      </widget>
-      <widget class="QTabWidget" name="tabWidget_Prg" >
-       <property name="currentIndex" >
-        <number>0</number>
-       </property>
-       <widget class="QWidget" name="tab_Hypotesis" >
-        <attribute name="title" >
-         <string>Ссылки из объектов ТИП</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_2" >
-         <item row="0" column="0" >
+      <widget class="QWidget" name="tab_Hypotesis" >
+       <attribute name="title" >
+        <string>Ссылки из объектов ТИП</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2" >
+        <item row="0" column="0" >
+         <widget class="QSplitter" name="splitter_2" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QEidosTreeWidget" name="HEidosTreeWidget" >
+           <column>
+            <property name="text" >
+             <string>1</string>
+            </property>
+           </column>
+          </widget>
           <widget class="QTableView" name="tableView_Hyp" />
-         </item>
-        </layout>
-       </widget>
-       <widget class="QWidget" name="tab_Pragma" >
-        <attribute name="title" >
-         <string>Ссылки из объектов ЭКЗЕМПЛЯР</string>
-        </attribute>
-        <layout class="QGridLayout" name="gridLayout_3" >
-         <item row="0" column="0" >
-          <widget class="QTableView" name="tableView_2" />
-         </item>
-        </layout>
-       </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_Pragma" >
+       <attribute name="title" >
+        <string>Ссылки из объектов ЭКЗЕМПЛЯР</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3" >
+        <item row="0" column="0" >
+         <widget class="QSplitter" name="splitter" >
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <widget class="QEidosTreeWidget" name="PEidosTreeWidget" >
+           <column>
+            <property name="text" >
+             <string>1</string>
+            </property>
+           </column>
+          </widget>
+          <widget class="QTableView" name="tableView_Pragma" />
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

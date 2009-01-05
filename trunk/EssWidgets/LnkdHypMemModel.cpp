@@ -11,7 +11,7 @@
 namespace platon
 {
 
-LnkdHypMemModel::LnkdHypMemModel(Eidos* InEidos,iterLNKS_Hyp* LnkdIterator ,QObject * parent)
+LnkdHypMemModel::LnkdHypMemModel(Eidos* InEidos,long IDin ,QObject * parent)
 					:HypotesisMemModel(parent)
 {
 	setObjectName("LnkdHypMemModel");
@@ -24,9 +24,10 @@ LnkdHypMemModel::LnkdHypMemModel(Eidos* InEidos,iterLNKS_Hyp* LnkdIterator ,QObj
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol;i++) FieldsInModel->append(new QMap<long,QVariant>);
 
-	KeyIterator=LnkdIterator;												//Выставляем итератор ключей записей
-	iterEidosID=LnkdIterator->EidosID;
-	iterID_in=LnkdIterator->ID_in;
+	KeyIterator= new iterLNKS_Hyp(ForEidos->DB);							//Выставляем итератор ключей записей
+	((iterLNKS_Hyp*)KeyIterator)->MasterChanged(ForEidos->GetID(),IDin);
+
+	ID_in=IDin;
 
 	ReadToBuffer();															//Считываем значения в буфер
 }
@@ -34,10 +35,10 @@ LnkdHypMemModel::LnkdHypMemModel(Eidos* InEidos,iterLNKS_Hyp* LnkdIterator ,QObj
 QString LnkdHypMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 {
 	QString SQLString;
-	SQLString="select ID_HYPOTESIS ID, id_link, meaning from GET_LINKED_HYPLIST("+QString::number(this->iterID_in)+") inner join ";
+	SQLString="select ID_HYPOTESIS ID, id_link, meaning from GET_LINKED_HYPLIST("+QString::number(this->ID_in)+") inner join ";
 	SQLString=SQLString+QString::fromStdString(MyEA->NameStoredProc())+"("+QString::number(MyEA->GetEAID())+")";
 	SQLString=SQLString+" on GET_LINKED_HYPLIST.ID_HYPOTESIS="+QString::fromStdString(MyEA->NameStoredProc())+".ID_LINK";
-	SQLString=SQLString+" WHERE ID_EIDOS="+QString::number(this->iterEidosID)+";";
+	SQLString=SQLString+" WHERE ID_EIDOS="+QString::number(this->ForEidos->GetID())+";";
 	return SQLString;
 }
 

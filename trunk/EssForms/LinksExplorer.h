@@ -6,6 +6,7 @@
 #include <QTreeWidgetItem>
 #include <QTreeWidgetItemIterator>
 #include "LnkdHypMemModel.h"
+#include "LnkdPragmaMemModel.h"
 #include "EssentialClass.h"
 #include "ibpp.h"
 
@@ -17,26 +18,29 @@ class LinksExplorer  :public QMainWindow, public Ui_LinksExplorer
     Q_OBJECT
 
 public:
-	LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys);
+	LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, QString InSpecies);
 	~LinksExplorer();
 
     IBPP::Database DB;
-    Eidos* LocalEidos;
+    Eidos* LocalEidosH;
+    Eidos* LocalEidosP;
     Hypotesis*LocalHypotesis;
 
-    iterLNKS_Hyp* LHyp;
-    iterLNKS_HEidos* LEidos;
+    iterLNKS_Hyp* IHyp;
+    iterLNKS_Pragma* IPragma;
+    iterLNKS_HEidos* IEidosH;
+    iterLNKS_PEidos* IEidosP;
     long IDFor;
 
 
-    void PaintingEidos();
-    QTreeWidgetItem * FindEidosByID(long ID);
+    void PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator*);
+    QTreeWidgetItem * FindEidosByID(QTreeWidget* EidosTreeWidget, long ID);
 
 public slots:
 	void ExitWithSave();
 	void ExitByCancel();
-	void SetHypotesysView(QTreeWidgetItem*,int);
-
+	void SetHGridView(QTreeWidgetItem*,int);
+	void SetPGridView(QTreeWidgetItem*,int);
 };
 }
 
