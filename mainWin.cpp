@@ -100,14 +100,14 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 				this->action_add->setEnabled(true);
 				this->action_del->setEnabled(true);
 				this->action_edit->setEnabled(true);
-				this->action_links->setEnabled(false);
+				this->action_links->setEnabled(true);
 			}
 			else
 			{
 				this->action_add->setEnabled(false);
 				this->action_del->setEnabled(true);
 				this->action_edit->setEnabled(true);
-				this->action_links->setEnabled(false);
+				this->action_links->setEnabled(true);
 			}
 			CurrentObjectLevel=Level_Pragma;
 		}
@@ -228,17 +228,20 @@ void mainWin::AddItem()
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+		if(id_hypotesys>0)
+		{
+			formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
+			platon::Pragma*formPragma;
 
-		formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
-		platon::Pragma*formPragma;
-
-		//Создаем экземпляры объектов для формы
-
-		if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
-		//if(Species=="ACT") formHypotesis= ((platon::ACTType*)formHypotesis)->AddACTCopy(); //Необходимо выбрать на какой объект списываем
-		//if(Species=="RES") formHypotesis= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Необходимо выбрать на какое действие списываем
-		//if(Species=="NSI") formPragma = new platon::Pragma(formHypotesis,platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime()));
-
+			//Создаем экземпляры объектов для формы
+			if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
+			//if(Species=="ACT") formHypotesis= ((platon::ACTType*)formHypotesis)->AddACTCopy(); //Необходимо выбрать на какой объект списываем
+			//if(Species=="RES") formHypotesis= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Необходимо выбрать на какое действие списываем
+			//if(Species=="NSI") formPragma = new platon::Pragma(formHypotesis,platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime()));
+			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,formPragma);
+			md->setWindowTitle(tr("Создание объекта \"Экземпляр\""));
+			md->show();
+		}
 	}
 	return ;
 }
@@ -251,11 +254,15 @@ void mainWin::Showlinks()
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,MyDB,id_hypotesys);
+		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,MyDB,id_hypotesys,"ALL");
 		LnkForm->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
+		int myrow=tableViewPragma->currentIndex().row();
+		long id_hypotesys=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
+		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,MyDB,id_hypotesys,"ALL");
+		LnkForm->show();
 	}
 }
 
