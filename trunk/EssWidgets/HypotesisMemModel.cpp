@@ -7,7 +7,6 @@
 
 #include "HypotesisMemModel.h"
 
-
 namespace platon
 {
 HypotesisMemModel::HypotesisMemModel(Eidos* InEidos, QObject * parent)
@@ -55,7 +54,9 @@ QVariant HypotesisMemModel::headerData(int section, Qt::Orientation orientation,
 		if(section==0)
 			return "ID";
 		else
+		{
 			return tr(this->ForEidos->HypotesisSQL->AttributesList[section-ReservedColumns].Caption.c_str());
+		}
 	}
 	else
 	{

@@ -16,7 +16,6 @@ PragmaMemModel::PragmaMemModel(Hypotesis* InHyp, QObject * parent)
 {
 	// TODO Auto-generated constructor stub
 	setObjectName("PragmaMemModel");
-
 	ForEidos =InHyp->HostEidos;
 
 	MyHyp=InHyp;
@@ -59,7 +58,9 @@ QVariant PragmaMemModel::headerData(int section, Qt::Orientation orientation,int
 		if(section==0)
 			return "ID";
 		else
+		{
 			return tr(this->ForEidos->PragmaSQL->AttributesList[section-ReservedColumns].Caption.c_str());
+		}
 	}
 	else
 	{
