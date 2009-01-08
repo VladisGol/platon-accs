@@ -151,12 +151,12 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
 	tableViewHypotesis->setModel(MyModel);
 
-	if(keep4delete!=NULL) delete keep4delete;
-
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
 	else
 		tableViewPragma->setModel(NULL);
+
+	if(keep4delete!=NULL) delete keep4delete;
 }
 
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
