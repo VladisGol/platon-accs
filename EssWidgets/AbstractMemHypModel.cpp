@@ -18,7 +18,11 @@ AbstractMemHypModel::~AbstractMemHypModel()
 {
 	// TODO Auto-generated destructor stub
 	for(int i=0; i<FieldsInModel->size();i++)
-			delete FieldsInModel->at(i);
+	{
+		FieldsInModel->at(i)->clear();
+		delete FieldsInModel->at(i);
+	}
+	FieldsInModel->clear();
 	delete FieldsInModel;
 	delete Id_records;
 	delete KeyIterator;

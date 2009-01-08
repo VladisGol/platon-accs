@@ -83,19 +83,19 @@ class ExtraAttribute
         friend class AssociatedExtraAttribute;
 private:
 	long id;
-        std::string Caption;
-        long    id_Class; 		//Идентификатор объекта класса к которому относится атрибут (если = текущему, значит объект хозяин)
-        std::string strClass_NodeName;	//Имя класса к которому относится атрибут (для отображения наследования)
-        std::string FieldName;
-        std::string sNameStoredProc;
-        std::string sTemporalListSPName;
+	std::string Caption;
+	long    id_Class; 		//Идентификатор объекта класса к которому относится атрибут (если = текущему, значит объект хозяин)
+	std::string strClass_NodeName;	//Имя класса к которому относится атрибут (для отображения наследования)
+	std::string FieldName;
+	std::string sNameStoredProc;
+	std::string sTemporalListSPName;
 
 public:
     Eidos* HostEidos;
 	//Нумератор для указания к какому виду класса относится атрибут
 	enum _BelongFor {_theHypotesis=1, _thePragma};
 
-    int	type;			//Тип, используются константы описанные в TFieldType + 101(RB) и 102(DLL)
+    int		type;			//Тип, используются константы описанные в TFieldType + 101(RB) и 102(DLL)
     int     belongTo;		//Принадлежность экстраатрибута к классу Hypotesis или Pragma
 	long	ID_RB_Describer;	//(для типа 101)Указатель на запись в таблице описателей справочников
     std::string	DLL_FileName;   //(для типа 102)Имя файла динамической библиотеки
@@ -123,8 +123,6 @@ public:
 
     void SetEAFieldName(std::string value);
     std::string GetEAFieldName()const;		//Применимость атрибута к объектам программы
-
-	//std::string EATBLNameInSQL();
 
     std::string NameStoredProc()const;
 	std::string TemporalListSPName()const;

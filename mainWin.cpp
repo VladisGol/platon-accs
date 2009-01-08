@@ -142,47 +142,35 @@ void mainWin::SetEidosView(int Row)
 
 void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 {
-	platon::HypotesisMemModel* keep4delete=NULL;
+	platon::Eidos* keep4delete=LocalEidos;
 
 	long id_eidos=CurItem->text(1).toLong();
 	//long id_eidos=QVariant(CurItem->data(2,Qt::DisplayRole)).toInt();
 
-	if(LocalEidos!=NULL)
-	{
-		delete LocalEidos;
-		keep4delete=(platon::HypotesisMemModel*)tableViewHypotesis->model();
-	}
-
 	LocalEidos=new platon::Eidos(MyDB,id_eidos);
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
 	tableViewHypotesis->setModel(MyModel);
-	if(keep4delete!=NULL)
-		delete keep4delete;
+
+	if(keep4delete!=NULL) delete keep4delete;
 
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
 	else
 		tableViewPragma->setModel(NULL);
-
-
 }
 
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 {
-	platon::PragmaMemModel* keep4delete=NULL;
+	platon::Hypotesis* keep4delete=LocalHypotesis;
+
 	int row=HypModelindex.row();
 	int col=0;
 	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(row,col))).toInt();
-	if(LocalHypotesis!=NULL)
-	{
-		delete LocalHypotesis;
-		keep4delete=(platon::PragmaMemModel*)tableViewPragma->model();
-	}
+
 	LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
 	platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(LocalHypotesis, this);
 	tableViewPragma->setModel(MyModel);
-	if(keep4delete!=NULL)
-		delete keep4delete;
+	if(keep4delete!=NULL) delete keep4delete;
 }
 
 void mainWin::EditItem()
@@ -272,6 +260,7 @@ void mainWin::RefreshViews()
 	if(CurrentObjectLevel==Level_Hypotesis) ((platon::AbstractMemHypModel*)this->tableViewHypotesis->model())->ReadToBuffer();
 	if(CurrentObjectLevel==Level_Pragma) 	((platon::AbstractMemHypModel*)this->tableViewPragma->model())->ReadToBuffer();
 }
+
 void mainWin::BaseTimeShift()
 {
 //Процедура - слот производит перевод текущего системного времени в базе данных для корректировки выборок по темпоральным значениям
@@ -280,6 +269,7 @@ void mainWin::BaseTimeShift()
 	{
 		ProgramDateTime= QDateTime::currentDateTime();
 	}
+
 	platon::SetTimestampTemporalCompareFor(MyDB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
 	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy mm:ss")));
 }

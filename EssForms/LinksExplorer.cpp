@@ -97,38 +97,32 @@ QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, lon
 
 void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 {
-	platon::LnkdHypMemModel* keep4delete=NULL;
+	platon::Eidos* keep4delete;
 	long id_eidos=CurItem->text(1).toLong();
 
-	if(LocalEidosH!=NULL)
-	{
-		delete LocalEidosH;
-		keep4delete=(platon::LnkdHypMemModel*)tableView_Hyp->model();
-	}
+	keep4delete=LocalEidosH;
 
 	LocalEidosH=new platon::Eidos(DB,id_eidos);
+
 	platon::LnkdHypMemModel* MyModel=new platon::LnkdHypMemModel(LocalEidosH,IDFor, this);
 	tableView_Hyp->setModel(MyModel);
-	if(keep4delete!=NULL)
-		delete keep4delete;
+
+	if(keep4delete!=NULL) delete keep4delete;
 }
 
 void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 {
-	platon::LnkdHypPragmaMemModel* keep4delete=NULL;
+	platon::Eidos* keep4delete;
 	long id_eidos=CurItem->text(1).toLong();
 
-	if(LocalEidosP!=NULL)
-	{
-		delete LocalEidosP;
-		keep4delete=(platon::LnkdHypPragmaMemModel*)tableView_Pragma->model();
-	}
+	keep4delete=LocalEidosP;
 
 	LocalEidosP=new platon::Eidos(DB,id_eidos);
+
 	platon::LnkdHypPragmaMemModel* MyModel=new platon::LnkdHypPragmaMemModel(LocalEidosP,IDFor, this);
 	tableView_Pragma->setModel(MyModel);
-	if(keep4delete!=NULL)
-		delete keep4delete;
+
+	if(keep4delete!=NULL) delete keep4delete;
 }
 
 }

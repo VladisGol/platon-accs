@@ -53,6 +53,7 @@ Eidos::~Eidos()
 	//Деструктор класса, освобождаем память
         CleanExtraAttributes();
         delete HypotesisSQL;
+        delete PragmaSQL;
 }
 
 Eidos::Eidos(IBPP::Database MyDB, long ID_IN)
@@ -84,21 +85,21 @@ void Eidos::GetExtraAttributesSet()
 //списка атрибутов данного класса из данных в БД. Процесс идет до тех пор,
 //пока объект не окажется корневым
 	QueryForExtraAttrib(this);//Получение атрибутов собственно объекта
-        FullName=this->Name;
+    FullName=this->Name;
 	if(this->id_parent>0)	//Нужно получить дополнительные атрибуты объектов выше по иерархии
-        {
-	        Eidos* tmp = new Eidos(this->DB);	//Временный объект аналогичного класса
-                long Parent_ID=this->id_parent;
-                do
-                {
-                	GetData(tmp,Parent_ID);	//Заполняем атрибуты временного класса
+	{
+		Eidos* tmp = new Eidos(this->DB);	//Временный объект аналогичного класса
+		long Parent_ID=this->id_parent;
+		do
+		{
+			GetData(tmp,Parent_ID);	//Заполняем атрибуты временного класса
 			QueryForExtraAttrib(tmp);	//Запрашиваем его экстраатрибуты
-                        FullName=tmp->Name+"/"+FullName; //Формируем строку с полным именем
-                        Parent_ID=tmp->id_parent;	//Присвиваем указатель на более высокий в иерархии класс
-                }while(Parent_ID>0);
-                delete tmp;
-        }
-        FullName="/"+FullName;  //Приписываем лидирующий слэш
+			FullName=tmp->Name+"/"+FullName; //Формируем строку с полным именем
+			Parent_ID=tmp->id_parent;	//Присвиваем указатель на более высокий в иерархии класс
+		}while(Parent_ID>0);
+		delete tmp;
+	}
+	FullName="/"+FullName;  //Приписываем лидирующий слэш
 }
 
 void Eidos::GetData(Eidos* InClass, long ID_IN)
@@ -178,17 +179,18 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
 
 void Eidos::SetParentID(long value)
 {//Потенциально небезопасная процедура надо доработать проверку на наличие у изменяемых эйдосов прагм и гипотез для контроля за целостностью данных
-	if(id_parent != value ) {
+	if(id_parent != value )
+	{
 		id_parent = value;
 		if(this->id > 0)
-                {
-                	//В случае, если это не новый объект изменение значения
-                	//приведет к его перезаписи и перечитыванию информации
-                	//о дополнительных атрибутах
-                	CleanExtraAttributes();
-                        Save();
+		{
+			//В случае, если это не новый объект изменение значения
+			//приведет к его перезаписи и перечитыванию информации
+			//о дополнительных атрибутах
+			CleanExtraAttributes();
+			Save();
 			QueryForExtraAttrib(this);
-                }
+		}
 	}
 }
 long Eidos::GetParentID()const
