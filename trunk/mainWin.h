@@ -46,6 +46,9 @@ protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	int CurrentObjectLevel;
 	enum ObjectLevel {Level_Hypotesis=1,Level_Pragma=2};
+    QSortFilterProxyModel* SFProxyModelH;
+    QSortFilterProxyModel* SFProxyModelP;
+
 
 };
 

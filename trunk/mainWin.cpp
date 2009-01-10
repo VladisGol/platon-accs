@@ -7,8 +7,6 @@ mainWin::mainWin(QWidget *parent)
 		QTextCodec * codec = QTextCodec::codecForName("CP1251");
 		QTextCodec::setCodecForTr(codec);
 		QTextCodec::setCodecForCStrings(codec);
-		//QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF8"));
-
 
 		setupUi(this);
 
@@ -65,6 +63,14 @@ mainWin::mainWin(QWidget *parent)
 		connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
 		BaseTimeShift();
 		DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
+
+		SFProxyModelH= new QSortFilterProxyModel(this);
+		SFProxyModelP= new QSortFilterProxyModel(this);
+
+		tableViewPragma->setModel(SFProxyModelP);
+		tableViewPragma->setSortingEnabled(true);
+		tableViewHypotesis->setModel(SFProxyModelH);
+		tableViewHypotesis->setSortingEnabled(true);
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -145,11 +151,10 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	platon::Eidos* keep4delete=LocalEidos;
 
 	long id_eidos=CurItem->text(1).toLong();
-	//long id_eidos=QVariant(CurItem->data(2,Qt::DisplayRole)).toInt();
 
 	LocalEidos=new platon::Eidos(MyDB,id_eidos);
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
-	tableViewHypotesis->setModel(MyModel);
+	SFProxyModelH->setSourceModel(MyModel);
 
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
@@ -162,14 +167,11 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 {
 	platon::Hypotesis* keep4delete=LocalHypotesis;
-
-	int row=HypModelindex.row();
-	int col=0;
-	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(row,col))).toInt();
+	long id_hypotesys=HypModelindex.sibling(HypModelindex.row(),0).data(Qt::DisplayRole).toInt();
 
 	LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
 	platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(LocalHypotesis, this);
-	tableViewPragma->setModel(MyModel);
+	SFProxyModelP->setSourceModel(MyModel);
 	if(keep4delete!=NULL) delete keep4delete;
 }
 

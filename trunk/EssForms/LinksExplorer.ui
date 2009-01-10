@@ -25,17 +25,11 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2" >
         <item row="0" column="0" >
-         <widget class="QSplitter" name="splitter_2" >
+         <widget class="QSplitter" name="splitter" >
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
-          <widget class="QEidosTreeWidget" name="HEidosTreeWidget" >
-           <column>
-            <property name="text" >
-             <string>1</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="QTreeView" name="EidosTreeView_Hyp" />
           <widget class="QTableView" name="tableView_Hyp" />
          </widget>
         </item>
@@ -47,17 +41,11 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3" >
         <item row="0" column="0" >
-         <widget class="QSplitter" name="splitter" >
+         <widget class="QSplitter" name="splitter_2" >
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
-          <widget class="QEidosTreeWidget" name="PEidosTreeWidget" >
-           <column>
-            <property name="text" >
-             <string>1</string>
-            </property>
-           </column>
-          </widget>
+          <widget class="QTreeView" name="EidosTreeView_Pragma" />
           <widget class="QTableView" name="tableView_Pragma" />
          </widget>
         </item>
@@ -76,16 +64,38 @@
      <height>28</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu" >
+    <property name="title" >
+     <string>Файл</string>
+    </property>
+   </widget>
+   <addaction name="menu" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
+  <widget class="QToolBar" name="toolBar" >
+   <property name="windowTitle" >
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea" >
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak" >
+    <bool>false</bool>
+   </attribute>
+   <addaction name="action_Close" />
+  </widget>
+  <action name="action_Close" >
+   <property name="icon" >
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/exit.png</normaloff>:/PICS/exit.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Закрыть форму</string>
+   </property>
+  </action>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QEidosTreeWidget</class>
-   <extends>QTreeWidget</extends>
-   <header>qeidostreewidget.h</header>
-  </customwidget>
- </customwidgets>
- <resources/>
+ <resources>
+  <include location="../images/resources.qrc" />
+ </resources>
  <connections/>
 </ui>

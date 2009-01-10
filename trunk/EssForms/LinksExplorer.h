@@ -9,7 +9,8 @@
 #include "LnkdPragmaMemModel.h"
 #include "EssentialClass.h"
 #include "ibpp.h"
-
+#include "EidosMemModel.h"
+#include <iostream>
 
 namespace platon
 {
@@ -24,23 +25,24 @@ public:
     IBPP::Database DB;
     Eidos* LocalEidosH;
     Eidos* LocalEidosP;
-    Hypotesis*LocalHypotesis;
 
     iterLNKS_Hyp* IHyp;
     iterLNKS_Pragma* IPragma;
     iterLNKS_HEidos* IEidosH;
     iterLNKS_PEidos* IEidosP;
+    QSortFilterProxyModel* SFProxyModelH;
+    QSortFilterProxyModel* SFProxyModelP;
     long IDFor;
 
 
-    void PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator*);
+    void PaintingEidos(QTreeView *TreeView,pIterator * iter);
     QTreeWidgetItem * FindEidosByID(QTreeWidget* EidosTreeWidget, long ID);
+    void UnBoldTreeView(QTreeView *TreeView,const QModelIndex&);
 
 public slots:
-	void ExitWithSave();
-	void ExitByCancel();
-	void SetHGridView(QTreeWidgetItem*,int);
-	void SetPGridView(QTreeWidgetItem*,int);
+
+	void SetHGridView(const QModelIndex&);
+	void SetPGridView(const QModelIndex&);
 };
 }
 
