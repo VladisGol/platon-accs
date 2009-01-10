@@ -19,13 +19,13 @@ HypPragmaMemModel::HypPragmaMemModel(Eidos* InEidos, QObject * parent)
 
 	ForEidos =InEidos;
 
-	NumCol=ForEidos->PragmaSQL->AttributesList.size();				//Получаем количество полей в запросе
+	NumCol=ForEidos->PragmaSQL->AttributesList.size();						//Получаем количество полей в запросе
 	ReservedColumns=2;														//Одно зарезервированное поле ID
 
 	Id_records = new QVector <long>;										//Выделяем необходимую память
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol+1;i++) FieldsInModel->append(new QMap<long,QVariant>);
-	KeyIterator=new iterHypPragma(ForEidos);									//Выставляем итератор ключей записей
+	KeyIterator=new iterHypPragma(ForEidos);								//Выставляем итератор ключей записей
 	ReadToBuffer();															//Считываем значения в буфер
 
 }
