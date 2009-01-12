@@ -1,40 +1,3 @@
-/****************************************************************************
-**
-** Copyright (C) 2008 Nokia Corporation and/or its subsidiary(-ies).
-** Contact: Qt Software Information (qt-info@nokia.com)
-**
-** This file is part of the example classes of the Qt Toolkit.
-**
-** Commercial Usage
-** Licensees holding valid Qt Commercial licenses may use this file in
-** accordance with the Qt Commercial License Agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and Nokia.
-**
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License versions 2.0 or 3.0 as published by the Free
-** Software Foundation and appearing in the file LICENSE.GPL included in
-** the packaging of this file.  Please review the following information
-** to ensure GNU General Public Licensing requirements will be met:
-** http://www.fsf.org/licensing/licenses/info/GPLv2.html and
-** http://www.gnu.org/copyleft/gpl.html.  In addition, as a special
-** exception, Nokia gives you certain additional rights. These rights
-** are described in the Nokia Qt GPL Exception version 1.3, included in
-** the file GPL_EXCEPTION.txt in this package.
-**
-** Qt for Windows(R) Licensees
-** As a special exception, Nokia, as the sole copyright holder for Qt
-** Designer, grants users of the Qt/Eclipse Integration plug-in the
-** right for the Qt/Eclipse Integration to link to functionality
-** provided by Qt Designer and its related libraries.
-**
-** If you are unsure which license is appropriate for your use, please
-** contact the sales department at qt-sales@nokia.com.
-**
-****************************************************************************/
-
 #include "EidosMemModel.h"
 namespace platon
 {
@@ -45,9 +8,8 @@ EidosMemModel::EidosMemModel(IBPP::Database InDB, QString Spec, QObject *parent)
 	DB=InDB;
 	Species=Spec;
 
-	QList<QVariant> rootData;
-    rootData << tr("Наименование") << tr("ID");
-    rootItem = new TreeItem(rootData);
+    rootItem = new TreeItem(GetRootData());
+    AdditionalColumnsNumber=0;	//В этой модели дополнительных столбцов выводить ненадо
     setupModelData(rootItem);
 }
 
@@ -56,10 +18,19 @@ EidosMemModel::~EidosMemModel()
     delete rootItem;
 }
 
+QList<QVariant> EidosMemModel::GetRootData()
+{
+	//Процедура составления массива строк для заголовка.
+	//Данная функция вынесена для упрощения создания в наследуемых классах большего числа столбцов данных
+	QList<QVariant> ForReturn;
+	ForReturn<<QObject::tr("Наименование")<<QObject::tr("ID");
+	return ForReturn;
+}
+
 int EidosMemModel::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
-        return static_cast<TreeItem*>(parent.internalPointer())->columnCount();
+        return static_cast<TreeItem*>(parent.internalPointer())->columnCount()+AdditionalColumnsNumber;
     else
         return rootItem->columnCount();
 }
@@ -69,12 +40,16 @@ QVariant EidosMemModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    if (role != Qt::DisplayRole)
-        return QVariant();
-
     TreeItem *item = static_cast<TreeItem*>(index.internalPointer());
+    if (role == Qt::DisplayRole)
+    {
+    	return item->data(index.column());
+    }
+/*    else if(role == Qt::FontRole)
+        //return qvariant_cast<QFont>(item->Myfont);
+    	return qvariant_cast<QFont>(item->Myfont);*/
+    else return QVariant();
 
-    return item->data(index.column());
 }
 
 Qt::ItemFlags EidosMemModel::flags(const QModelIndex &index) const
@@ -141,6 +116,15 @@ int EidosMemModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
+QList<QVariant> EidosMemModel::GetColumnsData(QString Title, long ID)
+{
+	QList<QVariant> columnData;
+	columnData << Title;
+	columnData << QVariant::fromValue(ID);
+	return columnData;
+}
+
+
 void EidosMemModel::setupModelData(TreeItem *TopItem)
 {
 	platon::iterEidos* MyEidosIter= new  platon::iterEidos(this->DB,Species.toStdString());
@@ -148,9 +132,7 @@ void EidosMemModel::setupModelData(TreeItem *TopItem)
    	while(MyEidosIter->Next())
     {
    		//Готовим данные для одной записи
-   		QList<QVariant> columnData;
-        columnData << tr( MyEidosIter->GetTitle().c_str());
-        columnData << QVariant::fromValue(MyEidosIter->GetID());
+   		QList<QVariant> columnData =GetColumnsData(tr( MyEidosIter->GetTitle().c_str()), MyEidosIter->GetID());
 
     	TreeItem* BranchItem= TopItem->findByValue(1,QVariant::fromValue(MyEidosIter->GetParentID()));
     	if(BranchItem==NULL)	//Не найден, добавление в корень представления

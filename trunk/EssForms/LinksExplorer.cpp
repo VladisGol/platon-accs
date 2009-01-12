@@ -2,7 +2,6 @@
 
 namespace platon
 {
-
 LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, QString InSpecies): QMainWindow(parent)
 {
 	setupUi(this);
@@ -20,84 +19,50 @@ LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, 
 
 	IDFor=ID_in;
 
-	QObject::connect(EidosTreeView_Hyp, SIGNAL(activated(QModelIndex)), this, SLOT(SetHGridView(QModelIndex)));
-	QObject::connect(EidosTreeView_Pragma, SIGNAL(activated(QModelIndex)), this, SLOT(SetPGridView(QModelIndex)));
-
-	QObject::connect(action_Close, SIGNAL(activated()), this, SLOT(close()));
-
-	EidosMemModel* MyEidosModel=new EidosMemModel(InDB,QString("ALL"),(QObject*)this);
-
-	EidosTreeView_Pragma->setModel(MyEidosModel);
-
-	SFProxyModelH= new QSortFilterProxyModel(this);
-	SFProxyModelP= new QSortFilterProxyModel(this);
-
-	SFProxyModelH-> setSourceModel(MyEidosModel);
-	SFProxyModelH-> setDynamicSortFilter(true);
-	EidosTreeView_Hyp->setModel(SFProxyModelH);
-	EidosTreeView_Hyp->setSortingEnabled (true);
-
-//	SFProxyModelH->setFilterKeyColumn (1);
-//	SFProxyModelH->setFilterRegExp("9");
+	HEidosTreeWidget->SetSpecies("ALL");
+	HEidosTreeWidget->AttachToDB(DB);
+	PEidosTreeWidget->SetSpecies("ALL");
+	PEidosTreeWidget->AttachToDB(DB);
 
 
-	SFProxyModelP-> setSourceModel(MyEidosModel);
-	EidosTreeView_Pragma->setModel(SFProxyModelP);
-	EidosTreeView_Pragma->setSortingEnabled (true);
-	UnBoldTreeView(EidosTreeView_Hyp, EidosTreeView_Hyp->rootIndex());
+	QObject::connect(HEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
+	QObject::connect(PEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
+
+//	QObject::connect(action_Cancel, SIGNAL(activated()), this, SLOT(ExitByCancel()));
+//	QObject::connect(action_saveNexit, SIGNAL(activated()), this, SLOT(ExitWithSave()));
+
+    PaintingEidos(this->HEidosTreeWidget,IEidosH);
+	PaintingEidos(this->PEidosTreeWidget,IEidosP);
+
 }
 
+void LinksExplorer::ExitWithSave()
+{
+	this->close();
+}
+void LinksExplorer::ExitByCancel()
+{
+	this->close();
+}
 LinksExplorer::~LinksExplorer()
 {
 	if(LocalEidosH!=NULL) delete LocalEidosH;
 	if(LocalEidosP!=NULL) delete LocalEidosP;
-
+	delete LocalHypotesis;
 }
-void LinksExplorer::UnBoldTreeView(QTreeView *TreeView,const QModelIndex& TopLevel)
-{
-	for(int i=0;i<TreeView->model()->rowCount(TopLevel);i++)
-	{
-		QModelIndex currIndex=TreeView->model()->index(i,0,TopLevel);
-
-		QIcon icon1;
-		icon1.addPixmap(QPixmap(QString::fromUtf8((":/PICS/exec.png"))), QIcon::Normal, QIcon::Off);
-
-		TreeView->model()->setData(currIndex,icon1,Qt::DecorationRole);
-
-		std::cout<<currIndex.row()<<" x "<<currIndex.column()<<"\n";
-		std::cout<<currIndex.data(0).toString().toStdString()<<"\n";
-
-		//QFont fn=
-		//std::cout<<TreeView->indexWidget() isWidgetType()
-
-
-		//fn.setBold(true);
-		//TreeView->indexWidget(currIndex)->setFont(fn);
-
-		if(TreeView->model()->hasChildren(currIndex))
-			UnBoldTreeView(TreeView,currIndex);
-
-	}
-
-	/*QFont fn=TreeView->indexWidget(TopLevel)->font();
-	fn.setBold(true);
-	TreeView->indexWidget(TopLevel)->setFont(fn);
-	if(TopLevel.child(0,0).isValid())
-		UnBoldTreeView(TreeView,TopLevel.child(0,0));
-	else
-	{
-		if(TopLevel.sibling(TopLevel.row()+1,TopLevel.column()).isValid())
-			UnBoldTreeView(TreeView,TopLevel.sibling(TopLevel.row()+1,TopLevel.column()));
-	}
-	*/
-}
-void LinksExplorer::PaintingEidos(QTreeView *TreeView,pIterator * iter)
+void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 {
 //Процедура раскрашивает элементы эйдосов
 	//Сначала все элементы устанавливаем в выключенное состояние
-
-	UnBoldTreeView(TreeView, TreeView->rootIndex());
-	/*
+	QTreeWidgetItemIterator it(EidosTreeWidget, QTreeWidgetItemIterator::All);
+	while (*it)
+	{
+		QFont fn=(*it)->font(0);
+		fn.setBold(false);
+		(*it)->setFont(0,fn);
+		(*it)->setExpanded(false);
+	    ++it;
+	}
 	//После чего устанавливаем в раскрытое состояние и подкрашиваем его BOLD-ом
 	iter->First();
 	while(iter->Fetched())
@@ -119,7 +84,6 @@ void LinksExplorer::PaintingEidos(QTreeView *TreeView,pIterator * iter)
 			iter->Next();
 		}
 	}
-	*/
 }
 QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, long ID)
 {
@@ -131,11 +95,12 @@ QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, lon
 	return NULL;
 }
 
-void LinksExplorer::SetHGridView(const QModelIndex& CurItem)
+void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 {
+	platon::Eidos* keep4delete;
+	long id_eidos=CurItem->text(1).toLong();
 
-	platon::Eidos* keep4delete=LocalEidosH;
-	long id_eidos=CurItem.sibling(CurItem.row(),1).data(Qt::DisplayRole).toInt();
+	keep4delete=LocalEidosH;
 
 	LocalEidosH=new platon::Eidos(DB,id_eidos);
 
@@ -145,10 +110,12 @@ void LinksExplorer::SetHGridView(const QModelIndex& CurItem)
 	if(keep4delete!=NULL) delete keep4delete;
 }
 
-void LinksExplorer::SetPGridView(const QModelIndex& CurItem)
+void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 {
-	platon::Eidos* keep4delete=LocalEidosP;
-	long id_eidos=CurItem.sibling(CurItem.row(),1).data(Qt::DisplayRole).toInt();
+	platon::Eidos* keep4delete;
+	long id_eidos=CurItem->text(1).toLong();
+
+	keep4delete=LocalEidosP;
 
 	LocalEidosP=new platon::Eidos(DB,id_eidos);
 
