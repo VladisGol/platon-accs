@@ -17,6 +17,8 @@ void AbstarctHipEditForm::ExitWithSave()
 		AllFrames.at(i)->Save();
 
 	this->LocalHypotesis->TransactionIBPP->Commit();
+
+	WriteFormWidgetsAppearance();
 	this->close();
 }
 void AbstarctHipEditForm::ExitByCancel()
@@ -37,6 +39,33 @@ void AbstarctHipEditForm::FormFillFrames()
 			verticalLayout->insertWidget(0,my); //Заносим в форму фреймы с нулевого индекса, чтобы последние были вверху
 		}
 	}
+}
+
+void AbstarctHipEditForm::ReadFormWidgetsAppearance()
+{
+	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName).toStdString(),true,-1);
+	int w=800,h=700;
+	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
+	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+	this->resize (w,h);
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+void AbstarctHipEditForm::WriteFormWidgetsAppearance()
+{
+	//Процедура записывает в DbETC параметры элементов формы
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName).toStdString(),true,-1);
+	MyETC->WriteInteger("width", this->width());
+	MyETC->WriteInteger("height", this->height());
+
+	MyETC->CloseKey();
+	delete MyETC;
 }
 
 }

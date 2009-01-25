@@ -11,6 +11,7 @@ DialogEditHronologyEA::DialogEditHronologyEA(QWidget * parent,AssociatedExtraAtt
     gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
 
+    this->DB=OneAEA->OwnerHypotesis->HostEidos->DB;
     TableView= new QTableView(this);
     Model=new HronologyEaMemModel(OneAEA,this);
     TableView->setModel(Model);
@@ -30,6 +31,7 @@ DialogEditHronologyEA::DialogEditHronologyEA(QWidget * parent,AssociatedExtraAtt
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
     this->setWindowTitle(tr("Временной ряд изменения значений атрибута"));
+    ReadFormWidgetsAppearance();
 
 }
 void DialogEditHronologyEA::ExitWithAccept()
@@ -39,8 +41,37 @@ void DialogEditHronologyEA::ExitWithAccept()
 	int row=this->TableView->currentIndex().row();
 	int col=0;
 	Out_value=QVariant(TableView->model()->data(Model->index(row,col,QModelIndex()))).toInt();
-
+	WriteFormWidgetsAppearance();
 	this->accept();
 }
+
+void DialogEditHronologyEA::ReadFormWidgetsAppearance()
+{
+	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	int w=800,h=700;
+	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
+	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+	this->resize (w,h);
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+void DialogEditHronologyEA::WriteFormWidgetsAppearance()
+{
+	//Процедура записывает в DbETC параметры элементов формы
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	MyETC->WriteInteger("width", this->width());
+	MyETC->WriteInteger("height", this->height());
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+
 
 }

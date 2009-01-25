@@ -7,7 +7,6 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QStr
 {
     if (this->objectName().isEmpty())
     	this->setObjectName(QString::fromUtf8("Dialog_Eidos"));
-    this->resize(434, 348);
 
     gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
@@ -15,6 +14,7 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QStr
     treeWidget = new QEidosTreeWidget (this);
     treeWidget->SetSpecies(Species);
     treeWidget->AttachToDB(InDB);
+    this->DB=InDB;
 
     treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
 
@@ -33,24 +33,48 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QStr
     if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
     this->setWindowTitle(tr("Укажите класс"));
+    ReadFormWidgetsAppearance();
 
 }
 void ChoiceEidos_Dialog::ExitWithAccept()
 {
 	//Выход с возвратом значения выбранного объекта
-	Out_value=this->treeWidget->currentItem()->text(1).toLong();
+	Out_value=this->treeWidget->GetEidosID();
+	WriteFormWidgetsAppearance();
 	this->accept();
 }
 bool ChoiceEidos_Dialog::find(long ID_searchfor)
 {
-	QList<QTreeWidgetItem *> FoundedItem = this->treeWidget->findItems (QString::number(ID_searchfor), Qt::MatchExactly | Qt::MatchRecursive,1 );
-    if(FoundedItem.count()>0)      //Найден искомый элемент
-    {
-    	this->treeWidget->setCurrentItem(FoundedItem.at(0));	//Найденный элемент выводим текущим
-    	return true;
-    }
-    else
-    	return false;
-
+	return treeWidget->findNMakeCurrent(ID_searchfor);
 }
+void ChoiceEidos_Dialog::ReadFormWidgetsAppearance()
+{
+	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	int w=800,h=700;
+	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
+	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+	this->resize (w,h);
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+void ChoiceEidos_Dialog::WriteFormWidgetsAppearance()
+{
+	//Процедура записывает в DbETC параметры элементов формы
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	MyETC->WriteInteger("width", this->width());
+	MyETC->WriteInteger("height", this->height());
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+
+
+
 }

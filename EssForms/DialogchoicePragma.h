@@ -11,6 +11,7 @@
 #include <QtGui/QTreeWidget>
 #include <QtGui/QTableView>
 #include "HypPragmaMemModel.h"
+#include "dbetc.h"
 
 namespace platon
 {
@@ -28,6 +29,11 @@ public:
 
 public slots:
 	void ExitWithAccept();
+
+protected:
+    void ReadFormWidgetsAppearance();
+    void WriteFormWidgetsAppearance();
+    IBPP::Database DB;
 
 };
 }

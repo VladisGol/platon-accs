@@ -9,6 +9,7 @@
 #include "LnkdPragmaMemModel.h"
 #include "EssentialClass.h"
 #include "ibpp.h"
+#include "dbetc.h"
 
 
 namespace platon
@@ -41,6 +42,10 @@ public slots:
 	void ExitByCancel();
 	void SetHGridView(QTreeWidgetItem*,int);
 	void SetPGridView(QTreeWidgetItem*,int);
+
+protected:
+    void ReadFormWidgetsAppearance();
+    void WriteFormWidgetsAppearance();
 };
 }
 
