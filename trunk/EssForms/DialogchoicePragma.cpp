@@ -6,11 +6,11 @@ ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEido
 {
     if (this->objectName().isEmpty())
     	this->setObjectName(QString::fromUtf8("ChoicePragma_Dialog"));
-    this->resize(434, 348);
 
     gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
 
+    this->DB=InEidos->DB;
     TableView= new QTableView(this);
     Model=new HypPragmaMemModel(InEidos,this);
     TableView->setModel(Model);
@@ -32,6 +32,7 @@ ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEido
     if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
     this->setWindowTitle(tr("Укажите экземпляр"));
+    ReadFormWidgetsAppearance();
 
 }
 void ChoicePragma_Dialog::ExitWithAccept()
@@ -41,7 +42,7 @@ void ChoicePragma_Dialog::ExitWithAccept()
 	int row=this->TableView->currentIndex().row();
 	int col=0;
 	Out_value=QVariant(TableView->model()->data(Model->index(row,col,QModelIndex()))).toInt();
-
+	WriteFormWidgetsAppearance();
 	this->accept();
 }
 bool ChoicePragma_Dialog::find(long ID_searchfor)
@@ -51,4 +52,32 @@ bool ChoicePragma_Dialog::find(long ID_searchfor)
 	this->TableView->setCurrentIndex(founded_item);
 	return true;
 }
+void ChoicePragma_Dialog::ReadFormWidgetsAppearance()
+{
+	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	int w=800,h=700;
+	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
+	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+	this->resize (w,h);
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+void ChoicePragma_Dialog::WriteFormWidgetsAppearance()
+{
+	//Процедура записывает в DbETC параметры элементов формы
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	MyETC->WriteInteger("width", this->width());
+	MyETC->WriteInteger("height", this->height());
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+
 }

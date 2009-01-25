@@ -114,7 +114,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QSplitter" name="splitter_2" >
+         <widget class="QSplitter" name="splitter_e" >
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
           </property>
@@ -147,7 +147,7 @@
             </property>
            </column>
           </widget>
-          <widget class="QSplitter" name="splitter" >
+          <widget class="QSplitter" name="splitter_hp" >
            <property name="orientation" >
             <enum>Qt::Vertical</enum>
            </property>
@@ -196,7 +196,7 @@
      <x>0</x>
      <y>0</y>
      <width>874</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu" >
@@ -307,22 +307,5 @@
  <resources>
   <include location="images/resources.qrc" />
  </resources>
- <connections>
-  <connection>
-   <sender>action_quit</sender>
-   <signal>activated()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>399</x>
-     <y>299</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

@@ -10,6 +10,8 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QTreeWidget>
 #include "qeidostreewidget.h"
+#include "dbetc.h"
+
 namespace platon
 {
 
@@ -26,6 +28,12 @@ public:
 
 public slots:
 	void ExitWithAccept();
+
+protected:
+    void ReadFormWidgetsAppearance();
+    void WriteFormWidgetsAppearance();
+    IBPP::Database DB;
+
 };
 }
 #endif

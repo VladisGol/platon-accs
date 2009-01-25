@@ -34,10 +34,13 @@ LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, 
     PaintingEidos(this->HEidosTreeWidget,IEidosH);
 	PaintingEidos(this->PEidosTreeWidget,IEidosP);
 
+	ReadFormWidgetsAppearance();
+
 }
 
 void LinksExplorer::ExitWithSave()
 {
+	WriteFormWidgetsAppearance();
 	this->close();
 }
 void LinksExplorer::ExitByCancel()
@@ -124,5 +127,34 @@ void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 
 	if(keep4delete!=NULL) delete keep4delete;
 }
+
+void LinksExplorer::ReadFormWidgetsAppearance()
+{
+	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	int w=800,h=700;
+	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
+	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+	this->resize (w,h);
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+void LinksExplorer::WriteFormWidgetsAppearance()
+{
+	//Процедура записывает в DbETC параметры элементов формы
+	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+	MyETC->WriteInteger("width", this->width());
+	MyETC->WriteInteger("height", this->height());
+
+	MyETC->CloseKey();
+	delete MyETC;
+}
+
+
 
 }

@@ -6,6 +6,7 @@
 #include "EAOneFrame.h"
 #include "EssentialClass.h"
 #include "ibpp.h"
+#include "dbetc.h"
 
 
 namespace platon
@@ -25,6 +26,13 @@ public:
 public slots:
 	void ExitWithSave();
 	void ExitByCancel();
+protected:
+
+    void ReadFormWidgetsAppearance();
+    void WriteFormWidgetsAppearance();
+    QString dbEtcBranchName;
+
+
 };
 }
 

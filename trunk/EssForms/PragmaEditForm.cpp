@@ -15,6 +15,8 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, IBPP::Database InDB, long ID_Pr
 		LocalHypotesis=new Pragma(LocalHostHypotesis,ID_Pragma);
 		LocalHypotesis->Autocommited=false;	//Сами управляем подтверждением транзакции
 		FormFillFrames();
+		dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
+		ReadFormWidgetsAppearance();
 	}
 	else throw "Объект на который указывает идентификатор из параметра не существует";
 }

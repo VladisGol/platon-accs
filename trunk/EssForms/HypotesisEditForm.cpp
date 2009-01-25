@@ -13,6 +13,8 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long
 		LocalHypotesis=new Hypotesis(LocalEidos,HypotesysID);
 		LocalHypotesis->Autocommited=false;	//Сами управляем подтверждением транзакции
 		FormFillFrames();
+		dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":hypotesis");
+		ReadFormWidgetsAppearance();
 	}
 	else throw "Объект на который указывает идентификатор из параметра не существует";
 }

@@ -16,6 +16,7 @@
 #include "PragmaEditForm.h"
 #include "EAOneFrame.h"
 #include "LinksExplorer.h"
+#include "dbetc.h"
 
 
 class mainWin : public QMainWindow, public Ui::MainWindow
@@ -37,6 +38,7 @@ private slots:
 	void RefreshViews();
 	void BaseTimeShift();//Слот для установки в базе данных времени работы в программе
 	void Showlinks();// Слот для вызова формы отображения ссылок на текущую запись
+	void CloseForm();
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
@@ -48,6 +50,8 @@ protected:
 	enum ObjectLevel {Level_Hypotesis=1,Level_Pragma=2};
     QSortFilterProxyModel* SFProxyModelH;
     QSortFilterProxyModel* SFProxyModelP;
+    void ReadFormWidgetsAppearance();
+    void WriteFormWidgetsAppearance();
 
 
 };

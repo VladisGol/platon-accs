@@ -49,6 +49,7 @@ mainWin::mainWin(QWidget *parent)
 		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
 		QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
 		QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
+    	QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
 
 		SetEidosView(0);
 
@@ -64,6 +65,7 @@ mainWin::mainWin(QWidget *parent)
 		BaseTimeShift();
 		DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
 
+		//Выставляем прокси модели для возможности сортировки и фильтрования
 		SFProxyModelH= new QSortFilterProxyModel(this);
 		SFProxyModelP= new QSortFilterProxyModel(this);
 
@@ -71,6 +73,9 @@ mainWin::mainWin(QWidget *parent)
 		tableViewPragma->setSortingEnabled(true);
 		tableViewHypotesis->setModel(SFProxyModelH);
 		tableViewHypotesis->setSortingEnabled(true);
+
+		//Устанавливаем размеры виджетов на форме
+		ReadFormWidgetsAppearance();
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -274,4 +279,58 @@ void mainWin::BaseTimeShift()
 
 	platon::SetTimestampTemporalCompareFor(MyDB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
 	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy mm:ss")));
+}
+void mainWin::CloseForm()
+{
+	//Слот закрытия формы. Перед закрытием формы сохраняем параметры формы
+	WriteFormWidgetsAppearance();
+	this->close();
+}
+void mainWin::ReadFormWidgetsAppearance()
+{
+	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
+	int w=874,h=744;
+	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
+	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+	this->resize (w,h);
+
+	QList<int> vals;
+	if(MyETC->ParamExists("splitter_e\\0")) vals.append(MyETC->ReadInteger("splitter_e\\0")); else vals.append(350);
+	if(MyETC->ParamExists("splitter_e\\1")) vals.append(MyETC->ReadInteger("splitter_e\\1")); else vals.append(762);
+	splitter_e->setSizes(vals);
+	vals.clear();
+	if(MyETC->ParamExists("splitter_hp\\0")) vals.append(MyETC->ReadInteger("splitter_hp\\0")); else vals.append(361);
+	if(MyETC->ParamExists("splitter_hp\\1")) vals.append(MyETC->ReadInteger("splitter_hp\\1")); else vals.append(362);
+	splitter_hp->setSizes(vals);
+
+	if(MyETC->ParamExists("comboBox_Species")) this->comboBox_Species->setCurrentIndex(MyETC->ReadInteger("comboBox_Species"));
+	if(MyETC->ParamExists("EidosID")) this->EidosTreeWidget->findNMakeCurrent(MyETC->ReadInteger("EidosID"));
+
+	MyETC->CloseKey();
+	delete MyETC;
+
+}
+void mainWin::WriteFormWidgetsAppearance()
+{
+	//Процедура записывает в DbETC параметры элементов формы
+	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDB);
+	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
+	MyETC->WriteInteger("width", this->width());
+	MyETC->WriteInteger("height", this->height());
+
+	QList<int> vals = this->splitter_e->sizes();
+	MyETC->WriteInteger("splitter_e\\0", vals.at(0));
+	MyETC->WriteInteger("splitter_e\\1", vals.at(1));
+	vals=this->splitter_hp->sizes();
+	MyETC->WriteInteger("splitter_hp\\0", vals.at(0));
+	MyETC->WriteInteger("splitter_hp\\1", vals.at(1));
+
+	MyETC->WriteInteger("comboBox_Species", this->comboBox_Species->currentIndex());
+	MyETC->WriteInteger("EidosID",this->EidosTreeWidget->GetEidosID());
+
+	MyETC->CloseKey();
+	delete MyETC;
+
 }
