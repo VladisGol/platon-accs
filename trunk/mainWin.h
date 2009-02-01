@@ -7,8 +7,6 @@
 #include "EssentialClass.h"
 #include "ibpp.h"
 #include "HypotesisMemModel.h"
-//#include "phipotesystablemodel.h"
-//#include "hypotesismodel.h"
 #include "pragmamodel.h"
 #include "HypotesisMemModel.h"
 #include "PragmaMemModel.h"
@@ -17,6 +15,7 @@
 #include "EAOneFrame.h"
 #include "LinksExplorer.h"
 #include "dbetc.h"
+#include "DialogLogin.h"
 
 
 class mainWin : public QMainWindow, public Ui::MainWindow
