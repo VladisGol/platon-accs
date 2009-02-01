@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="PICS" >
+    <file>Platon.png</file>
     <file>chains.png</file>
     <file>contents.png</file>
     <file>edit.png</file>

@@ -10,72 +10,77 @@ mainWin::mainWin(QWidget *parent)
 
 		setupUi(this);
 
-#ifdef IBPP_WINDOWS
-                MyDB = IBPP::DatabaseFactory("vladisgol",
-                                                "platon",
-                                                "sysdba",
-                                                "masterkey",
-                                                "",//Role
-                                                "WIN1251",//codepage
-                                                "DEFAULT CHARACTER SET WIN1251");//Доп параметры
-#else
-                MyDB = IBPP::DatabaseFactory("vladisgol",
-                                                "platon",
-                                                "sysdba",
-                                                "ymIyiAdV",
-                                                "",//Role
-                                                "WIN1251",//codepage
-                                                "DEFAULT CHARACTER SET WIN1251");//Доп параметры
-#endif
-		MyDB->Connect();
+		platon::Login_Dialog* LoginDLG= new platon::Login_Dialog(this);
+		while(true)
+		{
+			if(LoginDLG->exec()==QDialog::Rejected)
+			{
+				this->close();
+				break;
+			}
+			else
+			{
 
-		//platon::iterEidos* MyEidosIter= new  platon::iterEidos(MyDB,"ALL");
+				MyDB = IBPP::DatabaseFactory(LoginDLG->Host->text().toStdString() ,
+											 LoginDLG->Alias->text().toStdString(),
+											 LoginDLG->UserName->text().toStdString(),
+											 LoginDLG->Password->text().toStdString(),
+											"",//Role
+											"WIN1251",//codepage
+											"DEFAULT CHARACTER SET WIN1251");//Доп параметры
+				MyDB->Connect();
+				if(MyDB->Connected()) break;
+			}
+		}
 
-		LocalEidos=NULL;
-		LocalHypotesis=NULL;
+		if(MyDB->Connected())
+		{
+			LocalEidos=NULL;
+			LocalHypotesis=NULL;
 
-		QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
-		QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+			QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
+			QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 
-		QObject::connect(tableViewHypotesis, SIGNAL(pressed(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-		QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-		//QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-		QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+			QObject::connect(tableViewHypotesis, SIGNAL(pressed(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+			QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+			//QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+			QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 
-		//Привязываем элементы управления к событиям
-		QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
-		QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
-		QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
-		QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
-		QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
-		QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
-    	QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
+			//Привязываем элементы управления к событиям
+			QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
+			QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
+			QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
+			QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
+			QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
+			QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
+			QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
 
-		SetEidosView(0);
+			SetEidosView(0);
 
-		this->EidosTreeWidget->installEventFilter(this);
-		this->tableViewHypotesis->installEventFilter(this);
-		this->tableViewPragma->installEventFilter(this);
-		CurrentObjectLevel=0;
+			this->EidosTreeWidget->installEventFilter(this);
+			this->tableViewHypotesis->installEventFilter(this);
+			this->tableViewPragma->installEventFilter(this);
+			CurrentObjectLevel=0;
 
-		//Программное время
-		this->ProgramDateTime = QDateTime::currentDateTime();
-		DTBaseShifter=new QTimer(this);
-		connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
-		BaseTimeShift();
-		DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
+			//Программное время
+			this->ProgramDateTime = QDateTime::currentDateTime();
+			DTBaseShifter=new QTimer(this);
+			connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
+			BaseTimeShift();
+			DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
 
-		//Выставляем прокси модели для возможности сортировки и фильтрования
-		SFProxyModelH= new QSortFilterProxyModel(this);
-		SFProxyModelP= new QSortFilterProxyModel(this);
+			//Выставляем прокси модели для возможности сортировки и фильтрования
+			SFProxyModelH= new QSortFilterProxyModel(this);
+			SFProxyModelP= new QSortFilterProxyModel(this);
 
-		tableViewPragma->setModel(SFProxyModelP);
-		tableViewPragma->setSortingEnabled(true);
-		tableViewHypotesis->setModel(SFProxyModelH);
-		tableViewHypotesis->setSortingEnabled(true);
+			tableViewPragma->setModel(SFProxyModelP);
+			tableViewPragma->setSortingEnabled(true);
+			tableViewHypotesis->setModel(SFProxyModelH);
+			tableViewHypotesis->setSortingEnabled(true);
 
-		//Устанавливаем размеры виджетов на форме
-		ReadFormWidgetsAppearance();
+			//Устанавливаем размеры виджетов на форме
+			ReadFormWidgetsAppearance();
+		}
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
