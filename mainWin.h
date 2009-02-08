@@ -16,6 +16,7 @@
 #include "LinksExplorer.h"
 #include "dbetc.h"
 #include "DialogLogin.h"
+#include "DataClass.h"
 
 
 class mainWin : public QMainWindow, public Ui::MainWindow
@@ -26,6 +27,7 @@ class mainWin : public QMainWindow, public Ui::MainWindow
 public:
     mainWin(QWidget * parent = 0);
 	QDateTime ProgramDateTime;
+	platon::DataClass* MyDCl;
 
 private slots:
 	void SetPragmaView(const QModelIndex & index);
