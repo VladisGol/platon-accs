@@ -10,7 +10,9 @@ ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEido
     gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
 
-    this->DB=InEidos->DB;
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
+
     TableView= new QTableView(this);
     Model=new HypPragmaMemModel(InEidos,this);
     TableView->setModel(Model);

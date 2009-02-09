@@ -3,7 +3,7 @@ namespace platon
 {
 
 
-ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QString Species, long ID_in): QDialog(parent)
+ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID_in): QDialog(parent)
 {
     if (this->objectName().isEmpty())
     	this->setObjectName(QString::fromUtf8("Dialog_Eidos"));
@@ -11,10 +11,12 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QStr
     gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
 
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
+
     treeWidget = new QEidosTreeWidget (this);
     treeWidget->SetSpecies(Species);
-    treeWidget->AttachToDB(InDB);
-    this->DB=InDB;
+    treeWidget->AttachToDB(DB);
 
     treeWidget->setObjectName(QString::fromUtf8("treeWidget"));
 

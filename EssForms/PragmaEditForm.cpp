@@ -2,9 +2,11 @@
 
 namespace platon
 {
-PragmaEditForm::PragmaEditForm(QWidget * parent, IBPP::Database InDB, long ID_Pragma): AbstarctHipEditForm(parent)
+PragmaEditForm::PragmaEditForm(QWidget * parent, long ID_Pragma): AbstarctHipEditForm(parent)
 {
-	this->DB=InDB;
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
+
 	long EidosID, HypotesysID;
 
 	Pragma::GetEidosHypotesisIDS(DB, ID_Pragma,EidosID,HypotesysID);
@@ -25,7 +27,10 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditF
 	LocalHypotesis=InPr;
 	LocalHostHypotesis=InPr->HostHypotesis;
 	LocalEidos=InPr->HostEidos;
-	this->DB=InPr->HostEidos->DB;
+//	this->DB=InPr->HostEidos->DB;
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
+
 	FormFillFrames();
 }
 PragmaEditForm::~PragmaEditForm()

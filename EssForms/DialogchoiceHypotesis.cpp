@@ -10,8 +10,10 @@ ChoiceHypotesis_Dialog::ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* 
     gridLayout = new QGridLayout(this);
     gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
 
-    this->DB=InEidos->DB;
-    TableView= new QTableView(this);
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
+
+	TableView= new QTableView(this);
     Model=new HypotesisMemModel(InEidos,this);
     TableView->setModel(Model);
 

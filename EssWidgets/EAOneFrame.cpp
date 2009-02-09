@@ -241,7 +241,7 @@ void EA_OneFrame::LNKClick()
 			if(spec=="")spec="ALL";
 			platon::Hypotesis::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2HValue().LinkTo,ID_Eidos, ID_Hyp);
 
-			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,spec,ID_Eidos);
+			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,spec,ID_Eidos);
 			Localdialog->exec();
 			ID_Eidos=Localdialog->Out_value;
 		}
@@ -267,7 +267,7 @@ void EA_OneFrame::LNKClick()
 			if(spec=="")spec="ALL";
 			platon::Pragma::GetEidosHypotesisIDS(EAA->OwnerHypotesis->HostEidos->DB,EAA->GetLink2PValue().LinkTo,ID_Eidos, ID_Hyp);
 
-			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,EAA->OwnerHypotesis->HostEidos->DB,spec,ID_Eidos);
+			ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,spec,ID_Eidos);
 			Localdialog->exec();
 			ID_Eidos=Localdialog->Out_value;
 		}

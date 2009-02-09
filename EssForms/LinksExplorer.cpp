@@ -2,11 +2,12 @@
 
 namespace platon
 {
-LinksExplorer::LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, QString InSpecies): QMainWindow(parent)
+LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): QMainWindow(parent)
 {
 	setupUi(this);
 
-	this->DB=InDB;
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
 
 	LocalEidosH=NULL;
 	LocalEidosP=NULL;

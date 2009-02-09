@@ -43,7 +43,7 @@ private slots:
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
-	IBPP::Database MyDB;
+	//IBPP::Database MyDB;
 	QTimer* DTBaseShifter;
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);

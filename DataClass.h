@@ -25,7 +25,7 @@ class DataClass : public QObject
 {
 	Q_OBJECT
 public:
-	DataClass();
+	DataClass(QObject *parent);
 	virtual ~DataClass();
 	QMap <QString, QLibrary*> ArrayDynLib;	//Массив библиотек
 	IBPP::Database DB;						//База данных
@@ -33,6 +33,7 @@ public:
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
 
 };
+DataClass* GetDataModule(QObject * fromform);
 
 }
 

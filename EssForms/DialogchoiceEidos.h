@@ -11,6 +11,7 @@
 #include <QtGui/QTreeWidget>
 #include "qeidostreewidget.h"
 #include "dbetc.h"
+#include "DataClass.h"
 
 namespace platon
 {
@@ -22,7 +23,7 @@ public:
     QGridLayout *gridLayout;
     QEidosTreeWidget *treeWidget;
     QDialogButtonBox *buttonBox;
-    ChoiceEidos_Dialog(QWidget * parent,IBPP::Database InDB,QString Species, long ID_in);
+    ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID_in);
     long Out_value;
     bool find(long ID_searchfor);
 

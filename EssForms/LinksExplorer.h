@@ -10,6 +10,7 @@
 #include "EssentialClass.h"
 #include "ibpp.h"
 #include "dbetc.h"
+#include "DataClass.h"
 
 
 namespace platon
@@ -19,7 +20,7 @@ class LinksExplorer  :public QMainWindow, public Ui_LinksExplorer
     Q_OBJECT
 
 public:
-	LinksExplorer(QWidget * parent, IBPP::Database InDB, long ID_in, QString InSpecies);
+	LinksExplorer(QWidget * parent, long ID_in, QString InSpecies);
 	~LinksExplorer();
 
     IBPP::Database DB;
