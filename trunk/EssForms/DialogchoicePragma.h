@@ -12,6 +12,7 @@
 #include <QtGui/QTableView>
 #include "HypPragmaMemModel.h"
 #include "dbetc.h"
+#include "DataClass.h"
 
 namespace platon
 {

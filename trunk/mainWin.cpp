@@ -10,6 +10,8 @@ mainWin::mainWin(QWidget *parent)
 
 		setupUi(this);
 
+		this->MyDCl=new platon::DataClass(this);	//Создаем молуль данных приложения
+
 		platon::Login_Dialog* LoginDLG= new platon::Login_Dialog(this);
 		while(true)
 		{
@@ -21,19 +23,19 @@ mainWin::mainWin(QWidget *parent)
 			else
 			{
 
-				MyDB = IBPP::DatabaseFactory(LoginDLG->Host->text().toStdString() ,
+				this->MyDCl->DB = IBPP::DatabaseFactory(LoginDLG->Host->text().toStdString() ,
 											 LoginDLG->Alias->text().toStdString(),
 											 LoginDLG->UserName->text().toStdString(),
 											 LoginDLG->Password->text().toStdString(),
 											"",//Role
 											"WIN1251",//codepage
 											"DEFAULT CHARACTER SET WIN1251");//Доп параметры
-				MyDB->Connect();
-				if(MyDB->Connected()) break;
+				this->MyDCl->DB->Connect();
+				if(this->MyDCl->DB->Connected()) break;
 			}
 		}
 
-		if(MyDB->Connected())
+		if(this->MyDCl->DB->Connected())
 		{
 			LocalEidos=NULL;
 			LocalHypotesis=NULL;
@@ -153,7 +155,7 @@ void mainWin::SetEidosView(int Row)
 		EidosTreeWidget->SetSpecies("NSI");
 	}
 
-	EidosTreeWidget->AttachToDB(MyDB);
+	EidosTreeWidget->AttachToDB(this->MyDCl->DB);
 }
 
 void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
@@ -162,7 +164,7 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 
 	long id_eidos=CurItem->text(1).toLong();
 
-	LocalEidos=new platon::Eidos(MyDB,id_eidos);
+	LocalEidos=new platon::Eidos(this->MyDCl->DB,id_eidos);
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
 	SFProxyModelH->setSourceModel(MyModel);
 
@@ -191,7 +193,7 @@ void mainWin::EditItem()
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,MyDB,id_hypotesys);
+		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
 		md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
 		md->show();
 	}
@@ -199,7 +201,7 @@ void mainWin::EditItem()
 	{
 		int myrow=tableViewPragma->currentIndex().row();
 		long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,MyDB,id_pragma);
+		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
 		md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
 		md->show();
 	}
@@ -254,14 +256,14 @@ void mainWin::Showlinks()
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,MyDB,id_hypotesys,"ALL");
+		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
 		LnkForm->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
 		int myrow=tableViewPragma->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,MyDB,id_hypotesys,"ALL");
+		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
 		LnkForm->show();
 	}
 }
@@ -282,7 +284,7 @@ void mainWin::BaseTimeShift()
 		ProgramDateTime= QDateTime::currentDateTime();
 	}
 
-	platon::SetTimestampTemporalCompareFor(MyDB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
+	platon::SetTimestampTemporalCompareFor(this->MyDCl->DB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
 	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy mm:ss")));
 }
 void mainWin::CloseForm()
@@ -294,7 +296,7 @@ void mainWin::CloseForm()
 void mainWin::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDB);
+	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDCl->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
 	int w=874,h=744;
 	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
@@ -320,7 +322,7 @@ void mainWin::ReadFormWidgetsAppearance()
 void mainWin::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDB);
+	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDCl->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());
 	MyETC->WriteInteger("height", this->height());

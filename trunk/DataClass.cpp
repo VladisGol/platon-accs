@@ -10,10 +10,10 @@
 namespace platon
 {
 
-DataClass::DataClass()
+DataClass::DataClass(QObject *parent=0) :QObject(parent)
 {
 	// TODO Auto-generated constructor stub
-
+	this->setObjectName("DataModule");
 }
 
 DataClass::~DataClass()
@@ -44,4 +44,16 @@ void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 		}
 	}
 }
+DataClass* GetDataModule(QObject * fromform)
+{
+	QString DTLObjectName="DataModule";
+	if(fromform->findChild<DataClass *>(DTLObjectName)==0)	//” переданного в параметрах объекте нет деток с типом DataModule
+		if(fromform->parent()!=0)				//но при этом есть родители
+			return GetDataModule(fromform->parent());	//переходим на рассмотрение родител€
+		else
+			return 0;							//Ёто последний в цепочке
+	else
+		return fromform->findChild<DataClass *>(DTLObjectName);//≈сть детка нужного типа
+}
+
 }

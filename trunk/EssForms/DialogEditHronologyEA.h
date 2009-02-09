@@ -12,6 +12,7 @@
 #include <QtGui/QTableView>
 #include "HronologyEaMemModel.h"
 #include "dbetc.h"
+#include "DataClass.h"
 
 namespace platon
 {

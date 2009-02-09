@@ -2,6 +2,7 @@
 #define PragmaEditForm_H
 
 #include "abstracthip_editform.h"
+#include "DataClass.h"
 #include <QtGui>
 
 #include "EssentialClass.h"
@@ -13,7 +14,7 @@ class PragmaEditForm  :public AbstarctHipEditForm
 {
 
 public:
-	PragmaEditForm(QWidget * parent, IBPP::Database InDB, long ID_Pragma);
+	PragmaEditForm(QWidget * parent, long ID_Pragma);
 	PragmaEditForm(QWidget * parent, Pragma* InPr);
 	~PragmaEditForm();
 	Hypotesis*LocalHostHypotesis;

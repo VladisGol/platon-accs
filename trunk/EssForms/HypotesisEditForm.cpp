@@ -2,9 +2,11 @@
 
 namespace platon
 {
-HypotesisEditForm::HypotesisEditForm(QWidget * parent, IBPP::Database InDB, long ID_Hypotesys): AbstarctHipEditForm(parent)
+HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): AbstarctHipEditForm(parent)
 {
-	this->DB=InDB;
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
+
 	long EidosID,HypotesysID;
 	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
 	if(EidosID>0)	//Проверяем найдены ли среди гипотез заданная в параметре
@@ -22,7 +24,8 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): Abstar
 {
 	LocalHypotesis=InHip;
 	LocalEidos=InHip->HostEidos;
-	this->DB=InHip->HostEidos->DB;
+	DataClass* DTL=platon::GetDataModule(this);
+	this->DB=DTL->DB;
 	FormFillFrames();
 }
 HypotesisEditForm::~HypotesisEditForm()
