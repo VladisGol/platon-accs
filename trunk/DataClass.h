@@ -14,6 +14,8 @@
 #include <QApplication>
 #include <QSplashScreen>
 #include <QMessageBox>
+#include "DialogLogin.h"
+#include <QMessageBox>
 
 
 #include "ibpp.h"
@@ -31,6 +33,7 @@ public:
 	IBPP::Database DB;						//База данных
 
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
+	QLibrary* GetLibByName(QString inString);
 
 };
 DataClass* GetDataModule(QObject * fromform);

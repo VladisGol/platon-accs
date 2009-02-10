@@ -15,7 +15,6 @@
 #include "EAOneFrame.h"
 #include "LinksExplorer.h"
 #include "dbetc.h"
-#include "DialogLogin.h"
 #include "DataClass.h"
 
 
@@ -43,7 +42,6 @@ private slots:
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
-	//IBPP::Database MyDB;
 	QTimer* DTBaseShifter;
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);

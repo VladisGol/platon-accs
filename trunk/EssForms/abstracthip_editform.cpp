@@ -36,6 +36,7 @@ void AbstarctHipEditForm::FormFillFrames()
 		{
 			EA_OneFrame* my =new EA_OneFrame(this,tmpAttrib);
 			my->setObjectName("EA_Frame"+QString::number(i));
+			my->MyDCl=this->MyDCl;				//Записываем адрес модуля данных
 			verticalLayout->insertWidget(0,my); //Заносим в форму фреймы с нулевого индекса, чтобы последние были вверху
 		}
 	}
