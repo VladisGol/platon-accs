@@ -7,6 +7,7 @@
 #include "EssentialClass.h"
 #include "ibpp.h"
 #include "dbetc.h"
+#include "DataClass.h"
 
 
 namespace platon
@@ -22,6 +23,7 @@ public:
     Eidos* LocalEidos;
     Hypotesis*LocalHypotesis;
     void FormFillFrames();
+    DataClass* MyDCl;
 
 public slots:
 	void ExitWithSave();

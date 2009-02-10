@@ -297,7 +297,17 @@ void EA_OneFrame::HronologyClick()
 void EA_OneFrame::CallDllRoutine()
 {
 	//Функция вызывает процедуру из динамической библиотеки
-	QMessageBox::information(this,"Imitation","Called procedure");
+	QLibrary* CalledLib= this->MyDCl->GetLibByName(QString::fromStdString(this->EAA->EA->DLL_FileName));
+	if(CalledLib==NULL)
+	{
+		QString Message=tr("Требуемая процедура '")+QString::fromStdString(this->EAA->EA->DLL_FileName)+tr("' не найдена");
+		QMessageBox::information(this,tr("Внимание"),Message);
+	}
+	else
+	{
+		//Вызов процедуры из библиотеки. Можно будет описать после разработки процедуры
+	}
+
 }
 
 }

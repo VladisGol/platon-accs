@@ -4,8 +4,8 @@ namespace platon
 {
 HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): AbstarctHipEditForm(parent)
 {
-	DataClass* DTL=platon::GetDataModule(this);
-	this->DB=DTL->DB;
+	MyDCl=platon::GetDataModule(this);
+	this->DB=MyDCl->DB;
 
 	long EidosID,HypotesysID;
 	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
@@ -24,8 +24,8 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): Abstar
 {
 	LocalHypotesis=InHip;
 	LocalEidos=InHip->HostEidos;
-	DataClass* DTL=platon::GetDataModule(this);
-	this->DB=DTL->DB;
+	MyDCl=platon::GetDataModule(this);
+	this->DB=MyDCl->DB;
 	FormFillFrames();
 }
 HypotesisEditForm::~HypotesisEditForm()

@@ -4,38 +4,14 @@ mainWin::mainWin(QWidget *parent)
     : QMainWindow(parent)
 
 {
-		QTextCodec * codec = QTextCodec::codecForName("CP1251");
+		QTextCodec * codec = QTextCodec::codecForName("CP1251"); 	//Устанавливаем кодировщик
 		QTextCodec::setCodecForTr(codec);
 		QTextCodec::setCodecForCStrings(codec);
 
-		setupUi(this);
+		setupUi(this);								//Загружаем элементы формы
 
 		this->MyDCl=new platon::DataClass(this);	//Создаем молуль данных приложения
-
-		platon::Login_Dialog* LoginDLG= new platon::Login_Dialog(this);
-		while(true)
-		{
-			if(LoginDLG->exec()==QDialog::Rejected)
-			{
-				this->close();
-				break;
-			}
-			else
-			{
-
-				this->MyDCl->DB = IBPP::DatabaseFactory(LoginDLG->Host->text().toStdString() ,
-											 LoginDLG->Alias->text().toStdString(),
-											 LoginDLG->UserName->text().toStdString(),
-											 LoginDLG->Password->text().toStdString(),
-											"",//Role
-											"WIN1251",//codepage
-											"DEFAULT CHARACTER SET WIN1251");//Доп параметры
-				this->MyDCl->DB->Connect();
-				if(this->MyDCl->DB->Connected()) break;
-			}
-		}
-
-		if(this->MyDCl->DB->Connected())
+		if(this->MyDCl->DB->Connected())			//Если соединение с базой данной при создании модуля прошло успешно
 		{
 			LocalEidos=NULL;
 			LocalHypotesis=NULL;

@@ -25,6 +25,8 @@
 #include "DialogchoicePragma.h"
 #include "DialogEditHronologyEA.h"
 #include "commonroutines.h"
+#include "DataClass.h"
+#include <QLibrary>
 
 namespace platon
 {
@@ -35,6 +37,7 @@ class EA_OneFrame :public QFrame
 public:
     EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA);
     void Save();
+    DataClass* MyDCl;
 public slots:
 	void CallDllRoutine();
 	void LNKClick();
