@@ -119,15 +119,21 @@ namespace platon
 	{
 		this->DB=InEidos->DB;
         Initialize();
-        SQL_string="select get_hypotesis_list.id from get_hypotesis_list("+ToString(InEidos->GetID())+");";
-        SQL_string_forreccount="select count(get_hypotesis_list.id) recordscount from get_hypotesis_list("+ToString(InEidos->GetID())+");";
+        SQL_string="select get_hypotesis_name_list.id ID, get_hypotesis_name_list.meaning TITLE from get_hypotesis_name_list("+ToString(InEidos->GetID())+");";
+        SQL_string_forreccount="select count(get_hypotesis_name_list.id) recordscount from get_hypotesis_name_list("+ToString(InEidos->GetID())+");";
 	}
 	iterHypotesis::iterHypotesis(IBPP::Database inDB,long ID_Eidos)
 	{
 		this->DB=inDB;
         Initialize();
-        SQL_string="select get_hypotesis_list.id from get_hypotesis_list("+ToString(ID_Eidos)+");";
-        SQL_string_forreccount="select count(get_hypotesis_list.id) recordscount from get_hypotesis_list("+ToString(ID_Eidos)+");";
+        SQL_string="select get_hypotesis_name_list.id ID, get_hypotesis_name_list.meaning TITLE from get_hypotesis_name_list("+ToString(ID_Eidos)+");";
+        SQL_string_forreccount="select count(get_hypotesis_name_list.id) recordscount from get_hypotesis_name_list("+ToString(ID_Eidos)+");";
+	}
+	std::string iterHypotesis::GetTitle()
+	{
+        std::string RetVal="";
+        if(IsFetched) LocalST->Get("TITLE",RetVal);
+		return RetVal;
 	}
 	iterPragma::iterPragma(Hypotesis* InHyp)
 	{
