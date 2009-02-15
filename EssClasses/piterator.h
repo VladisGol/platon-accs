@@ -78,6 +78,7 @@ namespace platon
 	public:
 		iterHypotesis(Eidos* InEidos);
 		iterHypotesis(IBPP::Database inDB,long ID_Eidos);
+		std::string GetTitle();
 	};
 	class iterPragma :public pIterator
 	{

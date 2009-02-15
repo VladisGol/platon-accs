@@ -27,6 +27,7 @@
 #include "commonroutines.h"
 #include "DataClass.h"
 #include <QLibrary>
+#include "LnkComboBox.h"
 
 namespace platon
 {

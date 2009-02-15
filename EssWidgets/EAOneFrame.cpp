@@ -126,21 +126,44 @@ void EA_OneFrame::fillVisibleWidget()
 		case platon::ft_LinkHypotesis:
 		case platon::ft_LinkPragma:
 		{
-			EditableWidget=new QLineEdit(frame);
-			gridLayoutInFrame->addWidget(EditableWidget);
+			if(EAA->EA->LNK_NeedList)
+			{
+				if(EAA->EA->type==platon::ft_LinkPragma)
+				{
+					EditableWidget=new LnkHypPragmaComboBox(EAA->OwnerHypotesis->HostEidos, frame);	//Меняем на типизированное значение выбора из списка
+		 			((LnkHypPragmaComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2PValue().LinkTo);
 
- 			((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
-			KeepValue=((QLineEdit*)EditableWidget)->text();
+		 			KeepValue=QVariant::fromValue(EAA->GetLink2PValue().LinkTo);
 
-			LNKButton = new QToolButton(this);
-			LNKButton->setObjectName("LNKButton");
-		    QIcon icon1;
-		    icon1.addPixmap(QPixmap(QString::fromUtf8(":/PICS/chain_nicu_buculei_01.png")), QIcon::Normal, QIcon::Off);
-		    LNKButton->setIcon(icon1);
+				}
+				else
+				{
+					EditableWidget=new LnkHypComboBox(EAA->OwnerHypotesis->HostEidos, frame);
+		 			((LnkHypComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2HValue().LinkTo);
 
-		    horizontalLayout->addWidget(LNKButton);
+		 			KeepValue=QVariant::fromValue(EAA->GetLink2HValue().LinkTo);
+				}
+				gridLayoutInFrame->addWidget(EditableWidget);
+			}
+			else
+			{
+				EditableWidget=new QLineEdit(frame);
 
+	 			((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
+				KeepValue=((QLineEdit*)EditableWidget)->text();
+
+				gridLayoutInFrame->addWidget(EditableWidget);
+
+				LNKButton = new QToolButton(this);
+				LNKButton->setObjectName("LNKButton");
+				QIcon icon1;
+				icon1.addPixmap(QPixmap(QString::fromUtf8(":/PICS/chain_nicu_buculei_01.png")), QIcon::Normal, QIcon::Off);
+				LNKButton->setIcon(icon1);
+
+				horizontalLayout->addWidget(LNKButton);
+			}
 			break;
+
 		}
 		default:
 			throw("Указанный тип данных не поддерживается");
@@ -217,10 +240,40 @@ void EA_OneFrame::Save()
 			}
 			case platon::ft_RB:
 			case platon::ft_DLL:
+				//Данные значения обрабатываются в процедурах вызова кнопок
+				break;
+
 			case platon::ft_LinkHypotesis:
 			case platon::ft_LinkPragma:
 			{
-				//Данные значения обрабатываются в процедурах вызова кнопок
+				if(EAA->EA->LNK_NeedList)
+				{
+					if(EAA->EA->type==platon::ft_LinkPragma)
+					{
+						long ID=((LnkHypPragmaComboBox*)EditableWidget)->GetCurrentID();
+						if(KeepValue.toInt()!=ID)
+						{
+							platon::LNK_Value localLNKVal;
+							localLNKVal.LinkTo=ID;
+							localLNKVal.Ratio=EAA->GetLink2PValue().Ratio;
+							if(localLNKVal.LinkTo>0) EAA->SetLink2PValue(localLNKVal);
+						}
+						break;
+					}
+					else
+					{
+						long ID=((LnkHypComboBox*)EditableWidget)->GetCurrentID();
+						if(KeepValue.toInt()!=ID)
+						{
+							platon::LNK_Value localLNKVal;
+							localLNKVal.LinkTo=ID;
+							localLNKVal.Ratio=EAA->GetLink2HValue().Ratio;
+							if(localLNKVal.LinkTo>0) EAA->SetLink2HValue(localLNKVal);
+						}
+						break;
+					}
+				}
+				// Иначе обработка проходит в процедурах вызова кнопок
 				break;
 			}
 			default:
