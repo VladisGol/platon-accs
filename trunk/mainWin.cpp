@@ -147,7 +147,7 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
 	else
-		tableViewPragma->setModel(NULL);
+		SFProxyModelP->setSourceModel(NULL);
 
 	if(keep4delete!=NULL) delete keep4delete;
 }
@@ -261,7 +261,7 @@ void mainWin::BaseTimeShift()
 	}
 
 	platon::SetTimestampTemporalCompareFor(this->MyDCl->DB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
-	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy mm:ss")));
+	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
 }
 void mainWin::CloseForm()
 {

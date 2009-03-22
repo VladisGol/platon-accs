@@ -130,16 +130,20 @@ void EA_OneFrame::fillVisibleWidget()
 			{
 				if(EAA->EA->type==platon::ft_LinkPragma)
 				{
-					EditableWidget=new LnkHypPragmaComboBox(EAA->OwnerHypotesis->HostEidos, frame);	//Меняем на типизированное значение выбора из списка
+					platon::Eidos* ListEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_EidosID);
+					EditableWidget=new LnkHypPragmaComboBox(ListEidos, frame);	//Меняем на типизированное значение выбора из списка
 		 			((LnkHypPragmaComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2PValue().LinkTo);
+		 			delete ListEidos;
 
 		 			KeepValue=QVariant::fromValue(EAA->GetLink2PValue().LinkTo);
 
 				}
 				else
 				{
-					EditableWidget=new LnkHypComboBox(EAA->OwnerHypotesis->HostEidos, frame);
+					platon::Eidos* ListEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_EidosID);
+					EditableWidget=new LnkHypComboBox(ListEidos, frame);
 		 			((LnkHypComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2HValue().LinkTo);
+		 			delete ListEidos;
 
 		 			KeepValue=QVariant::fromValue(EAA->GetLink2HValue().LinkTo);
 				}
