@@ -27,11 +27,12 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditF
 	LocalHypotesis=InPr;
 	LocalHostHypotesis=InPr->HostHypotesis;
 	LocalEidos=InPr->HostEidos;
-//	this->DB=InPr->HostEidos->DB;
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
-
 	FormFillFrames();
+	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
+	ReadFormWidgetsAppearance();
+
 }
 PragmaEditForm::~PragmaEditForm()
 {
