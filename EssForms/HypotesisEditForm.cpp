@@ -27,6 +27,9 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): Abstar
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
 	FormFillFrames();
+	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":hypotesis");
+	ReadFormWidgetsAppearance();
+
 }
 HypotesisEditForm::~HypotesisEditForm()
 {

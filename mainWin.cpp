@@ -205,6 +205,7 @@ void mainWin::AddItem()
 	if(CurrentObjectLevel==Level_Pragma)
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
+		if(myrow==-1) myrow=0;	//Это на случай если сразу перешагнули в окно Pragma без выбора bp Hypotesis
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 		if(id_hypotesys>0)
 		{
