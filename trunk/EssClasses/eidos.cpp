@@ -43,7 +43,8 @@ Eidos::Eidos(IBPP::Database MyDB)
         Initialize();
         this->id =0;	//Для нового объекта важно чтобы это значение было нулевым
         this->id_parent =0;
-
+        GetExtraAttributesSet();
+        AlternateEACaption();	//Заменяем наименования заголовков если таковое требуется
         this->HypotesisSQL=new HypotesisSQLManager(this);
         this->PragmaSQL=new HypotesisPragmaSQLManager(this);
 }
@@ -65,6 +66,7 @@ Eidos::Eidos(IBPP::Database MyDB, long ID_IN)
         GetData(this,ID_IN);
         //Загружаем данные об имеющихся у объекта собственных аттрибутах
         GetExtraAttributesSet();
+        AlternateEACaption();	//Заменяем наименования заголовков если таковое требуется
         this->HypotesisSQL=new HypotesisSQLManager(this);
         this->PragmaSQL=new HypotesisPragmaSQLManager(this);
         FillEASQLProp();
@@ -84,6 +86,9 @@ void Eidos::GetExtraAttributesSet()
 //Метод пробегает по всем объектам класса Eidos и вызывает процедуру создания
 //списка атрибутов данного класса из данных в БД. Процесс идет до тех пор,
 //пока объект не окажется корневым
+	IBPP::Statement EIDOS_ST=IBPP::StatementFactory(DB, LocalTR);
+	if(!LocalTR->Started())LocalTR->Start();
+
 	QueryForExtraAttrib(this);//Получение атрибутов собственно объекта
     FullName=this->Name;
 	if(this->id_parent>0)	//Нужно получить дополнительные атрибуты объектов выше по иерархии
@@ -118,7 +123,7 @@ void Eidos::GetData(Eidos* InClass, long ID_IN)
         if(LocalST->Fetch())
         {
         	//Получаем значения сохраненные в БД для указанного объекта
-        	LocalST->Get("id",(int32_t*)&InClass->id);
+				LocalST->Get("id",(int32_t*)&InClass->id);
                 LocalST->Get("ID_PARENT",(int32_t*)&InClass->id_parent);
                 LocalST->Get("NAME",InClass->Name);
                 LocalST->Get("SPECIES",InClass->Species);
@@ -454,6 +459,53 @@ long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBran
                 TmpTR->Commit();
         }
         return ID_ForReturn;
+}
+void Eidos::AlternateEACaption()
+{
+//Процедура изменяет подписи экстраатрибутов
+//Значения измененных значений получаются из базы данных и заменяют те, которые в настоящий момент активны
+		IBPP::Statement LocalST=IBPP::StatementFactory(DB, LocalTR);
+		IBPP::Statement EIDOS_ST=IBPP::StatementFactory(DB, LocalTR);
+		if(!LocalTR->Started())LocalTR->Start();
+
+		long CurrentIDEidos=this->GetID();
+
+		while(CurrentIDEidos>0)		//Проверяем не является ли объект корневым
+		{
+			std::string AlternatedFieldName;
+			std::string AlternatedCaption;
+
+			LocalST->Prepare("SELECT * FROM GET_EA_ALTCAPTIONS(?);");
+			LocalST->Set(1,(int32_t)CurrentIDEidos);
+			LocalST->Execute();
+
+	        while(LocalST->Fetch())
+	        {
+	        	LocalST->Get("FIELD_NAME",AlternatedFieldName);
+	        	LocalST->Get("NEWCAPTION",AlternatedCaption);
+
+	        	ExtraAttribute*OneEA= this->GetEAByFieldName(AlternatedFieldName);
+	        	if(OneEA->IsCaptionAlternated==false)
+	        	{
+	        		OneEA->Caption=AlternatedCaption;
+	        		OneEA->IsCaptionAlternated=true;
+	        	}
+	        }
+
+			//Загружаем данные класса, записанные в БД
+			EIDOS_ST->Prepare("SELECT * FROM GET_EIDOS(?);");
+			EIDOS_ST->Set(1,(int32_t)CurrentIDEidos);
+			EIDOS_ST->Execute();
+
+			//Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
+			if(EIDOS_ST->Fetch())
+			{
+				//Получаем значения сохраненные в БД для указанного объекта
+				long parentvalue;
+				EIDOS_ST->Get("ID_PARENT",(int32_t*)&parentvalue);
+				CurrentIDEidos=parentvalue;
+			}
+		}
 }
 
 }

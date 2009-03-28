@@ -53,7 +53,7 @@ class ExtraAttribute;
 class Eidos
 {
 private:
-	long id;         		//Идентификатор объекта
+	long id;         						//Идентификатор объекта
     long id_parent;                 //Ссылка на предшественника
 
     std::string Name;
@@ -67,6 +67,7 @@ private:
     IBPP::Transaction LocalTR;
 
 	void GetExtraAttributesSet();
+	void AlternateEACaption();	//Процедура изменения подписи экстраатрибутов
 
 protected:
     std::string Species;
