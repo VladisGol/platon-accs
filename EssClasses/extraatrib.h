@@ -111,6 +111,8 @@ public:
     long 	LNK_HypID;
     bool	LNK_NeedList;
 
+    bool IsCaptionAlternated;	//Переменная показывающая была ли проведена замена заголовка
+
 	long 	Save();
 	ExtraAttribute();
 	~ExtraAttribute();

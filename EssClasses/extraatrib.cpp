@@ -185,6 +185,7 @@ ExtraAttribute::ExtraAttribute()
         this->LNK_EidosID=0;
         this->LNK_HypID=0;
         this->LNK_NeedList=false;
+        this->IsCaptionAlternated=false;
 }
 
 ExtraAttribute::~ExtraAttribute()
