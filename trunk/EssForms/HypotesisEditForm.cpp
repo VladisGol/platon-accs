@@ -4,6 +4,7 @@ namespace platon
 {
 HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): AbstarctHipEditForm(parent)
 {
+	this->setObjectName("HypotesisEditForm");
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
 
@@ -22,6 +23,7 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): Absta
 }
 HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): AbstarctHipEditForm(parent)
 {
+	this->setObjectName("HypotesisEditForm");
 	LocalHypotesis=InHip;
 	LocalEidos=InHip->HostEidos;
 	MyDCl=platon::GetDataModule(this);

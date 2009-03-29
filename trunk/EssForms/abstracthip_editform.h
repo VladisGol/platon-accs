@@ -1,6 +1,7 @@
 #ifndef abstracthipeditform_H
 #define abstracthipeditform_H
 
+
 #include "ui_HypotesisEditForm.h"
 #include <QtGui>
 #include "EAOneFrame.h"

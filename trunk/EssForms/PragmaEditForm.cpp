@@ -4,6 +4,7 @@ namespace platon
 {
 PragmaEditForm::PragmaEditForm(QWidget * parent, long ID_Pragma): AbstarctHipEditForm(parent)
 {
+	this->setObjectName("PragmaEditForm");
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
 
@@ -24,6 +25,7 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, long ID_Pragma): AbstarctHipEdi
 }
 PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditForm(parent)
 {
+	this->setObjectName("PragmaEditForm");
 	LocalHypotesis=InPr;
 	LocalHostHypotesis=InPr->HostHypotesis;
 	LocalEidos=InPr->HostEidos;

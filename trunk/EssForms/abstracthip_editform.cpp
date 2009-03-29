@@ -1,4 +1,5 @@
 #include "abstracthip_editform.h"
+#include "mainWin.h"
 
 namespace platon
 {
@@ -21,6 +22,12 @@ void AbstarctHipEditForm::ExitWithSave()
 	this->LocalHypotesis->TransactionIBPP->Commit();
 
 	WriteFormWidgetsAppearance();
+
+	if(this->objectName()=="HypotesisEditForm")
+		((mainWin *)this->MyDCl->parent())->RefreshHView();
+	if(this->objectName()=="PragmaEditForm")
+		((mainWin *)this->MyDCl->parent())->RefreshPView();
+
 	this->close();
 }
 void AbstarctHipEditForm::ExitByCancel()

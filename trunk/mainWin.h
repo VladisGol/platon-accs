@@ -27,6 +27,8 @@ public:
     mainWin(QWidget * parent = 0);
 	QDateTime ProgramDateTime;
 	platon::DataClass* MyDCl;
+	void RefreshHView();
+	void RefreshPView();
 
 private slots:
 	void SetPragmaView(const QModelIndex & index);
@@ -39,6 +41,7 @@ private slots:
 	void BaseTimeShift();//Слот для установки в базе данных времени работы в программе
 	void Showlinks();// Слот для вызова формы отображения ссылок на текущую запись
 	void CloseForm();
+
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
