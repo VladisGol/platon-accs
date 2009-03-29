@@ -132,7 +132,7 @@ void EA_OneFrame::fillVisibleWidget()
 				{
 					platon::Eidos* ListEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_EidosID);
 					EditableWidget=new LnkHypPragmaComboBox(ListEidos, frame);	//Меняем на типизированное значение выбора из списка
-		 			((LnkHypPragmaComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2PValue().LinkTo);
+					((LnkHypPragmaComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2PValue().LinkTo);
 		 			delete ListEidos;
 
 		 			KeepValue=QVariant::fromValue(EAA->GetLink2PValue().LinkTo);

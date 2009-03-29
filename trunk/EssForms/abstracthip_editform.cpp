@@ -12,6 +12,8 @@ AbstarctHipEditForm::AbstarctHipEditForm(QWidget * parent): QMainWindow(parent)
 
 void AbstarctHipEditForm::ExitWithSave()
 {
+	if(this->LocalHypotesis->TransactionIBPP->Started()==false) this->LocalHypotesis->TransactionIBPP->Start();
+
 	QList<EA_OneFrame*> AllFrames =this->findChildren<EA_OneFrame*>(QRegExp("EA_Frame*"));
 	for(int i=0;i<AllFrames.count();i++)
 		AllFrames.at(i)->Save();
@@ -29,15 +31,16 @@ void AbstarctHipEditForm::ExitByCancel()
 
 void AbstarctHipEditForm::FormFillFrames()
 {
-	for(unsigned int i =0; i<LocalHypotesis->Attributes.size();i++)
+	unsigned int ElementsNumber=LocalHypotesis->Attributes.size()-1;
+	for(unsigned int i =0; i<=ElementsNumber;i++)
 	{
-		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];
+		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[ElementsNumber-i];	//Разворачиваем с последнего до первого
 		if(tmpAttrib->EA->type!=platon::ft_Security && tmpAttrib->EA->Visible)
 		{
 			EA_OneFrame* my =new EA_OneFrame(this,tmpAttrib);
 			my->setObjectName("EA_Frame"+QString::number(i));
 			my->MyDCl=this->MyDCl;				//Записываем адрес модуля данных
-			verticalLayout->insertWidget(0,my); //Заносим в форму фреймы с нулевого индекса, чтобы последние были вверху
+			verticalLayout->insertWidget(-1,my); //Заносим в форму фрейм
 		}
 	}
 }
