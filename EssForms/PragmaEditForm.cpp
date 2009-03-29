@@ -29,6 +29,7 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditF
 	LocalEidos=InPr->HostEidos;
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
+	LocalHypotesis->Autocommited=false;	//Сами управляем подтверждением транзакции
 	FormFillFrames();
 	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
 	ReadFormWidgetsAppearance();
