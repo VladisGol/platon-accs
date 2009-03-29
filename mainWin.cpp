@@ -248,9 +248,19 @@ void mainWin::Showlinks()
 void mainWin::RefreshViews()
 {
 //Процедура обновляет значения в окнах отображения гипотез и прагм
-	if(CurrentObjectLevel==Level_Hypotesis) ((platon::AbstractMemHypModel*)this->tableViewHypotesis->model())->ReadToBuffer();
-	if(CurrentObjectLevel==Level_Pragma) 	((platon::AbstractMemHypModel*)this->tableViewPragma->model())->ReadToBuffer();
+	if(CurrentObjectLevel==Level_Hypotesis) RefreshHView();
+	if(CurrentObjectLevel==Level_Pragma) RefreshPView();
+
 }
+void mainWin::RefreshHView()
+{
+	SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
+}
+void mainWin::RefreshPView()
+{
+	SetPragmaView(tableViewHypotesis->currentIndex());
+}
+
 
 void mainWin::BaseTimeShift()
 {
@@ -291,6 +301,8 @@ void mainWin::ReadFormWidgetsAppearance()
 
 	if(MyETC->ParamExists("comboBox_Species")) this->comboBox_Species->setCurrentIndex(MyETC->ReadInteger("comboBox_Species"));
 	if(MyETC->ParamExists("EidosID")) this->EidosTreeWidget->findNMakeCurrent(MyETC->ReadInteger("EidosID"));
+
+	SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
 
 	MyETC->CloseKey();
 	delete MyETC;
