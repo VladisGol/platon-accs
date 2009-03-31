@@ -16,6 +16,7 @@ ChoiceHypotesis_Dialog::ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* 
 	TableView= new QTableView(this);
     Model=new HypotesisMemModel(InEidos,this);
     TableView->setModel(Model);
+    TableView->resizeColumnsToContents();
 
     TableView->setObjectName(QString::fromUtf8("TableView"));
 

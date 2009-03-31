@@ -18,6 +18,7 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): Absta
 		FormFillFrames();
 		dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":hypotesis");
 		ReadFormWidgetsAppearance();
+		FormActionsTune();
 	}
 	else throw "Объект на который указывает идентификатор из параметра не существует";
 }
@@ -32,6 +33,7 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): Abstar
 	FormFillFrames();
 	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":hypotesis");
 	ReadFormWidgetsAppearance();
+	FormActionsTune();
 
 }
 HypotesisEditForm::~HypotesisEditForm()

@@ -29,12 +29,16 @@ public:
 public slots:
 	void ExitWithSave();
 	void ExitByCancel();
+	void DoAddAction();
+	void DoWriteOffRes();
+	void DoOpenType();
+
 protected:
 
     void ReadFormWidgetsAppearance();
     void WriteFormWidgetsAppearance();
     QString dbEtcBranchName;
-
+    void FormActionsTune();
 
 };
 }

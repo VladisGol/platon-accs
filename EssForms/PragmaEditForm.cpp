@@ -20,6 +20,7 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, long ID_Pragma): AbstarctHipEdi
 		FormFillFrames();
 		dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
 		ReadFormWidgetsAppearance();
+		FormActionsTune();
 	}
 	else throw "Объект на который указывает идентификатор из параметра не существует";
 }
@@ -35,6 +36,7 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditF
 	FormFillFrames();
 	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
 	ReadFormWidgetsAppearance();
+	FormActionsTune();
 
 }
 PragmaEditForm::~PragmaEditForm()

@@ -13,8 +13,8 @@
    <string>Система эксплуатационного учета "Платон"</string>
   </property>
   <property name="windowIcon" >
-   <iconset>
-    <normaloff>images/browser.png</normaloff>images/browser.png</iconset>
+   <iconset resource="images/resources.qrc" >
+    <normaloff>:/PICS/action.png</normaloff>:/PICS/action.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <layout class="QGridLayout" >
@@ -75,7 +75,7 @@
              </property>
              <property name="icon" >
               <iconset resource="images/resources.qrc" >
-               <normaloff>:/PICS/ruota_dentata_2_architet_01.png</normaloff>:/PICS/ruota_dentata_2_architet_01.png</iconset>
+               <normaloff>:/PICS/action.png</normaloff>:/PICS/action.png</iconset>
              </property>
             </item>
             <item>
