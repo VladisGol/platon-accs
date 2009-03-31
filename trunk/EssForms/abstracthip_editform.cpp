@@ -9,7 +9,115 @@ AbstarctHipEditForm::AbstarctHipEditForm(QWidget * parent): QMainWindow(parent)
 
 	QObject::connect(action_Cancel, SIGNAL(activated()), this, SLOT(ExitByCancel()));
 	QObject::connect(action_saveNexit, SIGNAL(activated()), this, SLOT(ExitWithSave()));
+	QObject::connect(action_AddAction, SIGNAL(activated()), this, SLOT(DoAddAction()));
+	QObject::connect(action_WriteOffRes, SIGNAL(activated()), this, SLOT(DoWriteOffRes()));
+	QObject::connect(action_OpenType, SIGNAL(activated()), this, SLOT(DoOpenType()));
+
 }
+void AbstarctHipEditForm::FormActionsTune()
+{
+	//Процедура настройки действий формы в зависимости от типа редактируемого объекта
+
+	this->action_AddAction->setVisible(false);
+	this->action_WriteOffRes->setVisible(false);
+	this->action_OpenType->setVisible(false);
+
+	QString Species= QString::fromStdString(this->LocalEidos->GetEidosSpecies());
+
+	if(this->objectName()=="HypotesisEditForm")
+	{
+		;
+	}
+
+	if(this->objectName()=="PragmaEditForm")
+	{
+		this->action_OpenType->setVisible(true);
+		if (Species=="OBJ")
+		{
+			this->action_AddAction->setVisible(true);
+		}
+		if (Species=="ACT")
+		{
+			this->action_WriteOffRes->setVisible(true);
+		}
+	}
+}
+
+void AbstarctHipEditForm::DoAddAction()
+{
+	//Процедура добавляет действие для текущего объекта
+	ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,"ACT",0);
+	Localdialog->exec();
+	long ID_Eidos=Localdialog->Out_value;
+
+	if(ID_Eidos==0)	return;
+
+	//Выводим список гипотез для выбора
+	platon::Eidos *localEidos=new platon::Eidos(this->DB,ID_Eidos);
+	ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,0);
+	HypotesisDialog->exec();
+	long ID_ActType=HypotesisDialog->Out_value;
+
+	if(ID_ActType==0)
+	{
+		delete localEidos;
+		return;
+	}
+
+	platon::ACTType * localActType= new platon::ACTType(localEidos,ID_ActType);
+	localActType->Autocommited=false;
+	platon::ACTCopy * newActioncopy=localActType->AddACTCopy(((platon::Pragma*)this->LocalHypotesis)->GetID());
+
+	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,newActioncopy);
+	md->setWindowTitle(tr("Редактирование действия"));
+	md->show();
+	//удаление newActioncopy localActType и localEidos - пройдет в деструкторе формы PragmaEditForm
+}
+void AbstarctHipEditForm::DoWriteOffRes()
+{
+	//Процедура списывает ресурс на проведение действия
+		ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,"RES",0);
+		Localdialog->exec();
+		long ID_Eidos=Localdialog->Out_value;
+
+		if(ID_Eidos==0)	return;
+
+		//Выводим список прагм для выбора
+		platon::Eidos *localEidos=new platon::Eidos(this->DB,ID_Eidos);
+		ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,0);
+		PragmaDialog->exec();
+		long ID_RESCopy=PragmaDialog->Out_value;
+
+		if(ID_RESCopy==0)
+		{
+			delete localEidos;
+			return;
+		}
+
+		long ideidos,idhyp;
+		platon::Pragma::GetEidosHypotesisIDS(this->DB,ID_RESCopy,ideidos,idhyp);
+
+		platon::RESType * localResType= new platon::RESType(localEidos,idhyp);
+		localResType->Autocommited=false;
+		platon::RESCopy * Rescopy=new platon::RESCopy(localResType,ID_RESCopy);
+		platon::RESCopy * forkedResCopy=Rescopy->Fork(((platon::Pragma*)this->LocalHypotesis)->GetID());
+		delete Rescopy;
+
+		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,forkedResCopy);
+		md->setWindowTitle(tr("Редактирование свойст использованного ресурса"));
+		md->show();
+		//удаление forkedResCopy localResType и localEidos - пройдет в деструкторе формы PragmaEditForm;
+}
+void AbstarctHipEditForm::DoOpenType()
+{
+//Процедура открывает карточку Hypotesis для текущего объекта pragma;
+
+	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,((platon::Pragma*)this->LocalHypotesis)->HostHypotesis->GetID());
+	md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+	md->show();
+}
+
+
 
 void AbstarctHipEditForm::ExitWithSave()
 {

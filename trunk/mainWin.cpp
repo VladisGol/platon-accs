@@ -89,7 +89,7 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 		if(event->type()==QEvent::FocusIn)
 		{
 			QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
-			if(Species=="OBJ")
+			if(Species=="OBJ" || Species=="RES")
 			{
 				this->action_add->setEnabled(true);
 				this->action_del->setEnabled(true);
@@ -143,6 +143,7 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	LocalEidos=new platon::Eidos(this->MyDCl->DB,id_eidos);
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
 	SFProxyModelH->setSourceModel(MyModel);
+	this->tableViewHypotesis->resizeColumnsToContents();
 
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
@@ -160,6 +161,7 @@ void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 	LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
 	platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(LocalHypotesis, this);
 	SFProxyModelP->setSourceModel(MyModel);
+	this->tableViewPragma->resizeColumnsToContents();
 	if(keep4delete!=NULL) delete keep4delete;
 }
 
@@ -214,9 +216,12 @@ void mainWin::AddItem()
 
 			//Создаем экземпляры объектов для формы
 			if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
-			//if(Species=="ACT") formHypotesis= ((platon::ACTType*)formHypotesis)->AddACTCopy(); //Необходимо выбрать на какой объект списываем
-			//if(Species=="RES") formHypotesis= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Необходимо выбрать на какое действие списываем
-			//if(Species=="NSI") formPragma = new platon::Pragma(formHypotesis,platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime()));
+			if(Species=="ACT")
+				{
+					; //Необходимо выбрать с каким объектом проводится действие
+				}
+			if(Species=="RES") formPragma= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Создание ресурса, который размещается "на складе"
+			if(Species=="NSI")	;//Не может быть экземпляров на указанной ветви
 			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,formPragma);
 			md->setWindowTitle(tr("Создание объекта \"Экземпляр\""));
 			md->show();

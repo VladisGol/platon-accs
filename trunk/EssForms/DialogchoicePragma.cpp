@@ -16,6 +16,7 @@ ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEido
     TableView= new QTableView(this);
     Model=new HypPragmaMemModel(InEidos,this);
     TableView->setModel(Model);
+    TableView->resizeColumnsToContents();
 
     TableView->setObjectName(QString::fromUtf8("TableView"));
 

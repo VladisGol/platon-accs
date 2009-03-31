@@ -17,6 +17,7 @@ DialogEditHronologyEA::DialogEditHronologyEA(QWidget * parent,AssociatedExtraAtt
 	TableView= new QTableView(this);
     Model=new HronologyEaMemModel(OneAEA,this);
     TableView->setModel(Model);
+    TableView->resizeColumnsToContents();
 
     TableView->setObjectName(QString::fromUtf8("TableView"));
 
