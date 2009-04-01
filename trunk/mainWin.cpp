@@ -116,21 +116,30 @@ void mainWin::SetEidosView(int Row)
 	switch (Row)
 	{
 	case 0:
-		EidosTreeWidget->SetSpecies("ALL");
-		break;
+		{
+			EidosTreeWidget->SetSpecies("ALL");
+			break;
+		}
 	case 1:
-		EidosTreeWidget->SetSpecies("OBJ");
-		break;
+		{
+			EidosTreeWidget->SetSpecies("OBJ");
+			break;
+		}
 	case 2:
-		EidosTreeWidget->SetSpecies("ACT");
-		break;
+		{
+			EidosTreeWidget->SetSpecies("ACT");
+			break;
+		}
 	case 3:
-		EidosTreeWidget->SetSpecies("RES");
-		break;
+		{
+			EidosTreeWidget->SetSpecies("RES");
+			break;
+		}
 	case 4:
-		EidosTreeWidget->SetSpecies("NSI");
+		{
+			EidosTreeWidget->SetSpecies("NSI");
+		}
 	}
-
 	EidosTreeWidget->AttachToDB(this->MyDCl->DB);
 }
 
@@ -144,7 +153,14 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
 	SFProxyModelH->setSourceModel(MyModel);
 	this->tableViewHypotesis->resizeColumnsToContents();
-
+/*
+	//Прячем фрейм для прагмы в случае если объект входит в ветку нормативно-справочной информации
+	if(QString::fromStdString(LocalEidos->GetEidosSpecies())=="NSI")
+		this->tableViewPragma->setEnabled(false);
+	else
+		this->tableViewPragma->setEnabled(true);
+*/
+	//Инициируем смену значений списка прагм
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
 	else
