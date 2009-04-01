@@ -147,19 +147,26 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 {
 	platon::Eidos* keep4delete=LocalEidos;
 
-	long id_eidos=CurItem->text(1).toLong();
+
+	long id_eidos;
+	//Проверяем не впервые ли запущена программа
+	if(CurItem==NULL || CurItem==0)
+		id_eidos=0;	//Выводим root
+	else
+		id_eidos=CurItem->text(1).toLong();
+
 
 	LocalEidos=new platon::Eidos(this->MyDCl->DB,id_eidos);
 	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
 	SFProxyModelH->setSourceModel(MyModel);
 	this->tableViewHypotesis->resizeColumnsToContents();
-/*
+
 	//Прячем фрейм для прагмы в случае если объект входит в ветку нормативно-справочной информации
 	if(QString::fromStdString(LocalEidos->GetEidosSpecies())=="NSI")
 		this->tableViewPragma->setEnabled(false);
 	else
 		this->tableViewPragma->setEnabled(true);
-*/
+
 	//Инициируем смену значений списка прагм
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
