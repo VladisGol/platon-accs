@@ -85,6 +85,10 @@ void AbstarctHipEditForm::DoWriteOffRes()
 		//Выводим список прагм для выбора
 		platon::Eidos *localEidos=new platon::Eidos(this->DB,ID_Eidos);
 		ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,0);
+
+		int filteredColumn=((PragmaMemModel*)PragmaDialog->Model)->GetColumnNumberByFieldName("LNK_ForkedRES");
+		PragmaDialog->SFProxyModel->setFilterFixedString('');	//Устанавливаем фильтр для записей складского учета
+		PragmaDialog->SFProxyModel->setFilterKeyColumn(filteredColumn);
 		PragmaDialog->exec();
 		long ID_RESCopy=PragmaDialog->Out_value;
 
@@ -104,7 +108,7 @@ void AbstarctHipEditForm::DoWriteOffRes()
 		delete Rescopy;
 
 		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,forkedResCopy);
-		md->setWindowTitle(tr("Редактирование свойст использованного ресурса"));
+		md->setWindowTitle(tr("Редактирование свойств использованного ресурса"));
 		md->show();
 		//удаление forkedResCopy localResType и localEidos - пройдет в деструкторе формы PragmaEditForm;
 }
@@ -131,11 +135,14 @@ void AbstarctHipEditForm::ExitWithSave()
 
 	WriteFormWidgetsAppearance();
 
-	if(this->objectName()=="HypotesisEditForm")
-		((mainWin *)this->MyDCl->parent())->RefreshHView();
-	if(this->objectName()=="PragmaEditForm")
-		((mainWin *)this->MyDCl->parent())->RefreshPView();
-
+	//Нужно проверить порожден ли объект от непосредственно MainWin
+	if(this->parent()->objectName()=="MainWindow")
+	{
+		if(this->objectName()=="HypotesisEditForm")
+			((mainWin *)this->parent())->RefreshHView();
+		if(this->objectName()=="PragmaEditForm")
+			((mainWin *)this->parent())->RefreshPView();
+	}
 	this->close();
 }
 void AbstarctHipEditForm::ExitByCancel()

@@ -19,6 +19,7 @@ class PragmaMemModel: public platon::AbstractMemHypModel
 public:
 	PragmaMemModel(Hypotesis* InHyp, QObject * parent);
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const;
+    int  GetColumnNumberByFieldName(QString FieldName);
 protected:
 	Hypotesis* MyHyp;
 	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру
