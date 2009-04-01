@@ -20,15 +20,17 @@ class ChoiceEidos_Dialog:public QDialog
 {
     Q_OBJECT
 public:
-    QGridLayout *gridLayout;
+	QVBoxLayout *VBoxLayout;
     QEidosTreeWidget *treeWidget;
     QDialogButtonBox *buttonBox;
+    QCheckBox*checkBox;
     ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID_in);
     long Out_value;
     bool find(long ID_searchfor);
 
 public slots:
 	void ExitWithAccept();
+	void collapseExp(int);
 
 protected:
     void ReadFormWidgetsAppearance();

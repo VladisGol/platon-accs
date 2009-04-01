@@ -23,6 +23,7 @@ public:
     QGridLayout *gridLayout;
     QTableView *TableView;
     HypPragmaMemModel* Model;
+    QSortFilterProxyModel* SFProxyModel;
     QDialogButtonBox *buttonBox;
     ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEidos, long ID_in);
     long Out_value;

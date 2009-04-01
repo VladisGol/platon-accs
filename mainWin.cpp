@@ -179,7 +179,9 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 {
 	platon::Hypotesis* keep4delete=LocalHypotesis;
-	long id_hypotesys=HypModelindex.sibling(HypModelindex.row(),0).data(Qt::DisplayRole).toInt();
+	int row=tableViewHypotesis->currentIndex().row();
+	if(row<0) row=0;	//не выбран элемент, значит выбираем самый первый
+	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(row,0,QModelIndex()))).toInt();
 
 	LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
 	platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(LocalHypotesis, this);

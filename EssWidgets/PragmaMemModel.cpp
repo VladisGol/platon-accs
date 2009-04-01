@@ -68,5 +68,18 @@ QVariant PragmaMemModel::headerData(int section, Qt::Orientation orientation,int
 	}
 }
 
+int  PragmaMemModel::GetColumnNumberByFieldName(QString FieldName)
+{
+	//Процедура выводит номер столбца модели по имени, переданному в параметре
+	for(int i=0;i<NumCol;i++)
+	{
+		QString OneField = QString::fromStdString(ForEidos->PragmaSQL->AttributesList[i].FieldName);
+		if(OneField.toCaseFolded()==FieldName.toCaseFolded())
+		{
+			return i+ReservedColumns;
+		}
+	}
+	return -1;	//Ничего не найдено
+}
 
 }

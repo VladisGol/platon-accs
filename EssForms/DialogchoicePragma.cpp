@@ -15,7 +15,10 @@ ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEido
 
     TableView= new QTableView(this);
     Model=new HypPragmaMemModel(InEidos,this);
-    TableView->setModel(Model);
+    SFProxyModel= new QSortFilterProxyModel(this);
+    SFProxyModel->setSourceModel(Model);
+    TableView->setModel(SFProxyModel);
+    TableView->setSortingEnabled(true);
     TableView->resizeColumnsToContents();
 
     TableView->setObjectName(QString::fromUtf8("TableView"));
@@ -43,14 +46,14 @@ void ChoicePragma_Dialog::ExitWithAccept()
 	//Выход с возвратом значения выбранного объекта
 
 	int row=this->TableView->currentIndex().row();
-	int col=0;
-	Out_value=QVariant(TableView->model()->data(Model->index(row,col,QModelIndex()))).toInt();
+	Out_value=QVariant(TableView->model()->data(TableView->model()->index(row,0,QModelIndex()))).toInt();
+
 	WriteFormWidgetsAppearance();
 	this->accept();
 }
 bool ChoicePragma_Dialog::find(long ID_searchfor)
 {
-	QModelIndex founded_item= Model->GetQModelIndexByID(ID_searchfor);
+	QModelIndex founded_item= SFProxyModel->mapFromSource(Model->GetQModelIndexByID(ID_searchfor));
 	if(founded_item.row()==0) return false;
 	this->TableView->setCurrentIndex(founded_item);
 	return true;
