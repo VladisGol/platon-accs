@@ -23,8 +23,8 @@
        <attribute name="title" >
         <string>Ссылки из объектов ТИП</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_2" >
-        <item row="0" column="0" >
+       <layout class="QHBoxLayout" name="horizontalLayout_2" >
+        <item>
          <widget class="QSplitter" name="splitter_2" >
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
@@ -45,8 +45,8 @@
        <attribute name="title" >
         <string>Ссылки из объектов ЭКЗЕМПЛЯР</string>
        </attribute>
-       <layout class="QGridLayout" name="gridLayout_3" >
-        <item row="0" column="0" >
+       <layout class="QHBoxLayout" name="horizontalLayout" >
+        <item>
          <widget class="QSplitter" name="splitter" >
           <property name="orientation" >
            <enum>Qt::Horizontal</enum>
@@ -73,7 +73,7 @@
      <x>0</x>
      <y>0</y>
      <width>1006</width>
-     <height>28</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu" >
@@ -82,7 +82,17 @@
     </property>
     <addaction name="action_close" />
    </widget>
+   <widget class="QMenu" name="menu_2" >
+    <property name="title" >
+     <string>Действия</string>
+    </property>
+    <addaction name="action_HypOpen" />
+    <addaction name="action_OBJOpen" />
+    <addaction name="action_ACTOpen" />
+    <addaction name="action_RESOpen" />
+   </widget>
    <addaction name="menu" />
+   <addaction name="menu_2" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="toolBar" >
@@ -96,6 +106,11 @@
     <bool>false</bool>
    </attribute>
    <addaction name="action_close" />
+   <addaction name="separator" />
+   <addaction name="action_HypOpen" />
+   <addaction name="action_OBJOpen" />
+   <addaction name="action_ACTOpen" />
+   <addaction name="action_RESOpen" />
   </widget>
   <action name="action_close" >
    <property name="icon" >
@@ -104,6 +119,42 @@
    </property>
    <property name="text" >
     <string>Закрыть форму</string>
+   </property>
+  </action>
+  <action name="action_HypOpen" >
+   <property name="icon" >
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/konstr.png</normaloff>:/PICS/konstr.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Открыть карточку типа</string>
+   </property>
+  </action>
+  <action name="action_OBJOpen" >
+   <property name="icon" >
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/browser.png</normaloff>:/PICS/browser.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Открыть объект</string>
+   </property>
+  </action>
+  <action name="action_ACTOpen" >
+   <property name="icon" >
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/action.png</normaloff>:/PICS/action.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Открыть действие</string>
+   </property>
+  </action>
+  <action name="action_RESOpen" >
+   <property name="icon" >
+    <iconset resource="../images/resources.qrc" >
+     <normaloff>:/PICS/diamond_juliane_krug_01.png</normaloff>:/PICS/diamond_juliane_krug_01.png</iconset>
+   </property>
+   <property name="text" >
+    <string>Открыть карточку ресурса</string>
    </property>
   </action>
  </widget>
@@ -117,22 +168,5 @@
  <resources>
   <include location="../images/resources.qrc" />
  </resources>
- <connections>
-  <connection>
-   <sender>action_close</sender>
-   <signal>activated()</signal>
-   <receiver>LinksExplorer</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>502</x>
-     <y>305</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
