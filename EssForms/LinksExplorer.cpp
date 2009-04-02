@@ -28,26 +28,91 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 
 	QObject::connect(HEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
 	QObject::connect(PEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
+	QObject::connect(action_close, SIGNAL(activated()), this, SLOT(Exit()));
 
-//	QObject::connect(action_Cancel, SIGNAL(activated()), this, SLOT(ExitByCancel()));
-//	QObject::connect(action_saveNexit, SIGNAL(activated()), this, SLOT(ExitWithSave()));
+	QObject::connect(tableView_Hyp, SIGNAL(activated(QModelIndex)), this, SLOT(SetCorespActions()));
+	QObject::connect(tableView_Pragma, SIGNAL(activated(QModelIndex)), this, SLOT(SetCorespActions()));
 
-    PaintingEidos(this->HEidosTreeWidget,IEidosH);
+	QObject::connect(action_HypOpen, SIGNAL(activated()), this, SLOT(OpenHypotesis()));
+	QObject::connect(action_OBJOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
+	QObject::connect(action_ACTOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
+	QObject::connect(action_RESOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
+
+	this->PEidosTreeWidget->installEventFilter(this);
+	this->HEidosTreeWidget->installEventFilter(this);
+
+
+	PaintingEidos(this->HEidosTreeWidget,IEidosH);
 	PaintingEidos(this->PEidosTreeWidget,IEidosP);
 
+	if(IEidosH->GetRowCount()>IEidosP->GetRowCount())
+		tabWidget_Prg->setCurrentIndex(0);//јктивизируем вкладку со списком гипотез
+	else
+		tabWidget_Prg->setCurrentIndex(1);//јктивизируем вкладку со списком прагм
+
+	ClearCorespActions();
 	ReadFormWidgetsAppearance();
 
 }
+bool LinksExplorer::eventFilter(QObject *obj, QEvent *event)
+{
+	if(event->type()==QEvent::FocusIn)
+	{
+		ClearCorespActions();
+	}
+	return false;
+}
 
-void LinksExplorer::ExitWithSave()
+void LinksExplorer::ClearCorespActions()
+{
+	action_HypOpen->setVisible(false);
+	action_OBJOpen->setVisible(false);
+	action_ACTOpen->setVisible(false);
+	action_RESOpen->setVisible(false);
+}
+
+void LinksExplorer::SetCorespActions()
+{
+	ClearCorespActions();
+	if(tabWidget_Prg->currentIndex()==0)
+	{
+		action_HypOpen->setVisible(true);
+	}
+	else
+	{
+		long id_eidos= PEidosTreeWidget->currentItem ()->text(1).toLong();
+		QString Species=QString::fromStdString(platon::GetEidosSpecies(this->DB,id_eidos));
+		if(Species=="OBJ")action_OBJOpen->setVisible(true);
+		if(Species=="ACT")action_ACTOpen->setVisible(true);
+		if(Species=="RES")action_RESOpen->setVisible(true);
+	}
+}
+
+void LinksExplorer::OpenHypotesis()
+{
+	//ќткрыть окно с гипотезой
+	int myrow=tableView_Hyp->currentIndex().row();
+	long id_hypotesys=QVariant(tableView_Hyp->model()->data(tableView_Hyp->model()->index(myrow,0,QModelIndex()))).toInt();
+	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
+	md->setWindowTitle(tr("–едактирование объекта \"“ип\""));
+	md->show();
+}
+void LinksExplorer::OpenPragma()
+{
+	//ќткрыть окно с прагмой
+	int myrow=tableView_Pragma->currentIndex().row();
+	long id_pragma=QVariant(tableView_Pragma->model()->data(tableView_Pragma->model()->index(myrow,0,QModelIndex()))).toInt();
+	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
+	md->setWindowTitle(tr("–едактирование объекта \"Ёкземпл€р\""));
+	md->show();
+}
+
+void LinksExplorer::Exit()
 {
 	WriteFormWidgetsAppearance();
 	this->close();
 }
-void LinksExplorer::ExitByCancel()
-{
-	this->close();
-}
+
 LinksExplorer::~LinksExplorer()
 {
 	if(LocalEidosH!=NULL) delete LocalEidosH;
@@ -110,6 +175,7 @@ void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 
 	platon::LnkdHypMemModel* MyModel=new platon::LnkdHypMemModel(LocalEidosH,IDFor, this);
 	tableView_Hyp->setModel(MyModel);
+	tableView_Hyp->resizeColumnsToContents();
 
 	if(keep4delete!=NULL) delete keep4delete;
 }
@@ -125,6 +191,7 @@ void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 
 	platon::LnkdHypPragmaMemModel* MyModel=new platon::LnkdHypPragmaMemModel(LocalEidosP,IDFor, this);
 	tableView_Pragma->setModel(MyModel);
+	tableView_Pragma->resizeColumnsToContents();
 
 	if(keep4delete!=NULL) delete keep4delete;
 }

@@ -87,7 +87,7 @@ void AbstarctHipEditForm::DoWriteOffRes()
 		ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,0);
 
 		int filteredColumn=((PragmaMemModel*)PragmaDialog->Model)->GetColumnNumberByFieldName("LNK_ForkedRES");
-		PragmaDialog->SFProxyModel->setFilterFixedString('');	//Устанавливаем фильтр для записей складского учета
+		PragmaDialog->SFProxyModel->setFilterFixedString("");	//Устанавливаем фильтр для записей складского учета
 		PragmaDialog->SFProxyModel->setFilterKeyColumn(filteredColumn);
 		PragmaDialog->exec();
 		long ID_RESCopy=PragmaDialog->Out_value;

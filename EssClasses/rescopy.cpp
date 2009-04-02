@@ -67,7 +67,14 @@ RESCopy* RESCopy::Fork(long ID_ACTCopy_BelongFor)
 
         for(unsigned int i=0;i<Source->Attributes.size();i++)
         {
-       	        //По очереди скопируем все значения экстраатрибутов
+				std::string curFieldName =((AssociatedExtraAttribute*)Source->Attributes[i])->EA->GetEAFieldName();
+				if(curFieldName=="Remainder") continue;
+				if(curFieldName=="PragmaDate") continue;
+				if(curFieldName=="LNK_ACTBelongFor") continue;
+				if(curFieldName=="LNK_ForkedRES") continue;
+				if(curFieldName=="Quantity") continue;
+
+       	        //По очереди скопируем все остальные значения экстраатрибутов
               	switch (((AssociatedExtraAttribute*)Source->Attributes[i])->EA->type)
                 {
                         case ft_String:

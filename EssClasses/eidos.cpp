@@ -397,7 +397,7 @@ std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos)
     IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
     TmpTR->Start();
     TmpST->Prepare("EXECUTE PROCEDURE GET_EIDOS(?);");
-    TmpST->Set(1,(int32_t*)&id_eidos);
+    TmpST->Set(1,(int32_t)id_eidos);
     TmpST->Execute();
     TmpST->Get("SPECIES",ForReturn);
     TmpTR->Commit();

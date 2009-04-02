@@ -11,6 +11,9 @@
 #include "ibpp.h"
 #include "dbetc.h"
 #include "DataClass.h"
+#include "HypotesisEditForm.h"
+#include "PragmaEditForm.h"
+
 
 
 namespace platon
@@ -39,14 +42,19 @@ public:
     QTreeWidgetItem * FindEidosByID(QTreeWidget* EidosTreeWidget, long ID);
 
 public slots:
-	void ExitWithSave();
-	void ExitByCancel();
+	void Exit();
 	void SetHGridView(QTreeWidgetItem*,int);
 	void SetPGridView(QTreeWidgetItem*,int);
+	void ClearCorespActions();
+	void SetCorespActions();
+	void OpenHypotesis();
+	void OpenPragma();
+
 
 protected:
     void ReadFormWidgetsAppearance();
     void WriteFormWidgetsAppearance();
+    bool eventFilter(QObject *obj, QEvent *ev);
 };
 }
 
