@@ -40,9 +40,9 @@
 #include <limits>
 
 #ifdef IBPP_WINDOWS
-// New (optional) Registry Keys introduced by Firebird Server 1.5
-#define REG_KEY_ROOT_INSTANCES	"SOFTWARE\\Firebird Project\\Firebird Server\\Instances"
-#define FB_DEFAULT_INSTANCE	  	"DefaultInstance"
+// New (optional) Registry Keys introduced by Firebird Server 1.5                               Next 2 lines changed 05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
+#define REG_KEY_ROOT_INSTANCES TEXT("SOFTWARE\\Firebird Project\\Firebird Server\\Instances")
+#define FB_DEFAULT_INSTANCE TEXT("DefaultInstance")
 #endif
 
 namespace ibpp_internals
@@ -84,7 +84,7 @@ namespace ibpp_internals
 		if (std::stringstream* p = dynamic_cast<std::stringstream*>(&a))
 		{
 #ifdef IBPP_WINDOWS
-			::OutputDebugString(("IBPP: " + p->str() + "\n").c_str());
+			::OutputDebugString((const TCHAR *) ("IBPP: " + p->str() + "\n").c_str()); //05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 #endif
 			p->str("");
 		}
@@ -108,7 +108,7 @@ GDS* GDS::Call()
 		// Let's load the FBCLIENT.DLL or GDS32.DLL, we will never release it.
 		// Windows will do that for us when the executable will terminate.
 
-		char fbdll[MAX_PATH];
+		TCHAR fbdll[MAX_PATH];	//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 		HKEY hkey_instances;
 
 		// Try to load FBCLIENT.DLL from each of the additional optional paths
@@ -139,7 +139,7 @@ GDS* GDS::Call()
 				putenv(AppPath.c_str());
 
 				path.append("fbclient.dll");
-				mHandle = LoadLibrary(path.c_str());
+				mHandle = LoadLibrary((const TCHAR *) path.c_str());	//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 				if (mHandle != 0 || newpos == std::string::npos) break;
 			}
 			pos = newpos + 1;
@@ -164,15 +164,15 @@ GDS* GDS::Call()
 			{
 				// Get to the last '\' (this one precedes the filename part).
 				// There is always one after a success call to GetModuleFileName().
-				char* p = fbdll + len;
+				TCHAR* p = fbdll + len;		//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 				do {--p;} while (*p != '\\');
 				*p = '\0';
-				lstrcat(fbdll, "\\fbembed.dll");// Local copy could be named fbembed.dll
+				lstrcat(fbdll, TEXT("\\fbembed.dll"));	//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 				mHandle = LoadLibrary(fbdll);
 				if (mHandle == 0)
 				{
 					*p = '\0';
-					lstrcat(fbdll, "\\fbclient.dll");	// Or possibly renamed fbclient.dll
+					lstrcat(fbdll, TEXT("\\fbembed.dll"));//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 					mHandle = LoadLibrary(fbdll);
 				}
 			}
@@ -191,7 +191,7 @@ GDS* GDS::Call()
 						&keytype, reinterpret_cast<UCHAR*>(fbdll),
 							&buflen) == ERROR_SUCCESS && keytype == REG_SZ)
 				{
-					lstrcat(fbdll, "bin\\fbclient.dll");
+					lstrcat(fbdll, TEXT("bin\\fbembed.dll"));//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 					mHandle = LoadLibrary(fbdll);
 				}
 				RegCloseKey(hkey_instances);
@@ -201,12 +201,12 @@ GDS* GDS::Call()
 		if (mHandle == 0)
 		{
 			// Let's try from the PATH and System directories
-			mHandle = LoadLibrary("fbclient.dll");
+			mHandle = LoadLibrary(TEXT("fbclient.dll"));//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 			if (mHandle == 0)
 			{
 				// Not found. Last try : attemps loading gds32.dll from PATH and
 				// System directories
-				mHandle = LoadLibrary("gds32.dll");
+				mHandle = LoadLibrary(TEXT("gds32.dll"));//05.04.2009 according to http://www.developpez.net/forums/d266048/bases-donnees/firebird/outils/ibpp-compatible-unicode/
 				if (mHandle == 0)
 					throw LogicExceptionImpl("GDS::Call()",
 						_("Can't find or load FBCLIENT.DLL or GDS32.DLL"));
