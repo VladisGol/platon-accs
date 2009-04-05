@@ -37,12 +37,12 @@ ChoiceHypotesis_Dialog::ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* 
 
     if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
-    this->setWindowTitle(tr("Óêàæèòå òèï"));
+    this->setWindowTitle(tr("Ð£ÐºÐ°Ð¶Ð¸Ñ‚Ðµ Ñ‚Ð¸Ð¿"));
     ReadFormWidgetsAppearance();
 }
 void ChoiceHypotesis_Dialog::ExitWithAccept()
 {
-	//Âûõîä ñ âîçâðàòîì çíà÷åíèÿ âûáðàííîãî îáúåêòà
+	//Ð’Ñ‹Ñ…Ð¾Ð´ Ñ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð¾Ð¼ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 
 	int row=this->TableView->currentIndex().row();
 	Out_value=QVariant(TableView->model()->data(TableView->model()->index(row,0,QModelIndex()))).toInt();
@@ -59,7 +59,7 @@ bool ChoiceHypotesis_Dialog::find(long ID_searchfor)
 }
 void ChoiceHypotesis_Dialog::ReadFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà ñ÷èòûâàåò èç DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû è óñòàíàâëèâàåò èõ çíà÷åíèÿ
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð· DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð¸ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ Ð¸Ñ… Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
@@ -74,7 +74,7 @@ void ChoiceHypotesis_Dialog::ReadFormWidgetsAppearance()
 
 void ChoiceHypotesis_Dialog::WriteFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà çàïèñûâàåò â DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ð² DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());

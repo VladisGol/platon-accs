@@ -37,10 +37,10 @@ EA_OneFrame::EA_OneFrame(QWidget *parent, AssociatedExtraAttribute* InEAA)
 
     topLayout->addLayout(horizontalLayout);//, 0, 0, 1, 1);
 
-    //Разбираемся с типом экстраатрибута
+    //Р Р°Р·Р±РёСЂР°РµРјСЃСЏ СЃ С‚РёРїРѕРј СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
     this->EAA=InEAA;
     fillVisibleWidget();
-    //Присоединяем обработку сигалов к слотам
+    //РџСЂРёСЃРѕРµРґРёРЅСЏРµРј РѕР±СЂР°Р±РѕС‚РєСѓ СЃРёРіР°Р»РѕРІ Рє СЃР»РѕС‚Р°Рј
     if(LNKButton!=NULL)   		QObject::connect(LNKButton, SIGNAL(clicked()), this, SLOT(LNKClick()));
     if(HronologyButton!=NULL)	QObject::connect(HronologyButton, SIGNAL(clicked()), this, SLOT(HronologyClick()));
     if(DLLButton!=NULL)			QObject::connect(DLLButton, SIGNAL(clicked()), this, SLOT(CallDllRoutine()));
@@ -131,7 +131,7 @@ void EA_OneFrame::fillVisibleWidget()
 				if(EAA->EA->type==platon::ft_LinkPragma)
 				{
 					platon::Eidos* ListEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,EAA->EA->LNK_EidosID);
-					EditableWidget=new LnkHypPragmaComboBox(ListEidos, frame);	//Меняем на типизированное значение выбора из списка
+					EditableWidget=new LnkHypPragmaComboBox(ListEidos, frame);	//РњРµРЅСЏРµРј РЅР° С‚РёРїРёР·РёСЂРѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РІС‹Р±РѕСЂР° РёР· СЃРїРёСЃРєР°
 					((LnkHypPragmaComboBox*)EditableWidget)->SetCurrentIndexByID(EAA->GetLink2PValue().LinkTo);
 		 			delete ListEidos;
 
@@ -170,9 +170,9 @@ void EA_OneFrame::fillVisibleWidget()
 
 		}
 		default:
-			throw("Указанный тип данных не поддерживается");
+			throw("РЈРєР°Р·Р°РЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 	}
-	// Добавляем кнопку хронологического вывода по атрибутам
+	// Р”РѕР±Р°РІР»СЏРµРј РєРЅРѕРїРєСѓ С…СЂРѕРЅРѕР»РѕРіРёС‡РµСЃРєРѕРіРѕ РІС‹РІРѕРґР° РїРѕ Р°С‚СЂРёР±СѓС‚Р°Рј
 	if(EAA->EA->Temporality==true)
 	{
 		HronologyButton = new QToolButton(this);
@@ -182,7 +182,7 @@ void EA_OneFrame::fillVisibleWidget()
 		HronologyButton->setIcon(icon2);
 		horizontalLayout->addWidget(HronologyButton);
 	}
-	// Изменяем начертание шрифта для отображения обязательных для заполнения атрибутов
+	// РР·РјРµРЅСЏРµРј РЅР°С‡РµСЂС‚Р°РЅРёРµ С€СЂРёС„С‚Р° РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹С… РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ
 	if(EAA->EA->Required==true)
 	{
 		QFont font=label->font();
@@ -190,7 +190,7 @@ void EA_OneFrame::fillVisibleWidget()
 		font.setWeight(75);
 		label->setFont(font);
 	}
-	//Изменяем шрифт для блокированный значений фреймов
+	//РР·РјРµРЅСЏРµРј С€СЂРёС„С‚ РґР»СЏ Р±Р»РѕРєРёСЂРѕРІР°РЅРЅС‹Р№ Р·РЅР°С‡РµРЅРёР№ С„СЂРµР№РјРѕРІ
 	if(EAA->EA->Locked==true)
 	{
 		EditableWidget->setEnabled(false);
@@ -204,10 +204,10 @@ void EA_OneFrame::fillVisibleWidget()
 
 void EA_OneFrame::Save()
 {
-	//Процедура записывает измененное значение фрейма
-	if(EAA->EA->Locked==false)	//Только для незакрытых значений фреймов
+	//РџСЂРѕС†РµРґСѓСЂР° Р·Р°РїРёСЃС‹РІР°РµС‚ РёР·РјРµРЅРµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ С„СЂРµР№РјР°
+	if(EAA->EA->Locked==false)	//РўРѕР»СЊРєРѕ РґР»СЏ РЅРµР·Р°РєСЂС‹С‚С‹С… Р·РЅР°С‡РµРЅРёР№ С„СЂРµР№РјРѕРІ
 	{
-		EAA->EA->DTValue=platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime());	//Изменение времени на системное для темпоральных значений
+		EAA->EA->DTValue=platon::QDateTime2IBPPTimestamp(QDateTime::currentDateTime());	//РР·РјРµРЅРµРЅРёРµ РІСЂРµРјРµРЅРё РЅР° СЃРёСЃС‚РµРјРЅРѕРµ РґР»СЏ С‚РµРјРїРѕСЂР°Р»СЊРЅС‹С… Р·РЅР°С‡РµРЅРёР№
 		switch(EAA->EA->type)
 		{
 			case platon::ft_String:
@@ -244,7 +244,7 @@ void EA_OneFrame::Save()
 			}
 			case platon::ft_RB:
 			case platon::ft_DLL:
-				//Данные значения обрабатываются в процедурах вызова кнопок
+				//Р”Р°РЅРЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ РѕР±СЂР°Р±Р°С‚С‹РІР°СЋС‚СЃСЏ РІ РїСЂРѕС†РµРґСѓСЂР°С… РІС‹Р·РѕРІР° РєРЅРѕРїРѕРє
 				break;
 
 			case platon::ft_LinkHypotesis:
@@ -277,11 +277,11 @@ void EA_OneFrame::Save()
 						break;
 					}
 				}
-				// Иначе обработка проходит в процедурах вызова кнопок
+				// РРЅР°С‡Рµ РѕР±СЂР°Р±РѕС‚РєР° РїСЂРѕС…РѕРґРёС‚ РІ РїСЂРѕС†РµРґСѓСЂР°С… РІС‹Р·РѕРІР° РєРЅРѕРїРѕРє
 				break;
 			}
 			default:
-				throw("Указанный тип данных не поддерживается");
+				throw("РЈРєР°Р·Р°РЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
 		}
 	}
@@ -292,7 +292,7 @@ void EA_OneFrame::LNKClick()
 	long ID_Eidos, ID_Hyp;
 	if(EAA->EA->type==platon::ft_LinkHypotesis)
 	{
-		if(EAA->EA->LNK_EidosID==0)	//Выводим список эйдосов
+		if(EAA->EA->LNK_EidosID==0)	//Р’С‹РІРѕРґРёРј СЃРїРёСЃРѕРє СЌР№РґРѕСЃРѕРІ
 		{
 			QString spec=QString::fromStdString(EAA->EA->LNK_species);
 			if(spec=="")spec="ALL";
@@ -305,7 +305,7 @@ void EA_OneFrame::LNKClick()
 		else ID_Eidos=EAA->EA->LNK_EidosID;
 		if(ID_Eidos==0)	return;
 
-		//Выводим список гипотез для выбора
+		//Р’С‹РІРѕРґРёРј СЃРїРёСЃРѕРє РіРёРїРѕС‚РµР· РґР»СЏ РІС‹Р±РѕСЂР°
 		platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
 		ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,EAA->GetLink2HValue().LinkTo);
 		HypotesisDialog->exec();
@@ -318,7 +318,7 @@ void EA_OneFrame::LNKClick()
 	}
 	if(EAA->EA->type==platon::ft_LinkPragma)
 	{
-		if(EAA->EA->LNK_EidosID==0)	//Выводим список эйдосов
+		if(EAA->EA->LNK_EidosID==0)	//Р’С‹РІРѕРґРёРј СЃРїРёСЃРѕРє СЌР№РґРѕСЃРѕРІ
 		{
 			QString spec=QString::fromStdString(EAA->EA->LNK_species);
 			if(spec=="")spec="ALL";
@@ -331,7 +331,7 @@ void EA_OneFrame::LNKClick()
 		else ID_Eidos=EAA->EA->LNK_EidosID;
 		if(ID_Eidos==0)	return;
 
-		//Выводим список прагм с наименованиями гипотез для выбора
+		//Р’С‹РІРѕРґРёРј СЃРїРёСЃРѕРє РїСЂР°РіРј СЃ РЅР°РёРјРµРЅРѕРІР°РЅРёСЏРјРё РіРёРїРѕС‚РµР· РґР»СЏ РІС‹Р±РѕСЂР°
 		platon::Eidos *localEidos=new platon::Eidos(EAA->OwnerHypotesis->HostEidos->DB,ID_Eidos);
 		ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,EAA->GetLink2PValue().LinkTo);
 		PragmaDialog->exec();
@@ -353,16 +353,16 @@ void EA_OneFrame::HronologyClick()
 
 void EA_OneFrame::CallDllRoutine()
 {
-	//Функция вызывает процедуру из динамической библиотеки
+	//Р¤СѓРЅРєС†РёСЏ РІС‹Р·С‹РІР°РµС‚ РїСЂРѕС†РµРґСѓСЂСѓ РёР· РґРёРЅР°РјРёС‡РµСЃРєРѕР№ Р±РёР±Р»РёРѕС‚РµРєРё
 	QLibrary* CalledLib= this->MyDCl->GetLibByName(QString::fromStdString(this->EAA->EA->DLL_FileName));
 	if(CalledLib==NULL)
 	{
-		QString Message=tr("Требуемая процедура '")+QString::fromStdString(this->EAA->EA->DLL_FileName)+tr("' не найдена");
-		QMessageBox::information(this,tr("Внимание"),Message);
+		QString Message=tr("РўСЂРµР±СѓРµРјР°СЏ РїСЂРѕС†РµРґСѓСЂР° '")+QString::fromStdString(this->EAA->EA->DLL_FileName)+tr("' РЅРµ РЅР°Р№РґРµРЅР°");
+		QMessageBox::information(this,tr("Р’РЅРёРјР°РЅРёРµ"),Message);
 	}
 	else
 	{
-		//Вызов процедуры из библиотеки. Можно будет описать после разработки процедуры
+		//Р’С‹Р·РѕРІ РїСЂРѕС†РµРґСѓСЂС‹ РёР· Р±РёР±Р»РёРѕС‚РµРєРё. РњРѕР¶РЅРѕ Р±СѓРґРµС‚ РѕРїРёСЃР°С‚СЊ РїРѕСЃР»Рµ СЂР°Р·СЂР°Р±РѕС‚РєРё РїСЂРѕС†РµРґСѓСЂС‹
 	}
 
 }

@@ -22,8 +22,8 @@ public:
     int  GetColumnNumberByFieldName(QString FieldName);
 protected:
 	Hypotesis* MyHyp;
-	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру
-	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
+	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РїРѕ РЅРѕРјРµСЂСѓ
+	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РїРѕР»РЅРµРЅРЅСѓСЋ SQL СЃС‚СЂРѕРєСѓ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ 1 СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
 
 };
 

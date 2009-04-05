@@ -13,15 +13,15 @@ namespace platon
 
 DataClass::DataClass(QObject *parent=0) :QObject(parent)
 {
-	//Создание класса модуля данных
+	//РЎРѕР·РґР°РЅРёРµ РєР»Р°СЃСЃР° РјРѕРґСѓР»СЏ РґР°РЅРЅС‹С…
 	this->setObjectName("DataModule");
-	//Вывод диалога регистрации в базе данных
+	//Р’С‹РІРѕРґ РґРёР°Р»РѕРіР° СЂРµРіРёСЃС‚СЂР°С†РёРё РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С…
 	platon::Login_Dialog* LoginDLG= new platon::Login_Dialog((mainWin*)parent);
 	while(true)
 	{
 		if(LoginDLG->exec()==QDialog::Rejected)
 		{
-			((mainWin*)this->parent())->close();	//Посылаем сигнал на закрытие главной формы
+			((mainWin*)this->parent())->close();	//РџРѕСЃС‹Р»Р°РµРј СЃРёРіРЅР°Р» РЅР° Р·Р°РєСЂС‹С‚РёРµ РіР»Р°РІРЅРѕР№ С„РѕСЂРјС‹
 			break;
 		}
 		else
@@ -31,8 +31,8 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 										 LoginDLG->UserName->text().toStdString(),
 										 LoginDLG->Password->text().toStdString(),
 										"",//Role
-										"WIN1251",//codepage
-										"DEFAULT CHARACTER SET WIN1251");//Доп параметры
+										"UTF8",//codepage
+										"DEFAULT CHARACTER SET RUSSIAN");//Р”РѕРї РїР°СЂР°РјРµС‚СЂС‹
 			DB->Connect();
 			if(DB->Connected()) break;
 		}
@@ -46,26 +46,26 @@ DataClass::~DataClass()
 
 void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 {
-	//Процедура производит загрузку динамических библиотек в программу
-	this->ArrayDynLib.clear();	//Очищаем массив динамических библиотек
+	//РџСЂРѕС†РµРґСѓСЂР° РїСЂРѕРёР·РІРѕРґРёС‚ Р·Р°РіСЂСѓР·РєСѓ РґРёРЅР°РјРёС‡РµСЃРєРёС… Р±РёР±Р»РёРѕС‚РµРє РІ РїСЂРѕРіСЂР°РјРјСѓ
+	this->ArrayDynLib.clear();	//РћС‡РёС‰Р°РµРј РјР°СЃСЃРёРІ РґРёРЅР°РјРёС‡РµСЃРєРёС… Р±РёР±Р»РёРѕС‚РµРє
 
 	QString ProgDir=QDir::currentPath();
 	QDir Folder(ProgDir);
-	if(Folder.cd("DLL"))	//Если каталог существует
+	if(Folder.cd("DLL"))	//Р•СЃР»Рё РєР°С‚Р°Р»РѕРі СЃСѓС‰РµСЃС‚РІСѓРµС‚
 	{
 		QStringList DLLList=Folder.entryList (QDir::Files, QDir::NoSort);
 		QStringList::iterator it;
-		//Считываем наименования библиотек помещенных в каталог
+		//РЎС‡РёС‚С‹РІР°РµРј РЅР°РёРјРµРЅРѕРІР°РЅРёСЏ Р±РёР±Р»РёРѕС‚РµРє РїРѕРјРµС‰РµРЅРЅС‹С… РІ РєР°С‚Р°Р»РѕРі
 		for(it=DLLList.begin();it!=DLLList.end();++it)
 		{
 				QLibrary* OneLib= new QLibrary(*it);
 				if(!OneLib->isLoaded()) OneLib->load();
-				//Ключ - убираем расширение библиотеки т.к. возможна работа с разными платформами
+				//РљР»СЋС‡ - СѓР±РёСЂР°РµРј СЂР°СЃС€РёСЂРµРЅРёРµ Р±РёР±Р»РёРѕС‚РµРєРё С‚.Рє. РІРѕР·РјРѕР¶РЅР° СЂР°Р±РѕС‚Р° СЃ СЂР°Р·РЅС‹РјРё РїР»Р°С‚С„РѕСЂРјР°РјРё
 				QString Key= OneLib->fileName().left(OneLib->fileName().lastIndexOf("."));
 
 				this->ArrayDynLib.insert(Key, OneLib);
 
-				sps->showMessage(QObject::tr("Загрузка библиотеки ")+OneLib->fileName(), Qt::AlignRight);
+				sps->showMessage(QObject::tr("Р—Р°РіСЂСѓР·РєР° Р±РёР±Р»РёРѕС‚РµРєРё ")+OneLib->fileName(), Qt::AlignRight);
 				aplic->processEvents();
 
 		}
@@ -74,8 +74,8 @@ void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 
 QLibrary* DataClass::GetLibByName(QString inString)
 {
-//Функция возвращает ссылку на библиотеку, имя которой передано в параметре.
-//В параметре должно быть передано имя процедуры без расширения
+//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° Р±РёР±Р»РёРѕС‚РµРєСѓ, РёРјСЏ РєРѕС‚РѕСЂРѕР№ РїРµСЂРµРґР°РЅРѕ РІ РїР°СЂР°РјРµС‚СЂРµ.
+//Р’ РїР°СЂР°РјРµС‚СЂРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РїРµСЂРµРґР°РЅРѕ РёРјСЏ РїСЂРѕС†РµРґСѓСЂС‹ Р±РµР· СЂР°СЃС€РёСЂРµРЅРёСЏ
 	QMap<QString, QLibrary*>::const_iterator i = ArrayDynLib.find(inString);
 	if(i == ArrayDynLib.end())
 		 return NULL;
@@ -85,15 +85,15 @@ QLibrary* DataClass::GetLibByName(QString inString)
 
 DataClass* GetDataModule(QObject * fromform)
 {
-	//Процедура возвращает адрес модуля данных используя иерархию объектов QObject. Применимо для форм системы.
+	//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ Р°РґСЂРµСЃ РјРѕРґСѓР»СЏ РґР°РЅРЅС‹С… РёСЃРїРѕР»СЊР·СѓСЏ РёРµСЂР°СЂС…РёСЋ РѕР±СЉРµРєС‚РѕРІ QObject. РџСЂРёРјРµРЅРёРјРѕ РґР»СЏ С„РѕСЂРј СЃРёСЃС‚РµРјС‹.
 	QString DTLObjectName="DataModule";
-	if(fromform->findChild<DataClass *>(DTLObjectName)==0)	//У переданного в параметрах объекте нет деток с типом DataModule
-		if(fromform->parent()!=0)				//но при этом есть родители
-			return GetDataModule(fromform->parent());	//переходим на рассмотрение родителя
+	if(fromform->findChild<DataClass *>(DTLObjectName)==0)	//РЈ РїРµСЂРµРґР°РЅРЅРѕРіРѕ РІ РїР°СЂР°РјРµС‚СЂР°С… РѕР±СЉРµРєС‚Рµ РЅРµС‚ РґРµС‚РѕРє СЃ С‚РёРїРѕРј DataModule
+		if(fromform->parent()!=0)				//РЅРѕ РїСЂРё СЌС‚РѕРј РµСЃС‚СЊ СЂРѕРґРёС‚РµР»Рё
+			return GetDataModule(fromform->parent());	//РїРµСЂРµС…РѕРґРёРј РЅР° СЂР°СЃСЃРјРѕС‚СЂРµРЅРёРµ СЂРѕРґРёС‚РµР»СЏ
 		else
-			return 0;							//Это последний в цепочке
+			return 0;							//Р­С‚Рѕ РїРѕСЃР»РµРґРЅРёР№ РІ С†РµРїРѕС‡РєРµ
 	else
-		return fromform->findChild<DataClass *>(DTLObjectName);//Есть детка нужного типа
+		return fromform->findChild<DataClass *>(DTLObjectName);//Р•СЃС‚СЊ РґРµС‚РєР° РЅСѓР¶РЅРѕРіРѕ С‚РёРїР°
 }
 
 }

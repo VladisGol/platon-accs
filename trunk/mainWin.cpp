@@ -4,14 +4,14 @@ mainWin::mainWin(QWidget *parent)
     : QMainWindow(parent)
 
 {
-		QTextCodec * codec = QTextCodec::codecForName("CP1251"); 	//Устанавливаем кодировщик
+		QTextCodec * codec = QTextCodec::codecForName("UTF-8"); 	//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєРѕРґРёСЂРѕРІС‰РёРє
 		QTextCodec::setCodecForTr(codec);
 		QTextCodec::setCodecForCStrings(codec);
 
-		setupUi(this);								//Загружаем элементы формы
+		setupUi(this);								//Р—Р°РіСЂСѓР¶Р°РµРј СЌР»РµРјРµРЅС‚С‹ С„РѕСЂРјС‹
 
-		this->MyDCl=new platon::DataClass(this);	//Создаем молуль данных приложения
-		if(this->MyDCl->DB->Connected())			//Если соединение с базой данной при создании модуля прошло успешно
+		this->MyDCl=new platon::DataClass(this);	//РЎРѕР·РґР°РµРј РјРѕР»СѓР»СЊ РґР°РЅРЅС‹С… РїСЂРёР»РѕР¶РµРЅРёСЏ
+		if(this->MyDCl->DB->Connected())			//Р•СЃР»Рё СЃРѕРµРґРёРЅРµРЅРёРµ СЃ Р±Р°Р·РѕР№ РґР°РЅРЅРѕР№ РїСЂРё СЃРѕР·РґР°РЅРёРё РјРѕРґСѓР»СЏ РїСЂРѕС€Р»Рѕ СѓСЃРїРµС€РЅРѕ
 		{
 			LocalEidos=NULL;
 			LocalHypotesis=NULL;
@@ -24,7 +24,7 @@ mainWin::mainWin(QWidget *parent)
 			//QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 			QObject::connect(tableViewHypotesis, SIGNAL(entered(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 
-			//Привязываем элементы управления к событиям
+			//РџСЂРёРІСЏР·С‹РІР°РµРј СЌР»РµРјРµРЅС‚С‹ СѓРїСЂР°РІР»РµРЅРёСЏ Рє СЃРѕР±С‹С‚РёСЏРј
 			QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
 			QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
 			QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
@@ -40,14 +40,14 @@ mainWin::mainWin(QWidget *parent)
 			this->tableViewPragma->installEventFilter(this);
 			CurrentObjectLevel=0;
 
-			//Программное время
+			//РџСЂРѕРіСЂР°РјРјРЅРѕРµ РІСЂРµРјСЏ
 			this->ProgramDateTime = QDateTime::currentDateTime();
 			DTBaseShifter=new QTimer(this);
 			connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
 			BaseTimeShift();
-			DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
+			DTBaseShifter->start(10*1000);	//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РІСЂРµРјСЏ РѕР±РЅРѕРІР»РµРЅРёСЏ
 
-			//Выставляем прокси модели для возможности сортировки и фильтрования
+			//Р’С‹СЃС‚Р°РІР»СЏРµРј РїСЂРѕРєСЃРё РјРѕРґРµР»Рё РґР»СЏ РІРѕР·РјРѕР¶РЅРѕСЃС‚Рё СЃРѕСЂС‚РёСЂРѕРІРєРё Рё С„РёР»СЊС‚СЂРѕРІР°РЅРёСЏ
 			SFProxyModelH= new QSortFilterProxyModel(this);
 			SFProxyModelP= new QSortFilterProxyModel(this);
 
@@ -56,7 +56,7 @@ mainWin::mainWin(QWidget *parent)
 			tableViewHypotesis->setModel(SFProxyModelH);
 			tableViewHypotesis->setSortingEnabled(true);
 
-			//Устанавливаем размеры виджетов на форме
+			//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЂР°Р·РјРµСЂС‹ РІРёРґР¶РµС‚РѕРІ РЅР° С„РѕСЂРјРµ
 			ReadFormWidgetsAppearance();
 		}
 }
@@ -149,9 +149,9 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 
 
 	long id_eidos;
-	//Проверяем не впервые ли запущена программа
+	//РџСЂРѕРІРµСЂСЏРµРј РЅРµ РІРїРµСЂРІС‹Рµ Р»Рё Р·Р°РїСѓС‰РµРЅР° РїСЂРѕРіСЂР°РјРјР°
 	if(CurItem==NULL || CurItem==0)
-		id_eidos=0;	//Выводим root
+		id_eidos=1;	//Р’С‹РІРѕРґРёРј root
 	else
 		id_eidos=CurItem->text(1).toLong();
 
@@ -161,13 +161,13 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 	SFProxyModelH->setSourceModel(MyModel);
 	this->tableViewHypotesis->resizeColumnsToContents();
 
-	//Прячем фрейм для прагмы в случае если объект входит в ветку нормативно-справочной информации
+	//РџСЂСЏС‡РµРј С„СЂРµР№Рј РґР»СЏ РїСЂР°РіРјС‹ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё РѕР±СЉРµРєС‚ РІС…РѕРґРёС‚ РІ РІРµС‚РєСѓ РЅРѕСЂРјР°С‚РёРІРЅРѕ-СЃРїСЂР°РІРѕС‡РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё
 	if(QString::fromStdString(LocalEidos->GetEidosSpecies())=="NSI")
 		this->tableViewPragma->setEnabled(false);
 	else
 		this->tableViewPragma->setEnabled(true);
 
-	//Инициируем смену значений списка прагм
+	//РРЅРёС†РёРёСЂСѓРµРј СЃРјРµРЅСѓ Р·РЅР°С‡РµРЅРёР№ СЃРїРёСЃРєР° РїСЂР°РіРј
 	if(tableViewHypotesis->model()->rowCount()>0)
 		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
 	else
@@ -180,7 +180,7 @@ void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 {
 	platon::Hypotesis* keep4delete=LocalHypotesis;
 	int row=tableViewHypotesis->currentIndex().row();
-	if(row<0) row=0;	//не выбран элемент, значит выбираем самый первый
+	if(row<0) row=0;	//РЅРµ РІС‹Р±СЂР°РЅ СЌР»РµРјРµРЅС‚, Р·РЅР°С‡РёС‚ РІС‹Р±РёСЂР°РµРј СЃР°РјС‹Р№ РїРµСЂРІС‹Р№
 	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(row,0,QModelIndex()))).toInt();
 
 	LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
@@ -197,7 +197,7 @@ void mainWin::EditItem()
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
-		md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+		md->setWindowTitle(tr("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РѕР±СЉРµРєС‚Р° \"РўРёРї\""));
 		md->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
@@ -205,7 +205,7 @@ void mainWin::EditItem()
 		int myrow=tableViewPragma->currentIndex().row();
 		long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
 		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
-		md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
+		md->setWindowTitle(tr("Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РѕР±СЉРµРєС‚Р° \"Р­РєР·РµРјРїР»СЏСЂ\""));
 		md->show();
 	}
 	return ;
@@ -218,37 +218,37 @@ void mainWin::AddItem()
 
 	if(CurrentObjectLevel==Level_Hypotesis)
 	{
-		//Создаем экземпляры объектов для формы
+		//РЎРѕР·РґР°РµРј СЌРєР·РµРјРїР»СЏСЂС‹ РѕР±СЉРµРєС‚РѕРІ РґР»СЏ С„РѕСЂРјС‹
 
 		if(Species=="OBJ") formHypotesis= ((platon::OBJClass*)formEidos)->AddOBJType();
 		if(Species=="ACT") formHypotesis= ((platon::ACTClass*)formEidos)->AddACTType();
 		if(Species=="RES") formHypotesis= ((platon::RESClass*)formEidos)->AddRESType();
-		if(Species=="NSI") formHypotesis=new platon::Hypotesis(formEidos,QString(tr("Новый тип нормативно-справочной информации")).toStdString());
+		if(Species=="NSI") formHypotesis=new platon::Hypotesis(formEidos,QString(tr("РќРѕРІС‹Р№ С‚РёРї РЅРѕСЂРјР°С‚РёРІРЅРѕ-СЃРїСЂР°РІРѕС‡РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё")).toStdString());
 
 		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,formHypotesis);
-		md->setWindowTitle(tr("Создание объекта \"Тип\""));
+		md->setWindowTitle(tr("РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° \"РўРёРї\""));
 		md->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
-		if(myrow==-1) myrow=0;	//Это на случай если сразу перешагнули в окно Pragma без выбора bp Hypotesis
+		if(myrow==-1) myrow=0;	//Р­С‚Рѕ РЅР° СЃР»СѓС‡Р°Р№ РµСЃР»Рё СЃСЂР°Р·Сѓ РїРµСЂРµС€Р°РіРЅСѓР»Рё РІ РѕРєРЅРѕ Pragma Р±РµР· РІС‹Р±РѕСЂР° bp Hypotesis
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 		if(id_hypotesys>0)
 		{
 			formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
 			platon::Pragma*formPragma;
 
-			//Создаем экземпляры объектов для формы
+			//РЎРѕР·РґР°РµРј СЌРєР·РµРјРїР»СЏСЂС‹ РѕР±СЉРµРєС‚РѕРІ РґР»СЏ С„РѕСЂРјС‹
 			if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
 			if(Species=="ACT")
 				{
-					; //Необходимо выбрать с каким объектом проводится действие
+					; //РќРµРѕР±С…РѕРґРёРјРѕ РІС‹Р±СЂР°С‚СЊ СЃ РєР°РєРёРј РѕР±СЉРµРєС‚РѕРј РїСЂРѕРІРѕРґРёС‚СЃСЏ РґРµР№СЃС‚РІРёРµ
 				}
-			if(Species=="RES") formPragma= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Создание ресурса, который размещается "на складе"
-			if(Species=="NSI")	;//Не может быть экземпляров на указанной ветви
+			if(Species=="RES") formPragma= ((platon::RESType*)formHypotesis)->AddRESCopy(); //РЎРѕР·РґР°РЅРёРµ СЂРµСЃСѓСЂСЃР°, РєРѕС‚РѕСЂС‹Р№ СЂР°Р·РјРµС‰Р°РµС‚СЃСЏ "РЅР° СЃРєР»Р°РґРµ"
+			if(Species=="NSI")	;//РќРµ РјРѕР¶РµС‚ Р±С‹С‚СЊ СЌРєР·РµРјРїР»СЏСЂРѕРІ РЅР° СѓРєР°Р·Р°РЅРЅРѕР№ РІРµС‚РІРё
 			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,formPragma);
-			md->setWindowTitle(tr("Создание объекта \"Экземпляр\""));
+			md->setWindowTitle(tr("РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° \"Р­РєР·РµРјРїР»СЏСЂ\""));
 			md->show();
 		}
 	}
@@ -277,7 +277,7 @@ void mainWin::Showlinks()
 
 void mainWin::RefreshViews()
 {
-//Процедура обновляет значения в окнах отображения гипотез и прагм
+//РџСЂРѕС†РµРґСѓСЂР° РѕР±РЅРѕРІР»СЏРµС‚ Р·РЅР°С‡РµРЅРёСЏ РІ РѕРєРЅР°С… РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РіРёРїРѕС‚РµР· Рё РїСЂР°РіРј
 	if(CurrentObjectLevel==Level_Hypotesis) RefreshHView();
 	if(CurrentObjectLevel==Level_Pragma) RefreshPView();
 
@@ -294,25 +294,25 @@ void mainWin::RefreshPView()
 
 void mainWin::BaseTimeShift()
 {
-//Процедура - слот производит перевод текущего системного времени в базе данных для корректировки выборок по темпоральным значениям
-	//Проверяем попадает ли установка даты времени в диапазо +-5 минут от системного времени
+//РџСЂРѕС†РµРґСѓСЂР° - СЃР»РѕС‚ РїСЂРѕРёР·РІРѕРґРёС‚ РїРµСЂРµРІРѕРґ С‚РµРєСѓС‰РµРіРѕ СЃРёСЃС‚РµРјРЅРѕРіРѕ РІСЂРµРјРµРЅРё РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С… РґР»СЏ РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєРё РІС‹Р±РѕСЂРѕРє РїРѕ С‚РµРјРїРѕСЂР°Р»СЊРЅС‹Рј Р·РЅР°С‡РµРЅРёСЏРј
+	//РџСЂРѕРІРµСЂСЏРµРј РїРѕРїР°РґР°РµС‚ Р»Рё СѓСЃС‚Р°РЅРѕРІРєР° РґР°С‚С‹ РІСЂРµРјРµРЅРё РІ РґРёР°РїР°Р·Рѕ +-5 РјРёРЅСѓС‚ РѕС‚ СЃРёСЃС‚РµРјРЅРѕРіРѕ РІСЂРµРјРµРЅРё
 	if(QDateTime::currentDateTime() < this->ProgramDateTime.addSecs(5*60) && QDateTime::currentDateTime().addSecs(5*60) > this->ProgramDateTime)
 	{
 		ProgramDateTime= QDateTime::currentDateTime();
 	}
 
 	platon::SetTimestampTemporalCompareFor(this->MyDCl->DB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
-	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
+	this->statusbar->showMessage(tr("РџСЂРѕРіСЂР°РјРјРЅРѕРµ РІСЂРµРјСЏ ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
 }
 void mainWin::CloseForm()
 {
-	//Слот закрытия формы. Перед закрытием формы сохраняем параметры формы
+	//РЎР»РѕС‚ Р·Р°РєСЂС‹С‚РёСЏ С„РѕСЂРјС‹. РџРµСЂРµРґ Р·Р°РєСЂС‹С‚РёРµРј С„РѕСЂРјС‹ СЃРѕС…СЂР°РЅСЏРµРј РїР°СЂР°РјРµС‚СЂС‹ С„РѕСЂРјС‹
 	WriteFormWidgetsAppearance();
 	this->close();
 }
 void mainWin::ReadFormWidgetsAppearance()
 {
-	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+	//РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РёР· DbETC РїР°СЂР°РјРµС‚СЂС‹ СЌР»РµРјРµРЅС‚РѕРІ С„РѕСЂРјС‹ Рё СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РёС… Р·РЅР°С‡РµРЅРёСЏ
 	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDCl->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
 	int w=874,h=744;
@@ -340,7 +340,7 @@ void mainWin::ReadFormWidgetsAppearance()
 }
 void mainWin::WriteFormWidgetsAppearance()
 {
-	//Процедура записывает в DbETC параметры элементов формы
+	//РџСЂРѕС†РµРґСѓСЂР° Р·Р°РїРёСЃС‹РІР°РµС‚ РІ DbETC РїР°СЂР°РјРµС‚СЂС‹ СЌР»РµРјРµРЅС‚РѕРІ С„РѕСЂРјС‹
 	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDCl->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());

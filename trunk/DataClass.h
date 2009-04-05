@@ -22,15 +22,15 @@
 
 namespace platon
 {
-//Класс хранящий в себе основные элементы программы, к которым необходим доступ из форм программы
+//РљР»Р°СЃСЃ С…СЂР°РЅСЏС‰РёР№ РІ СЃРµР±Рµ РѕСЃРЅРѕРІРЅС‹Рµ СЌР»РµРјРµРЅС‚С‹ РїСЂРѕРіСЂР°РјРјС‹, Рє РєРѕС‚РѕСЂС‹Рј РЅРµРѕР±С…РѕРґРёРј РґРѕСЃС‚СѓРї РёР· С„РѕСЂРј РїСЂРѕРіСЂР°РјРјС‹
 class DataClass : public QObject
 {
 	Q_OBJECT
 public:
 	DataClass(QObject *parent);
 	virtual ~DataClass();
-	QMap <QString, QLibrary*> ArrayDynLib;	//Массив библиотек
-	IBPP::Database DB;						//База данных
+	QMap <QString, QLibrary*> ArrayDynLib;	//РњР°СЃСЃРёРІ Р±РёР±Р»РёРѕС‚РµРє
+	IBPP::Database DB;						//Р‘Р°Р·Р° РґР°РЅРЅС‹С…
 
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
 	QLibrary* GetLibByName(QString inString);

@@ -16,7 +16,7 @@ AbstarctHipEditForm::AbstarctHipEditForm(QWidget * parent): QMainWindow(parent)
 }
 void AbstarctHipEditForm::FormActionsTune()
 {
-	//Ïðîöåäóðà íàñòðîéêè äåéñòâèé ôîðìû â çàâèñèìîñòè îò òèïà ðåäàêòèðóåìîãî îáúåêòà
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð½Ð°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ð¹ Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð² Ð·Ð°Ð²Ð¸ÑÐ¸Ð¼Ð¾ÑÑ‚Ð¸ Ð¾Ñ‚ Ñ‚Ð¸Ð¿Ð° Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€ÑƒÐµÐ¼Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 
 	this->action_AddAction->setVisible(false);
 	this->action_WriteOffRes->setVisible(false);
@@ -45,14 +45,14 @@ void AbstarctHipEditForm::FormActionsTune()
 
 void AbstarctHipEditForm::DoAddAction()
 {
-	//Ïðîöåäóðà äîáàâëÿåò äåéñòâèå äëÿ òåêóùåãî îáúåêòà
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð´Ð¾Ð±Ð°Ð²Ð»ÑÐµÑ‚ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ðµ Ð´Ð»Ñ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 	ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,"ACT",0);
 	Localdialog->exec();
 	long ID_Eidos=Localdialog->Out_value;
 
 	if(ID_Eidos==0)	return;
 
-	//Âûâîäèì ñïèñîê ãèïîòåç äëÿ âûáîðà
+	//Ð’Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ ÑÐ¿Ð¸ÑÐ¾Ðº Ð³Ð¸Ð¿Ð¾Ñ‚ÐµÐ· Ð´Ð»Ñ Ð²Ñ‹Ð±Ð¾Ñ€Ð°
 	platon::Eidos *localEidos=new platon::Eidos(this->DB,ID_Eidos);
 	ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,0);
 	HypotesisDialog->exec();
@@ -69,25 +69,25 @@ void AbstarctHipEditForm::DoAddAction()
 	platon::ACTCopy * newActioncopy=localActType->AddACTCopy(((platon::Pragma*)this->LocalHypotesis)->GetID());
 
 	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,newActioncopy);
-	md->setWindowTitle(tr("Ðåäàêòèðîâàíèå äåéñòâèÿ"));
+	md->setWindowTitle(tr("Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ"));
 	md->show();
-	//óäàëåíèå newActioncopy localActType è localEidos - ïðîéäåò â äåñòðóêòîðå ôîðìû PragmaEditForm
+	//ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ newActioncopy localActType Ð¸ localEidos - Ð¿Ñ€Ð¾Ð¹Ð´ÐµÑ‚ Ð² Ð´ÐµÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ðµ Ñ„Ð¾Ñ€Ð¼Ñ‹ PragmaEditForm
 }
 void AbstarctHipEditForm::DoWriteOffRes()
 {
-	//Ïðîöåäóðà ñïèñûâàåò ðåñóðñ íà ïðîâåäåíèå äåéñòâèÿ
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÑÐ¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ñ€ÐµÑÑƒÑ€Ñ Ð½Ð° Ð¿Ñ€Ð¾Ð²ÐµÐ´ÐµÐ½Ð¸Ðµ Ð´ÐµÐ¹ÑÑ‚Ð²Ð¸Ñ
 		ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,"RES",0);
 		Localdialog->exec();
 		long ID_Eidos=Localdialog->Out_value;
 
 		if(ID_Eidos==0)	return;
 
-		//Âûâîäèì ñïèñîê ïðàãì äëÿ âûáîðà
+		//Ð’Ñ‹Ð²Ð¾Ð´Ð¸Ð¼ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¿Ñ€Ð°Ð³Ð¼ Ð´Ð»Ñ Ð²Ñ‹Ð±Ð¾Ñ€Ð°
 		platon::Eidos *localEidos=new platon::Eidos(this->DB,ID_Eidos);
 		ChoicePragma_Dialog* PragmaDialog=new ChoicePragma_Dialog(this,localEidos,0);
 
 		int filteredColumn=((PragmaMemModel*)PragmaDialog->Model)->GetColumnNumberByFieldName("LNK_ForkedRES");
-		PragmaDialog->SFProxyModel->setFilterRegExp("^$");	//Óñòàíàâëèâàåì ôèëüòð äëÿ çàïèñåé ñêëàäñêîãî ó÷åòà áåç ïðîèçâîäíûõ íà ñïèñàíèå
+		PragmaDialog->SFProxyModel->setFilterRegExp("^$");	//Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ„Ð¸Ð»ÑŒÑ‚Ñ€ Ð´Ð»Ñ Ð·Ð°Ð¿Ð¸ÑÐµÐ¹ ÑÐºÐ»Ð°Ð´ÑÐºÐ¾Ð³Ð¾ ÑƒÑ‡ÐµÑ‚Ð° Ð±ÐµÐ· Ð¿Ñ€Ð¾Ð¸Ð·Ð²Ð¾Ð´Ð½Ñ‹Ñ… Ð½Ð° ÑÐ¿Ð¸ÑÐ°Ð½Ð¸Ðµ
 		PragmaDialog->SFProxyModel->setFilterKeyColumn(filteredColumn);
 		PragmaDialog->exec();
 		long ID_RESCopy=PragmaDialog->Out_value;
@@ -108,16 +108,16 @@ void AbstarctHipEditForm::DoWriteOffRes()
 		delete Rescopy;
 
 		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,forkedResCopy);
-		md->setWindowTitle(tr("Ðåäàêòèðîâàíèå ñâîéñòâ èñïîëüçîâàííîãî ðåñóðñà"));
+		md->setWindowTitle(tr("Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ ÑÐ²Ð¾Ð¹ÑÑ‚Ð² Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ð½Ð½Ð¾Ð³Ð¾ Ñ€ÐµÑÑƒÑ€ÑÐ°"));
 		md->show();
-		//óäàëåíèå forkedResCopy localResType è localEidos - ïðîéäåò â äåñòðóêòîðå ôîðìû PragmaEditForm;
+		//ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ forkedResCopy localResType Ð¸ localEidos - Ð¿Ñ€Ð¾Ð¹Ð´ÐµÑ‚ Ð² Ð´ÐµÑÑ‚Ñ€ÑƒÐºÑ‚Ð¾Ñ€Ðµ Ñ„Ð¾Ñ€Ð¼Ñ‹ PragmaEditForm;
 }
 void AbstarctHipEditForm::DoOpenType()
 {
-//Ïðîöåäóðà îòêðûâàåò êàðòî÷êó Hypotesis äëÿ òåêóùåãî îáúåêòà pragma;
+//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð¾Ñ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÑ‚ ÐºÐ°Ñ€Ñ‚Ð¾Ñ‡ÐºÑƒ Hypotesis Ð´Ð»Ñ Ñ‚ÐµÐºÑƒÑ‰ÐµÐ³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° pragma;
 
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,((platon::Pragma*)this->LocalHypotesis)->HostHypotesis->GetID());
-	md->setWindowTitle(tr("Ðåäàêòèðîâàíèå îáúåêòà \"Òèï\""));
+	md->setWindowTitle(tr("Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° \"Ð¢Ð¸Ð¿\""));
 	md->show();
 }
 
@@ -135,7 +135,7 @@ void AbstarctHipEditForm::ExitWithSave()
 
 	WriteFormWidgetsAppearance();
 
-	//Íóæíî ïðîâåðèòü ïîðîæäåí ëè îáúåêò îò íåïîñðåäñòâåííî MainWin
+	//ÐÑƒÐ¶Ð½Ð¾ Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð¿Ð¾Ñ€Ð¾Ð¶Ð´ÐµÐ½ Ð»Ð¸ Ð¾Ð±ÑŠÐµÐºÑ‚ Ð¾Ñ‚ Ð½ÐµÐ¿Ð¾ÑÑ€ÐµÐ´ÑÑ‚Ð²ÐµÐ½Ð½Ð¾ MainWin
 	if(this->parent()->objectName()=="MainWindow")
 	{
 		if(this->objectName()=="HypotesisEditForm")
@@ -156,20 +156,20 @@ void AbstarctHipEditForm::FormFillFrames()
 	unsigned int ElementsNumber=LocalHypotesis->Attributes.size()-1;
 	for(unsigned int i =0; i<=ElementsNumber;i++)
 	{
-		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[ElementsNumber-i];	//Ðàçâîðà÷èâàåì ñ ïîñëåäíåãî äî ïåðâîãî
+		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[ElementsNumber-i];	//Ð Ð°Ð·Ð²Ð¾Ñ€Ð°Ñ‡Ð¸Ð²Ð°ÐµÐ¼ Ñ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÐµÐ³Ð¾ Ð´Ð¾ Ð¿ÐµÑ€Ð²Ð¾Ð³Ð¾
 		if(tmpAttrib->EA->type!=platon::ft_Security && tmpAttrib->EA->Visible)
 		{
 			EA_OneFrame* my =new EA_OneFrame(this,tmpAttrib);
 			my->setObjectName("EA_Frame"+QString::number(i));
-			my->MyDCl=this->MyDCl;				//Çàïèñûâàåì àäðåñ ìîäóëÿ äàííûõ
-			verticalLayout->insertWidget(-1,my); //Çàíîñèì â ôîðìó ôðåéì
+			my->MyDCl=this->MyDCl;				//Ð—Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÐ¼ Ð°Ð´Ñ€ÐµÑ Ð¼Ð¾Ð´ÑƒÐ»Ñ Ð´Ð°Ð½Ð½Ñ‹Ñ…
+			verticalLayout->insertWidget(-1,my); //Ð—Ð°Ð½Ð¾ÑÐ¸Ð¼ Ð² Ñ„Ð¾Ñ€Ð¼Ñƒ Ñ„Ñ€ÐµÐ¹Ð¼
 		}
 	}
 }
 
 void AbstarctHipEditForm::ReadFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà ñ÷èòûâàåò èç DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû è óñòàíàâëèâàåò èõ çíà÷åíèÿ
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð· DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð¸ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ Ð¸Ñ… Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName).toStdString(),true,-1);
@@ -184,7 +184,7 @@ void AbstarctHipEditForm::ReadFormWidgetsAppearance()
 
 void AbstarctHipEditForm::WriteFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà çàïèñûâàåò â DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ð² DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());

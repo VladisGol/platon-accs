@@ -3,7 +3,7 @@ namespace platon
 {
 QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal)
 {
-//Функция переводит дату время из формата IBPP::Timestamp в формат QDateTime
+//Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРІРѕРґРёС‚ РґР°С‚Сѓ РІСЂРµРјСЏ РёР· С„РѕСЂРјР°С‚Р° IBPP::Timestamp РІ С„РѕСЂРјР°С‚ QDateTime
 	QString year=QString::number(InVal.Year());
 	QString month=QString("0"+QString::number(InVal.Month())).right(2);
 	QString day=QString("0"+QString::number(InVal.Day())).right(2);
@@ -16,7 +16,7 @@ QDateTime IBPPTimestamp2QDateTime(IBPP::Timestamp InVal)
 
 IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal)
 {
-//Функция переводит дату время из формата QDateTime в формат IBPP::Timestamp
+//Р¤СѓРЅРєС†РёСЏ РїРµСЂРµРІРѕРґРёС‚ РґР°С‚Сѓ РІСЂРµРјСЏ РёР· С„РѕСЂРјР°С‚Р° QDateTime РІ С„РѕСЂРјР°С‚ IBPP::Timestamp
 
 	int y, mo, d, h, mi, s;
 	y=QString(InVal.toString("yyyy")).toInt();

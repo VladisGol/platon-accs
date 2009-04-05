@@ -12,7 +12,7 @@
 
 namespace platon
 {
-class TreeItem	//Приношу благодарность фирме Nokia за использованный из примеров код
+class TreeItem	//РџСЂРёРЅРѕС€Сѓ Р±Р»Р°РіРѕРґР°СЂРЅРѕСЃС‚СЊ С„РёСЂРјРµ Nokia Р·Р° РёСЃРїРѕР»СЊР·РѕРІР°РЅРЅС‹Р№ РёР· РїСЂРёРјРµСЂРѕРІ РєРѕРґ
 {
 public:
     TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);

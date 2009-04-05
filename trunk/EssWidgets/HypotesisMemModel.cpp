@@ -15,15 +15,15 @@ HypotesisMemModel::HypotesisMemModel(Eidos* InEidos, QObject * parent)
 	setObjectName("HypotesisMemModel");
 	ForEidos =InEidos;
 
-	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//Получаем количество полей в запросе
-	ReservedColumns=1;														//Одно зарезервированное поле ID
+	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»РµР№ РІ Р·Р°РїСЂРѕСЃРµ
+	ReservedColumns=1;														//РћРґРЅРѕ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕРµ РїРѕР»Рµ ID
 
-	Id_records = new QVector <long>;										//Выделяем необходимую память
+	Id_records = new QVector <long>;										//Р’С‹РґРµР»СЏРµРј РЅРµРѕР±С…РѕРґРёРјСѓСЋ РїР°РјСЏС‚СЊ
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol;i++) FieldsInModel->append(new QMap<long,QVariant>);
 
-	KeyIterator=new iterHypotesis(ForEidos);								//Выставляем итератор ключей записей
-	ReadToBuffer();															//Считываем значения в буфер
+	KeyIterator=new iterHypotesis(ForEidos);								//Р’С‹СЃС‚Р°РІР»СЏРµРј РёС‚РµСЂР°С‚РѕСЂ РєР»СЋС‡РµР№ Р·Р°РїРёСЃРµР№
+	ReadToBuffer();															//РЎС‡РёС‚С‹РІР°РµРј Р·РЅР°С‡РµРЅРёСЏ РІ Р±СѓС„РµСЂ
 }
 
 
@@ -44,7 +44,7 @@ QString HypotesisMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 
 QVariant HypotesisMemModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
-	//Процедура выводит значения надписей столбцов и строк
+	//РџСЂРѕС†РµРґСѓСЂР° РІС‹РІРѕРґРёС‚ Р·РЅР°С‡РµРЅРёСЏ РЅР°РґРїРёСЃРµР№ СЃС‚РѕР»Р±С†РѕРІ Рё СЃС‚СЂРѕРє
 
 	if (role != Qt::DisplayRole)
 	         return QVariant();

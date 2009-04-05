@@ -34,12 +34,12 @@ private slots:
 	void SetPragmaView(const QModelIndex & index);
 	void SetHypotesysView(QTreeWidgetItem*,int);
 	void SetEidosView(int Row);
-	void EditItem();// Слот для редактирования текущего объекта
-	void AddItem();// Слот для добавления объекта
-	void DeleteItem();// Слот для удаления объекта
+	void EditItem();// РЎР»РѕС‚ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ С‚РµРєСѓС‰РµРіРѕ РѕР±СЉРµРєС‚Р°
+	void AddItem();// РЎР»РѕС‚ РґР»СЏ РґРѕР±Р°РІР»РµРЅРёСЏ РѕР±СЉРµРєС‚Р°
+	void DeleteItem();// РЎР»РѕС‚ РґР»СЏ СѓРґР°Р»РµРЅРёСЏ РѕР±СЉРµРєС‚Р°
 	void RefreshViews();
-	void BaseTimeShift();//Слот для установки в базе данных времени работы в программе
-	void Showlinks();// Слот для вызова формы отображения ссылок на текущую запись
+	void BaseTimeShift();//РЎР»РѕС‚ РґР»СЏ СѓСЃС‚Р°РЅРѕРІРєРё РІ Р±Р°Р·Рµ РґР°РЅРЅС‹С… РІСЂРµРјРµРЅРё СЂР°Р±РѕС‚С‹ РІ РїСЂРѕРіСЂР°РјРјРµ
+	void Showlinks();// РЎР»РѕС‚ РґР»СЏ РІС‹Р·РѕРІР° С„РѕСЂРјС‹ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃСЃС‹Р»РѕРє РЅР° С‚РµРєСѓС‰СѓСЋ Р·Р°РїРёСЃСЊ
 	void CloseForm();
 
 private:

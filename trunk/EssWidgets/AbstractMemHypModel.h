@@ -29,23 +29,23 @@ public:
     int columnCount(const QModelIndex & index) const;
     QVariant data(const QModelIndex &index, int role) const;
 	pIterator* KeyIterator;
-	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
-	QModelIndex GetQModelIndexByID(long ID_in);				// Функция возвращает значение индекса модели по идентификатору записи
+	void ReadToBuffer()const;								// РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РІ Р±СѓС„РµСЂ РІСЃРµ Р·Р°РїРёСЃРё
+	QModelIndex GetQModelIndexByID(long ID_in);				// Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ РёРЅРґРµРєСЃР° РјРѕРґРµР»Рё РїРѕ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂСѓ Р·Р°РїРёСЃРё
 
 protected:
-	mutable QVector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel
-	mutable QVector <QMap<long,QVariant>*> * FieldsInModel;	//Вектор для хранения значений полей в виде QMap <long,QVariant>
-	mutable int NumCol;										//Число полей в запросе (из числа экстраатрибутов)
-	mutable int LastRequestedReccount;						//Число записей в запросе
+	mutable QVector <long> * Id_records;					//Р’РµРєС‚РѕСЂ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ ID Р·Р°РїРёСЃРё РїРѕ РєРѕС‚РѕСЂРѕР№ РјРѕР¶РЅРѕ Р±СѓРґРµС‚ РЅР°Р№С‚Рё Р·Р°РїРёСЃРё РІ РІРµРєС‚РѕСЂРµ FieldsInModel
+	mutable QVector <QMap<long,QVariant>*> * FieldsInModel;	//Р’РµРєС‚РѕСЂ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ Р·РЅР°С‡РµРЅРёР№ РїРѕР»РµР№ РІ РІРёРґРµ QMap <long,QVariant>
+	mutable int NumCol;										//Р§РёСЃР»Рѕ РїРѕР»РµР№ РІ Р·Р°РїСЂРѕСЃРµ (РёР· С‡РёСЃР»Р° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ)
+	mutable int LastRequestedReccount;						//Р§РёСЃР»Рѕ Р·Р°РїРёСЃРµР№ РІ Р·Р°РїСЂРѕСЃРµ
 
-	int ReservedColumns;									//Зарезервированное число полей
+	int ReservedColumns;									//Р—Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕРµ С‡РёСЃР»Рѕ РїРѕР»РµР№
     QVariant GetDataFromBuffer(const QModelIndex &index) const;
 	void GetOneFieldInBuffer(int FieldNumber, QMap<long,QVariant>* OneMap) const;
 
-	Eidos* ForEidos;										//Ссылка на Eidos, по которому идет обработка
+	Eidos* ForEidos;										//РЎСЃС‹Р»РєР° РЅР° Eidos, РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РёРґРµС‚ РѕР±СЂР°Р±РѕС‚РєР°
 
-	virtual ExtraAttribute* getEAFromEidos(int i) const {return NULL;};			//Функция возвращает ссылку на экстраатрибут по номеру
-	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const {return "";};	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
+	virtual ExtraAttribute* getEAFromEidos(int i) const {return NULL;};			//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РїРѕ РЅРѕРјРµСЂСѓ
+	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const {return "";};	//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РїРѕР»РЅРµРЅРЅСѓСЋ SQL СЃС‚СЂРѕРєСѓ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ 1 СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
 };
 
 }

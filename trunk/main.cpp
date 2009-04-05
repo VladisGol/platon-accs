@@ -8,14 +8,14 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    //Выводим предшествующее окно программы во время загрузки
+    //Р’С‹РІРѕРґРёРј РїСЂРµРґС€РµСЃС‚РІСѓСЋС‰РµРµ РѕРєРЅРѕ РїСЂРѕРіСЂР°РјРјС‹ РІРѕ РІСЂРµРјСЏ Р·Р°РіСЂСѓР·РєРё
     QPixmap pixmap(":/PICS/Platon.png");
     QSplashScreen splash(pixmap);
     splash.show();
     app.processEvents();
 
     mainWin myAPP;
-    myAPP.MyDCl->LoadDynLib(&splash, &app);	//Загружаем библиотеки и отображаем ход процесса на предшествующем окне
+    myAPP.MyDCl->LoadDynLib(&splash, &app);	//Р—Р°РіСЂСѓР¶Р°РµРј Р±РёР±Р»РёРѕС‚РµРєРё Рё РѕС‚РѕР±СЂР°Р¶Р°РµРј С…РѕРґ РїСЂРѕС†РµСЃСЃР° РЅР° РїСЂРµРґС€РµСЃС‚РІСѓСЋС‰РµРј РѕРєРЅРµ
     app.processEvents();
 
     myAPP.show();

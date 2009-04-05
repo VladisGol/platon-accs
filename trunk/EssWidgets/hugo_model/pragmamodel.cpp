@@ -33,17 +33,17 @@
 PragmaModel::PragmaModel(platon::Eidos* InEidos, QWidget *parent)
     : HypotesisModel(InEidos, parent)
 {
-	//Èíèöèàëèçèðóåì ïåðåìåííûå è îáúåêòû
+	//Ð˜Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð¸Ñ€ÑƒÐµÐ¼ Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ Ð¸ Ð¾Ð±ÑŠÐµÐºÑ‚Ñ‹
 	setObjectName("PragmaModel");
 
 	//delete MyIterator;
-	MyIterator=new platon::iterAllPragmaForEidos(InEidos);					//Ñîçäàåì èòåðàòîð ïî áàçå
+	MyIterator=new platon::iterAllPragmaForEidos(InEidos);					//Ð¡Ð¾Ð·Ð´Ð°ÐµÐ¼ Ð¸Ñ‚ÐµÑ€Ð°Ñ‚Ð¾Ñ€ Ð¿Ð¾ Ð±Ð°Ð·Ðµ
 
-	NumCol=InEidos->PragmaSQL->AttributesList.size();						//Ïîëó÷àåì êîëè÷åñòâî ïîëåé â çàïðîñå
-	Buffer.resize(BufferCapacity * (NumCol+2));								//Óñòàíàâëèâàåì ðàçìåð âåêòîðà = ÷èñëó ïîëåé ýêñòðààòðèáóòîâ + ID+HipotesysName
+	NumCol=InEidos->PragmaSQL->AttributesList.size();						//ÐŸÐ¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð¿Ð¾Ð»ÐµÐ¹ Ð² Ð·Ð°Ð¿Ñ€Ð¾ÑÐµ
+	Buffer.resize(BufferCapacity * (NumCol+2));								//Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð²ÐµÐºÑ‚Ð¾Ñ€Ð° = Ñ‡Ð¸ÑÐ»Ñƒ Ð¿Ð¾Ð»ÐµÐ¹ ÑÐºÑÑ‚Ñ€Ð°Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð¾Ð² + ID+HipotesysName
 
-	BufferStartRow=0;														//Íà÷àëî
-	BufferLastRow=ReadToBuffer(BufferStartRow,0,BufferCapacity);			//×èòàåì èç áàçû ïåðâûå BufferCapacity çàïèñåé
+	BufferStartRow=0;														//ÐÐ°Ñ‡Ð°Ð»Ð¾
+	BufferLastRow=ReadToBuffer(BufferStartRow,0,BufferCapacity);			//Ð§Ð¸Ñ‚Ð°ÐµÐ¼ Ð¸Ð· Ð±Ð°Ð·Ñ‹ Ð¿ÐµÑ€Ð²Ñ‹Ðµ BufferCapacity Ð·Ð°Ð¿Ð¸ÑÐµÐ¹
 	if(BufferLastRow>=BufferCapacity)
 		LastRequestedReccount=MyIterator->GetRowCount();
 	else

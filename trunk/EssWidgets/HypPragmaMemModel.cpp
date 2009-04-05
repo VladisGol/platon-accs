@@ -19,14 +19,14 @@ HypPragmaMemModel::HypPragmaMemModel(Eidos* InEidos, QObject * parent)
 
 	ForEidos =InEidos;
 
-	NumCol=ForEidos->PragmaSQL->AttributesList.size();						//Получаем количество полей в запросе
-	ReservedColumns=2;														//Одно зарезервированное поле ID
+	NumCol=ForEidos->PragmaSQL->AttributesList.size();						//РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»РµР№ РІ Р·Р°РїСЂРѕСЃРµ
+	ReservedColumns=2;														//РћРґРЅРѕ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕРµ РїРѕР»Рµ ID
 
-	Id_records = new QVector <long>;										//Выделяем необходимую память
+	Id_records = new QVector <long>;										//Р’С‹РґРµР»СЏРµРј РЅРµРѕР±С…РѕРґРёРјСѓСЋ РїР°РјСЏС‚СЊ
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol+1;i++) FieldsInModel->append(new QMap<long,QVariant>);
-	KeyIterator=new iterHypPragma(ForEidos);								//Выставляем итератор ключей записей
-	ReadToBuffer();															//Считываем значения в буфер
+	KeyIterator=new iterHypPragma(ForEidos);								//Р’С‹СЃС‚Р°РІР»СЏРµРј РёС‚РµСЂР°С‚РѕСЂ РєР»СЋС‡РµР№ Р·Р°РїРёСЃРµР№
+	ReadToBuffer();															//РЎС‡РёС‚С‹РІР°РµРј Р·РЅР°С‡РµРЅРёСЏ РІ Р±СѓС„РµСЂ
 
 }
 
@@ -47,7 +47,7 @@ QString HypPragmaMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 
 QVariant HypPragmaMemModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
-	//Процедура выводит значения надписей столбцов и строк
+	//РџСЂРѕС†РµРґСѓСЂР° РІС‹РІРѕРґРёС‚ Р·РЅР°С‡РµРЅРёСЏ РЅР°РґРїРёСЃРµР№ СЃС‚РѕР»Р±С†РѕРІ Рё СЃС‚СЂРѕРє
 
 	if (role != Qt::DisplayRole)
 	         return QVariant();
@@ -57,7 +57,7 @@ QVariant HypPragmaMemModel::headerData(int section, Qt::Orientation orientation,
 		if(section==0)
 			return tr("ID");
 		if(section==1)
-			return tr("Тип");
+			return tr("РўРёРї");
 		else
 			return tr(this->ForEidos->PragmaSQL->AttributesList[section-ReservedColumns].Caption.c_str());
 	}
@@ -68,13 +68,13 @@ QVariant HypPragmaMemModel::headerData(int section, Qt::Orientation orientation,
 }
 void HypPragmaMemModel::ReadToBuffer() const
 {
-	//Процедура считывает в буфер по полям записи из БД
-	//Заполняем значения в массиве идентификаторов записей
+	//РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РІ Р±СѓС„РµСЂ РїРѕ РїРѕР»СЏРј Р·Р°РїРёСЃРё РёР· Р‘Р”
+	//Р—Р°РїРѕР»РЅСЏРµРј Р·РЅР°С‡РµРЅРёСЏ РІ РјР°СЃСЃРёРІРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРІ Р·Р°РїРёСЃРµР№
 
 	Id_records->clear();
 	KeyIterator->First();
 	LastRequestedReccount=0;
-	QMap<long,QVariant>* NameMap = FieldsInModel->at(0);//Нулевое поле - наименование Hypotesis
+	QMap<long,QVariant>* NameMap = FieldsInModel->at(0);//РќСѓР»РµРІРѕРµ РїРѕР»Рµ - РЅР°РёРјРµРЅРѕРІР°РЅРёРµ Hypotesis
 
 	while(KeyIterator->Fetched())
 	{
@@ -86,7 +86,7 @@ void HypPragmaMemModel::ReadToBuffer() const
 		KeyIterator->Next();
 	}
 
-	//Считываем поля экстраатрибутов
+	//РЎС‡РёС‚С‹РІР°РµРј РїРѕР»СЏ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ
 	for(int i=1;i<NumCol+1;i++)
 	{
 		GetOneFieldInBuffer(i-1, FieldsInModel->at(i));

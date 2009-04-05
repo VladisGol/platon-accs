@@ -46,9 +46,9 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 	PaintingEidos(this->PEidosTreeWidget,IEidosP);
 
 	if(IEidosH->GetRowCount()>IEidosP->GetRowCount())
-		tabWidget_Prg->setCurrentIndex(0);//Àêòèâèçèðóåì âêëàäêó ñî ñïèñêîì ãèïîòåç
+		tabWidget_Prg->setCurrentIndex(0);//ÐÐºÑ‚Ð¸Ð²Ð¸Ð·Ð¸Ñ€ÑƒÐµÐ¼ Ð²ÐºÐ»Ð°Ð´ÐºÑƒ ÑÐ¾ ÑÐ¿Ð¸ÑÐºÐ¾Ð¼ Ð³Ð¸Ð¿Ð¾Ñ‚ÐµÐ·
 	else
-		tabWidget_Prg->setCurrentIndex(1);//Àêòèâèçèðóåì âêëàäêó ñî ñïèñêîì ïðàãì
+		tabWidget_Prg->setCurrentIndex(1);//ÐÐºÑ‚Ð¸Ð²Ð¸Ð·Ð¸Ñ€ÑƒÐµÐ¼ Ð²ÐºÐ»Ð°Ð´ÐºÑƒ ÑÐ¾ ÑÐ¿Ð¸ÑÐºÐ¾Ð¼ Ð¿Ñ€Ð°Ð³Ð¼
 
 	ClearCorespActions();
 	ReadFormWidgetsAppearance();
@@ -90,20 +90,20 @@ void LinksExplorer::SetCorespActions()
 
 void LinksExplorer::OpenHypotesis()
 {
-	//Îòêðûòü îêíî ñ ãèïîòåçîé
+	//ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾ Ñ Ð³Ð¸Ð¿Ð¾Ñ‚ÐµÐ·Ð¾Ð¹
 	int myrow=tableView_Hyp->currentIndex().row();
 	long id_hypotesys=QVariant(tableView_Hyp->model()->data(tableView_Hyp->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
-	md->setWindowTitle(tr("Ðåäàêòèðîâàíèå îáúåêòà \"Òèï\""));
+	md->setWindowTitle(tr("Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° \"Ð¢Ð¸Ð¿\""));
 	md->show();
 }
 void LinksExplorer::OpenPragma()
 {
-	//Îòêðûòü îêíî ñ ïðàãìîé
+	//ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¾ÐºÐ½Ð¾ Ñ Ð¿Ñ€Ð°Ð³Ð¼Ð¾Ð¹
 	int myrow=tableView_Pragma->currentIndex().row();
 	long id_pragma=QVariant(tableView_Pragma->model()->data(tableView_Pragma->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
-	md->setWindowTitle(tr("Ðåäàêòèðîâàíèå îáúåêòà \"Ýêçåìïëÿð\""));
+	md->setWindowTitle(tr("Ð ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð¾Ð±ÑŠÐµÐºÑ‚Ð° \"Ð­ÐºÐ·ÐµÐ¼Ð¿Ð»ÑÑ€\""));
 	md->show();
 }
 
@@ -121,8 +121,8 @@ LinksExplorer::~LinksExplorer()
 }
 void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 {
-//Ïðîöåäóðà ðàñêðàøèâàåò ýëåìåíòû ýéäîñîâ
-	//Ñíà÷àëà âñå ýëåìåíòû óñòàíàâëèâàåì â âûêëþ÷åííîå ñîñòîÿíèå
+//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ñ€Ð°ÑÐºÑ€Ð°ÑˆÐ¸Ð²Ð°ÐµÑ‚ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÑÐ¹Ð´Ð¾ÑÐ¾Ð²
+	//Ð¡Ð½Ð°Ñ‡Ð°Ð»Ð° Ð²ÑÐµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ð² Ð²Ñ‹ÐºÐ»ÑŽÑ‡ÐµÐ½Ð½Ð¾Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ðµ
 	QTreeWidgetItemIterator it(EidosTreeWidget, QTreeWidgetItemIterator::All);
 	while (*it)
 	{
@@ -132,20 +132,20 @@ void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 		(*it)->setExpanded(false);
 	    ++it;
 	}
-	//Ïîñëå ÷åãî óñòàíàâëèâàåì â ðàñêðûòîå ñîñòîÿíèå è ïîäêðàøèâàåì åãî BOLD-îì
+	//ÐŸÐ¾ÑÐ»Ðµ Ñ‡ÐµÐ³Ð¾ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ Ð² Ñ€Ð°ÑÐºÑ€Ñ‹Ñ‚Ð¾Ðµ ÑÐ¾ÑÑ‚Ð¾ÑÐ½Ð¸Ðµ Ð¸ Ð¿Ð¾Ð´ÐºÑ€Ð°ÑˆÐ¸Ð²Ð°ÐµÐ¼ ÐµÐ³Ð¾ BOLD-Ð¾Ð¼
 	iter->First();
 	while(iter->Fetched())
 	{
 		QTreeWidgetItem * OneItem=FindEidosByID(EidosTreeWidget, iter->GetID());
-		if(OneItem!=NULL)					//Åñëè íàéäåíî çíà÷åíèå
+		if(OneItem!=NULL)					//Ð•ÑÐ»Ð¸ Ð½Ð°Ð¹Ð´ÐµÐ½Ð¾ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ðµ
 		{
 			QFont fn=OneItem->font(0);
 			fn.setBold(true);
-			OneItem->setFont(0,fn);			//Óñòàíàâëèâàåì ýëåìåíò â BOLD
+			OneItem->setFont(0,fn);			//Ð£ÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÐ¼ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚ Ð² BOLD
 
 			while(true)
 			{
-				OneItem->setExpanded(true);	//Ðàñêðûâàåì âñå ïðåäøåñòâóþùèå ýëåìåíòû ñïèñêà
+				OneItem->setExpanded(true);	//Ð Ð°ÑÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ Ð²ÑÐµ Ð¿Ñ€ÐµÐ´ÑˆÐµÑÑ‚Ð²ÑƒÑŽÑ‰Ð¸Ðµ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ñ‹ ÑÐ¿Ð¸ÑÐºÐ°
 				long idparent =	OneItem->text(2).toInt();
 				if(idparent<=0) break;
 				OneItem=FindEidosByID(EidosTreeWidget, idparent);
@@ -157,7 +157,7 @@ void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, long ID)
 {
 	QList<QTreeWidgetItem *> FoundedItem = EidosTreeWidget->findItems (QString::number(ID), Qt::MatchExactly | Qt::MatchRecursive,1 );
-	if(FoundedItem.count()>0)      //Íàéäåí èñêîìûé ýëåìåíò
+	if(FoundedItem.count()>0)      //ÐÐ°Ð¹Ð´ÐµÐ½ Ð¸ÑÐºÐ¾Ð¼Ñ‹Ð¹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚
 	{
 		return FoundedItem.at(0);
 	}
@@ -198,7 +198,7 @@ void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 
 void LinksExplorer::ReadFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà ñ÷èòûâàåò èç DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû è óñòàíàâëèâàåò èõ çíà÷åíèÿ
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð· DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð¸ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ Ð¸Ñ… Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
@@ -213,7 +213,7 @@ void LinksExplorer::ReadFormWidgetsAppearance()
 
 void LinksExplorer::WriteFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà çàïèñûâàåò â DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ð² DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());

@@ -21,7 +21,7 @@ class LnkdHypMemModel: public HypotesisMemModel
 public:
 	LnkdHypMemModel(Eidos* InEidos,long IDIn ,QObject * parent);
 protected:
-	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
+	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РїРѕР»РЅРµРЅРЅСѓСЋ SQL СЃС‚СЂРѕРєСѓ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ 1 СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
 
 };
 }

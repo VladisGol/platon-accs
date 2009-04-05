@@ -33,13 +33,13 @@ DialogEditHronologyEA::DialogEditHronologyEA(QWidget * parent,AssociatedExtraAtt
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(ExitWithAccept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
-    this->setWindowTitle(tr("Âðåìåííîé ðÿä èçìåíåíèÿ çíà÷åíèé àòðèáóòà"));
+    this->setWindowTitle(tr("Ð’Ñ€ÐµÐ¼ÐµÐ½Ð½Ð¾Ð¹ Ñ€ÑÐ´ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ð¹ Ð°Ñ‚Ñ€Ð¸Ð±ÑƒÑ‚Ð°"));
     ReadFormWidgetsAppearance();
 
 }
 void DialogEditHronologyEA::ExitWithAccept()
 {
-	//Âûõîä ñ âîçâðàòîì çíà÷åíèÿ âûáðàííîãî îáúåêòà
+	//Ð’Ñ‹Ñ…Ð¾Ð´ Ñ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð¾Ð¼ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 
 	int row=this->TableView->currentIndex().row();
 	int col=0;
@@ -50,7 +50,7 @@ void DialogEditHronologyEA::ExitWithAccept()
 
 void DialogEditHronologyEA::ReadFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà ñ÷èòûâàåò èç DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû è óñòàíàâëèâàåò èõ çíà÷åíèÿ
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð· DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð¸ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ Ð¸Ñ… Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
@@ -65,7 +65,7 @@ void DialogEditHronologyEA::ReadFormWidgetsAppearance()
 
 void DialogEditHronologyEA::WriteFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà çàïèñûâàåò â DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ð² DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());

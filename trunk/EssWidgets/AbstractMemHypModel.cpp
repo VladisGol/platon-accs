@@ -30,13 +30,13 @@ AbstractMemHypModel::~AbstractMemHypModel()
 
 int AbstractMemHypModel::columnCount(const QModelIndex & index) const
 {
-	//Процедура возвращает число столбцов (полей)
+	//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЃС‚РѕР»Р±С†РѕРІ (РїРѕР»РµР№)
 	return this->NumCol+ReservedColumns;
 }
 
 int AbstractMemHypModel::rowCount(const QModelIndex &parent) const
 {
-	//Процедура возвращает число строк
+	//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЃС‚СЂРѕРє
 	return Id_records->size();
 }
 
@@ -56,8 +56,8 @@ QVariant AbstractMemHypModel::data(const QModelIndex &index, int role) const
 
 void AbstractMemHypModel::ReadToBuffer() const
 {
-	//Процедура считывает в буфер по полям записи из БД
-	//Заполняем значения в массиве идентификаторов записей
+	//РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РІ Р±СѓС„РµСЂ РїРѕ РїРѕР»СЏРј Р·Р°РїРёСЃРё РёР· Р‘Р”
+	//Р—Р°РїРѕР»РЅСЏРµРј Р·РЅР°С‡РµРЅРёСЏ РІ РјР°СЃСЃРёРІРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРІ Р·Р°РїРёСЃРµР№
 
 	Id_records->clear();
 	KeyIterator->First();
@@ -69,7 +69,7 @@ void AbstractMemHypModel::ReadToBuffer() const
 		KeyIterator->Next();
 	}
 
-	//Считываем поля экстраатрибутов
+	//РЎС‡РёС‚С‹РІР°РµРј РїРѕР»СЏ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ
 	for(int i=0;i<NumCol;i++)
 	{
 		GetOneFieldInBuffer(i, FieldsInModel->at(i));
@@ -78,14 +78,14 @@ void AbstractMemHypModel::ReadToBuffer() const
 
 void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVariant>* OneMap) const
 {
-	//Процедура заполняет QMap переданный в параметре значениями поля
+	//РџСЂРѕС†РµРґСѓСЂР° Р·Р°РїРѕР»РЅСЏРµС‚ QMap РїРµСЂРµРґР°РЅРЅС‹Р№ РІ РїР°СЂР°РјРµС‚СЂРµ Р·РЅР°С‡РµРЅРёСЏРјРё РїРѕР»СЏ
 
 	OneMap->clear();
 	iterHypotesis* MyIterator=new iterHypotesis(ForEidos);
 	ExtraAttribute* MyEA;
 	long Key;
 
-	MyEA=getEAFromEidos(FieldNumber);	//Получаем экстраатрибут
+	MyEA=getEAFromEidos(FieldNumber);	//РџРѕР»СѓС‡Р°РµРј СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚
 	QString SQLString= getSQLstringforEA(MyEA);
 
 	MyIterator->SQL_string=SQLString.toStdString();
@@ -150,7 +150,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					break;
 				}
 				default:
-					throw("Указанный тип данных не поддерживается");
+					throw("РЈРєР°Р·Р°РЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
 			}
 			OneMap->insert(Key,OneValue);
@@ -159,7 +159,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 }
 QVariant AbstractMemHypModel::GetDataFromBuffer(const QModelIndex &index)const
 {
-//Функция возвращает значение с индексом, переданном в параметре
+//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЃ РёРЅРґРµРєСЃРѕРј, РїРµСЂРµРґР°РЅРЅРѕРј РІ РїР°СЂР°РјРµС‚СЂРµ
 	int row=index.row();
 	int col=index.column();
 

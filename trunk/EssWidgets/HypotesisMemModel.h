@@ -21,9 +21,9 @@ public:
 	HypotesisMemModel(Eidos*, QObject * parent);
     QVariant headerData(int section, Qt::Orientation orientation,int role = Qt::DisplayRole) const;
 protected:
-	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру
-	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
-	HypotesisMemModel(QObject * parent):AbstractMemHypModel(parent){;};//Скрытый конструктор для потомков использующих собственный конструктор
+	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РїРѕ РЅРѕРјРµСЂСѓ
+	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·Р°РїРѕР»РЅРµРЅРЅСѓСЋ SQL СЃС‚СЂРѕРєСѓ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ 1 СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
+	HypotesisMemModel(QObject * parent):AbstractMemHypModel(parent){;};//РЎРєСЂС‹С‚С‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РґР»СЏ РїРѕС‚РѕРјРєРѕРІ РёСЃРїРѕР»СЊР·СѓСЋС‰РёС… СЃРѕР±СЃС‚РІРµРЅРЅС‹Р№ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
 };
 
 }
