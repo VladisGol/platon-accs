@@ -11,18 +11,18 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, long ID_Pragma): AbstarctHipEdi
 	long EidosID, HypotesysID;
 
 	Pragma::GetEidosHypotesisIDS(DB, ID_Pragma,EidosID,HypotesysID);
-	if(EidosID>0)	//Ïðîâåðÿåì íàéäåíû ëè ñðåäè ïðàãì çàäàííàÿ â ïàðàìåòðå
+	if(EidosID>0)	//ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð°Ð¹Ð´ÐµÐ½Ñ‹ Ð»Ð¸ ÑÑ€ÐµÐ´Ð¸ Ð¿Ñ€Ð°Ð³Ð¼ Ð·Ð°Ð´Ð°Ð½Ð½Ð°Ñ Ð² Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ðµ
 	{
 		LocalEidos= new Eidos(DB, EidosID);
 		LocalHostHypotesis=new Hypotesis(LocalEidos,HypotesysID);;
 		LocalHypotesis=new Pragma(LocalHostHypotesis,ID_Pragma);
-		LocalHypotesis->Autocommited=false;	//Ñàìè óïðàâëÿåì ïîäòâåðæäåíèåì òðàíçàêöèè
+		LocalHypotesis->Autocommited=false;	//Ð¡Ð°Ð¼Ð¸ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸ÐµÐ¼ Ñ‚Ñ€Ð°Ð½Ð·Ð°ÐºÑ†Ð¸Ð¸
 		FormFillFrames();
 		dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
 		ReadFormWidgetsAppearance();
 		FormActionsTune();
 	}
-	else throw "Îáúåêò íà êîòîðûé óêàçûâàåò èäåíòèôèêàòîð èç ïàðàìåòðà íå ñóùåñòâóåò";
+	else throw "ÐžÐ±ÑŠÐµÐºÑ‚ Ð½Ð° ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ ÑƒÐºÐ°Ð·Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð¸Ð· Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚";
 }
 PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditForm(parent)
 {
@@ -32,7 +32,7 @@ PragmaEditForm::PragmaEditForm(QWidget * parent, Pragma* InPr): AbstarctHipEditF
 	LocalEidos=InPr->HostEidos;
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
-	LocalHypotesis->Autocommited=false;	//Ñàìè óïðàâëÿåì ïîäòâåðæäåíèåì òðàíçàêöèè
+	LocalHypotesis->Autocommited=false;	//Ð¡Ð°Ð¼Ð¸ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸ÐµÐ¼ Ñ‚Ñ€Ð°Ð½Ð·Ð°ÐºÑ†Ð¸Ð¸
 	FormFillFrames();
 	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":pragma");
 	ReadFormWidgetsAppearance();

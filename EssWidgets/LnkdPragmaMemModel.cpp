@@ -17,19 +17,19 @@ LnkdHypPragmaMemModel::LnkdHypPragmaMemModel(Eidos* InEidos,long IDin ,QObject *
 	setObjectName("LnkdHypPragmaMemModel");
 	ForEidos =InEidos;
 
-	NumCol=ForEidos->PragmaSQL->AttributesList.size();						//Получаем количество полей в запросе
-	ReservedColumns=2;														//Одно зарезервированное поле ID
+	NumCol=ForEidos->PragmaSQL->AttributesList.size();						//РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»РµР№ РІ Р·Р°РїСЂРѕСЃРµ
+	ReservedColumns=2;														//РћРґРЅРѕ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕРµ РїРѕР»Рµ ID
 
-	Id_records = new QVector <long>;										//Выделяем необходимую память
+	Id_records = new QVector <long>;										//Р’С‹РґРµР»СЏРµРј РЅРµРѕР±С…РѕРґРёРјСѓСЋ РїР°РјСЏС‚СЊ
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol+1;i++) FieldsInModel->append(new QMap<long,QVariant>);
 
-	KeyIterator= new iterLNKS_Pragma(ForEidos->DB);							//Выставляем итератор ключей записей
+	KeyIterator= new iterLNKS_Pragma(ForEidos->DB);							//Р’С‹СЃС‚Р°РІР»СЏРµРј РёС‚РµСЂР°С‚РѕСЂ РєР»СЋС‡РµР№ Р·Р°РїРёСЃРµР№
 	((iterLNKS_Pragma*)KeyIterator)->MasterChanged(ForEidos->GetID(),IDin);
 
 	ID_in=IDin;
 
-	ReadToBuffer();															//Считываем значения в буфер
+	ReadToBuffer();															//РЎС‡РёС‚С‹РІР°РµРј Р·РЅР°С‡РµРЅРёСЏ РІ Р±СѓС„РµСЂ
 }
 
 QString LnkdHypPragmaMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const

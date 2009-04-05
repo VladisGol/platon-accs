@@ -13,20 +13,20 @@ HronologyEaMemModel::HronologyEaMemModel(AssociatedExtraAttribute* OneAEA, QObje
 	ForEidos =OneAEA->OwnerHypotesis->HostEidos;
 	LocalAEA=OneAEA;
 
-	NumCol=2;																//Фиксированное значение
-	ReservedColumns=1;														//Одно зарезервированное поле ID
+	NumCol=2;																//Р¤РёРєСЃРёСЂРѕРІР°РЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ
+	ReservedColumns=1;														//РћРґРЅРѕ Р·Р°СЂРµР·РµСЂРІРёСЂРѕРІР°РЅРЅРѕРµ РїРѕР»Рµ ID
 
-	Id_records = new QVector <long>;										//Выделяем необходимую память
+	Id_records = new QVector <long>;										//Р’С‹РґРµР»СЏРµРј РЅРµРѕР±С…РѕРґРёРјСѓСЋ РїР°РјСЏС‚СЊ
 	FieldsInModel= new QVector <QMap<long,QVariant>*>;
 	for(int i=0;i<NumCol;i++) FieldsInModel->append(new QMap<long,QVariant>);
-	KeyIterator=new iterTemporalityListofOneEA(OneAEA);										//Выставляем итератор ключей записей
-	ReadToBuffer();															//Считываем значения в буфер
+	KeyIterator=new iterTemporalityListofOneEA(OneAEA);										//Р’С‹СЃС‚Р°РІР»СЏРµРј РёС‚РµСЂР°С‚РѕСЂ РєР»СЋС‡РµР№ Р·Р°РїРёСЃРµР№
+	ReadToBuffer();															//РЎС‡РёС‚С‹РІР°РµРј Р·РЅР°С‡РµРЅРёСЏ РІ Р±СѓС„РµСЂ
 
 }
 
 QVariant HronologyEaMemModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
-	//Процедура выводит значения надписей столбцов и строк
+	//РџСЂРѕС†РµРґСѓСЂР° РІС‹РІРѕРґРёС‚ Р·РЅР°С‡РµРЅРёСЏ РЅР°РґРїРёСЃРµР№ СЃС‚РѕР»Р±С†РѕРІ Рё СЃС‚СЂРѕРє
 
 	if (role != Qt::DisplayRole)
 	         return QVariant();
@@ -36,9 +36,9 @@ QVariant HronologyEaMemModel::headerData(int section, Qt::Orientation orientatio
 		if(section==0)
 			return tr("ID");
 		if(section==1)
-			return tr("Дата-время");
+			return tr("Р”Р°С‚Р°-РІСЂРµРјСЏ");
 		if(section==2)
-			return tr("Значение");
+			return tr("Р—РЅР°С‡РµРЅРёРµ");
 	}
 	else
 	{
@@ -47,14 +47,14 @@ QVariant HronologyEaMemModel::headerData(int section, Qt::Orientation orientatio
 }
 void HronologyEaMemModel::ReadToBuffer() const
 {
-	//Процедура считывает в буфер по полям записи из БД
-	//Заполняем значения в массиве идентификаторов записей
+	//РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РІ Р±СѓС„РµСЂ РїРѕ РїРѕР»СЏРј Р·Р°РїРёСЃРё РёР· Р‘Р”
+	//Р—Р°РїРѕР»РЅСЏРµРј Р·РЅР°С‡РµРЅРёСЏ РІ РјР°СЃСЃРёРІРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂРѕРІ Р·Р°РїРёСЃРµР№
 
 	Id_records->clear();
 	KeyIterator->First();
 	LastRequestedReccount=0;
-	QMap<long,QVariant>* DTMap = FieldsInModel->at(0);//Нулевое поле - дата-время
-	QMap<long,QVariant>* TitleMap = FieldsInModel->at(1);//Первое  поле - Наименование
+	QMap<long,QVariant>* DTMap = FieldsInModel->at(0);//РќСѓР»РµРІРѕРµ РїРѕР»Рµ - РґР°С‚Р°-РІСЂРµРјСЏ
+	QMap<long,QVariant>* TitleMap = FieldsInModel->at(1);//РџРµСЂРІРѕРµ  РїРѕР»Рµ - РќР°РёРјРµРЅРѕРІР°РЅРёРµ
 
 	while(KeyIterator->Fetched())
 	{
@@ -122,7 +122,7 @@ QVariant HronologyEaMemModel::ReadValuefromRecord() const
 			break;
 		}
 		default:
-			throw("Указанный тип данных не поддерживается");
+			throw("РЈРєР°Р·Р°РЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
 	}
 	return OneValue;

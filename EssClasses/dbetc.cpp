@@ -1,9 +1,39 @@
+/*
+software core of accounting system "Platon".
+Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation version 2.1 of the License.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+Contacts: e-mail vladisgol@rambler.ru
+
+РЇРґСЂРѕ СЃРёСЃС‚РµРјС‹ СѓС‡РµС‚Р° "РџР»Р°С‚РѕРЅ".
+РђРІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ СЏРІР»СЏСЋС‚СЃСЏ Р‘РѕСЂРёСЃРµРЅРєРѕРІ РЎРµСЂРіРµР№ РђР»РµРєСЃР°РЅРґСЂРѕРІРёС‡ Рё Р“РѕР»РѕРІС‹СЂРёРЅ Р’Р»Р°РґРёСЃР»Р°РІ Р’Р»Р°РґРёРјРёСЂРѕРІРёС‡, 2005-2009Рі.
+Р”Р°РЅРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР° СЏРІР»СЏРµС‚СЃСЏ СЃРІРѕР±РѕРґРЅС‹Рј РїСЂРѕРіСЂР°РјРјРЅС‹Рј РѕР±РµСЃРїРµС‡РµРЅРёРµРј. Р’С‹ РІРїСЂР°РІРµ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ РµРµ Рё/РёР»Рё РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊ
+РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ СѓСЃР»РѕРІРёСЏРјРё РІРµСЂСЃРёРё 2.1 РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРё РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ РџСЂРёРјРµРЅРµРЅРёСЏ GNU,
+РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕР№ Free Software Foundation.
+РњС‹ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏРµРј СЌС‚Сѓ РїСЂРѕРіСЂР°РјРјСѓ РІ РЅР°РґРµР¶РґРµ РЅР° С‚Рѕ, С‡С‚Рѕ РѕРЅР° Р±СѓРґРµС‚ РІР°Рј РїРѕР»РµР·РЅРѕР№,
+РѕРґРЅР°РєРѕ РќР• РџР Р•Р”РћРЎРўРђР’Р›РЇР•Рњ РќРђ РќР•Р• РќРРљРђРљРРҐ Р“РђР РђРќРўРР™, РІ С‚РѕРј С‡РёСЃР»Рµ Р“РђР РђРќРўРР РўРћР’РђР РќРћР“Рћ РЎРћРЎРўРћРЇРќРРЇ РџР Р РџР РћР”РђР–Р• Рё
+РџР РР“РћР”РќРћРЎРўР Р”Р›РЇ РРЎРџРћР›Р¬Р—РћР’РђРќРРЇ Р’ РљРћРќРљР Р•РўРќР«РҐ Р¦Р•Р›РЇРҐ.
+Р”Р»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р±РѕР»РµРµ РїРѕРґСЂРѕР±РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё РѕР·РЅР°РєРѕРјСЊС‚РµСЃСЊ СЃРѕ РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРµР№ РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ
+РџСЂРёРјРµРЅРµРЅРёР№ GNU.
+РЎРІСЏР·Р°С‚СЊСЃСЏ СЃ Р°РІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ РІС‹ РјРѕР¶РµС‚Рµ РїРѕ e-mail vladisgol@rambler.ru
+*/
 //---------------------------------------------------------------------------
 #include "dbetc.h"
 
 using namespace platon;
 //---------------------------------------------------------------------------
-//Конструктор при передаче ссылки на сущ.БД
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїСЂРё РїРµСЂРµРґР°С‡Рµ СЃСЃС‹Р»РєРё РЅР° СЃСѓС‰.Р‘Р”
 //---------------------------------------------------------------------------
 DbEtc::DbEtc(IBPP::Database myDB)
 {
@@ -11,24 +41,24 @@ DbEtc::DbEtc(IBPP::Database myDB)
         Init();
 }
 //---------------------------------------------------------------------------
-//Конструктор при передаче параметров соединения с БД
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїСЂРё РїРµСЂРµРґР°С‡Рµ РїР°СЂР°РјРµС‚СЂРѕРІ СЃРѕРµРґРёРЅРµРЅРёСЏ СЃ Р‘Р”
 //---------------------------------------------------------------------------
 DbEtc::DbEtc(std::string HostName, std::string DatabaseName, std::string UserName, std::string Password, std::string Role, std::string CharSet, std::string CreateParams)
 {
-        DB = IBPP::DatabaseFactory(HostName, DatabaseName, UserName, Password, Role, CharSet, CreateParams);            //База данных IBPP
+        DB = IBPP::DatabaseFactory(HostName, DatabaseName, UserName, Password, Role, CharSet, CreateParams);            //Р‘Р°Р·Р° РґР°РЅРЅС‹С… IBPP
         Init();
 };
 //---------------------------------------------------------------------------
-//Деструктор
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
 //---------------------------------------------------------------------------
 DbEtc::~DbEtc(void)
 {
-        if(LocalTR->Started()) LocalTR->Rollback(); //если до сих пор не подтверждена, откатываем
+        if(LocalTR->Started()) LocalTR->Rollback(); //РµСЃР»Рё РґРѕ СЃРёС… РїРѕСЂ РЅРµ РїРѕРґС‚РІРµСЂР¶РґРµРЅР°, РѕС‚РєР°С‚С‹РІР°РµРј
         AllUserKeys.clear();
-        //DB->Disconnect(); Я тут понимаешь коннекчусь к базе, а он ее дисконнектит :)
+        //DB->Disconnect(); РЇ С‚СѓС‚ РїРѕРЅРёРјР°РµС€СЊ РєРѕРЅРЅРµРєС‡СѓСЃСЊ Рє Р±Р°Р·Рµ, Р° РѕРЅ РµРµ РґРёСЃРєРѕРЅРЅРµРєС‚РёС‚ :)
 };
 //---------------------------------------------------------------------------
-//Получим UID пользователя
+//РџРѕР»СѓС‡РёРј UID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 //---------------------------------------------------------------------------
 void DbEtc::GetCurrentUser()
 {
@@ -43,7 +73,7 @@ void DbEtc::GetCurrentUser()
         st1->Close();
 };
 //---------------------------------------------------------------------------
-//Создание объекта
+//РЎРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р°
 //---------------------------------------------------------------------------
 bool  DbEtc::CreateKey(const std::string Key,const int IdUser)
 {
@@ -52,7 +82,7 @@ bool  DbEtc::CreateKey(const std::string Key,const int IdUser)
          //return false;
 };
 //---------------------------------------------------------------------------
-//Переименуем объект
+//РџРµСЂРµРёРјРµРЅСѓРµРј РѕР±СЉРµРєС‚
 //---------------------------------------------------------------------------
 bool  DbEtc::RenameKey(const std::string OldName, const std::string NewName, const int IdUser)
 {
@@ -72,7 +102,7 @@ bool  DbEtc::RenameKey(const std::string OldName, const std::string NewName, con
         return result;
 };
 //---------------------------------------------------------------------------
-//Удалим объект
+//РЈРґР°Р»РёРј РѕР±СЉРµРєС‚
 //---------------------------------------------------------------------------
 bool  DbEtc::DeleteKey(const std::string Key,const int IdUser)
 {
@@ -91,7 +121,7 @@ bool  DbEtc::DeleteKey(const std::string Key,const int IdUser)
         return result;
 };
 //---------------------------------------------------------------------------
-//Закроем объект
+//Р—Р°РєСЂРѕРµРј РѕР±СЉРµРєС‚
 //---------------------------------------------------------------------------
 void  DbEtc::CloseKey(void)
 {
@@ -103,7 +133,7 @@ void  DbEtc::CloseKey(void)
         OpenedKey="";
 };
 //---------------------------------------------------------------------------
-//Откроем объект
+//РћС‚РєСЂРѕРµРј РѕР±СЉРµРєС‚
 //---------------------------------------------------------------------------
 bool  DbEtc::OpenKey(const std::string Key, const bool CanCreate, const int IdUser)
 {
@@ -117,13 +147,13 @@ bool  DbEtc::OpenKey(const std::string Key, const bool CanCreate, const int IdUs
         isOpenKey=true;
         OpenedKey = Key;
         KeyUserId=IdUser;
-        ReadOnly=false; //безопасность - проверка прав доступа
+        ReadOnly=false; //Р±РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ - РїСЂРѕРІРµСЂРєР° РїСЂР°РІ РґРѕСЃС‚СѓРїР°
         GetParameters(CurrentKeyId);
         return true;
 
 };
 //---------------------------------------------------------------------------
-//Откроем объект только для чтения
+//РћС‚РєСЂРѕРµРј РѕР±СЉРµРєС‚ С‚РѕР»СЊРєРѕ РґР»СЏ С‡С‚РµРЅРёСЏ
 //---------------------------------------------------------------------------
 bool  DbEtc::OpenKeyReadOnly(const std::string Key, const int IdUser)
 {
@@ -134,7 +164,7 @@ bool  DbEtc::OpenKeyReadOnly(const std::string Key, const int IdUser)
         return result;
 };
 //---------------------------------------------------------------------------
-//Проверим существование объекта
+//РџСЂРѕРІРµСЂРёРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РѕР±СЉРµРєС‚Р°
 //---------------------------------------------------------------------------
 bool  DbEtc::KeyExists(const std::string Key,const int IdUser)
 {
@@ -142,7 +172,7 @@ bool  DbEtc::KeyExists(const std::string Key,const int IdUser)
         else return false;
 };
 //---------------------------------------------------------------------------
-//Загрузим объект из базы
+//Р—Р°РіСЂСѓР·РёРј РѕР±СЉРµРєС‚ РёР· Р±Р°Р·С‹
 //---------------------------------------------------------------------------
 int  DbEtc::GetKey(const std::string Key, const int IdUser)
 {
@@ -150,11 +180,11 @@ int  DbEtc::GetKey(const std::string Key, const int IdUser)
 
         if(Key.length()>512) throw BigNameKey();
 
-        if(IdUser==CurrentUserId||IdUser==-1) { //Поищем в кэше
+        if(IdUser==CurrentUserId||IdUser==-1) { //РџРѕРёС‰РµРј РІ РєСЌС€Рµ
             result=KeyCacheExists(Key);
-            if(result>-1) return result; //Нашли - вернем id
+            if(result>-1) return result; //РќР°С€Р»Рё - РІРµСЂРЅРµРј id
         };
-        //Не нашли проверим в базе, может что-то изменилось
+        //РќРµ РЅР°С€Р»Рё РїСЂРѕРІРµСЂРёРј РІ Р±Р°Р·Рµ, РјРѕР¶РµС‚ С‡С‚Рѕ-С‚Рѕ РёР·РјРµРЅРёР»РѕСЃСЊ
         if (!LocalTR->Started()) LocalTR->Start();
         IBPP::Statement stKey = IBPP::StatementFactory(DB, LocalTR);
         stKey->Prepare("select * from SP_READ_ETC(?,?)");
@@ -167,7 +197,7 @@ int  DbEtc::GetKey(const std::string Key, const int IdUser)
         return (int)result;
 };
 //---------------------------------------------------------------------------
-//Запишем объект в базу
+//Р—Р°РїРёС€РµРј РѕР±СЉРµРєС‚ РІ Р±Р°Р·Сѓ
 //---------------------------------------------------------------------------
 int  DbEtc::SaveKey(const int id, const std::string Key, const int IdUser)
 {
@@ -201,7 +231,7 @@ int  DbEtc::SaveKey(const int id, const std::string Key, const int IdUser)
         return result;
 };
 //---------------------------------------------------------------------------
-//Закладка на открытый объкт
+//Р—Р°РєР»Р°РґРєР° РЅР° РѕС‚РєСЂС‹С‚С‹Р№ РѕР±СЉРєС‚
 //---------------------------------------------------------------------------
 void  DbEtc::SaveBookmark()
 {
@@ -213,7 +243,7 @@ void  DbEtc::SaveBookmark()
 
 };
 //---------------------------------------------------------------------------
-//Восстановим по закладке открытый объект
+//Р’РѕСЃСЃС‚Р°РЅРѕРІРёРј РїРѕ Р·Р°РєР»Р°РґРєРµ РѕС‚РєСЂС‹С‚С‹Р№ РѕР±СЉРµРєС‚
 //---------------------------------------------------------------------------
 bool  DbEtc::RestoreBookmark()
 {
@@ -232,7 +262,7 @@ bool  DbEtc::RestoreBookmark()
 
 };
 //---------------------------------------------------------------------------
-//Получим из базы список параметров
+//РџРѕР»СѓС‡РёРј РёР· Р±Р°Р·С‹ СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ
 //---------------------------------------------------------------------------
 void  DbEtc::GetParameters(const int CurrentKeyId)
 {
@@ -255,7 +285,7 @@ void  DbEtc::GetParameters(const int CurrentKeyId)
 };
 
 //---------------------------------------------------------------------------
-//Получим тип параметра
+//РџРѕР»СѓС‡РёРј С‚РёРї РїР°СЂР°РјРµС‚СЂР°
 //---------------------------------------------------------------------------
 EtcParamType  DbEtc::GetDataType(const std::string ValueName)
 {
@@ -415,7 +445,7 @@ void DbEtc::ExecuteWriteParamValue()
                         stParameters->Close();
                         return;
                 }
-          if (result<1)  //контролируем всю сессию на безошибочность, если что откатываем все!
+          if (result<1)  //РєРѕРЅС‚СЂРѕР»РёСЂСѓРµРј РІСЃСЋ СЃРµСЃСЃРёСЋ РЅР° Р±РµР·РѕС€РёР±РѕС‡РЅРѕСЃС‚СЊ, РµСЃР»Рё С‡С‚Рѕ РѕС‚РєР°С‚С‹РІР°РµРј РІСЃРµ!
                 {
                         LocalTR->Rollback();
                         stParameters->Close();
@@ -465,7 +495,7 @@ bool  DbEtc::DeleteValue(const std::string Name)
 
 };
 
-        //пишем значение параметра соответсвующего типа
+        //РїРёС€РµРј Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰РµРіРѕ С‚РёРїР°
 void  DbEtc::WriteBool(const std::string Name,const bool Value)
 {
         PrepareWriteParamValue("EXECUTE PROCEDURE SP_SET_PARAMETERS(?, ?, 2, ?, NULL, NULL, ? , NULL, NULL)", Name);

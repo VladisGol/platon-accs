@@ -44,7 +44,7 @@ public slots:
 	void LNKClick();
 	void HronologyClick();
 protected:
-    void fillVisibleWidget();	//Заполнение значением
+    void fillVisibleWidget();	//Р—Р°РїРѕР»РЅРµРЅРёРµ Р·РЅР°С‡РµРЅРёРµРј
     QVariant KeepValue;
     QHBoxLayout *topLayout;
     QHBoxLayout *horizontalLayout;
@@ -55,7 +55,7 @@ protected:
     QToolButton* DLLButton;
     QWidget* EditableWidget;
     QGridLayout* gridLayoutInFrame;
-    AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
+    AssociatedExtraAttribute * EAA;	//РђСЃСЃРѕС†РёРёСЂРѕРІР°РЅРЅС‹Р№ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ СЃ РіРёРїРѕС‚РµР·РѕР№
 };
 
 }

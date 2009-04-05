@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2007 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -16,17 +16,17 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
-Ядро системы учета "Платон".
-Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г.
-Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать
-в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU,
-опубликованной Free Software Foundation.
-Мы распространяем эту программу в надежде на то, что она будет вам полезной,
-однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и
-ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ.
-Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного
-Применений GNU.
-Связаться с авторами программы вы можете по e-mail vladisgol@rambler.ru
+РЇРґСЂРѕ СЃРёСЃС‚РµРјС‹ СѓС‡РµС‚Р° "РџР»Р°С‚РѕРЅ".
+РђРІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ СЏРІР»СЏСЋС‚СЃСЏ Р‘РѕСЂРёСЃРµРЅРєРѕРІ РЎРµСЂРіРµР№ РђР»РµРєСЃР°РЅРґСЂРѕРІРёС‡ Рё Р“РѕР»РѕРІС‹СЂРёРЅ Р’Р»Р°РґРёСЃР»Р°РІ Р’Р»Р°РґРёРјРёСЂРѕРІРёС‡, 2005-2009Рі.
+Р”Р°РЅРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР° СЏРІР»СЏРµС‚СЃСЏ СЃРІРѕР±РѕРґРЅС‹Рј РїСЂРѕРіСЂР°РјРјРЅС‹Рј РѕР±РµСЃРїРµС‡РµРЅРёРµРј. Р’С‹ РІРїСЂР°РІРµ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ РµРµ Рё/РёР»Рё РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊ
+РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ СѓСЃР»РѕРІРёСЏРјРё РІРµСЂСЃРёРё 2.1 РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРё РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ РџСЂРёРјРµРЅРµРЅРёСЏ GNU,
+РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕР№ Free Software Foundation.
+РњС‹ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏРµРј СЌС‚Сѓ РїСЂРѕРіСЂР°РјРјСѓ РІ РЅР°РґРµР¶РґРµ РЅР° С‚Рѕ, С‡С‚Рѕ РѕРЅР° Р±СѓРґРµС‚ РІР°Рј РїРѕР»РµР·РЅРѕР№,
+РѕРґРЅР°РєРѕ РќР• РџР Р•Р”РћРЎРўРђР’Р›РЇР•Рњ РќРђ РќР•Р• РќРРљРђРљРРҐ Р“РђР РђРќРўРР™, РІ С‚РѕРј С‡РёСЃР»Рµ Р“РђР РђРќРўРР РўРћР’РђР РќРћР“Рћ РЎРћРЎРўРћРЇРќРРЇ РџР Р РџР РћР”РђР–Р• Рё
+РџР РР“РћР”РќРћРЎРўР Р”Р›РЇ РРЎРџРћР›Р¬Р—РћР’РђРќРРЇ Р’ РљРћРќРљР Р•РўРќР«РҐ Р¦Р•Р›РЇРҐ.
+Р”Р»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р±РѕР»РµРµ РїРѕРґСЂРѕР±РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё РѕР·РЅР°РєРѕРјСЊС‚РµСЃСЊ СЃРѕ РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРµР№ РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ
+РџСЂРёРјРµРЅРµРЅРёР№ GNU.
+РЎРІСЏР·Р°С‚СЊСЃСЏ СЃ Р°РІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ РІС‹ РјРѕР¶РµС‚Рµ РїРѕ e-mail vladisgol@rambler.ru
 */
 #include "sqlmanager.h"
 
@@ -74,7 +74,7 @@ namespace platon
 			}
 			else
 			{
-					throw "Нет такого атрибута в базе";
+					throw "РќРµС‚ С‚Р°РєРѕРіРѕ Р°С‚СЂРёР±СѓС‚Р° РІ Р±Р°Р·Рµ";
 			}
 	}
 	void SQLManager::AddFieldVisibleValue(ExtraAttribute* EA)
@@ -111,7 +111,7 @@ namespace platon
 			}
 			else
 			{
-					throw "Нет такого атрибута в базе";
+					throw "РќРµС‚ С‚Р°РєРѕРіРѕ Р°С‚СЂРёР±СѓС‚Р° РІ Р±Р°Р·Рµ";
 			}
 	}
 	void SQLManager::AddFieldKeyValue(ExtraAttribute* EA)
@@ -130,11 +130,11 @@ namespace platon
 	HypotesisSQLManager::HypotesisSQLManager(Eidos* Ei):SQLManager(Ei){;}
 	const std::string HypotesisSQLManager::SQLString()
 	{
-	//Процедура формирует SQL инструкцию для отображения в GRID таблице список атрибутов для объектов класса ТИП
-		std::string SqlString_select="";	//Переменная для формирования списка именованных полей
-		std::string SqlString_from=" FROM GET_HYPOTESIS_LIST("+ToString(EidosID)+") ";	//Переменная для формирования источников информации
+	//РџСЂРѕС†РµРґСѓСЂР° С„РѕСЂРјРёСЂСѓРµС‚ SQL РёРЅСЃС‚СЂСѓРєС†РёСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІ GRID С‚Р°Р±Р»РёС†Рµ СЃРїРёСЃРѕРє Р°С‚СЂРёР±СѓС‚РѕРІ РґР»СЏ РѕР±СЉРµРєС‚РѕРІ РєР»Р°СЃСЃР° РўРРџ
+		std::string SqlString_select="";	//РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ СЃРїРёСЃРєР° РёРјРµРЅРѕРІР°РЅРЅС‹С… РїРѕР»РµР№
+		std::string SqlString_from=" FROM GET_HYPOTESIS_LIST("+ToString(EidosID)+") ";	//РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РёСЃС‚РѕС‡РЅРёРєРѕРІ РёРЅС„РѕСЂРјР°С†РёРё
 
-		for(unsigned int i=0; i<AttributesList.size();i++)	//Последовательно для всех означенных атрибутов
+		for(unsigned int i=0; i<AttributesList.size();i++)	//РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ РґР»СЏ РІСЃРµС… РѕР·РЅР°С‡РµРЅРЅС‹С… Р°С‚СЂРёР±СѓС‚РѕРІ
 		{
 					SqlString_select.append(" ,"+AttributesList[i].AliasName+"."+AttributesList[i].FieldForRetVal+" AS "+AttributesList[i].FieldName);
 					SqlString_from.append(" LEFT JOIN "+AttributesList[i].StoredProcedureName+"("+ToString(AttributesList[i].EAID)+") ");
@@ -146,11 +146,11 @@ namespace platon
 	HypotesisPragmaSQLManager::HypotesisPragmaSQLManager(Eidos* Ei):SQLManager(Ei){;}
 	const std::string HypotesisPragmaSQLManager::SQLString()
 	{
-	//Процедура формирует SQL инструкцию для отображения в GRID таблице список атрибутов для объектов класса ТИП
-		std::string SqlString_select="";	//Переменная для формирования списка именованных полей
-		std::string SqlString_from=" FROM GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(EidosID)+") ";	//Переменная для формирования источников информации
+	//РџСЂРѕС†РµРґСѓСЂР° С„РѕСЂРјРёСЂСѓРµС‚ SQL РёРЅСЃС‚СЂСѓРєС†РёСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІ GRID С‚Р°Р±Р»РёС†Рµ СЃРїРёСЃРѕРє Р°С‚СЂРёР±СѓС‚РѕРІ РґР»СЏ РѕР±СЉРµРєС‚РѕРІ РєР»Р°СЃСЃР° РўРРџ
+		std::string SqlString_select="";	//РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ СЃРїРёСЃРєР° РёРјРµРЅРѕРІР°РЅРЅС‹С… РїРѕР»РµР№
+		std::string SqlString_from=" FROM GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(EidosID)+") ";	//РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РёСЃС‚РѕС‡РЅРёРєРѕРІ РёРЅС„РѕСЂРјР°С†РёРё
 
-		for(unsigned int i=0; i<AttributesList.size();i++)	//Последовательно для всех означенных атрибутов
+		for(unsigned int i=0; i<AttributesList.size();i++)	//РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ РґР»СЏ РІСЃРµС… РѕР·РЅР°С‡РµРЅРЅС‹С… Р°С‚СЂРёР±СѓС‚РѕРІ
 		{
 					SqlString_select.append(" ,"+AttributesList[i].AliasName+"."+AttributesList[i].FieldForRetVal+" AS "+AttributesList[i].FieldName);
 					SqlString_from.append(" LEFT JOIN "+AttributesList[i].StoredProcedureName+"("+ToString(AttributesList[i].EAID)+") ");
@@ -166,11 +166,11 @@ namespace platon
 	}
 	const std::string PragmaSQLManager::SQLString()
 	{
-	//Процедура формирует SQL инструкцию для отображения в GRID таблице список атрибутов для объектов класса ТИП
-		std::string SqlString_select="";	//Переменная для формирования списка именованных полей
-		std::string SqlString_from=" FROM GET_PRAGMA_LIST("+ToString(EidosID)+","+ToString(HypotesisID)+") ";	//Переменная для формирования источников информации
+	//РџСЂРѕС†РµРґСѓСЂР° С„РѕСЂРјРёСЂСѓРµС‚ SQL РёРЅСЃС‚СЂСѓРєС†РёСЋ РґР»СЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РІ GRID С‚Р°Р±Р»РёС†Рµ СЃРїРёСЃРѕРє Р°С‚СЂРёР±СѓС‚РѕРІ РґР»СЏ РѕР±СЉРµРєС‚РѕРІ РєР»Р°СЃСЃР° РўРРџ
+		std::string SqlString_select="";	//РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ СЃРїРёСЃРєР° РёРјРµРЅРѕРІР°РЅРЅС‹С… РїРѕР»РµР№
+		std::string SqlString_from=" FROM GET_PRAGMA_LIST("+ToString(EidosID)+","+ToString(HypotesisID)+") ";	//РџРµСЂРµРјРµРЅРЅР°СЏ РґР»СЏ С„РѕСЂРјРёСЂРѕРІР°РЅРёСЏ РёСЃС‚РѕС‡РЅРёРєРѕРІ РёРЅС„РѕСЂРјР°С†РёРё
 
-		for(unsigned int i=0; i<AttributesList.size();i++)	//Последовательно для всех означенных атрибутов
+		for(unsigned int i=0; i<AttributesList.size();i++)	//РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ РґР»СЏ РІСЃРµС… РѕР·РЅР°С‡РµРЅРЅС‹С… Р°С‚СЂРёР±СѓС‚РѕРІ
 		{
 					SqlString_select.append(" ,"+AttributesList[i].AliasName+"."+AttributesList[i].FieldForRetVal+" AS "+AttributesList[i].FieldName);
 					SqlString_from.append(" LEFT JOIN "+AttributesList[i].StoredProcedureName+"("+ToString(AttributesList[i].EAID)+") ");

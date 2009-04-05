@@ -13,7 +13,7 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID
 
     checkBox = new QCheckBox(this);
     checkBox->setObjectName(QString::fromUtf8("checkBox"));
-    checkBox->setText(tr("Ðàñêðûòü âñå óðîâíè"));
+    checkBox->setText(tr("Ð Ð°ÑÐºÑ€Ñ‹Ñ‚ÑŒ Ð²ÑÐµ ÑƒÑ€Ð¾Ð²Ð½Ð¸"));
 
     VBoxLayout->addWidget(checkBox);
 
@@ -41,13 +41,13 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID
 
     if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
-    this->setWindowTitle(tr("Óêàæèòå êëàññ"));
+    this->setWindowTitle(tr("Ð£ÐºÐ°Ð¶Ð¸Ñ‚Ðµ ÐºÐ»Ð°ÑÑ"));
     ReadFormWidgetsAppearance();
 
 }
 void ChoiceEidos_Dialog::ExitWithAccept()
 {
-	//Âûõîä ñ âîçâðàòîì çíà÷åíèÿ âûáðàííîãî îáúåêòà
+	//Ð’Ñ‹Ñ…Ð¾Ð´ Ñ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð¾Ð¼ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
 	Out_value=this->treeWidget->GetEidosID();
 	WriteFormWidgetsAppearance();
 	this->accept();
@@ -65,7 +65,7 @@ bool ChoiceEidos_Dialog::find(long ID_searchfor)
 }
 void ChoiceEidos_Dialog::ReadFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà ñ÷èòûâàåò èç DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû è óñòàíàâëèâàåò èõ çíà÷åíèÿ
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° ÑÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð· DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹ Ð¸ ÑƒÑÑ‚Ð°Ð½Ð°Ð²Ð»Ð¸Ð²Ð°ÐµÑ‚ Ð¸Ñ… Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
@@ -83,7 +83,7 @@ void ChoiceEidos_Dialog::ReadFormWidgetsAppearance()
 
 void ChoiceEidos_Dialog::WriteFormWidgetsAppearance()
 {
-	//Ïðîöåäóðà çàïèñûâàåò â DbETC ïàðàìåòðû ýëåìåíòîâ ôîðìû
+	//ÐŸÑ€Ð¾Ñ†ÐµÐ´ÑƒÑ€Ð° Ð·Ð°Ð¿Ð¸ÑÑ‹Ð²Ð°ÐµÑ‚ Ð² DbETC Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ ÑÐ»ÐµÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ñ„Ð¾Ñ€Ð¼Ñ‹
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
 	MyETC->WriteInteger("width", this->width());

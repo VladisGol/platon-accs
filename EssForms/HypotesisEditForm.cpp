@@ -10,17 +10,17 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): Absta
 
 	long EidosID,HypotesysID;
 	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
-	if(EidosID>0)	//Ïðîâåðÿåì íàéäåíû ëè ñðåäè ãèïîòåç çàäàííàÿ â ïàðàìåòðå
+	if(EidosID>0)	//ÐŸÑ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð°Ð¹Ð´ÐµÐ½Ñ‹ Ð»Ð¸ ÑÑ€ÐµÐ´Ð¸ Ð³Ð¸Ð¿Ð¾Ñ‚ÐµÐ· Ð·Ð°Ð´Ð°Ð½Ð½Ð°Ñ Ð² Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ðµ
 	{
 		LocalEidos= new Eidos(DB, EidosID);
 		LocalHypotesis=new Hypotesis(LocalEidos,HypotesysID);
-		LocalHypotesis->Autocommited=false;	//Ñàìè óïðàâëÿåì ïîäòâåðæäåíèåì òðàíçàêöèè
+		LocalHypotesis->Autocommited=false;	//Ð¡Ð°Ð¼Ð¸ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸ÐµÐ¼ Ñ‚Ñ€Ð°Ð½Ð·Ð°ÐºÑ†Ð¸Ð¸
 		FormFillFrames();
 		dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":hypotesis");
 		ReadFormWidgetsAppearance();
 		FormActionsTune();
 	}
-	else throw "Îáúåêò íà êîòîðûé óêàçûâàåò èäåíòèôèêàòîð èç ïàðàìåòðà íå ñóùåñòâóåò";
+	else throw "ÐžÐ±ÑŠÐµÐºÑ‚ Ð½Ð° ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ ÑƒÐºÐ°Ð·Ñ‹Ð²Ð°ÐµÑ‚ Ð¸Ð´ÐµÐ½Ñ‚Ð¸Ñ„Ð¸ÐºÐ°Ñ‚Ð¾Ñ€ Ð¸Ð· Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ð° Ð½Ðµ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚";
 }
 HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): AbstarctHipEditForm(parent)
 {
@@ -29,7 +29,7 @@ HypotesisEditForm::HypotesisEditForm(QWidget * parent, Hypotesis* InHip): Abstar
 	LocalEidos=InHip->HostEidos;
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
-	LocalHypotesis->Autocommited=false;	//Ñàìè óïðàâëÿåì ïîäòâåðæäåíèåì òðàíçàêöèè
+	LocalHypotesis->Autocommited=false;	//Ð¡Ð°Ð¼Ð¸ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÑÐµÐ¼ Ð¿Ð¾Ð´Ñ‚Ð²ÐµÑ€Ð¶Ð´ÐµÐ½Ð¸ÐµÐ¼ Ñ‚Ñ€Ð°Ð½Ð·Ð°ÐºÑ†Ð¸Ð¸
 	FormFillFrames();
 	dbEtcBranchName=QString("EidosID=")+QString::number(LocalEidos->GetID())+QString(":hypotesis");
 	ReadFormWidgetsAppearance();

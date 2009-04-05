@@ -56,17 +56,17 @@ public:
 protected:
 	static const int BufferCapacity =100;
 	platon::Eidos* ForEidos;
-	platon::pIterator* MyIterator;	// Итератор для перемещения по БД
+	platon::pIterator* MyIterator;	// РС‚РµСЂР°С‚РѕСЂ РґР»СЏ РїРµСЂРµРјРµС‰РµРЅРёСЏ РїРѕ Р‘Р”
 
-	mutable QVector <QVariant> Buffer;			// Массив элементов для сохранения кэша записей из БД
+	mutable QVector <QVariant> Buffer;			// РњР°СЃСЃРёРІ СЌР»РµРјРµРЅС‚РѕРІ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РєСЌС€Р° Р·Р°РїРёСЃРµР№ РёР· Р‘Р”
 
-	int GetOffset(int Row,int Col) const;		// Расчет смещения в массиве
-	mutable int NumCol;							// Число полей в запросе
-	mutable int BufferStartRow;					// Номер записи базы соответствующей первой в буфере
-	mutable int BufferLastRow;					// Номер записи базы соответствующей последней в буфере
+	int GetOffset(int Row,int Col) const;		// Р Р°СЃС‡РµС‚ СЃРјРµС‰РµРЅРёСЏ РІ РјР°СЃСЃРёРІРµ
+	mutable int NumCol;							// Р§РёСЃР»Рѕ РїРѕР»РµР№ РІ Р·Р°РїСЂРѕСЃРµ
+	mutable int BufferStartRow;					// РќРѕРјРµСЂ Р·Р°РїРёСЃРё Р±Р°Р·С‹ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµР№ РїРµСЂРІРѕР№ РІ Р±СѓС„РµСЂРµ
+	mutable int BufferLastRow;					// РќРѕРјРµСЂ Р·Р°РїРёСЃРё Р±Р°Р·С‹ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РµР№ РїРѕСЃР»РµРґРЅРµР№ РІ Р±СѓС„РµСЂРµ
 	mutable int LastRequestedReccount;
-	int ReadToBuffer(int RowInit, int RowInBuffer, int RowCount)const;		// Процедура считывает в буфер записи начиная с RowInit записи
-	int SkipTo(int RowInit)const;			// Процедура перемещается в итераторе на строку с заданным номером, возвращая номер строки в которую удалось переместиться
+	int ReadToBuffer(int RowInit, int RowInBuffer, int RowCount)const;		// РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РІ Р±СѓС„РµСЂ Р·Р°РїРёСЃРё РЅР°С‡РёРЅР°СЏ СЃ RowInit Р·Р°РїРёСЃРё
+	int SkipTo(int RowInit)const;			// РџСЂРѕС†РµРґСѓСЂР° РїРµСЂРµРјРµС‰Р°РµС‚СЃСЏ РІ РёС‚РµСЂР°С‚РѕСЂРµ РЅР° СЃС‚СЂРѕРєСѓ СЃ Р·Р°РґР°РЅРЅС‹Рј РЅРѕРјРµСЂРѕРј, РІРѕР·РІСЂР°С‰Р°СЏ РЅРѕРјРµСЂ СЃС‚СЂРѕРєРё РІ РєРѕС‚РѕСЂСѓСЋ СѓРґР°Р»РѕСЃСЊ РїРµСЂРµРјРµСЃС‚РёС‚СЊСЃСЏ
 
 	void shiftBuffer(const QModelIndex &index) const;
 	mutable platon::Hypotesis* MyHyp;

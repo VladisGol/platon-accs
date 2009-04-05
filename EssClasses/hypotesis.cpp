@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2007 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -16,17 +16,17 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
-Ядро системы учета "Платон".
-Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2007г.
-Данная библиотека является свободным программным обеспечением. Вы вправе распространять ее и/или модифицировать
-в соответствии с условиями версии 2.1 Стандартной Общественной Лицензии Ограниченного Применения GNU,
-опубликованной Free Software Foundation.
-Мы распространяем эту программу в надежде на то, что она будет вам полезной,
-однако НЕ ПРЕДОСТАВЛЯЕМ НА НЕЕ НИКАКИХ ГАРАНТИЙ, в том числе ГАРАНТИИ ТОВАРНОГО СОСТОЯНИЯ ПРИ ПРОДАЖЕ и
-ПРИГОДНОСТИ ДЛЯ ИСПОЛЬЗОВАНИЯ В КОНКРЕТНЫХ ЦЕЛЯХ.
-Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного
-Применений GNU.
-Связаться с авторами программы вы можете по e-mail vladisgol@rambler.ru
+РЇРґСЂРѕ СЃРёСЃС‚РµРјС‹ СѓС‡РµС‚Р° "РџР»Р°С‚РѕРЅ".
+РђРІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ СЏРІР»СЏСЋС‚СЃСЏ Р‘РѕСЂРёСЃРµРЅРєРѕРІ РЎРµСЂРіРµР№ РђР»РµРєСЃР°РЅРґСЂРѕРІРёС‡ Рё Р“РѕР»РѕРІС‹СЂРёРЅ Р’Р»Р°РґРёСЃР»Р°РІ Р’Р»Р°РґРёРјРёСЂРѕРІРёС‡, 2005-2009Рі.
+Р”Р°РЅРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР° СЏРІР»СЏРµС‚СЃСЏ СЃРІРѕР±РѕРґРЅС‹Рј РїСЂРѕРіСЂР°РјРјРЅС‹Рј РѕР±РµСЃРїРµС‡РµРЅРёРµРј. Р’С‹ РІРїСЂР°РІРµ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ РµРµ Рё/РёР»Рё РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊ
+РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ СѓСЃР»РѕРІРёСЏРјРё РІРµСЂСЃРёРё 2.1 РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРё РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ РџСЂРёРјРµРЅРµРЅРёСЏ GNU,
+РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕР№ Free Software Foundation.
+РњС‹ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏРµРј СЌС‚Сѓ РїСЂРѕРіСЂР°РјРјСѓ РІ РЅР°РґРµР¶РґРµ РЅР° С‚Рѕ, С‡С‚Рѕ РѕРЅР° Р±СѓРґРµС‚ РІР°Рј РїРѕР»РµР·РЅРѕР№,
+РѕРґРЅР°РєРѕ РќР• РџР Р•Р”РћРЎРўРђР’Р›РЇР•Рњ РќРђ РќР•Р• РќРРљРђРљРРҐ Р“РђР РђРќРўРР™, РІ С‚РѕРј С‡РёСЃР»Рµ Р“РђР РђРќРўРР РўРћР’РђР РќРћР“Рћ РЎРћРЎРўРћРЇРќРРЇ РџР Р РџР РћР”РђР–Р• Рё
+РџР РР“РћР”РќРћРЎРўР Р”Р›РЇ РРЎРџРћР›Р¬Р—РћР’РђРќРРЇ Р’ РљРћРќРљР Р•РўРќР«РҐ Р¦Р•Р›РЇРҐ.
+Р”Р»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р±РѕР»РµРµ РїРѕРґСЂРѕР±РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё РѕР·РЅР°РєРѕРјСЊС‚РµСЃСЊ СЃРѕ РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРµР№ РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ
+РџСЂРёРјРµРЅРµРЅРёР№ GNU.
+РЎРІСЏР·Р°С‚СЊСЃСЏ СЃ Р°РІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ РІС‹ РјРѕР¶РµС‚Рµ РїРѕ e-mail vladisgol@rambler.ru
 */
 
 #include "hypotesis.h"
@@ -35,24 +35,24 @@ using namespace platon;
 
 Hypotesis::Hypotesis(Eidos* MyEidos,std::string NameHypotesis)
 {
-//Конструктор класса типов для создания нового элемента в БД. В качестве параметров
-//передается название типа, а также идентификатор класса к которому принадлежит элемент
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєР»Р°СЃСЃР° С‚РёРїРѕРІ РґР»СЏ СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РІ Р‘Р”. Р’ РєР°С‡РµСЃС‚РІРµ РїР°СЂР°РјРµС‚СЂРѕРІ
+//РїРµСЂРµРґР°РµС‚СЃСЏ РЅР°Р·РІР°РЅРёРµ С‚РёРїР°, Р° С‚Р°РєР¶Рµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєР»Р°СЃСЃР° Рє РєРѕС‚РѕСЂРѕРјСѓ РїСЂРёРЅР°РґР»РµР¶РёС‚ СЌР»РµРјРµРЅС‚
         BelongIdent=ExtraAttribute::_theHypotesis;
         this->HostEidos=MyEidos;
         Autocommited=false;
         Initialize();
-        this->ID=0;             //Новый атрибут
-        this->ID=Save();        //Записываем и запоминаем идентификатор объекта
+        this->ID=0;             //РќРѕРІС‹Р№ Р°С‚СЂРёР±СѓС‚
+        this->ID=Save();        //Р—Р°РїРёСЃС‹РІР°РµРј Рё Р·Р°РїРѕРјРёРЅР°РµРј РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕР±СЉРµРєС‚Р°
         CopyExtraatributesFromHostEidos();
-        this->GetEAByFieldName("HypName")->SetStringValue(NameHypotesis);   //Заносим имя в обязательный экстраатрибут
+        this->GetEAByFieldName("HypName")->SetStringValue(NameHypotesis);   //Р—Р°РЅРѕСЃРёРј РёРјСЏ РІ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚
         PragmaSQL= new PragmaSQLManager(this);
 }
 
 Hypotesis::Hypotesis(Eidos* MyEidos, long ID_Hypotesis)
 {
-//Конструктор класса типов для извлечения из базы уже имеющегося объекта. В качестве параметра
-//используется идентификатор объекта типа, записанного в БД
-	//Загружаем данные класса, записанные в БД
+//РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєР»Р°СЃСЃР° С‚РёРїРѕРІ РґР»СЏ РёР·РІР»РµС‡РµРЅРёСЏ РёР· Р±Р°Р·С‹ СѓР¶Рµ РёРјРµСЋС‰РµРіРѕСЃСЏ РѕР±СЉРµРєС‚Р°. Р’ РєР°С‡РµСЃС‚РІРµ РїР°СЂР°РјРµС‚СЂР°
+//РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РѕР±СЉРµРєС‚Р° С‚РёРїР°, Р·Р°РїРёСЃР°РЅРЅРѕРіРѕ РІ Р‘Р”
+	//Р—Р°РіСЂСѓР¶Р°РµРј РґР°РЅРЅС‹Рµ РєР»Р°СЃСЃР°, Р·Р°РїРёСЃР°РЅРЅС‹Рµ РІ Р‘Р”
         BelongIdent=ExtraAttribute::_theHypotesis;
         this->HostEidos=MyEidos;
         Autocommited=false;
@@ -68,24 +68,24 @@ Hypotesis::Hypotesis(Eidos* MyEidos, long ID_Hypotesis)
         LocalST->Get("ID",(int32_t*)&ID_returned);
         CommitProcedure();
 
-        //Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
+        //РџСЂРѕРІРµСЂСЏРµРј СЃРѕРІРїР°РґР°РµС‚ Р»Рё РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ Р·Р°РїСЂРѕС€РµРЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р° СЃ РІРѕР·РІСЂР°С‰РµРЅРЅС‹Рј
         if(ID_returned==ID_Hypotesis)
         {
-        	//Получаем значения сохраненные в БД для указанного объекта
+        	//РџРѕР»СѓС‡Р°РµРј Р·РЅР°С‡РµРЅРёСЏ СЃРѕС…СЂР°РЅРµРЅРЅС‹Рµ РІ Р‘Р” РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°
                 this->ID=ID_returned;
                 CopyExtraatributesFromHostEidos();
                 PragmaSQL= new PragmaSQLManager(this);
         }
         else
         {
-        	throw "Объект на который указывает идентификатор не существует";
+        	throw "РћР±СЉРµРєС‚ РЅР° РєРѕС‚РѕСЂС‹Р№ СѓРєР°Р·С‹РІР°РµС‚ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РЅРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚";
         }
 }
 
 void Hypotesis::Initialize()
 {
-//Процедура инициализирует переменные класса OBJType независимо от того какой из перегруженных
-//конструкторов используется
+//РџСЂРѕС†РµРґСѓСЂР° РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµС‚ РїРµСЂРµРјРµРЅРЅС‹Рµ РєР»Р°СЃСЃР° OBJType РЅРµР·Р°РІРёСЃРёРјРѕ РѕС‚ С‚РѕРіРѕ РєР°РєРѕР№ РёР· РїРµСЂРµРіСЂСѓР¶РµРЅРЅС‹С…
+//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂРѕРІ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ
 
         Attributes.clear();
         TransactionIBPP=IBPP::TransactionFactory(this->HostEidos->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
@@ -93,7 +93,7 @@ void Hypotesis::Initialize()
 
 Hypotesis::~Hypotesis()
 {
-//Деструктор класса очищаем все занятые переменными и объектами память
+//Р”РµСЃС‚СЂСѓРєС‚РѕСЂ РєР»Р°СЃСЃР° РѕС‡РёС‰Р°РµРј РІСЃРµ Р·Р°РЅСЏС‚С‹Рµ РїРµСЂРµРјРµРЅРЅС‹РјРё Рё РѕР±СЉРµРєС‚Р°РјРё РїР°РјСЏС‚СЊ
         CleanExtraAttributes();
         Attributes.clear();
         delete PragmaSQL;
@@ -101,14 +101,14 @@ Hypotesis::~Hypotesis()
 
 long Hypotesis::GetID()const
 {
-//Чтение значение поля ID
+//Р§С‚РµРЅРёРµ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ ID
 	return ID;
 }
 
 void Hypotesis::CopyExtraatributesFromHostEidos()
 {
-//Процедура копирует ссылки на объекты экстраатрибутов в список объекта, отфильтровывая те из
-//них, которые относятся к данному классу, идентификатор которого в переменной
+//РџСЂРѕС†РµРґСѓСЂР° РєРѕРїРёСЂСѓРµС‚ СЃСЃС‹Р»РєРё РЅР° РѕР±СЉРµРєС‚С‹ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ РІ СЃРїРёСЃРѕРє РѕР±СЉРµРєС‚Р°, РѕС‚С„РёР»СЊС‚СЂРѕРІС‹РІР°СЏ С‚Рµ РёР·
+//РЅРёС…, РєРѕС‚РѕСЂС‹Рµ РѕС‚РЅРѕСЃСЏС‚СЃСЏ Рє РґР°РЅРЅРѕРјСѓ РєР»Р°СЃСЃСѓ, РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂ РєРѕС‚РѕСЂРѕРіРѕ РІ РїРµСЂРµРјРµРЅРЅРѕР№
 		ExtraAttribute* tmpAttrib;
         Attributes.clear();
         for(unsigned int i=0;i<this->HostEidos->Attributes.size();i++)
@@ -124,7 +124,7 @@ void Hypotesis::CopyExtraatributesFromHostEidos()
 
 int Hypotesis::NumEAByFieldName(std::string FieldName)const
 {
-//Функция находит и возвращает по имени атрибута его номер в случае если объект не найден, возвращается -1
+//Р¤СѓРЅРєС†РёСЏ РЅР°С…РѕРґРёС‚ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РїРѕ РёРјРµРЅРё Р°С‚СЂРёР±СѓС‚Р° РµРіРѕ РЅРѕРјРµСЂ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё РѕР±СЉРµРєС‚ РЅРµ РЅР°Р№РґРµРЅ, РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ -1
         AssociatedExtraAttribute* tmpAttrib;
         int for_return=-1;
         for(unsigned int i=0;i < this->Attributes.size();i++)
@@ -141,7 +141,7 @@ int Hypotesis::NumEAByFieldName(std::string FieldName)const
 
 int Hypotesis::NumEAByID(long FieldID)const
 {
-//Функция находит и возвращает по имени атрибута его номер в случае если объект не найден, возвращается -1
+//Р¤СѓРЅРєС†РёСЏ РЅР°С…РѕРґРёС‚ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ РїРѕ РёРјРµРЅРё Р°С‚СЂРёР±СѓС‚Р° РµРіРѕ РЅРѕРјРµСЂ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё РѕР±СЉРµРєС‚ РЅРµ РЅР°Р№РґРµРЅ, РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ -1
         AssociatedExtraAttribute* tmpAttrib;
         int for_return=-1;
         for(unsigned int i=0;i<this->Attributes.size();i++)
@@ -160,7 +160,7 @@ int Hypotesis::NumEAByID(long FieldID)const
 
 AssociatedExtraAttribute* Hypotesis::GetEAByFieldName(std::string FieldName)
 {
-//Процедура возвращает ссылку на экстраатрибут по имени поля экстраатрибута
+//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РїРѕ РёРјРµРЅРё РїРѕР»СЏ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
 
         AssociatedExtraAttribute* tmpAttrib=NULL;
         int Number = NumEAByFieldName(FieldName);
@@ -170,7 +170,7 @@ AssociatedExtraAttribute* Hypotesis::GetEAByFieldName(std::string FieldName)
 
 AssociatedExtraAttribute* Hypotesis::GetEAByFieldID(long FieldID)
 {
-//Процедура возвращает ссылку на экстраатрибут по имени поля экстраатрибута
+//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РїРѕ РёРјРµРЅРё РїРѕР»СЏ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р°
 
         AssociatedExtraAttribute* tmpAttrib=NULL;
         int Number = NumEAByID(FieldID);
@@ -180,7 +180,7 @@ AssociatedExtraAttribute* Hypotesis::GetEAByFieldID(long FieldID)
 
 AssociatedExtraAttribute* Hypotesis::GetEAByNum(int Number)
 {
-//Процедура возвращает ссылку на экстраатрибут по номеру экстраатрибута в списке
+//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР° СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РїРѕ РЅРѕРјРµСЂСѓ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚Р° РІ СЃРїРёСЃРєРµ
         AssociatedExtraAttribute* tmpAttrib=NULL;
         if(Number>-1) tmpAttrib=(AssociatedExtraAttribute*)this->Attributes[Number];
         return tmpAttrib;
@@ -188,7 +188,7 @@ AssociatedExtraAttribute* Hypotesis::GetEAByNum(int Number)
 
 long Hypotesis::Save()
 {
-//Процедура сохраняет значение атрибутов(не экстраатрибутов) в таблице типов объектов
+//РџСЂРѕС†РµРґСѓСЂР° СЃРѕС…СЂР°РЅСЏРµС‚ Р·РЅР°С‡РµРЅРёРµ Р°С‚СЂРёР±СѓС‚РѕРІ(РЅРµ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ) РІ С‚Р°Р±Р»РёС†Рµ С‚РёРїРѕРІ РѕР±СЉРµРєС‚РѕРІ
         IBPP::Statement LocalST=IBPP::StatementFactory(this->HostEidos->DB, TransactionIBPP);
         if(!TransactionIBPP->Started()) TransactionIBPP->Start();
 
@@ -205,7 +205,7 @@ long Hypotesis::Save()
 
 void Hypotesis::SetHypotesName(std::string value)
 {
-        this->GetEAByFieldName("HypName")->SetStringValue(value);   //Заносим имя в обязательный экстраатрибут
+        this->GetEAByFieldName("HypName")->SetStringValue(value);   //Р—Р°РЅРѕСЃРёРј РёРјСЏ РІ РѕР±СЏР·Р°С‚РµР»СЊРЅС‹Р№ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚
         Save();
 }
 std::string Hypotesis::GetHypotesName()
@@ -215,7 +215,7 @@ std::string Hypotesis::GetHypotesName()
 
 void Hypotesis::CommitProcedure()
 {
-//Процедура завершает транзакцию в случае если установлен флажок Autocommited=true
+//РџСЂРѕС†РµРґСѓСЂР° Р·Р°РІРµСЂС€Р°РµС‚ С‚СЂР°РЅР·Р°РєС†РёСЋ РІ СЃР»СѓС‡Р°Рµ РµСЃР»Рё СѓСЃС‚Р°РЅРѕРІР»РµРЅ С„Р»Р°Р¶РѕРє Autocommited=true
         if(Autocommited==true)
         {
                 TransactionIBPP->Commit();
@@ -225,9 +225,9 @@ void Hypotesis::CommitProcedure()
 
 void Hypotesis::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Eidos, long &ID_Hypotesis)
 {
-//Статическая процедура которая извлекает информацию по объекту типа Hypotesis из базы данных
-//без создания самого объекта. Возвращается ID Eidos и для совместимости с потомком копируется
-//значение типа гипотеза в ID_Hypotesis
+//РЎС‚Р°С‚РёС‡РµСЃРєР°СЏ РїСЂРѕС†РµРґСѓСЂР° РєРѕС‚РѕСЂР°СЏ РёР·РІР»РµРєР°РµС‚ РёРЅС„РѕСЂРјР°С†РёСЋ РїРѕ РѕР±СЉРµРєС‚Сѓ С‚РёРїР° Hypotesis РёР· Р±Р°Р·С‹ РґР°РЅРЅС‹С…
+//Р±РµР· СЃРѕР·РґР°РЅРёСЏ СЃР°РјРѕРіРѕ РѕР±СЉРµРєС‚Р°. Р’РѕР·РІСЂР°С‰Р°РµС‚СЃСЏ ID Eidos Рё РґР»СЏ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃ РїРѕС‚РѕРјРєРѕРј РєРѕРїРёСЂСѓРµС‚СЃСЏ
+//Р·РЅР°С‡РµРЅРёРµ С‚РёРїР° РіРёРїРѕС‚РµР·Р° РІ ID_Hypotesis
 
         IBPP::Transaction LocalTr=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
         IBPP::Statement LocalST=IBPP::StatementFactory(MyDB, LocalTr);
@@ -244,13 +244,13 @@ void Hypotesis::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Ei
 
         if(ID_retHyp==ID_IN)
         {
-        	//Получаем значения сохраненные в БД для указанного объекта
+        	//РџРѕР»СѓС‡Р°РµРј Р·РЅР°С‡РµРЅРёСЏ СЃРѕС…СЂР°РЅРµРЅРЅС‹Рµ РІ Р‘Р” РґР»СЏ СѓРєР°Р·Р°РЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°
                 ID_Eidos=ID_retEidos;
                 ID_Hypotesis=ID_retHyp;
         }
         else
         {
-                //Возвращаем все нули
+                //Р’РѕР·РІСЂР°С‰Р°РµРј РІСЃРµ РЅСѓР»Рё
                 ID_Eidos=0;
                 ID_Hypotesis=0;
         }
@@ -258,17 +258,17 @@ void Hypotesis::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Ei
 
 void Hypotesis::CleanExtraAttributes()
 {
-//Процедура очищает все имеющиеся в распоряжении объекта атрибуты из памяти
+//РџСЂРѕС†РµРґСѓСЂР° РѕС‡РёС‰Р°РµС‚ РІСЃРµ РёРјРµСЋС‰РёРµСЃСЏ РІ СЂР°СЃРїРѕСЂСЏР¶РµРЅРёРё РѕР±СЉРµРєС‚Р° Р°С‚СЂРёР±СѓС‚С‹ РёР· РїР°РјСЏС‚Рё
 	for(unsigned int i =0;i<Attributes.size();i++) delete ((AssociatedExtraAttribute*)Attributes[i]);
         Attributes.clear();
 }
 
 void Hypotesis::FillEASQLProp()
 {
-//Процедура заполняет списки экстраатрибутов SQL строк для класса
+//РџСЂРѕС†РµРґСѓСЂР° Р·Р°РїРѕР»РЅСЏРµС‚ СЃРїРёСЃРєРё СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ SQL СЃС‚СЂРѕРє РґР»СЏ РєР»Р°СЃСЃР°
         PragmaSQL->Clear();
-        ExtraAttribute* OneAttrib;	//Указатель на элемент объекта класса дополнительного атрибута
-        for(int i=this->HostEidos->Attributes.size()-1;i>=0;i--)	//Последовательно для всех дополнительных атрибутов
+        ExtraAttribute* OneAttrib;	//РЈРєР°Р·Р°С‚РµР»СЊ РЅР° СЌР»РµРјРµРЅС‚ РѕР±СЉРµРєС‚Р° РєР»Р°СЃСЃР° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРіРѕ Р°С‚СЂРёР±СѓС‚Р°
+        for(int i=this->HostEidos->Attributes.size()-1;i>=0;i--)	//РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ РґР»СЏ РІСЃРµС… РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… Р°С‚СЂРёР±СѓС‚РѕРІ
         {
                 OneAttrib=(ExtraAttribute*)this->HostEidos->Attributes[i];
                 if(OneAttrib->belongTo==ExtraAttribute::_thePragma && OneAttrib->Visible)

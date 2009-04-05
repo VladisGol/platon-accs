@@ -34,17 +34,17 @@ HypotesisModel::HypotesisModel(platon::Eidos* InEidos, QWidget *parent)
     : QAbstractTableModel(parent)
 {
 	//ui.setupUi(this);
-	//Инициализируем переменные и объекты
+	//РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРµСЂРµРјРµРЅРЅС‹Рµ Рё РѕР±СЉРµРєС‚С‹
 	setObjectName("HypotesisModel");
 	ForEidos =InEidos;
-	MyIterator=new platon::iterHypotesis(InEidos);							//Создаем итератор по базе
-	//MyIterator->SQL_string=InEidos->HypotesisSQL->SQLString();			//в нем заменяем строку запроса на полную из Eidos-а
+	MyIterator=new platon::iterHypotesis(InEidos);							//РЎРѕР·РґР°РµРј РёС‚РµСЂР°С‚РѕСЂ РїРѕ Р±Р°Р·Рµ
+	//MyIterator->SQL_string=InEidos->HypotesisSQL->SQLString();			//РІ РЅРµРј Р·Р°РјРµРЅСЏРµРј СЃС‚СЂРѕРєСѓ Р·Р°РїСЂРѕСЃР° РЅР° РїРѕР»РЅСѓСЋ РёР· Eidos-Р°
 
-	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//Получаем количество полей в запросе
-	Buffer.resize(BufferCapacity * (NumCol+1));								//Устанавливаем размер вектора = числу полей экстраатрибутов + ID
+	NumCol=InEidos->HypotesisSQL->AttributesList.size();					//РџРѕР»СѓС‡Р°РµРј РєРѕР»РёС‡РµСЃС‚РІРѕ РїРѕР»РµР№ РІ Р·Р°РїСЂРѕСЃРµ
+	Buffer.resize(BufferCapacity * (NumCol+1));								//РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЂР°Р·РјРµСЂ РІРµРєС‚РѕСЂР° = С‡РёСЃР»Сѓ РїРѕР»РµР№ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚РѕРІ + ID
 
-	BufferStartRow=0;														//Начало
-	BufferLastRow=ReadToBuffer(BufferStartRow,0,BufferCapacity);			//Читаем из базы первые BufferCapacity записей
+	BufferStartRow=0;														//РќР°С‡Р°Р»Рѕ
+	BufferLastRow=ReadToBuffer(BufferStartRow,0,BufferCapacity);			//Р§РёС‚Р°РµРј РёР· Р±Р°Р·С‹ РїРµСЂРІС‹Рµ BufferCapacity Р·Р°РїРёСЃРµР№
 	if(BufferLastRow>=BufferCapacity)
 		LastRequestedReccount=MyIterator->GetRowCount();
 	else
@@ -58,18 +58,18 @@ HypotesisModel::~HypotesisModel()
 
 int HypotesisModel::GetOffset(int Row,int Col) const
 {
-	//Процедура рассчитывает значение индекса, исходя из переданных в параметрах значениях строки и колонки массива
-	//возвращается значение элемента массива начиная с 0
+	//РџСЂРѕС†РµРґСѓСЂР° СЂР°СЃСЃС‡РёС‚С‹РІР°РµС‚ Р·РЅР°С‡РµРЅРёРµ РёРЅРґРµРєСЃР°, РёСЃС…РѕРґСЏ РёР· РїРµСЂРµРґР°РЅРЅС‹С… РІ РїР°СЂР°РјРµС‚СЂР°С… Р·РЅР°С‡РµРЅРёСЏС… СЃС‚СЂРѕРєРё Рё РєРѕР»РѕРЅРєРё РјР°СЃСЃРёРІР°
+	//РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ СЌР»РµРјРµРЅС‚Р° РјР°СЃСЃРёРІР° РЅР°С‡РёРЅР°СЏ СЃ 0
 	return ((Row)*NumCol+Col);
 
 }
 int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) const
 {
-	//Процедура считывает в буфер записи из БД начиная с записи номер которой передан в параметре RowInit
-	//вставляет в буфер начиная со строки в буфере RowInBuffer в количестве RowCount строк
-	//возвращается число прочитанных записей
+	//РџСЂРѕС†РµРґСѓСЂР° СЃС‡РёС‚С‹РІР°РµС‚ РІ Р±СѓС„РµСЂ Р·Р°РїРёСЃРё РёР· Р‘Р” РЅР°С‡РёРЅР°СЏ СЃ Р·Р°РїРёСЃРё РЅРѕРјРµСЂ РєРѕС‚РѕСЂРѕР№ РїРµСЂРµРґР°РЅ РІ РїР°СЂР°РјРµС‚СЂРµ RowInit
+	//РІСЃС‚Р°РІР»СЏРµС‚ РІ Р±СѓС„РµСЂ РЅР°С‡РёРЅР°СЏ СЃРѕ СЃС‚СЂРѕРєРё РІ Р±СѓС„РµСЂРµ RowInBuffer РІ РєРѕР»РёС‡РµСЃС‚РІРµ RowCount СЃС‚СЂРѕРє
+	//РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ С‡РёСЃР»Рѕ РїСЂРѕС‡РёС‚Р°РЅРЅС‹С… Р·Р°РїРёСЃРµР№
 
-	SkipTo(RowInit);	//Перемещаемся к записи с искомым номером
+	SkipTo(RowInit);	//РџРµСЂРµРјРµС‰Р°РµРјСЃСЏ Рє Р·Р°РїРёСЃРё СЃ РёСЃРєРѕРјС‹Рј РЅРѕРјРµСЂРѕРј
 
 	int ReadedRow=0;
 
@@ -101,7 +101,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 			{
 				QVariant OneValue;
 
-				//Получаем имя поля и его тип по номеру
+				//РџРѕР»СѓС‡Р°РµРј РёРјСЏ РїРѕР»СЏ Рё РµРіРѕ С‚РёРї РїРѕ РЅРѕРјРµСЂСѓ
 				std::string curFieldName;
 				int EA_type;
 
@@ -116,7 +116,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 					EA_type = ForEidos->PragmaSQL->AttributesList[i].FieldType;
 				}
 
-				//Получаем ссылку на текущий экстраатрибут в составе рекордсета
+				//РџРѕР»СѓС‡Р°РµРј СЃСЃС‹Р»РєСѓ РЅР° С‚РµРєСѓС‰РёР№ СЌРєСЃС‚СЂР°Р°С‚СЂРёР±СѓС‚ РІ СЃРѕСЃС‚Р°РІРµ СЂРµРєРѕСЂРґСЃРµС‚Р°
 				switch(EA_type)
 				{
 					case platon::ft_String:
@@ -160,7 +160,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 						break;
 					}
 					default:
-						throw("Указанный тип данных не поддерживается");
+						throw("РЈРєР°Р·Р°РЅРЅС‹Р№ С‚РёРї РґР°РЅРЅС‹С… РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЃСЏ");
 
 				}
 
@@ -176,7 +176,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 		}
 		else
 		{
-			break;	// Данные закончились
+			break;	// Р”Р°РЅРЅС‹Рµ Р·Р°РєРѕРЅС‡РёР»РёСЃСЊ
 		}
 
 		ReadedRow++;
@@ -188,14 +188,14 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 
 int HypotesisModel::SkipTo(int RowNumber)const
 {
-	//Функция анализирует в какую позицию необходимо переместиться и перемещает указатель итератора куда надо
-	// возвращается значение позиции где расположен итератор
+	//Р¤СѓРЅРєС†РёСЏ Р°РЅР°Р»РёР·РёСЂСѓРµС‚ РІ РєР°РєСѓСЋ РїРѕР·РёС†РёСЋ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµРјРµСЃС‚РёС‚СЊСЃСЏ Рё РїРµСЂРµРјРµС‰Р°РµС‚ СѓРєР°Р·Р°С‚РµР»СЊ РёС‚РµСЂР°С‚РѕСЂР° РєСѓРґР° РЅР°РґРѕ
+	// РІРѕР·РІСЂР°С‰Р°РµС‚СЃСЏ Р·РЅР°С‡РµРЅРёРµ РїРѕР·РёС†РёРё РіРґРµ СЂР°СЃРїРѕР»РѕР¶РµРЅ РёС‚РµСЂР°С‚РѕСЂ
 	if(RowNumber==0)
 	{
 		MyIterator->First();
 		return 0;
 	}
-	if(MyIterator->GetRowNum()-1==RowNumber) return MyIterator->GetRowNum();	//Итератор уже где надо
+	if(MyIterator->GetRowNum()-1==RowNumber) return MyIterator->GetRowNum();	//РС‚РµСЂР°С‚РѕСЂ СѓР¶Рµ РіРґРµ РЅР°РґРѕ
 	if(MyIterator->GetRowNum()-1<RowNumber)
 	{
 		while(MyIterator->GetRowNum()-1<RowNumber)
@@ -207,7 +207,7 @@ int HypotesisModel::SkipTo(int RowNumber)const
 	}
 	else
 	{
-		//Осталось условие по которому итератор уже считал больше записей чем требовалось, необходимо перейти на начало и спуститься ниже
+		//РћСЃС‚Р°Р»РѕСЃСЊ СѓСЃР»РѕРІРёРµ РїРѕ РєРѕС‚РѕСЂРѕРјСѓ РёС‚РµСЂР°С‚РѕСЂ СѓР¶Рµ СЃС‡РёС‚Р°Р» Р±РѕР»СЊС€Рµ Р·Р°РїРёСЃРµР№ С‡РµРј С‚СЂРµР±РѕРІР°Р»РѕСЃСЊ, РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµР№С‚Рё РЅР° РЅР°С‡Р°Р»Рѕ Рё СЃРїСѓСЃС‚РёС‚СЊСЃСЏ РЅРёР¶Рµ
 		MyIterator->First();
 		while(MyIterator->GetRowNum()-1<RowNumber)
 		{
@@ -223,7 +223,7 @@ int HypotesisModel::SkipTo(int RowNumber)const
 
 int HypotesisModel::columnCount(const QModelIndex & index) const
 {
-	//Процедура возвращает число столбцов (полей)
+	//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЃС‚РѕР»Р±С†РѕРІ (РїРѕР»РµР№)
 	int ReservedColumns=0;
 	if(this->objectName()=="HypotesisModel") ReservedColumns=1;
 	if(this->objectName()=="PragmaModel") ReservedColumns=2;
@@ -233,13 +233,13 @@ int HypotesisModel::columnCount(const QModelIndex & index) const
 
 int HypotesisModel::rowCount(const QModelIndex &parent) const
 {
-	//Процедура возвращает число строк
+	//РџСЂРѕС†РµРґСѓСЂР° РІРѕР·РІСЂР°С‰Р°РµС‚ С‡РёСЃР»Рѕ СЃС‚СЂРѕРє
 	return LastRequestedReccount;
 }
 
 QVariant HypotesisModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
-	//Процедура выводит значения надписей столбцов и строк
+	//РџСЂРѕС†РµРґСѓСЂР° РІС‹РІРѕРґРёС‚ Р·РЅР°С‡РµРЅРёСЏ РЅР°РґРїРёСЃРµР№ СЃС‚РѕР»Р±С†РѕРІ Рё СЃС‚СЂРѕРє
 
 	if (role != Qt::DisplayRole)
 	         return QVariant();
@@ -283,32 +283,32 @@ QVariant HypotesisModel::data(const QModelIndex &index, int role) const
 
 QVariant HypotesisModel::GetDataFromBuffer(const QModelIndex &index)const
 {
-//Функция возвращает значение с индексом, переданном в параметре
+//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёРµ СЃ РёРЅРґРµРєСЃРѕРј, РїРµСЂРµРґР°РЅРЅРѕРј РІ РїР°СЂР°РјРµС‚СЂРµ
 	int row=index.row();
 	int col=index.column();
 
-	if (row >=BufferStartRow && row <BufferLastRow)	//Строка в диапазоне номеров, вошедших в буфер
+	if (row >=BufferStartRow && row <BufferLastRow)	//РЎС‚СЂРѕРєР° РІ РґРёР°РїР°Р·РѕРЅРµ РЅРѕРјРµСЂРѕРІ, РІРѕС€РµРґС€РёС… РІ Р±СѓС„РµСЂ
 	{
 		return Buffer[GetOffset(row-BufferStartRow,col)];
 	}
 	else
 	{
-		shiftBuffer(index);							//Смещаем буфер до получения значения index в буфер
-		return GetDataFromBuffer(index);			//Рекурсивный вызов процедуры
+		shiftBuffer(index);							//РЎРјРµС‰Р°РµРј Р±СѓС„РµСЂ РґРѕ РїРѕР»СѓС‡РµРЅРёСЏ Р·РЅР°С‡РµРЅРёСЏ index РІ Р±СѓС„РµСЂ
+		return GetDataFromBuffer(index);			//Р РµРєСѓСЂСЃРёРІРЅС‹Р№ РІС‹Р·РѕРІ РїСЂРѕС†РµРґСѓСЂС‹
 	}
 }
 void  HypotesisModel::shiftBuffer(const QModelIndex &index) const
 {
-//Процедура смещает буфер так, чтобы запрашиваемый элемент попал в буфер
+//РџСЂРѕС†РµРґСѓСЂР° СЃРјРµС‰Р°РµС‚ Р±СѓС„РµСЂ С‚Р°Рє, С‡С‚РѕР±С‹ Р·Р°РїСЂР°С€РёРІР°РµРјС‹Р№ СЌР»РµРјРµРЅС‚ РїРѕРїР°Р» РІ Р±СѓС„РµСЂ
 	int row=index.row();
 	int ShiftVal=BufferCapacity/4;
 
-	if(row<BufferStartRow)	//Значение номера строки меньше чем есть в буфере, смещаемся вверх
+	if(row<BufferStartRow)	//Р—РЅР°С‡РµРЅРёРµ РЅРѕРјРµСЂР° СЃС‚СЂРѕРєРё РјРµРЅСЊС€Рµ С‡РµРј РµСЃС‚СЊ РІ Р±СѓС„РµСЂРµ, СЃРјРµС‰Р°РµРјСЃСЏ РІРІРµСЂС…
 	{
-		//Вычисляем значение смещения на которое нужно сместить буфер чтобы отобразить значение
-		if(row>=BufferStartRow-ShiftVal && BufferStartRow-ShiftVal>=0)	//Считать нужно 1/4 буфера вверх
+		//Р’С‹С‡РёСЃР»СЏРµРј Р·РЅР°С‡РµРЅРёРµ СЃРјРµС‰РµРЅРёСЏ РЅР° РєРѕС‚РѕСЂРѕРµ РЅСѓР¶РЅРѕ СЃРјРµСЃС‚РёС‚СЊ Р±СѓС„РµСЂ С‡С‚РѕР±С‹ РѕС‚РѕР±СЂР°Р·РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ
+		if(row>=BufferStartRow-ShiftVal && BufferStartRow-ShiftVal>=0)	//РЎС‡РёС‚Р°С‚СЊ РЅСѓР¶РЅРѕ 1/4 Р±СѓС„РµСЂР° РІРІРµСЂС…
 		{
-			//копируем в последнюю строку, строку 0+Delta на протяжении BufferCapacity-Delta строк
+			//РєРѕРїРёСЂСѓРµРј РІ РїРѕСЃР»РµРґРЅСЋСЋ СЃС‚СЂРѕРєСѓ, СЃС‚СЂРѕРєСѓ 0+Delta РЅР° РїСЂРѕС‚СЏР¶РµРЅРёРё BufferCapacity-Delta СЃС‚СЂРѕРє
 			for(int i=BufferCapacity-1;i>=ShiftVal;i--)
 				for(int j=0;j<NumCol;j++)
 					Buffer[GetOffset(i,j)]=Buffer[GetOffset(i-ShiftVal,j)];
@@ -318,19 +318,19 @@ void  HypotesisModel::shiftBuffer(const QModelIndex &index) const
 			BufferLastRow=BufferLastRow-ReadedLines;
 			BufferStartRow=BufferStartRow-ShiftVal;
 		}
-		else//Чтение вверх полного кэша
+		else//Р§С‚РµРЅРёРµ РІРІРµСЂС… РїРѕР»РЅРѕРіРѕ РєСЌС€Р°
 		{
 			int ReadedLines=ReadToBuffer(row,0,BufferCapacity);
 			BufferStartRow=row;
 			BufferLastRow=row+ReadedLines;
 		}
 	}
-	if(row>=BufferLastRow)	//Значение номера строки больше чем есть в буфере, смещаемся вниз
+	if(row>=BufferLastRow)	//Р—РЅР°С‡РµРЅРёРµ РЅРѕРјРµСЂР° СЃС‚СЂРѕРєРё Р±РѕР»СЊС€Рµ С‡РµРј РµСЃС‚СЊ РІ Р±СѓС„РµСЂРµ, СЃРјРµС‰Р°РµРјСЃСЏ РІРЅРёР·
 	{
-		//Вычисляем значение смещения на которое нужно сместить буфер чтобы отобразить значение
-		if(row<BufferLastRow+ShiftVal)	//Считать нужно 1/4 буфера вниз
+		//Р’С‹С‡РёСЃР»СЏРµРј Р·РЅР°С‡РµРЅРёРµ СЃРјРµС‰РµРЅРёСЏ РЅР° РєРѕС‚РѕСЂРѕРµ РЅСѓР¶РЅРѕ СЃРјРµСЃС‚РёС‚СЊ Р±СѓС„РµСЂ С‡С‚РѕР±С‹ РѕС‚РѕР±СЂР°Р·РёС‚СЊ Р·РЅР°С‡РµРЅРёРµ
+		if(row<BufferLastRow+ShiftVal)	//РЎС‡РёС‚Р°С‚СЊ РЅСѓР¶РЅРѕ 1/4 Р±СѓС„РµСЂР° РІРЅРёР·
 		{
-			//копируем в нулевую строку, строку 0+Delta на протяжении BufferCapacity-Delta строк
+			//РєРѕРїРёСЂСѓРµРј РІ РЅСѓР»РµРІСѓСЋ СЃС‚СЂРѕРєСѓ, СЃС‚СЂРѕРєСѓ 0+Delta РЅР° РїСЂРѕС‚СЏР¶РµРЅРёРё BufferCapacity-Delta СЃС‚СЂРѕРє
 			for(int i=0;i<BufferCapacity-ShiftVal;i++)
 				for(int j=0;j<NumCol;j++)
 					Buffer[GetOffset(i,j)]=Buffer[GetOffset(i+ShiftVal,j)];
@@ -339,7 +339,7 @@ void  HypotesisModel::shiftBuffer(const QModelIndex &index) const
 			BufferStartRow=BufferStartRow+ShiftVal;
 			BufferLastRow=BufferLastRow+ReadedLines;
 		}
-		else	//Чтение вниз полного кэша
+		else	//Р§С‚РµРЅРёРµ РІРЅРёР· РїРѕР»РЅРѕРіРѕ РєСЌС€Р°
 		{
 			int ReadedLines=ReadToBuffer(row,0,BufferCapacity);
 			BufferStartRow = row;

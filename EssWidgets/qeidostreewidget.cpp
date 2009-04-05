@@ -12,10 +12,10 @@ void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 	this->MyDB=InDB;
 	MyEidosIter= new  platon::iterEidos(MyDB,Species.toStdString());
 
-	//Настраиваем виджет
+	//РќР°СЃС‚СЂР°РёРІР°РµРј РІРёРґР¶РµС‚
 	this->clear();
 	this->setColumnCount (3);	//Name,ID,ID_Parent
-	this->headerItem()->setText(0,tr("Наименование"));
+	this->headerItem()->setText(0,tr("РќР°РёРјРµРЅРѕРІР°РЅРёРµ"));
 	this->headerItem()->setText(1,tr("ID"));
 	this->headerItem()->setText(2,tr("ID_PARENT"));
 
@@ -28,9 +28,9 @@ void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 
 	while(MyEidosIter->Next())
 	{
-		//Добавляем в элемент управления отображения дерева
+		//Р”РѕР±Р°РІР»СЏРµРј РІ СЌР»РµРјРµРЅС‚ СѓРїСЂР°РІР»РµРЅРёСЏ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РґРµСЂРµРІР°
 		QList<QTreeWidgetItem *> FoundedItem = this->findItems (QString::number(MyEidosIter->GetParentID()), Qt::MatchExactly | Qt::MatchRecursive,1 );
-		if(FoundedItem.count()==0)	//Не найден, добавление в корень представления
+		if(FoundedItem.count()==0)	//РќРµ РЅР°Р№РґРµРЅ, РґРѕР±Р°РІР»РµРЅРёРµ РІ РєРѕСЂРµРЅСЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
 		{
 			QTreeWidgetItem *__item = new QTreeWidgetItem(this);
 			__item->setText(0, tr( MyEidosIter->GetTitle().c_str()));
@@ -62,7 +62,7 @@ void QEidosTreeWidget::SetSpecies(const QString InSpecies)
 
 long QEidosTreeWidget::GetEidosID()
 {
-	//Функция возвращает текущее значение идентификатора эйдоса
+	//Р¤СѓРЅРєС†РёСЏ РІРѕР·РІСЂР°С‰Р°РµС‚ С‚РµРєСѓС‰РµРµ Р·РЅР°С‡РµРЅРёРµ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° СЌР№РґРѕСЃР°
 	return this->currentItem()->text(1).toLong();
 }
 
@@ -70,9 +70,9 @@ bool QEidosTreeWidget::findNMakeCurrent(long ID_searchfor)
 {
 
 	QList<QTreeWidgetItem *> FoundedItem = this->findItems (QString::number(ID_searchfor), Qt::MatchExactly | Qt::MatchRecursive,1 );
-    if(FoundedItem.count()>0)      //Найден искомый элемент
+    if(FoundedItem.count()>0)      //РќР°Р№РґРµРЅ РёСЃРєРѕРјС‹Р№ СЌР»РµРјРµРЅС‚
     {
-    	this->setCurrentItem(FoundedItem.at(0));	//Найденный элемент выводим текущим
+    	this->setCurrentItem(FoundedItem.at(0));	//РќР°Р№РґРµРЅРЅС‹Р№ СЌР»РµРјРµРЅС‚ РІС‹РІРѕРґРёРј С‚РµРєСѓС‰РёРј
     	return true;
     }
     else
@@ -83,7 +83,7 @@ bool QEidosTreeWidget::findNMakeCurrent(long ID_searchfor)
 
 void QEidosTreeWidget::SaveAppearance()
 {
-//Процедура сохраняет значения внешнего вида виджета
+//РџСЂРѕС†РµРґСѓСЂР° СЃРѕС…СЂР°РЅСЏРµС‚ Р·РЅР°С‡РµРЅРёСЏ РІРЅРµС€РЅРµРіРѕ РІРёРґР° РІРёРґР¶РµС‚Р°
 	MyETC=new platon::DbEtc(this->MyDB);
 	MyETC->OpenKey(QString("WidgetAppearance\\QEidosTreeWidget\\"+this->parent()->objectName ()).toStdString(),true,-1);
 	MyETC->WriteInteger("Column_Name_width", this->columnWidth (0));

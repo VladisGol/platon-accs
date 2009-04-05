@@ -13,7 +13,7 @@ Login_Dialog::Login_Dialog(QWidget * parent): QDialog(parent)
 
 	Host_label = new QLabel(this);
 	Host_label->setObjectName("Host_label");
-	Host_label->setText(tr("ñåðâåð ÁÄ"));
+	Host_label->setText(tr("ÑÐµÑ€Ð²ÐµÑ€ Ð‘Ð”"));
 
 	gridLayout->addWidget(Host_label, 0, 0, 1, 1);
 
@@ -24,7 +24,7 @@ Login_Dialog::Login_Dialog(QWidget * parent): QDialog(parent)
 
 	Alias_label = new QLabel(this);
 	Alias_label->setObjectName("Alias_label");
-	Alias_label->setText(tr("íàèìåíîâàíèå áàçû"));
+	Alias_label->setText(tr("Ð½Ð°Ð¸Ð¼ÐµÐ½Ð¾Ð²Ð°Ð½Ð¸Ðµ Ð±Ð°Ð·Ñ‹"));
 
 	gridLayout->addWidget(Alias_label, 2, 0, 1, 1);
 
@@ -34,7 +34,7 @@ Login_Dialog::Login_Dialog(QWidget * parent): QDialog(parent)
 
 	UserName_label = new QLabel(this);
 	UserName_label->setObjectName("UserName_label");
-	UserName_label->setText(tr("èìÿ ïîëüçîâàòåëÿ"));
+	UserName_label->setText(tr("Ð¸Ð¼Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ"));
 
 	gridLayout->addWidget(UserName_label, 4, 0, 1, 1);
 
@@ -45,7 +45,7 @@ Login_Dialog::Login_Dialog(QWidget * parent): QDialog(parent)
 
 	Password_label = new QLabel(this);
 	Password_label->setObjectName("Password_label");
-	Password_label->setText(tr("ïàðîëü"));
+	Password_label->setText(tr("Ð¿Ð°Ñ€Ð¾Ð»ÑŒ"));
 
 	gridLayout->addWidget(Password_label, 6, 0, 1, 1);
 
@@ -65,7 +65,7 @@ Login_Dialog::Login_Dialog(QWidget * parent): QDialog(parent)
     QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(ExitWithAccept()));
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
-    this->setWindowTitle(tr("Ðåãèñòðàöèÿ ïîëüçîâàòåëÿ ñèñòåìû"));
+    this->setWindowTitle(tr("Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ ÑÐ¸ÑÑ‚ÐµÐ¼Ñ‹"));
 
 
     localsettings= new QSettings("PLATON","Platon-accs");
@@ -81,7 +81,7 @@ Login_Dialog::Login_Dialog(QWidget * parent): QDialog(parent)
 }
 void Login_Dialog::ExitWithAccept()
 {
-	//Âûõîä ñ âîçâðàòîì çíà÷åíèÿ âûáðàííîãî îáúåêòà
+	//Ð’Ñ‹Ñ…Ð¾Ð´ Ñ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð¾Ð¼ Ð·Ð½Ð°Ñ‡ÐµÐ½Ð¸Ñ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð½Ð¾Ð³Ð¾ Ð¾Ð±ÑŠÐµÐºÑ‚Ð°
     localsettings->beginGroup("login");
 
     localsettings->setValue("Host",this->Host->text());

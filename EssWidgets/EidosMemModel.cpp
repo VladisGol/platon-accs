@@ -9,7 +9,7 @@ EidosMemModel::EidosMemModel(IBPP::Database InDB, QString Spec, QObject *parent)
 	Species=Spec;
 
     rootItem = new TreeItem(GetRootData());
-    AdditionalColumnsNumber=0;	//В этой модели дополнительных столбцов выводить ненадо
+    AdditionalColumnsNumber=0;	//Р’ СЌС‚РѕР№ РјРѕРґРµР»Рё РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… СЃС‚РѕР»Р±С†РѕРІ РІС‹РІРѕРґРёС‚СЊ РЅРµРЅР°РґРѕ
     setupModelData(rootItem);
 }
 
@@ -20,10 +20,10 @@ EidosMemModel::~EidosMemModel()
 
 QList<QVariant> EidosMemModel::GetRootData()
 {
-	//Процедура составления массива строк для заголовка.
-	//Данная функция вынесена для упрощения создания в наследуемых классах большего числа столбцов данных
+	//РџСЂРѕС†РµРґСѓСЂР° СЃРѕСЃС‚Р°РІР»РµРЅРёСЏ РјР°СЃСЃРёРІР° СЃС‚СЂРѕРє РґР»СЏ Р·Р°РіРѕР»РѕРІРєР°.
+	//Р”Р°РЅРЅР°СЏ С„СѓРЅРєС†РёСЏ РІС‹РЅРµСЃРµРЅР° РґР»СЏ СѓРїСЂРѕС‰РµРЅРёСЏ СЃРѕР·РґР°РЅРёСЏ РІ РЅР°СЃР»РµРґСѓРµРјС‹С… РєР»Р°СЃСЃР°С… Р±РѕР»СЊС€РµРіРѕ С‡РёСЃР»Р° СЃС‚РѕР»Р±С†РѕРІ РґР°РЅРЅС‹С…
 	QList<QVariant> ForReturn;
-	ForReturn<<QObject::tr("Наименование")<<QObject::tr("ID");
+	ForReturn<<QObject::tr("РќР°РёРјРµРЅРѕРІР°РЅРёРµ")<<QObject::tr("ID");
 	return ForReturn;
 }
 
@@ -131,11 +131,11 @@ void EidosMemModel::setupModelData(TreeItem *TopItem)
 
    	while(MyEidosIter->Next())
     {
-   		//Готовим данные для одной записи
+   		//Р“РѕС‚РѕРІРёРј РґР°РЅРЅС‹Рµ РґР»СЏ РѕРґРЅРѕР№ Р·Р°РїРёСЃРё
    		QList<QVariant> columnData =GetColumnsData(tr( MyEidosIter->GetTitle().c_str()), MyEidosIter->GetID());
 
     	TreeItem* BranchItem= TopItem->findByValue(1,QVariant::fromValue(MyEidosIter->GetParentID()));
-    	if(BranchItem==NULL)	//Не найден, добавление в корень представления
+    	if(BranchItem==NULL)	//РќРµ РЅР°Р№РґРµРЅ, РґРѕР±Р°РІР»РµРЅРёРµ РІ РєРѕСЂРµРЅСЊ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ
     		TopItem->appendChild(new TreeItem(columnData,TopItem));
     	else
     		BranchItem->appendChild(new TreeItem(columnData,BranchItem));
@@ -195,21 +195,21 @@ int TreeItem::row() const
 
 TreeItem *TreeItem::findByValue(int col, QVariant SearchedValue)
 {
-	//Процедура ищет значение и возвращает ссылку найденного объекта
+	//РџСЂРѕС†РµРґСѓСЂР° РёС‰РµС‚ Р·РЅР°С‡РµРЅРёРµ Рё РІРѕР·РІСЂР°С‰Р°РµС‚ СЃСЃС‹Р»РєСѓ РЅР°Р№РґРµРЅРЅРѕРіРѕ РѕР±СЉРµРєС‚Р°
 	TreeItem *ForReturn=NULL;
-	//Пробегаем по всем деткам текущего объекта
+	//РџСЂРѕР±РµРіР°РµРј РїРѕ РІСЃРµРј РґРµС‚РєР°Рј С‚РµРєСѓС‰РµРіРѕ РѕР±СЉРµРєС‚Р°
 	for(int i=0;i<this->childCount();i++)
 	{
-		if(this->child(i)->data(col)==SearchedValue)	//Если сама детка - искомое значение
+		if(this->child(i)->data(col)==SearchedValue)	//Р•СЃР»Рё СЃР°РјР° РґРµС‚РєР° - РёСЃРєРѕРјРѕРµ Р·РЅР°С‡РµРЅРёРµ
 		{
 			ForReturn=this->child(i);
 			break;
 		}
 		else
 		{
-			if(this->child(i)->childCount()>0)			//Если детка сама имеет деток
+			if(this->child(i)->childCount()>0)			//Р•СЃР»Рё РґРµС‚РєР° СЃР°РјР° РёРјРµРµС‚ РґРµС‚РѕРє
 			{
-				ForReturn=this->child(i)->findByValue(col, SearchedValue);	//Рекурсивный вызов
+				ForReturn=this->child(i)->findByValue(col, SearchedValue);	//Р РµРєСѓСЂСЃРёРІРЅС‹Р№ РІС‹Р·РѕРІ
 				if(ForReturn!=NULL) break;
 			}
 		}

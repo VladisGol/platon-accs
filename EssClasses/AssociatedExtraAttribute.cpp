@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2007 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -16,17 +16,17 @@ License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
-ßäğî ñèñòåìû ó÷åòà "Ïëàòîí".
-Àâòîğàìè ïğîãğàììû ÿâëÿşòñÿ Áîğèñåíêîâ Ñåğãåé Àëåêñàíäğîâè÷ è Ãîëîâûğèí Âëàäèñëàâ Âëàäèìèğîâè÷, 2005-2007ã.
-Äàííàÿ áèáëèîòåêà ÿâëÿåòñÿ ñâîáîäíûì ïğîãğàììíûì îáåñïå÷åíèåì. Âû âïğàâå ğàñïğîñòğàíÿòü åå è/èëè ìîäèôèöèğîâàòü
-â ñîîòâåòñòâèè ñ óñëîâèÿìè âåğñèè 2.1 Ñòàíäàğòíîé Îáùåñòâåííîé Ëèöåíçèè Îãğàíè÷åííîãî Ïğèìåíåíèÿ GNU,
-îïóáëèêîâàííîé Free Software Foundation.
-Ìû ğàñïğîñòğàíÿåì ıòó ïğîãğàììó â íàäåæäå íà òî, ÷òî îíà áóäåò âàì ïîëåçíîé,
-îäíàêî ÍÅ ÏĞÅÄÎÑÒÀÂËßÅÌ ÍÀ ÍÅÅ ÍÈÊÀÊÈÕ ÃÀĞÀÍÒÈÉ, â òîì ÷èñëå ÃÀĞÀÍÒÈÈ ÒÎÂÀĞÍÎÃÎ ÑÎÑÒÎßÍÈß ÏĞÈ ÏĞÎÄÀÆÅ è
-ÏĞÈÃÎÄÍÎÑÒÈ ÄËß ÈÑÏÎËÜÇÎÂÀÍÈß Â ÊÎÍÊĞÅÒÍÛÕ ÖÅËßÕ.
-Äëÿ ïîëó÷åíèÿ áîëåå ïîäğîáíîé èíôîğìàöèè îçíàêîìüòåñü ñî Ñòàíäàğòíîé Îáùåñòâåííîé Ëèöåíçèåé Îãğàíè÷åííîãî
-Ïğèìåíåíèé GNU.
-Ñâÿçàòüñÿ ñ àâòîğàìè ïğîãğàììû âû ìîæåòå ïî e-mail vladisgol@rambler.ru
+Ğ¯Ğ´Ñ€Ğ¾ ÑĞ¸ÑÑ‚ĞµĞ¼Ñ‹ ÑƒÑ‡ĞµÑ‚Ğ° "ĞŸĞ»Ğ°Ñ‚Ğ¾Ğ½".
+ĞĞ²Ñ‚Ğ¾Ñ€Ğ°Ğ¼Ğ¸ Ğ¿Ñ€Ğ¾Ğ³Ñ€Ğ°Ğ¼Ğ¼Ñ‹ ÑĞ²Ğ»ÑÑÑ‚ÑÑ Ğ‘Ğ¾Ñ€Ğ¸ÑĞµĞ½ĞºĞ¾Ğ² Ğ¡ĞµÑ€Ğ³ĞµĞ¹ ĞĞ»ĞµĞºÑĞ°Ğ½Ğ´Ñ€Ğ¾Ğ²Ğ¸Ñ‡ Ğ¸ Ğ“Ğ¾Ğ»Ğ¾Ğ²Ñ‹Ñ€Ğ¸Ğ½ Ğ’Ğ»Ğ°Ğ´Ğ¸ÑĞ»Ğ°Ğ² Ğ’Ğ»Ğ°Ğ´Ğ¸Ğ¼Ğ¸Ñ€Ğ¾Ğ²Ğ¸Ñ‡, 2005-2009Ğ³.
+Ğ”Ğ°Ğ½Ğ½Ğ°Ñ Ğ±Ğ¸Ğ±Ğ»Ğ¸Ğ¾Ñ‚ĞµĞºĞ° ÑĞ²Ğ»ÑĞµÑ‚ÑÑ ÑĞ²Ğ¾Ğ±Ğ¾Ğ´Ğ½Ñ‹Ğ¼ Ğ¿Ñ€Ğ¾Ğ³Ñ€Ğ°Ğ¼Ğ¼Ğ½Ñ‹Ğ¼ Ğ¾Ğ±ĞµÑĞ¿ĞµÑ‡ĞµĞ½Ğ¸ĞµĞ¼. Ğ’Ñ‹ Ğ²Ğ¿Ñ€Ğ°Ğ²Ğµ Ñ€Ğ°ÑĞ¿Ñ€Ğ¾ÑÑ‚Ñ€Ğ°Ğ½ÑÑ‚ÑŒ ĞµĞµ Ğ¸/Ğ¸Ğ»Ğ¸ Ğ¼Ğ¾Ğ´Ğ¸Ñ„Ğ¸Ñ†Ğ¸Ñ€Ğ¾Ğ²Ğ°Ñ‚ÑŒ
+Ğ² ÑĞ¾Ğ¾Ñ‚Ğ²ĞµÑ‚ÑÑ‚Ğ²Ğ¸Ğ¸ Ñ ÑƒÑĞ»Ğ¾Ğ²Ğ¸ÑĞ¼Ğ¸ Ğ²ĞµÑ€ÑĞ¸Ğ¸ 2.1 Ğ¡Ñ‚Ğ°Ğ½Ğ´Ğ°Ñ€Ñ‚Ğ½Ğ¾Ğ¹ ĞĞ±Ñ‰ĞµÑÑ‚Ğ²ĞµĞ½Ğ½Ğ¾Ğ¹ Ğ›Ğ¸Ñ†ĞµĞ½Ğ·Ğ¸Ğ¸ ĞĞ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ½Ğ¾Ğ³Ğ¾ ĞŸÑ€Ğ¸Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ñ GNU,
+Ğ¾Ğ¿ÑƒĞ±Ğ»Ğ¸ĞºĞ¾Ğ²Ğ°Ğ½Ğ½Ğ¾Ğ¹ Free Software Foundation.
+ĞœÑ‹ Ñ€Ğ°ÑĞ¿Ñ€Ğ¾ÑÑ‚Ñ€Ğ°Ğ½ÑĞµĞ¼ ÑÑ‚Ñƒ Ğ¿Ñ€Ğ¾Ğ³Ñ€Ğ°Ğ¼Ğ¼Ñƒ Ğ² Ğ½Ğ°Ğ´ĞµĞ¶Ğ´Ğµ Ğ½Ğ° Ñ‚Ğ¾, Ñ‡Ñ‚Ğ¾ Ğ¾Ğ½Ğ° Ğ±ÑƒĞ´ĞµÑ‚ Ğ²Ğ°Ğ¼ Ğ¿Ğ¾Ğ»ĞµĞ·Ğ½Ğ¾Ğ¹,
+Ğ¾Ğ´Ğ½Ğ°ĞºĞ¾ ĞĞ• ĞŸĞ Ğ•Ğ”ĞĞ¡Ğ¢ĞĞ’Ğ›Ğ¯Ğ•Ğœ ĞĞ ĞĞ•Ğ• ĞĞ˜ĞšĞĞšĞ˜Ğ¥ Ğ“ĞĞ ĞĞĞ¢Ğ˜Ğ™, Ğ² Ñ‚Ğ¾Ğ¼ Ñ‡Ğ¸ÑĞ»Ğµ Ğ“ĞĞ ĞĞĞ¢Ğ˜Ğ˜ Ğ¢ĞĞ’ĞĞ ĞĞĞ“Ğ Ğ¡ĞĞ¡Ğ¢ĞĞ¯ĞĞ˜Ğ¯ ĞŸĞ Ğ˜ ĞŸĞ ĞĞ”ĞĞ–Ğ• Ğ¸
+ĞŸĞ Ğ˜Ğ“ĞĞ”ĞĞĞ¡Ğ¢Ğ˜ Ğ”Ğ›Ğ¯ Ğ˜Ğ¡ĞŸĞĞ›Ğ¬Ğ—ĞĞ’ĞĞĞ˜Ğ¯ Ğ’ ĞšĞĞĞšĞ Ğ•Ğ¢ĞĞ«Ğ¥ Ğ¦Ğ•Ğ›Ğ¯Ğ¥.
+Ğ”Ğ»Ñ Ğ¿Ğ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ñ Ğ±Ğ¾Ğ»ĞµĞµ Ğ¿Ğ¾Ğ´Ñ€Ğ¾Ğ±Ğ½Ğ¾Ğ¹ Ğ¸Ğ½Ñ„Ğ¾Ñ€Ğ¼Ğ°Ñ†Ğ¸Ğ¸ Ğ¾Ğ·Ğ½Ğ°ĞºĞ¾Ğ¼ÑŒÑ‚ĞµÑÑŒ ÑĞ¾ Ğ¡Ñ‚Ğ°Ğ½Ğ´Ğ°Ñ€Ñ‚Ğ½Ğ¾Ğ¹ ĞĞ±Ñ‰ĞµÑÑ‚Ğ²ĞµĞ½Ğ½Ğ¾Ğ¹ Ğ›Ğ¸Ñ†ĞµĞ½Ğ·Ğ¸ĞµĞ¹ ĞĞ³Ñ€Ğ°Ğ½Ğ¸Ñ‡ĞµĞ½Ğ½Ğ¾Ğ³Ğ¾
+ĞŸÑ€Ğ¸Ğ¼ĞµĞ½ĞµĞ½Ğ¸Ğ¹ GNU.
+Ğ¡Ğ²ÑĞ·Ğ°Ñ‚ÑŒÑÑ Ñ Ğ°Ğ²Ñ‚Ğ¾Ñ€Ğ°Ğ¼Ğ¸ Ğ¿Ñ€Ğ¾Ğ³Ñ€Ğ°Ğ¼Ğ¼Ñ‹ Ğ²Ñ‹ Ğ¼Ğ¾Ğ¶ĞµÑ‚Ğµ Ğ¿Ğ¾ e-mail vladisgol@rambler.ru
 */
 
 #include "associatedextraattribute.h"
@@ -36,7 +36,7 @@ using namespace platon;
 
 AssociatedExtraAttribute::AssociatedExtraAttribute(ExtraAttribute* InEA, Hypotesis* InHyp)
 {
-        if(InHyp==NULL) throw "Îøèáêà ñîçäàíèÿ àññîöèèğîâàííîãî ıêñòğààòğèáóòà áåç îáúåêòà àññîöèàöèè";
+        if(InHyp==NULL) throw "ĞÑˆĞ¸Ğ±ĞºĞ° ÑĞ¾Ğ·Ğ´Ğ°Ğ½Ğ¸Ñ Ğ°ÑÑĞ¾Ñ†Ğ¸Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ½Ğ¾Ğ³Ğ¾ ÑĞºÑÑ‚Ñ€Ğ°Ğ°Ñ‚Ñ€Ğ¸Ğ±ÑƒÑ‚Ğ° Ğ±ĞµĞ· Ğ¾Ğ±ÑŠĞµĞºÑ‚Ğ° Ğ°ÑÑĞ¾Ñ†Ğ¸Ğ°Ñ†Ğ¸Ğ¸";
         this->OwnerHypotesis=InHyp;
         this->EA=InEA;
 }
@@ -44,8 +44,8 @@ AssociatedExtraAttribute::AssociatedExtraAttribute(ExtraAttribute* InEA, Hypotes
 
 std::string AssociatedExtraAttribute::GetVisibleValue()const
 {
-//Ïğîöåäóğà âûâîäèò âèäèìîå çíà÷åíèå ıêñòğààòğèáóòà, òàêîå-æå êàê âûâîäèòñÿ â recordset-å
-//÷åğåç SQL çàïğîñ
+//ĞŸÑ€Ğ¾Ñ†ĞµĞ´ÑƒÑ€Ğ° Ğ²Ñ‹Ğ²Ğ¾Ğ´Ğ¸Ñ‚ Ğ²Ğ¸Ğ´Ğ¸Ğ¼Ğ¾Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ ÑĞºÑÑ‚Ñ€Ğ°Ğ°Ñ‚Ñ€Ğ¸Ğ±ÑƒÑ‚Ğ°, Ñ‚Ğ°ĞºĞ¾Ğµ-Ğ¶Ğµ ĞºĞ°Ğº Ğ²Ñ‹Ğ²Ğ¾Ğ´Ğ¸Ñ‚ÑÑ Ğ² recordset-Ğµ
+//Ñ‡ĞµÑ€ĞµĞ· SQL Ğ·Ğ°Ğ¿Ñ€Ğ¾Ñ
                	switch (this->EA->type)
 	        {
         		case ft_String:
@@ -87,13 +87,13 @@ std::string AssociatedExtraAttribute::GetVisibleValue()const
                         case ft_Security:
                                 return ToString(this->GetIntValue());
                 	default:
-                        	throw("Óêàçàííûé òèï äàííûõ íå ïîääåğæèâàåòñÿ");
+                        	throw("Ğ£ĞºĞ°Ğ·Ğ°Ğ½Ğ½Ñ‹Ğ¹ Ñ‚Ğ¸Ğ¿ Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ… Ğ½Ğµ Ğ¿Ğ¾Ğ´Ğ´ĞµÑ€Ğ¶Ğ¸Ğ²Ğ°ĞµÑ‚ÑÑ");
 	        }
 }
 
 std::string AssociatedExtraAttribute::GetStringValue()const
 {
-//Ïîëó÷åíèå ñòğîêîâîãî çíà÷åíèÿ
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ ÑÑ‚Ñ€Ğ¾ĞºĞ¾Ğ²Ğ¾Ğ³Ğ¾ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ
         std::string ProcReturnValue="";
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -107,7 +107,7 @@ std::string AssociatedExtraAttribute::GetStringValue()const
 }
 int AssociatedExtraAttribute::GetIntValue()const
 {
-//Ïîëó÷åíèå öåëî÷èñëåííîãî çíà÷åíèÿ
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ñ†ĞµĞ»Ğ¾Ñ‡Ğ¸ÑĞ»ĞµĞ½Ğ½Ğ¾Ğ³Ğ¾ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ
         int ProcReturnValue=0;
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -121,7 +121,7 @@ int AssociatedExtraAttribute::GetIntValue()const
 }
 bool AssociatedExtraAttribute::GetBoolValue()const
 {
-//Ïîëó÷åíèå áóëåâîãî çíà÷åíèÿ
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ğ±ÑƒĞ»ĞµĞ²Ğ¾Ğ³Ğ¾ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ
         bool ProcReturnValue=false;
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -135,7 +135,7 @@ bool AssociatedExtraAttribute::GetBoolValue()const
 }
 float AssociatedExtraAttribute::GetFloatValue() const
 {
-//Ïîëó÷åíèå âåùåñòâåííîãî çíà÷åíèÿ
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ğ²ĞµÑ‰ĞµÑÑ‚Ğ²ĞµĞ½Ğ½Ğ¾Ğ³Ğ¾ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ
         float ProcReturnValue=0;
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -150,7 +150,7 @@ float AssociatedExtraAttribute::GetFloatValue() const
 }
 IBPP::Timestamp AssociatedExtraAttribute::GetDateTimeValue()const
 {
-//Ïîëó÷åíèå çíà÷åíèÿ äàòû-âğåìåíè
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ Ğ´Ğ°Ñ‚Ñ‹-Ğ²Ñ€ĞµĞ¼ĞµĞ½Ğ¸
         IBPP::Timestamp ProcReturnValue(1900,01,01);
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -165,7 +165,7 @@ IBPP::Timestamp AssociatedExtraAttribute::GetDateTimeValue()const
 }
 RoutineInOut AssociatedExtraAttribute::GetDLLValue()const
 {
-//Ïîëó÷åíèå çíà÷åíèÿ DLL
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ DLL
         RoutineInOut struVal;
         struVal.Key="";
         struVal.VisibleValue="";
@@ -188,8 +188,8 @@ RoutineInOut AssociatedExtraAttribute::GetDLLValue()const
 }
 LNK_Value AssociatedExtraAttribute::GetLink2HValue()const
 {
-//Ïîëó÷åíèå çíà÷åíèÿ LNK
-        if(this->EA->Multilnk==true) throw ("Îïåğàöèÿ äëÿ äàííîãî òèïà äàííûõ íå ïîääåğæèâàåòñÿ");
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ñ LNK
+        if(this->EA->Multilnk==true) throw ("ĞĞ¿ĞµÑ€Ğ°Ñ†Ğ¸Ñ Ğ´Ğ»Ñ Ğ´Ğ°Ğ½Ğ½Ğ¾Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ… Ğ½Ğµ Ğ¿Ğ¾Ğ´Ğ´ĞµÑ€Ğ¶Ğ¸Ğ²Ğ°ĞµÑ‚ÑÑ");
 
         LNK_Value ProcReturnValue;
         ProcReturnValue.LinkTo=0;
@@ -220,7 +220,7 @@ LNK_Value AssociatedExtraAttribute::GetLink2PValue()const
 
 long AssociatedExtraAttribute::GetRefBookValue()const
 {
-//Ïîëó÷åíèå èäåíòèôèêàòîğà ñïğàâî÷íèêà
+//ĞŸĞ¾Ğ»ÑƒÑ‡ĞµĞ½Ğ¸Ğµ Ğ¸Ğ´ĞµĞ½Ñ‚Ğ¸Ñ„Ğ¸ĞºĞ°Ñ‚Ğ¾Ñ€Ğ° ÑĞ¿Ñ€Ğ°Ğ²Ğ¾Ñ‡Ğ½Ğ¸ĞºĞ°
         long ProcReturnValue=0;
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -347,7 +347,7 @@ void AssociatedExtraAttribute::SetDLLValue(RoutineInOut In)
 }
 void AssociatedExtraAttribute::SetLink2HValue(LNK_Value In)
 {
-        if(this->EA->Multilnk==true) throw ("Îïåğàöèÿ äëÿ äàííîãî òèïà äàííûõ íå ïîääåğæèâàåòñÿ");
+        if(this->EA->Multilnk==true) throw ("ĞĞ¿ĞµÑ€Ğ°Ñ†Ğ¸Ñ Ğ´Ğ»Ñ Ğ´Ğ°Ğ½Ğ½Ğ¾Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ… Ğ½Ğµ Ğ¿Ğ¾Ğ´Ğ´ĞµÑ€Ğ¶Ğ¸Ğ²Ğ°ĞµÑ‚ÑÑ");
 
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
@@ -396,10 +396,10 @@ void AssociatedExtraAttribute::SetRefBookValue(long In)
 
 long AssociatedExtraAttribute::SetMultiLNKValue(LNK_Value In, long ID_inlist)
 {
-// Ôóíêöèÿ âûçûâàåò õğàíèìóş ïğîöåäóğó äëÿ äîáàâëåíèÿ èëè ğåäàêòèğîâàíèÿ ìíîæåñòâåííîé ññûëêè
+// Ğ¤ÑƒĞ½ĞºÑ†Ğ¸Ñ Ğ²Ñ‹Ğ·Ñ‹Ğ²Ğ°ĞµÑ‚ Ñ…Ñ€Ğ°Ğ½Ğ¸Ğ¼ÑƒÑ Ğ¿Ñ€Ğ¾Ñ†ĞµĞ´ÑƒÑ€Ñƒ Ğ´Ğ»Ñ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ĞµĞ½Ğ¸Ñ Ğ¸Ğ»Ğ¸ Ñ€ĞµĞ´Ğ°ĞºÑ‚Ğ¸Ñ€Ğ¾Ğ²Ğ°Ğ½Ğ¸Ñ Ğ¼Ğ½Ğ¾Ğ¶ĞµÑÑ‚Ğ²ĞµĞ½Ğ½Ğ¾Ğ¹ ÑÑÑ‹Ğ»ĞºĞ¸
         long ProcReturnValue=0;
 
-        if(this->EA->Multilnk==false) throw ("Îïåğàöèÿ äëÿ äàííîãî òèïà äàííûõ íå ïîääåğæèâàåòñÿ");
+        if(this->EA->Multilnk==false) throw ("ĞĞ¿ĞµÑ€Ğ°Ñ†Ğ¸Ñ Ğ´Ğ»Ñ Ğ´Ğ°Ğ½Ğ½Ğ¾Ğ³Ğ¾ Ñ‚Ğ¸Ğ¿Ğ° Ğ´Ğ°Ğ½Ğ½Ñ‹Ñ… Ğ½Ğµ Ğ¿Ğ¾Ğ´Ğ´ĞµÑ€Ğ¶Ğ¸Ğ²Ğ°ĞµÑ‚ÑÑ");
 
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();

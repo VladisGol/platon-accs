@@ -1,3 +1,33 @@
+/*
+software core of accounting system "Platon".
+Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation version 2.1 of the License.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+Contacts: e-mail vladisgol@rambler.ru
+
+РЇРґСЂРѕ СЃРёСЃС‚РµРјС‹ СѓС‡РµС‚Р° "РџР»Р°С‚РѕРЅ".
+РђРІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ СЏРІР»СЏСЋС‚СЃСЏ Р‘РѕСЂРёСЃРµРЅРєРѕРІ РЎРµСЂРіРµР№ РђР»РµРєСЃР°РЅРґСЂРѕРІРёС‡ Рё Р“РѕР»РѕРІС‹СЂРёРЅ Р’Р»Р°РґРёСЃР»Р°РІ Р’Р»Р°РґРёРјРёСЂРѕРІРёС‡, 2005-2009Рі.
+Р”Р°РЅРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР° СЏРІР»СЏРµС‚СЃСЏ СЃРІРѕР±РѕРґРЅС‹Рј РїСЂРѕРіСЂР°РјРјРЅС‹Рј РѕР±РµСЃРїРµС‡РµРЅРёРµРј. Р’С‹ РІРїСЂР°РІРµ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏС‚СЊ РµРµ Рё/РёР»Рё РјРѕРґРёС„РёС†РёСЂРѕРІР°С‚СЊ
+РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ СѓСЃР»РѕРІРёСЏРјРё РІРµСЂСЃРёРё 2.1 РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРё РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ РџСЂРёРјРµРЅРµРЅРёСЏ GNU,
+РѕРїСѓР±Р»РёРєРѕРІР°РЅРЅРѕР№ Free Software Foundation.
+РњС‹ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅСЏРµРј СЌС‚Сѓ РїСЂРѕРіСЂР°РјРјСѓ РІ РЅР°РґРµР¶РґРµ РЅР° С‚Рѕ, С‡С‚Рѕ РѕРЅР° Р±СѓРґРµС‚ РІР°Рј РїРѕР»РµР·РЅРѕР№,
+РѕРґРЅР°РєРѕ РќР• РџР Р•Р”РћРЎРўРђР’Р›РЇР•Рњ РќРђ РќР•Р• РќРРљРђРљРРҐ Р“РђР РђРќРўРР™, РІ С‚РѕРј С‡РёСЃР»Рµ Р“РђР РђРќРўРР РўРћР’РђР РќРћР“Рћ РЎРћРЎРўРћРЇРќРРЇ РџР Р РџР РћР”РђР–Р• Рё
+РџР РР“РћР”РќРћРЎРўР Р”Р›РЇ РРЎРџРћР›Р¬Р—РћР’РђРќРРЇ Р’ РљРћРќРљР Р•РўРќР«РҐ Р¦Р•Р›РЇРҐ.
+Р”Р»СЏ РїРѕР»СѓС‡РµРЅРёСЏ Р±РѕР»РµРµ РїРѕРґСЂРѕР±РЅРѕР№ РёРЅС„РѕСЂРјР°С†РёРё РѕР·РЅР°РєРѕРјСЊС‚РµСЃСЊ СЃРѕ РЎС‚Р°РЅРґР°СЂС‚РЅРѕР№ РћР±С‰РµСЃС‚РІРµРЅРЅРѕР№ Р›РёС†РµРЅР·РёРµР№ РћРіСЂР°РЅРёС‡РµРЅРЅРѕРіРѕ
+РџСЂРёРјРµРЅРµРЅРёР№ GNU.
+РЎРІСЏР·Р°С‚СЊСЃСЏ СЃ Р°РІС‚РѕСЂР°РјРё РїСЂРѕРіСЂР°РјРјС‹ РІС‹ РјРѕР¶РµС‚Рµ РїРѕ e-mail vladisgol@rambler.ru
+*/
 #ifndef dbetcH
 #define dbetcH
 #include <iostream>
@@ -8,49 +38,49 @@
 #include <map>
 #include "ibpp.h"
 /*to do
- Сделать поддержку beginupdate и endupdate для экземпляра DbIni,
- по beginupdate - начинаем запись без commit`a
- по endupdate - производим commit и переоткрываем секцию, в
- ином случае после изменения параметра - переоткрываем секцию
+ РЎРґРµР»Р°С‚СЊ РїРѕРґРґРµСЂР¶РєСѓ beginupdate Рё endupdate РґР»СЏ СЌРєР·РµРјРїР»СЏСЂР° DbIni,
+ РїРѕ beginupdate - РЅР°С‡РёРЅР°РµРј Р·Р°РїРёСЃСЊ Р±РµР· commit`a
+ РїРѕ endupdate - РїСЂРѕРёР·РІРѕРґРёРј commit Рё РїРµСЂРµРѕС‚РєСЂС‹РІР°РµРј СЃРµРєС†РёСЋ, РІ
+ РёРЅРѕРј СЃР»СѓС‡Р°Рµ РїРѕСЃР»Рµ РёР·РјРµРЅРµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР° - РїРµСЂРµРѕС‚РєСЂС‹РІР°РµРј СЃРµРєС†РёСЋ
 */
 namespace platon
 {
-//Поддерживаемые типы
+//РџРѕРґРґРµСЂР¶РёРІР°РµРјС‹Рµ С‚РёРїС‹
 typedef enum {
-        ptNone,         //неизвестный тип
-        ptBlob,         //любой большой бинарный объект, нужны подтипы (например, doc, pdf и т.п.)
-        ptBool,         //логический
-        ptCurrency,     //Денежный тип от -922337203685477.5808 до 922337203685477.5807  храним в Ints
-        ptDateTime,     //дата-время
-        ptFloat,        //вещественное
-        ptInt,          //целое
-        ptInt64,        //большое целое
-        ptShortString,  //короткая строка
-        ptString,       //строка храним в Блобе
+        ptNone,         //РЅРµРёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї
+        ptBlob,         //Р»СЋР±РѕР№ Р±РѕР»СЊС€РѕР№ Р±РёРЅР°СЂРЅС‹Р№ РѕР±СЉРµРєС‚, РЅСѓР¶РЅС‹ РїРѕРґС‚РёРїС‹ (РЅР°РїСЂРёРјРµСЂ, doc, pdf Рё С‚.Рї.)
+        ptBool,         //Р»РѕРіРёС‡РµСЃРєРёР№
+        ptCurrency,     //Р”РµРЅРµР¶РЅС‹Р№ С‚РёРї РѕС‚ -922337203685477.5808 РґРѕ 922337203685477.5807  С…СЂР°РЅРёРј РІ Ints
+        ptDateTime,     //РґР°С‚Р°-РІСЂРµРјСЏ
+        ptFloat,        //РІРµС‰РµСЃС‚РІРµРЅРЅРѕРµ
+        ptInt,          //С†РµР»РѕРµ
+        ptInt64,        //Р±РѕР»СЊС€РѕРµ С†РµР»РѕРµ
+        ptShortString,  //РєРѕСЂРѕС‚РєР°СЏ СЃС‚СЂРѕРєР°
+        ptString,       //СЃС‚СЂРѕРєР° С…СЂР°РЅРёРј РІ Р‘Р»РѕР±Рµ
 } EtcParamType;
 
 
 typedef std::map<std::string,int,std::less<std::string> > cache_keys;
 typedef cache_keys::value_type value_type;
 
-//Сам класс: интерфейс к БД с настройками программы
+//РЎР°Рј РєР»Р°СЃСЃ: РёРЅС‚РµСЂС„РµР№СЃ Рє Р‘Р” СЃ РЅР°СЃС‚СЂРѕР№РєР°РјРё РїСЂРѕРіСЂР°РјРјС‹
 class DbEtc
 {
         int CurrentUserId, CurrentKeyId, KeyUserId, bmCurrentKeyId, bmKeyUserId;
         bool ReadOnly,isOpenKey, bmReadOnly, bmIsOpenKey, isUpdateMode;
         std::string CurrentUser, OpenedKey, bmOpenedKey;
         EtcParamType  NameToType(const std::string Name);
-        IBPP::Database DB;            //База данных IBPP
+        IBPP::Database DB;            //Р‘Р°Р·Р° РґР°РЅРЅС‹С… IBPP
         IBPP::Transaction LocalTR;
         IBPP::Statement stKey,stParameters;
-        std::vector<IBPP::Row> Parameters;   //Параметры конкретного ключа
+        std::vector<IBPP::Row> Parameters;   //РџР°СЂР°РјРµС‚СЂС‹ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РєР»СЋС‡Р°
         void GetCurrentUser();                                                   //Ok!
         void  GetParameters(const int CurrentKeyId);                                   //Ok!
         int  SaveKey(const int id, const std::string Key, const int IdUser);    //Ok!
         int  GetKey(const std::string Key, const int IdUser);                    //Ok!
-        void  SaveBookmark();               //Сохраним параметры открытого ключа   //Ok!
-        bool  RestoreBookmark();            //Восстановим параметры открытого ключа   //Ok!
-        int  CheckParam(const std::string ValueName);  //Проверим существование параметра для открытого объекта //Ok!
+        void  SaveBookmark();               //РЎРѕС…СЂР°РЅРёРј РїР°СЂР°РјРµС‚СЂС‹ РѕС‚РєСЂС‹С‚РѕРіРѕ РєР»СЋС‡Р°   //Ok!
+        bool  RestoreBookmark();            //Р’РѕСЃСЃС‚Р°РЅРѕРІРёРј РїР°СЂР°РјРµС‚СЂС‹ РѕС‚РєСЂС‹С‚РѕРіРѕ РєР»СЋС‡Р°   //Ok!
+        int  CheckParam(const std::string ValueName);  //РџСЂРѕРІРµСЂРёРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂР° РґР»СЏ РѕС‚РєСЂС‹С‚РѕРіРѕ РѕР±СЉРµРєС‚Р° //Ok!
         void PrepareWriteParamValue(const std::string SQL, const std::string Name);    //Ok!
         void ExecuteWriteParamValue();
         void Init(void);  //Ok!
@@ -58,95 +88,95 @@ class DbEtc
         int  KeyCacheExists(const std::string Key);
         void ReadCache(void);
 public:
-        //Исключения
+        //РСЃРєР»СЋС‡РµРЅРёСЏ
         class DbEtcError{};
         class ErrorWriteKey:public DbEtcError{};
-        class KeyReadOnly:public DbEtcError{};    //Объект открыт только для чтения
-        class KeyNotOpen:public DbEtcError{};     //Объект не открыт
-        class BadValue:public DbEtcError{};       //Неправильное значение параметра
-        class MismatchTypeValue:public DbEtcError{}; //Несоответсвие типа параметра и значения
-        class ErrWriteValue:public DbEtcError{};     //Ошибка сохранения параметра
-        class UnkownParameter:public DbEtcError{};     //Неизвестный параметр
+        class KeyReadOnly:public DbEtcError{};    //РћР±СЉРµРєС‚ РѕС‚РєСЂС‹С‚ С‚РѕР»СЊРєРѕ РґР»СЏ С‡С‚РµРЅРёСЏ
+        class KeyNotOpen:public DbEtcError{};     //РћР±СЉРµРєС‚ РЅРµ РѕС‚РєСЂС‹С‚
+        class BadValue:public DbEtcError{};       //РќРµРїСЂР°РІРёР»СЊРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°
+        class MismatchTypeValue:public DbEtcError{}; //РќРµСЃРѕРѕС‚РІРµС‚СЃРІРёРµ С‚РёРїР° РїР°СЂР°РјРµС‚СЂР° Рё Р·РЅР°С‡РµРЅРёСЏ
+        class ErrWriteValue:public DbEtcError{};     //РћС€РёР±РєР° СЃРѕС…СЂР°РЅРµРЅРёСЏ РїР°СЂР°РјРµС‚СЂР°
+        class UnkownParameter:public DbEtcError{};     //РќРµРёР·РІРµСЃС‚РЅС‹Р№ РїР°СЂР°РјРµС‚СЂ
         class NonRegisterUser:public DbEtcError{};
-        class NotReadMode:public DbEtcError{}; //Используется режим массовой записи, чтение невозможно!
+        class NotReadMode:public DbEtcError{}; //РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ СЂРµР¶РёРј РјР°СЃСЃРѕРІРѕР№ Р·Р°РїРёСЃРё, С‡С‚РµРЅРёРµ РЅРµРІРѕР·РјРѕР¶РЅРѕ!
         class BigNameKey: public DbEtcError{};
         class BigNameValue: public DbEtcError{};
-        IBPP::Timestamp DT;           //Дата время
+        IBPP::Timestamp DT;           //Р”Р°С‚Р° РІСЂРµРјСЏ
 
-        //Конструктор
+        //РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ
         DbEtc(IBPP::Database myDB);                                             //Ok!
         DbEtc(std::string HostName, std::string DatabaseName,
                 std::string UserName, std::string Password, std::string Role,
                 std::string CharSet, std::string CreateParams);                  //Ok!
-        //Деструктор
+        //Р”РµСЃС‚СЂСѓРєС‚РѕСЂ
          ~DbEtc(void);                                                          //Ok!
-        //Закроем объект
+        //Р—Р°РєСЂРѕРµРј РѕР±СЉРµРєС‚
         void  CloseKey(void);                                                     //Ok!
-        //Включим режим массированной записи в БД
+        //Р’РєР»СЋС‡РёРј СЂРµР¶РёРј РјР°СЃСЃРёСЂРѕРІР°РЅРЅРѕР№ Р·Р°РїРёСЃРё РІ Р‘Р”
         inline void BeginUpdate(void) {isUpdateMode=true;}                        //Ok!
-        //Завершим режим массированной записи в БД
+        //Р—Р°РІРµСЂС€РёРј СЂРµР¶РёРј РјР°СЃСЃРёСЂРѕРІР°РЅРЅРѕР№ Р·Р°РїРёСЃРё РІ Р‘Р”
         inline void EndUpdate(void){                                              //Ok!
                         isUpdateMode=false;
                         LocalTR->Commit();
                         ReadCache();
                 };
-        //Создадаим объект для пользователя -1 - текущего, 0 - root, либо для другого по его UID
+        //РЎРѕР·РґР°РґР°РёРј РѕР±СЉРµРєС‚ РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ -1 - С‚РµРєСѓС‰РµРіРѕ, 0 - root, Р»РёР±Рѕ РґР»СЏ РґСЂСѓРіРѕРіРѕ РїРѕ РµРіРѕ UID
         bool  CreateKey(const std::string Key,const int IdUser = -1);                 //Ok!
-        //Удалим объект для пользователя -1 - текущего, 0 - root, либо для другого по его UID
+        //РЈРґР°Р»РёРј РѕР±СЉРµРєС‚ РґР»СЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ -1 - С‚РµРєСѓС‰РµРіРѕ, 0 - root, Р»РёР±Рѕ РґР»СЏ РґСЂСѓРіРѕРіРѕ РїРѕ РµРіРѕ UID
         bool  DeleteKey(const std::string Key,const int IdUser = -1);                 //Ok!
-        //Проверим существование объекта
+        //РџСЂРѕРІРµСЂРёРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РѕР±СЉРµРєС‚Р°
         bool  KeyExists(const std::string Key,const int IdUser = -1);                 //Ok!
-        //Откроем объект
+        //РћС‚РєСЂРѕРµРј РѕР±СЉРµРєС‚
         bool  OpenKey(const std::string Key, const bool CanCreate=false, const int IdUser = -1);  //Ok!
-        //Откроем объект только для чтения - пока не поддерживаеться
+        //РћС‚РєСЂРѕРµРј РѕР±СЉРµРєС‚ С‚РѕР»СЊРєРѕ РґР»СЏ С‡С‚РµРЅРёСЏ - РїРѕРєР° РЅРµ РїРѕРґРґРµСЂР¶РёРІР°РµС‚СЊСЃСЏ
         bool  OpenKeyReadOnly(const std::string Key, const int IdUser=-1);       //Ok!
 
-        //Прочитаем объект со всеми параметрами и подобъектами из файла
+        //РџСЂРѕС‡РёС‚Р°РµРј РѕР±СЉРµРєС‚ СЃРѕ РІСЃРµРјРё РїР°СЂР°РјРµС‚СЂР°РјРё Рё РїРѕРґРѕР±СЉРµРєС‚Р°РјРё РёР· С„Р°Р№Р»Р°
         bool  LoadKeysFromFile(const std::string UserName, const std::string FileName);
-        //Переместим (скопируем при Delete==false) объект в другую ветку
+        //РџРµСЂРµРјРµСЃС‚РёРј (СЃРєРѕРїРёСЂСѓРµРј РїСЂРё Delete==false) РѕР±СЉРµРєС‚ РІ РґСЂСѓРіСѓСЋ РІРµС‚РєСѓ
         bool  RenameKey(const std::string OldName, const std::string NewName,const int IdUser = -1);    //Ok!
-        //Скопируем ключ со веми параметрами
+        //РЎРєРѕРїРёСЂСѓРµРј РєР»СЋС‡ СЃРѕ РІРµРјРё РїР°СЂР°РјРµС‚СЂР°РјРё
         bool  CopyKey(const std::string OldName, const int OldUid, const std::string NewName, const int NewUid);
-        //Сохраним объект со всеми подобъектами и параметрами в файл
+        //РЎРѕС…СЂР°РЅРёРј РѕР±СЉРµРєС‚ СЃРѕ РІСЃРµРјРё РїРѕРґРѕР±СЉРµРєС‚Р°РјРё Рё РїР°СЂР°РјРµС‚СЂР°РјРё РІ С„Р°Р№Р»
         bool  SaveKeysToFile(const std::string UserName, const std::string FileName);
-        //Получим информацию об объекте
+        //РџРѕР»СѓС‡РёРј РёРЅС„РѕСЂРјР°С†РёСЋ РѕР± РѕР±СЉРµРєС‚Рµ
         //bool  GetKeyInfo(TEtcKeyInfo &Value);
 
-        //Удалим параметр
+        //РЈРґР°Р»РёРј РїР°СЂР°РјРµС‚СЂ
         bool  DeleteValue(const std::string Name);                               //Ok!
-        //Получим информацию о параметре
+        //РџРѕР»СѓС‡РёРј РёРЅС„РѕСЂРјР°С†РёСЋ Рѕ РїР°СЂР°РјРµС‚СЂРµ
         //void  GetDataInfo(const std::string ValueName, TEtcDataInfo* &Value);
-        //Получим размер данных
+        //РџРѕР»СѓС‡РёРј СЂР°Р·РјРµСЂ РґР°РЅРЅС‹С…
         int  GetDataSize(const std::string ValueName);
-        //Получим тип параметра
+        //РџРѕР»СѓС‡РёРј С‚РёРї РїР°СЂР°РјРµС‚СЂР°
         EtcParamType  GetDataType(const std::string ValueName);                 //Ok!
-        //Получим список параметров
+        //РџРѕР»СѓС‡РёРј СЃРїРёСЃРѕРє РїР°СЂР°РјРµС‚СЂРѕРІ
         std::vector<std::string>  GetValueNames();                               //Ok!
-        //Прочитаем двоичные данные в файл или поток
+        //РџСЂРѕС‡РёС‚Р°РµРј РґРІРѕРёС‡РЅС‹Рµ РґР°РЅРЅС‹Рµ РІ С„Р°Р№Р» РёР»Рё РїРѕС‚РѕРє
         bool  ReadBinaryData(const std::string Name,std::iostream &Stream);       //Ok!
         bool  ReadBinaryData(const std::string Name,const std::string FileName); //Ok!
-        //Пишем Блоб в DBEtc из файла или потока
+        //РџРёС€РµРј Р‘Р»РѕР± РІ DBEtc РёР· С„Р°Р№Р»Р° РёР»Рё РїРѕС‚РѕРєР°
         bool  WriteBinaryData(const std::string Name,std::iostream &Stream);      //Ok!
         bool  WriteBinaryData(const std::string Name,const std::string FileName); //Ok!
-        //Читаем булево значение параметра
+        //Р§РёС‚Р°РµРј Р±СѓР»РµРІРѕ Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР°
         bool  ReadBool(const std::string Name);                                  //Ok!
-        //Читаем значение типа Дата/Время параметра
+        //Р§РёС‚Р°РµРј Р·РЅР°С‡РµРЅРёРµ С‚РёРїР° Р”Р°С‚Р°/Р’СЂРµРјСЏ РїР°СЂР°РјРµС‚СЂР°
         IBPP::Timestamp  ReadDateTime(const std::string Name);                  //Ok!
-        //Читаем вещественный параметр
+        //Р§РёС‚Р°РµРј РІРµС‰РµСЃС‚РІРµРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ
         double  ReadFloat(const std::string Name);                              //Ok!
-        //Читаем целочисленный параметр
+        //Р§РёС‚Р°РµРј С†РµР»РѕС‡РёСЃР»РµРЅРЅС‹Р№ РїР°СЂР°РјРµС‚СЂ
         int  ReadInteger(const std::string Name);                                //Ok!
-        //Читаем параметр типа большое целое
+        //Р§РёС‚Р°РµРј РїР°СЂР°РјРµС‚СЂ С‚РёРїР° Р±РѕР»СЊС€РѕРµ С†РµР»РѕРµ
         int64_t  ReadInt64(const std::string Name);                              //Ok!
-        //Читаем короткую строку
+        //Р§РёС‚Р°РµРј РєРѕСЂРѕС‚РєСѓСЋ СЃС‚СЂРѕРєСѓ
         std::string  ReadShortString(const std::string Name);                    //Ok!
-        //Читаем строку из bloba
+        //Р§РёС‚Р°РµРј СЃС‚СЂРѕРєСѓ РёР· bloba
         std::string  ReadString(const std::string Name);                         //Ok!
-        //Переименуем параметр
+        //РџРµСЂРµРёРјРµРЅСѓРµРј РїР°СЂР°РјРµС‚СЂ
         void  RenameValue(const std::string OldName, const std::string NewName); //Ok!
-        //Проверим существование параметра
+        //РџСЂРѕРІРµСЂРёРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ РїР°СЂР°РјРµС‚СЂР°
         bool  ParamExists(const std::string Name);                               //Ok!
-        //пишем значение параметра соответсвующего типа
+        //РїРёС€РµРј Р·РЅР°С‡РµРЅРёРµ РїР°СЂР°РјРµС‚СЂР° СЃРѕРѕС‚РІРµС‚СЃРІСѓСЋС‰РµРіРѕ С‚РёРїР°
         void  WriteBool(const std::string Name, bool Value);                     //Ok!
         void  WriteDateTime(const std::string Name, IBPP::Timestamp Value);      //Ok!
         void  WriteFloat(const std::string Name, double Value);                  //Ok!
