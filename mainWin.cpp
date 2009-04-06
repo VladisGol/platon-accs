@@ -195,18 +195,24 @@ void mainWin::EditItem()
 	if(CurrentObjectLevel==Level_Hypotesis)
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
-		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
-		md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
-		md->show();
+		if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
+		{
+			long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+			platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
+			md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+			md->show();
+		}
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
 		int myrow=tableViewPragma->currentIndex().row();
-		long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
-		md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
-		md->show();
+		if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
+		{
+			long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
+			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
+			md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
+			md->show();
+		}
 	}
 	return ;
 }
