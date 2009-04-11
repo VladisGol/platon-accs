@@ -16,6 +16,7 @@
 #include <QMessageBox>
 #include "DialogLogin.h"
 #include <QMessageBox>
+#include <QDateTime>
 
 
 #include "ibpp.h"
@@ -31,9 +32,11 @@ public:
 	virtual ~DataClass();
 	QMap <QString, QLibrary*> ArrayDynLib;	//Массив библиотек
 	IBPP::Database DB;						//База данных
+	QDateTime ProgramDateTime;				//Переменная для программного времени
 
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
 	QLibrary* GetLibByName(QString inString);
+	void SetProgramDateTime();
 
 };
 DataClass* GetDataModule(QObject * fromform);

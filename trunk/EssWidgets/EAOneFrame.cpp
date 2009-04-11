@@ -284,6 +284,7 @@ void EA_OneFrame::Save()
 				throw("Указанный тип данных не поддерживается");
 
 		}
+		MyDCl->SetProgramDateTime();
 	}
 }
 

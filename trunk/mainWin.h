@@ -25,7 +25,6 @@ class mainWin : public QMainWindow, public Ui::MainWindow
 
 public:
     mainWin(QWidget * parent = 0);
-	QDateTime ProgramDateTime;
 	platon::DataClass* MyDCl;
 	void RefreshHView();
 	void RefreshPView();
