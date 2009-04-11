@@ -32,6 +32,8 @@ mainWin::mainWin(QWidget *parent)
 			QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
 			QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
 			QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
+			QObject::connect(action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
+			QObject::connect(action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
 
 			SetEidosView(0);
 
@@ -58,29 +60,43 @@ mainWin::mainWin(QWidget *parent)
 
 			//Устанавливаем размеры виджетов на форме
 			ReadFormWidgetsAppearance();
+			DisableAllActions();
 		}
+}
+void mainWin::DisableAllActions()
+{
+	//Процедура отключает любые действия на форме
+	this->action_add->setEnabled(false);
+	this->action_del->setEnabled(false);
+	this->action_edit->setEnabled(false);
+	this->action_links->setEnabled(false);
+	this->action_refresh->setEnabled(false);
+	this->action_AddFilter->setEnabled(false);
+	this->action_RemoveFilter->setEnabled(false);
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
 {
+
 	if (obj == EidosTreeWidget)
 	{
 		if(event->type()==QEvent::FocusIn)
 		{
-			this->action_add->setEnabled(false);
-			this->action_del->setEnabled(false);
-			this->action_edit->setEnabled(false);
-			this->action_links->setEnabled(false);
+			DisableAllActions();//Пока в форме не должны обрабатываться объекты Eidos
 		}
 	}
 	if (obj == tableViewHypotesis)
 	{
 		if(event->type()==QEvent::FocusIn)
 		{
+			DisableAllActions();
 			this->action_add->setEnabled(true);
 			this->action_del->setEnabled(true);
 			this->action_edit->setEnabled(true);
 			this->action_links->setEnabled(true);
+			this->action_refresh->setEnabled(true);
+			this->action_AddFilter->setEnabled(true);
+			if(SFProxyModelH->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			CurrentObjectLevel=Level_Hypotesis;
 		}
 	}
@@ -88,6 +104,7 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 	{
 		if(event->type()==QEvent::FocusIn)
 		{
+			DisableAllActions();
 			QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
 			if(Species=="OBJ" || Species=="RES")
 			{
@@ -95,10 +112,12 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 				this->action_del->setEnabled(true);
 				this->action_edit->setEnabled(true);
 				this->action_links->setEnabled(true);
+				this->action_refresh->setEnabled(true);
+				this->action_AddFilter->setEnabled(true);
+				if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			}
 			else
 			{
-				this->action_add->setEnabled(false);
 				this->action_del->setEnabled(true);
 				this->action_edit->setEnabled(true);
 				this->action_links->setEnabled(true);
@@ -106,7 +125,6 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 			CurrentObjectLevel=Level_Pragma;
 		}
 	}
-
 	return false;
 }
 
@@ -315,6 +333,52 @@ void mainWin::CloseForm()
 	//Слот закрытия формы. Перед закрытием формы сохраняем параметры формы
 	WriteFormWidgetsAppearance();
 	this->close();
+}
+void mainWin::AddFilter()
+{
+	QString FieldCaption;
+	int col;
+
+	if(CurrentObjectLevel==Level_Hypotesis)
+	{
+		col=tableViewHypotesis->currentIndex().column();
+		FieldCaption = tableViewHypotesis->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
+	}
+	if(CurrentObjectLevel==Level_Pragma)
+	{
+		col=tableViewPragma->currentIndex().column();
+		FieldCaption = tableViewPragma->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
+	}
+
+	bool ok;
+    QString textExp = QInputDialog::getText(this, tr("Введите условие фильтра"),	tr("Для поля:")+FieldCaption,QLineEdit::Normal,0,&ok);
+	if (ok && !textExp.isEmpty())
+	{
+		if(CurrentObjectLevel==Level_Hypotesis)
+		{
+			SFProxyModelH->setFilterRegExp(QRegExp(textExp));
+			SFProxyModelH->setFilterKeyColumn(col);
+		}
+		if(CurrentObjectLevel==Level_Pragma)
+		{
+			SFProxyModelP->setFilterRegExp(QRegExp(textExp));
+			SFProxyModelP->setFilterKeyColumn(col);
+		}
+	}
+}
+void mainWin::RemoveFilter()
+{
+	if(CurrentObjectLevel==Level_Hypotesis)
+	{
+		SFProxyModelH->setFilterRegExp(QRegExp(""));
+		SFProxyModelH->setFilterKeyColumn(-1);
+	}
+	if(CurrentObjectLevel==Level_Pragma)
+	{
+		SFProxyModelP->setFilterRegExp(QRegExp(""));
+		SFProxyModelP->setFilterKeyColumn(-1);
+	}
+	this->action_RemoveFilter->setEnabled(false);
 }
 void mainWin::ReadFormWidgetsAppearance()
 {
