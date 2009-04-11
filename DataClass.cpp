@@ -95,5 +95,14 @@ DataClass* GetDataModule(QObject * fromform)
 	else
 		return fromform->findChild<DataClass *>(DTLObjectName);//Есть детка нужного типа
 }
+void DataClass::SetProgramDateTime()
+{
+	//Проверяем попадает ли установка даты времени в диапазо +-5 минут от системного времени
+	if(QDateTime::currentDateTime() < this->ProgramDateTime.addSecs(5*60) && QDateTime::currentDateTime().addSecs(5*60) > this->ProgramDateTime)
+	{
+		ProgramDateTime= QDateTime::currentDateTime();
+	}
+	platon::SetTimestampTemporalCompareFor(this->DB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
+}
 
 }

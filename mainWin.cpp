@@ -43,7 +43,7 @@ mainWin::mainWin(QWidget *parent)
 			CurrentObjectLevel=0;
 
 			//Программное время
-			this->ProgramDateTime = QDateTime::currentDateTime();
+			this->MyDCl->ProgramDateTime = QDateTime::currentDateTime();
 			DTBaseShifter=new QTimer(this);
 			connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
 			BaseTimeShift();
@@ -319,14 +319,8 @@ void mainWin::RefreshPView()
 void mainWin::BaseTimeShift()
 {
 //Процедура - слот производит перевод текущего системного времени в базе данных для корректировки выборок по темпоральным значениям
-	//Проверяем попадает ли установка даты времени в диапазо +-5 минут от системного времени
-	if(QDateTime::currentDateTime() < this->ProgramDateTime.addSecs(5*60) && QDateTime::currentDateTime().addSecs(5*60) > this->ProgramDateTime)
-	{
-		ProgramDateTime= QDateTime::currentDateTime();
-	}
-
-	platon::SetTimestampTemporalCompareFor(this->MyDCl->DB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
-	this->statusbar->showMessage(tr("Программное время ")+ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
+	this->MyDCl->SetProgramDateTime();
+	this->statusbar->showMessage(tr("Программное время ")+MyDCl->ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
 }
 void mainWin::CloseForm()
 {
