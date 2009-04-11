@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="PICS" >
+    <file>filteroff.png</file>
+    <file>filter2.png</file>
     <file>konstr.png</file>
     <file>add_action.png</file>
     <file>add_resourse.png</file>

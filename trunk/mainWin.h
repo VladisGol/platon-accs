@@ -41,6 +41,9 @@ private slots:
 	void BaseTimeShift();//Слот для установки в базе данных времени работы в программе
 	void Showlinks();// Слот для вызова формы отображения ссылок на текущую запись
 	void CloseForm();
+	void AddFilter();	//Слот для задания фитра
+	void RemoveFilter();	//Слот для снятия условий фильтра
+	void DisableAllActions();	//Отключение всех действий на форме
 
 private:
 	platon::Eidos* LocalEidos;
