@@ -1,0 +1,18 @@
+#summary One-sentence summary of this page.
+#labels Featured,ContactRU
+
+=== ContactRU ===
+
+_Связь с разработчиками/Команда_
+
+Автор/разработчик: *VladisGol* 
+  * Mail: vladisgol@gmail.com
+  * Jabber: vladisgol@gmail.com
+  * Сайт: [http://vladisgol.blogspot.com Блог vladisgol.blogspot.com]
+
+Разработчик: *BorSer* :))
+
+Бетатестер/помощник: *DudAndr*
+  * Mail: dudandr@gmail.com
+  * Jabber: dudandr@gmail.com
+  * Сайт: [http://dudandr.blogspot.com Блог dudandr.blogspot.com]
