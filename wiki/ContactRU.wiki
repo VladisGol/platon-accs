@@ -6,7 +6,7 @@
   * Jabber: vladisgol@gmail.com
   * Сайт: [http://vladisgol.blogspot.com Блог vladisgol.blogspot.com]
 
-Разработчик: borser :))
+Разработчик: sa.borisenkov
 
 Бетатестер/помощник: dudandr
   * Mail: dudandr@gmail.com
