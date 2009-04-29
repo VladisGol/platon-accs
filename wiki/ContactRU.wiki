@@ -1,4 +1,4 @@
-#summary _Связь с разработчиками/Команда_
+#summary Связь с разработчиками/Команда
 #labels Featured,ContactRU
 
 Автор/разработчик: vladisgol 
