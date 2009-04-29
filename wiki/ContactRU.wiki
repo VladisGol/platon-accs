@@ -1,5 +1,5 @@
 #summary Связь с разработчиками/Команда
-#labels Featured,ContactRU
+#labels Featured
 
 Автор/разработчик: vladisgol 
   * Mail: vladisgol@gmail.com
