@@ -1,14 +1,26 @@
-#summary Связь с разработчиками/Команда
+#summary Связь с разработчиками/Команда/Роли
 #labels Featured
 
-Автор/разработчик: vladisgol 
+Автор/разработчик: Головырин В.В. (vladisgol) 
   * Mail: vladisgol@gmail.com
   * Jabber: vladisgol@gmail.com
   * Сайт: [http://vladisgol.blogspot.com Блог vladisgol.blogspot.com]
+Роль в проекте:
+  * Архитектура объектов ядра системы
+  * Архитектура визуальных компонентов взаимодействия с ядром.
 
-Разработчик: sa.borisenkov
+Разработчик: Борисенков С.А. (sa.borisenkov)
+  * Mail: sa.borisenkov@gmail.com
+  * Jabber: sa.borisenkov@gmail.com
+Роль в проекте:
+  * Модуль сохранения настроек dbETC
+  * Архитектура базы данных, в том числе хранимые процедуры ядра. 
+  * Поисковая подсистема
 
-Бетатестер/помощник: dudandr
+Бетатестер/помощник: Дудоров А.В. (dudandr)
   * Mail: dudandr@gmail.com
   * Jabber: dudandr@gmail.com
   * Сайт: [http://dudandr.blogspot.com Блог dudandr.blogspot.com]
+Роль в проекте:
+  * Дизайн сайта проекта http://code.google.com/p/platon-accs/
+  * Визуализация настройки иерархии Eidos-ов и их экстраатрибутов.
