@@ -166,6 +166,7 @@ namespace platon
 
 	iterAllPragmaForEidos::iterAllPragmaForEidos(Eidos* InEidos)
 	{
+		// Дублирует функциональность iterHypPragma ??? Исправить файл PragmaModel строка 31 заменить в объявлении итератора
 		this->DB=InEidos->DB;
         Initialize();
         SQL_string="select * from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
@@ -230,6 +231,33 @@ namespace platon
 		this->ID_in=ID_in_par;
 		SQL_string="select ID_PRAGMA ID, GET_PRAGMA_WITH_HIPOTESIS_LIST.HYP_NAME TITLE from GET_LINKED_PRAGMALIST("+ToString(ID_in)+") INNER JOIN GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(LEidosID)+") ON (GET_PRAGMA_WITH_HIPOTESIS_LIST.ID=GET_LINKED_PRAGMALIST.ID_PRAGMA) WHERE ID_EIDOS="+ToString(LEidosID)+";";
         SQL_string_forreccount="select count(ID_PRAGMA) recordscount from GET_LINKED_PRAGMALIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
+	}
+
+	iterMultilink::iterMultilink(AssociatedExtraAttribute* OneAEA)
+	{
+		this->DB=OneAEA->OwnerHypotesis->HostEidos->DB;
+		Initialize();
+		if(OneAEA->EA->Multilnk && (OneAEA->EA->type==ft_LinkHypotesis ||OneAEA->EA->type==ft_LinkHypotesis ))
+		{
+			if(OneAEA->EA->type==ft_LinkHypotesis)
+			{
+				//SQL_string="SELECT p.MEANING, p.ID_LINK, p.KEYVALUE, p.RATIO, p.ID FROM GET_EA_LIST_MULTILNKH(ID_EA_HEADER) p("+ToString(InEidos->GetID())+");";
+				//SQL_string_forreccount="select count(GET_PRAGMA_WITH_HIPOTESIS_LIST.id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+			}
+			else //ft_LinkPragma
+			{
+				//SQL_string="SELECT GET_PRAGMA_WITH_HIPOTESIS_LIST.ID ID, GET_PRAGMA_WITH_HIPOTESIS_LIST.HYP_NAME TITLE  FROM GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+				//SQL_string_forreccount="select count(GET_PRAGMA_WITH_HIPOTESIS_LIST.id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+			}
+		}
+		else throw("Неверное использование итератора");
+	}
+
+	std::string iterMultilink::GetTitle()
+	{
+        std::string RetVal="";
+        if(IsFetched) LocalST->Get("TITLE",RetVal);
+		return RetVal;
 	}
 }
 

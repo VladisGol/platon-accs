@@ -41,6 +41,28 @@ void AbstarctHipEditForm::FormActionsTune()
 			this->action_WriteOffRes->setVisible(true);
 		}
 	}
+
+	//Для атрибутов многострочных ссылок создаем вхождения в меню
+	unsigned int ElementsNumber=LocalHypotesis->Attributes.size()-1;
+	for(unsigned int i =0; i<=ElementsNumber;i++)
+	{
+		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[ElementsNumber-i];	//Разворачиваем с последнего до первого
+		if(tmpAttrib->EA->type==platon::ft_LinkHypotesis || tmpAttrib->EA->type==platon::ft_LinkPragma)
+			if(tmpAttrib->EA->Multilnk)
+			{
+				QString ActionName=tr(tmpAttrib->EA->GetEACaption().c_str());
+				MultilinkAction* OneAction = new MultilinkAction(ActionName, this);
+				OneAction->AEAttrib=tmpAttrib;
+				menu_Multilink->addAction(OneAction);
+				QObject::connect(OneAction, SIGNAL(activated()), this, SLOT(DoMultilink()));
+			}
+	}
+}
+
+void AbstarctHipEditForm::DoMultilink()
+{
+	//Процедура выводит окно работы с мнострочной ссылкой
+	//Multilinks* OneML=new Multilinks();
 }
 
 void AbstarctHipEditForm::DoAddAction()

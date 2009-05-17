@@ -5,8 +5,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>824</width>
+    <height>648</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -24,8 +24,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>786</width>
-         <height>507</height>
+         <width>810</width>
+         <height>555</height>
         </rect>
        </property>
        <layout class="QGridLayout" name="gridLayout_2" >
@@ -43,7 +43,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>824</width>
      <height>26</height>
     </rect>
    </property>
@@ -63,8 +63,22 @@
     <addaction name="separator" />
     <addaction name="action_OpenType" />
    </widget>
+   <widget class="QMenu" name="menu_3" >
+    <property name="title" >
+     <string>Ссылки</string>
+    </property>
+    <widget class="QMenu" name="menu_Multilink" >
+     <property name="title" >
+      <string>Многострочные</string>
+     </property>
+     <addaction name="action1" />
+     <addaction name="action2" />
+    </widget>
+    <addaction name="menu_Multilink" />
+   </widget>
    <addaction name="menu" />
    <addaction name="menu_2" />
+   <addaction name="menu_3" />
   </widget>
   <widget class="QStatusBar" name="statusbar" />
   <widget class="QToolBar" name="toolBar" >
@@ -138,6 +152,16 @@
    </property>
    <property name="text" >
     <string>Открыть карточку с типом</string>
+   </property>
+  </action>
+  <action name="action1" >
+   <property name="text" >
+    <string>1-я</string>
+   </property>
+  </action>
+  <action name="action2" >
+   <property name="text" >
+    <string>2-я</string>
    </property>
   </action>
  </widget>
