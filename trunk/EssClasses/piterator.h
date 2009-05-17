@@ -66,29 +66,30 @@ namespace platon
 
 	};
 
-	class iterEidos :public pIterator
+	class iterEidos :public pIterator			//Итератор получения всех Eidos-ов по Species
 	{
 	public:
 		iterEidos(IBPP::Database inDB,std::string Species);
         std::string GetTitle();
 		long GetParentID();
 	};
-	class iterHypotesis :public pIterator
+	class iterHypotesis :public pIterator		//Итератор получения всех Hypotesis по Eidos-у
 	{
 	public:
 		iterHypotesis(Eidos* InEidos);
 		iterHypotesis(IBPP::Database inDB,long ID_Eidos);
 		std::string GetTitle();
 	};
-	class iterPragma :public pIterator
+	class iterPragma :public pIterator		//Итератор получения Pragma
 	{
 	public:
-		iterPragma(Hypotesis* InHyp);
+		iterPragma(Hypotesis* InHyp);			//  по Hypotesis
 		iterPragma(IBPP::Database inDB,long ID_Eidos, long ID_Hypotesis);
-		iterPragma(Eidos* InEidos);
+		iterPragma(Eidos* InEidos);			//  по Eidos-у
         std::string GetTitle();
 	};
-	class iterHypPragma :public pIterator
+
+	class iterHypPragma :public pIterator		//Итератор получения связки Hypotesis и Pragma по Eidos-у используется в iterLNKS_Pragma
 	{
 	protected:
 		iterHypPragma(){;};
@@ -100,8 +101,9 @@ namespace platon
 	class iterAllPragmaForEidos:public pIterator
 	{
 	public:
-		iterAllPragmaForEidos(Eidos* InEidos);        //Итератор для получения списка ссылающихся прагм и имени гипотезы по указанному эйдосу
-	};
+		iterAllPragmaForEidos(Eidos* InEidos);        //Итератор для получения списка прагм и имени гипотезы по указанному эйдосу
+	};	//??? дублирует iterHypPragma
+
 	//Классы итераторов для обслуживания темпоральных значений
 	class iterTemporalityListofOneEA:public pIterator
 	{
@@ -111,7 +113,8 @@ namespace platon
 	};
 
 	//Классы итераторов, для обслуживания ссылок
-	class iterLNKS_Hyp :public pIterator
+
+	class iterLNKS_Hyp :public pIterator				//Итератор получения ссылающихся объектов с типом Hypotesis
 	{
 	public:
 		iterLNKS_Hyp(IBPP::Database inDB);
@@ -120,14 +123,14 @@ namespace platon
 		long ID_in;
 	};
 
-	class iterLNKS_HEidos :public pIterator
+	class iterLNKS_HEidos :public pIterator			//Итератор получения Eidos-ов ссылающихся объектов с типом Hypotesis	{
 	{
 	public:
 		iterLNKS_HEidos(IBPP::Database inDB,long ID_in);
 		iterLNKS_Hyp* DetailIter;
 	};
 
-	class iterLNKS_Pragma :public iterHypPragma
+	class iterLNKS_Pragma :public iterHypPragma		//Итератор получения ссылающихся объектов с типом Pragma
 	{
 	public:
 		iterLNKS_Pragma(IBPP::Database inDB);
@@ -136,13 +139,19 @@ namespace platon
 		long ID_in;
 	};
 
-	class iterLNKS_PEidos :public pIterator
+	class iterLNKS_PEidos :public pIterator			//Итератор получения Eidos-ов ссылающихся объектов с типом Pragma
 	{
 	public:
 		iterLNKS_PEidos(IBPP::Database inDB,long ID_in);
 		iterLNKS_Pragma* DetailIter;
 	};
 
+	class iterMultilink:public pIterator				//Итератор получения списка ссылок многострочного ссылочного атрибута
+	{
+	public:
+		iterMultilink(AssociatedExtraAttribute* OneAEA);
+		std::string GetTitle();
+	};
 }
 
 #endif

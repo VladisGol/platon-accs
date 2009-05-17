@@ -9,6 +9,7 @@
 #include "ibpp.h"
 #include "dbetc.h"
 #include "DataClass.h"
+#include "Multilinks.h"
 
 
 namespace platon
@@ -32,6 +33,7 @@ public slots:
 	void DoAddAction();
 	void DoWriteOffRes();
 	void DoOpenType();
+	void DoMultilink();
 
 protected:
 
@@ -41,6 +43,15 @@ protected:
     void FormActionsTune();
 
 };
+
+class MultilinkAction :public QAction
+{
+	Q_OBJECT
+	public:
+	AssociatedExtraAttribute* AEAttrib;
+	MultilinkAction(const QString &text, QObject* parent):QAction(text, parent){;};
+};
+
 }
 
 #endif
