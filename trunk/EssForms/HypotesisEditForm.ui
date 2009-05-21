@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>HypotesisWindow</class>
- <widget class="QMainWindow" name="HypotesisWindow" >
-  <property name="geometry" >
+ <widget class="QMainWindow" name="HypotesisWindow">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,28 +10,28 @@
     <height>648</height>
    </rect>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget" >
-   <layout class="QGridLayout" name="gridLayout" >
-    <item row="0" column="0" >
-     <widget class="QScrollArea" name="scrollArea" >
-      <property name="widgetResizable" >
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
        <bool>true</bool>
       </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents" >
-       <property name="geometry" >
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
         <rect>
          <x>0</x>
          <y>0</y>
          <width>810</width>
-         <height>555</height>
+         <height>562</height>
         </rect>
        </property>
-       <layout class="QGridLayout" name="gridLayout_2" >
-        <item row="0" column="0" >
-         <layout class="QVBoxLayout" name="verticalLayout" />
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout"/>
         </item>
        </layout>
       </widget>
@@ -38,135 +39,133 @@
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar" >
-   <property name="geometry" >
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>824</width>
-     <height>26</height>
+     <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu" >
-    <property name="title" >
+   <widget class="QMenu" name="menu">
+    <property name="title">
      <string>Файл</string>
     </property>
-    <addaction name="action_saveNexit" />
-    <addaction name="action_Cancel" />
+    <addaction name="action_saveNexit"/>
+    <addaction name="action_Cancel"/>
    </widget>
-   <widget class="QMenu" name="menu_2" >
-    <property name="title" >
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
      <string>Действия</string>
     </property>
-    <addaction name="action_AddAction" />
-    <addaction name="action_WriteOffRes" />
-    <addaction name="separator" />
-    <addaction name="action_OpenType" />
+    <addaction name="action_AddAction"/>
+    <addaction name="action_WriteOffRes"/>
+    <addaction name="separator"/>
+    <addaction name="action_OpenType"/>
    </widget>
-   <widget class="QMenu" name="menu_3" >
-    <property name="title" >
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
      <string>Ссылки</string>
     </property>
-    <widget class="QMenu" name="menu_Multilink" >
-     <property name="title" >
+    <widget class="QMenu" name="menu_Multilink">
+     <property name="title">
       <string>Многострочные</string>
      </property>
-     <addaction name="action1" />
-     <addaction name="action2" />
     </widget>
-    <addaction name="menu_Multilink" />
+    <addaction name="menu_Multilink"/>
    </widget>
-   <addaction name="menu" />
-   <addaction name="menu_2" />
-   <addaction name="menu_3" />
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar" />
-  <widget class="QToolBar" name="toolBar" >
-   <property name="windowTitle" >
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
     <string>toolBar</string>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_saveNexit" />
-   <addaction name="action_Cancel" />
+   <addaction name="action_saveNexit"/>
+   <addaction name="action_Cancel"/>
   </widget>
-  <widget class="QToolBar" name="toolBar_2" >
-   <property name="windowTitle" >
+  <widget class="QToolBar" name="toolBar_2">
+   <property name="windowTitle">
     <string>toolBar_2</string>
    </property>
-   <attribute name="toolBarArea" >
+   <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
-   <attribute name="toolBarBreak" >
+   <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="action_AddAction" />
-   <addaction name="action_WriteOffRes" />
-   <addaction name="separator" />
-   <addaction name="action_OpenType" />
+   <addaction name="action_AddAction"/>
+   <addaction name="action_WriteOffRes"/>
+   <addaction name="separator"/>
+   <addaction name="action_OpenType"/>
   </widget>
-  <action name="action_saveNexit" >
-   <property name="icon" >
-    <iconset resource="../images/resources.qrc" >
+  <action name="action_saveNexit">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
      <normaloff>:/PICS/apply.png</normaloff>:/PICS/apply.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Сохранить и выйти</string>
    </property>
   </action>
-  <action name="action_Cancel" >
-   <property name="icon" >
-    <iconset resource="../images/resources.qrc" >
+  <action name="action_Cancel">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
      <normaloff>:/PICS/cancel.png</normaloff>:/PICS/cancel.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Выйти без сохранения</string>
    </property>
   </action>
-  <action name="action_AddAction" >
-   <property name="icon" >
-    <iconset resource="../images/resources.qrc" >
+  <action name="action_AddAction">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
      <normaloff>:/PICS/add_action.png</normaloff>:/PICS/add_action.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Добавить действие</string>
    </property>
   </action>
-  <action name="action_WriteOffRes" >
-   <property name="icon" >
-    <iconset resource="../images/resources.qrc" >
+  <action name="action_WriteOffRes">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
      <normaloff>:/PICS/add_resourse.png</normaloff>:/PICS/add_resourse.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Истрачен ресурс</string>
    </property>
   </action>
-  <action name="action_OpenType" >
-   <property name="icon" >
-    <iconset resource="../images/resources.qrc" >
+  <action name="action_OpenType">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
      <normaloff>:/PICS/konstr.png</normaloff>:/PICS/konstr.png</iconset>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Открыть карточку с типом</string>
    </property>
   </action>
-  <action name="action1" >
-   <property name="text" >
+  <action name="action1">
+   <property name="text">
     <string>1-я</string>
    </property>
   </action>
-  <action name="action2" >
-   <property name="text" >
+  <action name="action2">
+   <property name="text">
     <string>2-я</string>
    </property>
   </action>
  </widget>
  <resources>
-  <include location="../images/resources.qrc" />
+  <include location="../images/resources.qrc"/>
  </resources>
  <connections/>
 </ui>

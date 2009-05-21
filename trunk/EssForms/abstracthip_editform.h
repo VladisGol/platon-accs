@@ -33,7 +33,7 @@ public slots:
 	void DoAddAction();
 	void DoWriteOffRes();
 	void DoOpenType();
-	void DoMultilink();
+	void DoMultilink(int i);
 
 protected:
 
@@ -41,17 +41,9 @@ protected:
     void WriteFormWidgetsAppearance();
     QString dbEtcBranchName;
     void FormActionsTune();
+    QSignalMapper* signalMapper;
 
 };
-
-class MultilinkAction :public QAction
-{
-	Q_OBJECT
-	public:
-	AssociatedExtraAttribute* AEAttrib;
-	MultilinkAction(const QString &text, QObject* parent):QAction(text, parent){;};
-};
-
 }
 
 #endif
