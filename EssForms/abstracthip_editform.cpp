@@ -12,7 +12,8 @@ AbstarctHipEditForm::AbstarctHipEditForm(QWidget * parent): QMainWindow(parent)
 	QObject::connect(action_AddAction, SIGNAL(activated()), this, SLOT(DoAddAction()));
 	QObject::connect(action_WriteOffRes, SIGNAL(activated()), this, SLOT(DoWriteOffRes()));
 	QObject::connect(action_OpenType, SIGNAL(activated()), this, SLOT(DoOpenType()));
-
+	signalMapper = new QSignalMapper(this);	//Для многострочных атрибутов используется маппер
+	connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(DoMultilink(int)));
 }
 void AbstarctHipEditForm::FormActionsTune()
 {
@@ -46,23 +47,28 @@ void AbstarctHipEditForm::FormActionsTune()
 	unsigned int ElementsNumber=LocalHypotesis->Attributes.size()-1;
 	for(unsigned int i =0; i<=ElementsNumber;i++)
 	{
-		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[ElementsNumber-i];	//Разворачиваем с последнего до первого
+		AssociatedExtraAttribute* tmpAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];	//Разворачиваем с первого до последнего
 		if(tmpAttrib->EA->type==platon::ft_LinkHypotesis || tmpAttrib->EA->type==platon::ft_LinkPragma)
 			if(tmpAttrib->EA->Multilnk)
 			{
 				QString ActionName=tr(tmpAttrib->EA->GetEACaption().c_str());
-				MultilinkAction* OneAction = new MultilinkAction(ActionName, this);
-				OneAction->AEAttrib=tmpAttrib;
+				QAction* OneAction = new QAction(ActionName, this);
+				connect(OneAction, SIGNAL(activated()), signalMapper, SLOT(map()));
+				signalMapper->setMapping(OneAction, i);
 				menu_Multilink->addAction(OneAction);
-				QObject::connect(OneAction, SIGNAL(activated()), this, SLOT(DoMultilink()));
 			}
 	}
 }
 
-void AbstarctHipEditForm::DoMultilink()
+void AbstarctHipEditForm::DoMultilink(int i)
 {
 	//Процедура выводит окно работы с мнострочной ссылкой
-	//Multilinks* OneML=new Multilinks();
+	AssociatedExtraAttribute* MLAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];	//Атрибут
+
+	QMessageBox msgBox;
+	msgBox.setText(QString::fromStdString(MLAttrib->EA->GetEACaption()));
+	msgBox.exec();
+
 }
 
 void AbstarctHipEditForm::DoAddAction()
