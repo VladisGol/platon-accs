@@ -74,6 +74,7 @@
      </property>
     </widget>
     <addaction name="menu_Multilink"/>
+    <addaction name="action_Links"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -107,6 +108,7 @@
    <addaction name="action_WriteOffRes"/>
    <addaction name="separator"/>
    <addaction name="action_OpenType"/>
+   <addaction name="action_Links"/>
   </widget>
   <action name="action_saveNexit">
    <property name="icon">
@@ -153,14 +155,13 @@
     <string>Открыть карточку с типом</string>
    </property>
   </action>
-  <action name="action1">
-   <property name="text">
-    <string>1-я</string>
+  <action name="action_Links">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
+     <normaloff>:/PICS/chains.png</normaloff>:/PICS/chains.png</iconset>
    </property>
-  </action>
-  <action name="action2">
    <property name="text">
-    <string>2-я</string>
+    <string>Из других объектов</string>
    </property>
   </action>
  </widget>

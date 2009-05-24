@@ -98,12 +98,6 @@ namespace platon
         std::string GetTitle();
 	};
 
-	class iterAllPragmaForEidos:public pIterator
-	{
-	public:
-		iterAllPragmaForEidos(Eidos* InEidos);        //Итератор для получения списка прагм и имени гипотезы по указанному эйдосу
-	};	//??? дублирует iterHypPragma
-
 	//Классы итераторов для обслуживания темпоральных значений
 	class iterTemporalityListofOneEA:public pIterator
 	{
