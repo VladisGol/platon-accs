@@ -1,5 +1,6 @@
 #include "abstracthip_editform.h"
 #include "mainWin.h"
+#include "LinksExplorer.h"
 
 namespace platon
 {
@@ -12,6 +13,7 @@ AbstarctHipEditForm::AbstarctHipEditForm(QWidget * parent): QMainWindow(parent)
 	QObject::connect(action_AddAction, SIGNAL(activated()), this, SLOT(DoAddAction()));
 	QObject::connect(action_WriteOffRes, SIGNAL(activated()), this, SLOT(DoWriteOffRes()));
 	QObject::connect(action_OpenType, SIGNAL(activated()), this, SLOT(DoOpenType()));
+	QObject::connect(action_Links, SIGNAL(activated()), this, SLOT(DoLinks()));
 	signalMapper = new QSignalMapper(this);	//Для многострочных атрибутов используется маппер
 	connect(signalMapper, SIGNAL(mapped(int)),this, SLOT(DoMultilink(int)));
 }
@@ -64,11 +66,14 @@ void AbstarctHipEditForm::DoMultilink(int i)
 {
 	//Процедура выводит окно работы с мнострочной ссылкой
 	AssociatedExtraAttribute* MLAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];	//Атрибут
-
-	QMessageBox msgBox;
-	msgBox.setText(QString::fromStdString(MLAttrib->EA->GetEACaption()));
-	msgBox.exec();
-
+	Multilinks* MLForm= new Multilinks(this,MLAttrib);
+	MLForm->show();
+}
+void AbstarctHipEditForm::DoLinks()
+{
+	//Процедура отображает форму со ссылками на текущий объект
+	platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,this->LocalHypotesis->GetID(),"ALL");
+	LnkForm->show();
 }
 
 void AbstarctHipEditForm::DoAddAction()

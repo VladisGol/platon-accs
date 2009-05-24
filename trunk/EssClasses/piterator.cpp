@@ -164,14 +164,6 @@ namespace platon
 		return RetVal;
 	}
 
-	iterAllPragmaForEidos::iterAllPragmaForEidos(Eidos* InEidos)
-	{
-		// Дублирует функциональность iterHypPragma ??? Исправить файл PragmaModel строка 31 заменить в объявлении итератора
-		this->DB=InEidos->DB;
-        Initialize();
-        SQL_string="select * from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
-        SQL_string_forreccount="select count(id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
-	}
 	iterTemporalityListofOneEA::iterTemporalityListofOneEA(AssociatedExtraAttribute* OneAEA)
 	{
 		this->DB=OneAEA->OwnerHypotesis->HostEidos->DB;

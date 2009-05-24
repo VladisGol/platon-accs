@@ -37,7 +37,7 @@ PragmaModel::PragmaModel(platon::Eidos* InEidos, QWidget *parent)
 	setObjectName("PragmaModel");
 
 	//delete MyIterator;
-	MyIterator=new platon::iterAllPragmaForEidos(InEidos);					//Создаем итератор по базе
+	MyIterator=new platon::iterHypPragma(InEidos);					//Создаем итератор по базе
 
 	NumCol=InEidos->PragmaSQL->AttributesList.size();						//Получаем количество полей в запросе
 	Buffer.resize(BufferCapacity * (NumCol+2));								//Устанавливаем размер вектора = числу полей экстраатрибутов + ID+HipotesysName

@@ -12,6 +12,7 @@
 #include "Multilinks.h"
 
 
+
 namespace platon
 {
 class AbstarctHipEditForm  :public QMainWindow, public Ui_HypotesisWindow
@@ -34,6 +35,7 @@ public slots:
 	void DoWriteOffRes();
 	void DoOpenType();
 	void DoMultilink(int i);
+	void DoLinks();
 
 protected:
 
