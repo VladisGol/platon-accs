@@ -79,6 +79,7 @@ public:
         void SetRefBookValue(long In);
 
         long SetMultiLNKValue(LNK_Value In, long ID_inlist);
+        void DeleteMultiLNKValue(long ID_inlist);
 };
 
 }

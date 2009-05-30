@@ -229,17 +229,17 @@ namespace platon
 	{
 		this->DB=OneAEA->OwnerHypotesis->HostEidos->DB;
 		Initialize();
-		if(OneAEA->EA->Multilnk && (OneAEA->EA->type==ft_LinkHypotesis ||OneAEA->EA->type==ft_LinkHypotesis ))
+		if(OneAEA->EA->Multilnk && (OneAEA->EA->type==ft_LinkHypotesis ||OneAEA->EA->type==ft_LinkPragma ))
 		{
 			if(OneAEA->EA->type==ft_LinkHypotesis)
 			{
-				//SQL_string="SELECT p.MEANING, p.ID_LINK, p.KEYVALUE, p.RATIO, p.ID FROM GET_EA_LIST_MULTILNKH(ID_EA_HEADER) p("+ToString(InEidos->GetID())+");";
-				//SQL_string_forreccount="select count(GET_PRAGMA_WITH_HIPOTESIS_LIST.id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+				SQL_string="SELECT p.MEANING TITLE, p.ID_LINK, p.KEYVALUE, p.RATIO, p.ID ID FROM GET_EA_LIST_MULTILNKH("+ToString(OneAEA->EA->GetEAID())+","+ToString(OneAEA->OwnerHypotesis->GetID())+") p;";
+				SQL_string_forreccount="SELECT count(p.ID) recordscount FROM GET_EA_LIST_MULTILNKH("+ToString(OneAEA->EA->GetEAID())+","+ToString(OneAEA->OwnerHypotesis->GetID())+") p;";
 			}
 			else //ft_LinkPragma
 			{
-				//SQL_string="SELECT GET_PRAGMA_WITH_HIPOTESIS_LIST.ID ID, GET_PRAGMA_WITH_HIPOTESIS_LIST.HYP_NAME TITLE  FROM GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
-				//SQL_string_forreccount="select count(GET_PRAGMA_WITH_HIPOTESIS_LIST.id) recordscount from GET_PRAGMA_WITH_HIPOTESIS_LIST("+ToString(InEidos->GetID())+");";
+				SQL_string="SELECT p.MEANING TITLE, p.ID_LINK, p.KEYVALUE, p.RATIO, p.ID ID FROM GET_EA_LIST_MULTILNKP("+ToString(OneAEA->EA->GetEAID())+","+ToString(OneAEA->OwnerHypotesis->GetID())+") p;";
+				SQL_string_forreccount="SELECT count(p.ID) recordscount FROM GET_EA_LIST_MULTILNKP("+ToString(OneAEA->EA->GetEAID())+","+ToString(OneAEA->OwnerHypotesis->GetID())+") p;";
 			}
 		}
 		else throw("Неверное использование итератора");
@@ -250,6 +250,18 @@ namespace platon
         std::string RetVal="";
         if(IsFetched) LocalST->Get("TITLE",RetVal);
 		return RetVal;
+	}
+	LNK_Value iterMultilink::GetLNKValue()
+	{
+        LNK_Value ProcReturnValue;
+        ProcReturnValue.LinkTo=0;
+        ProcReturnValue.Ratio=1;
+        if(IsFetched)
+		{
+        	LocalST->Get("KEYVALUE",(int32_t*)&ProcReturnValue.LinkTo);
+        	LocalST->Get("RATIO",ProcReturnValue.Ratio);
+		}
+        return ProcReturnValue;
 	}
 }
 
