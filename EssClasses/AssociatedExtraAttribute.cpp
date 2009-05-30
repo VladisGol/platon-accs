@@ -417,11 +417,27 @@ long AssociatedExtraAttribute::SetMultiLNKValue(LNK_Value In, long ID_inlist)
         Statement->Prepare("Execute procedure SET_EA_MULTILNK(?,?,?,?,?)");
         Statement->Set(1,(int32_t)this->EA->GetEAID());
         Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
-        Statement->Set(3,(int32_t)In.LinkTo);           //MEANING
+        Statement->Set(3,(int32_t)In.LinkTo);
         Statement->Set(4,In.Ratio);                     //RATIO
         Statement->Set(5,(int32_t)ID_inlist);           //ID_INLIST
         Statement->Execute();
-        if(Statement->Fetch()) Statement->Get("ID_OUT",(int32_t*)&ProcReturnValue);
+        Statement->Get("ID_OUT",(int32_t*)&ProcReturnValue);
         OwnerHypotesis->CommitProcedure();
         return ProcReturnValue;
+}
+void AssociatedExtraAttribute::DeleteMultiLNKValue(long ID_inlist)
+{
+	//Функция удаляет одно вхождение многострочной ссылки, идентификатор которого передан в параметре
+	IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
+	if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
+	/*
+	1  ID_EA_HEADER INTEGER,
+	2  ID_LINE
+	*/
+	Statement->Prepare("Execute procedure DEL_EA_MULTILNK_LINE(?,?)");
+	Statement->Set(1,(int32_t)this->EA->GetEAID());
+	Statement->Set(2,(int32_t)ID_inlist);
+	Statement->Execute();
+	OwnerHypotesis->CommitProcedure();
+	return;
 }

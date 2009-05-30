@@ -145,6 +145,7 @@ namespace platon
 	public:
 		iterMultilink(AssociatedExtraAttribute* OneAEA);
 		std::string GetTitle();
+		LNK_Value GetLNKValue();
 	};
 }
 

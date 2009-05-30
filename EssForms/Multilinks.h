@@ -7,6 +7,10 @@
 #include "ibpp.h"
 #include "dbetc.h"
 #include "DataClass.h"
+#include "DialogchoiceEidos.h"
+#include "DialogchoiceHypotesis.h"
+#include "DialogchoicePragma.h"
+
 
 namespace platon
 {
@@ -17,18 +21,26 @@ class Multilinks  :public QMainWindow, public Ui_Multilinks
 public:
 	Multilinks(QWidget * parent, AssociatedExtraAttribute* InAEA);
 	~Multilinks();
-
     IBPP::Database DB;
-    AssociatedExtraAttribute* AEAttrib;
-    iterMultilink* MyIter;
+    bool RatedLinks;
+    platon::LNK_Value LNKChoice(platon::LNK_Value InLNK);
 
 public slots:
 	void Exit();
+	void AddLink();
+	void EditLink();
+	void DeleteLink();
+
 
 protected:
     void ReadFormWidgetsAppearance();
     void WriteFormWidgetsAppearance();
-    long CurrentID;
+
+    AssociatedExtraAttribute* AEAttrib;
+    iterMultilink* MyIter;
+    void FillWidgets(int prow,int pcolumn);
+    QMap<long,LNK_Value>* LNKMap;
+
 };
 }
 
