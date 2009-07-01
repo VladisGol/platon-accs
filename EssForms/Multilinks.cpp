@@ -11,9 +11,7 @@ Multilinks::Multilinks(QWidget * parent,  AssociatedExtraAttribute* InAEA): QMai
 
 	this->AEAttrib=InAEA;
 
-	MyIter= new iterMultilink(AEAttrib);
-	MyIter->LocalTR=AEAttrib->OwnerHypotesis->TransactionIBPP;
-	MyIter->LocalST=IBPP::StatementFactory(this->DB, MyIter->LocalTR);
+	MyIter=NULL;
 
 	LNKMap=new QMap<long,LNK_Value>;
 	RatedLinks=false;	//Не показывать кратность ссылок
@@ -78,7 +76,7 @@ void Multilinks::DeleteLink()
 
 	QMessageBox::StandardButton reply;
 	reply = QMessageBox::information(this, tr("Внимание, необратимая операция"), tr("Подтвердите удаление ссылки"),QMessageBox::Yes | QMessageBox::No);
-	if (reply == QMessageBox::Ok)
+	if (reply == QMessageBox::Yes)
 		AEAttrib->DeleteMultiLNKValue(idml);
 
 	FillWidgets(row,col);
@@ -109,6 +107,8 @@ void Multilinks::FillWidgets(int prow,int pcolumn)
 	//if(MyIter->LocalTR->Started())MyIter->LocalTR->Commit();	//Пробуем влезть в транзакцию
 	//MyIter->LocalTR->Start();
 
+	MyIter= new iterMultilink(AEAttrib);
+
 	MyIter->First();	//Начинаем заполнение с первого элемента
 	LNKMap->clear();	//Очищаем массив ссылок
 
@@ -130,7 +130,7 @@ void Multilinks::FillWidgets(int prow,int pcolumn)
 		}
 		tableWidget->resizeColumnsToContents();	//Выравниваем размер столбцов по их содержимому
 	}
-
+	delete MyIter;
 	//Позиционируем
 	if(prow>NumberRows) prow=NumberRows;	//На случай вызова функции после удаления последней строки ссылки
 	tableWidget->setCurrentCell (prow,pcolumn);

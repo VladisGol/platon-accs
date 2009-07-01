@@ -83,15 +83,13 @@ namespace platon
 	{
 		//Возвращаем число записей
 		long RetVal;
-		IBPP::Transaction TmpTR=IBPP::TransactionFactory(this->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
-		IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, TmpTR);
-        TmpTR->Start();
-        TmpST->Prepare(SQL_string_forreccount);
-        TmpST->Execute();
+		IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, LocalTR);
+		if(!LocalTR->Started())LocalTR->Start();
+		TmpST->Prepare(SQL_string_forreccount);
+		TmpST->Execute();
         if(TmpST->Fetch()) TmpST->Get("recordscount",(int32_t*)&RetVal);
         return RetVal;
 	}
-
 
 	iterEidos::iterEidos(IBPP::Database inDB,std::string Species)
 	{
@@ -228,7 +226,11 @@ namespace platon
 	iterMultilink::iterMultilink(AssociatedExtraAttribute* OneAEA)
 	{
 		this->DB=OneAEA->OwnerHypotesis->HostEidos->DB;
-		Initialize();
+        LocalTR=OneAEA->OwnerHypotesis->TransactionIBPP;
+        LocalST=IBPP::StatementFactory(this->DB, LocalTR);
+        IsStarted=false;
+        RowNum=0;
+
 		if(OneAEA->EA->Multilnk && (OneAEA->EA->type==ft_LinkHypotesis ||OneAEA->EA->type==ft_LinkPragma ))
 		{
 			if(OneAEA->EA->type==ft_LinkHypotesis)
