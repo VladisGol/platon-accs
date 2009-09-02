@@ -69,7 +69,7 @@ struct LNK_Value
 };
 
 
-enum FieldType {ft_String=1, ft_Integer=3, ft_Boolean=5, ft_Float=6, ft_DateTime=11,
+enum FieldType {ft_String=1, ft_Integer=3, ft_Boolean=5, ft_Float=6, ft_DateTime=11,ft_FmtMemo=17,
                 ft_RB=101, ft_DLL=102, ft_LinkHypotesis=103, ft_LinkPragma=104, ft_Security=105};
 
 
