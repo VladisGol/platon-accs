@@ -56,14 +56,17 @@ void Multilinks::EditLink()
 	int row=tableWidget->currentRow();
 	int col=tableWidget->currentColumn();
 
-	long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
+	if(row >0 && col >0)	//Проверка на наличие того что есть хоть одна запись и она выбрана
+	{
+		long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
 
-	platon::LNK_Value EditedLNKValue;
-	EditedLNKValue= LNKChoice(LNKMap->value(idml));
-	if(EditedLNKValue.LinkTo>0)
-		this->AEAttrib->SetMultiLNKValue(EditedLNKValue,idml);	//Сохраняем значение
+		platon::LNK_Value EditedLNKValue;
+		EditedLNKValue= LNKChoice(LNKMap->value(idml));
+		if(EditedLNKValue.LinkTo>0)
+			this->AEAttrib->SetMultiLNKValue(EditedLNKValue,idml);	//Сохраняем значение
 
-	FillWidgets(row,col);
+		FillWidgets(row,col);
+	}
 }
 
 void Multilinks::DeleteLink()
@@ -71,15 +74,17 @@ void Multilinks::DeleteLink()
 	//Удаляем ссылку
 	int row=tableWidget->currentRow();
 	int col=tableWidget->currentColumn();
+	if(row >0 && col >0)	//Проверка на наличие того что есть хоть одна запись и она выбрана
+	{
+		long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
 
-	long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
+		QMessageBox::StandardButton reply;
+		reply = QMessageBox::information(this, tr("Внимание, необратимая операция"), tr("Подтвердите удаление ссылки"),QMessageBox::Yes | QMessageBox::No);
+		if (reply == QMessageBox::Yes)
+			AEAttrib->DeleteMultiLNKValue(idml);
 
-	QMessageBox::StandardButton reply;
-	reply = QMessageBox::information(this, tr("Внимание, необратимая операция"), tr("Подтвердите удаление ссылки"),QMessageBox::Yes | QMessageBox::No);
-	if (reply == QMessageBox::Yes)
-		AEAttrib->DeleteMultiLNKValue(idml);
-
-	FillWidgets(row,col);
+		FillWidgets(row,col);
+	}
 }
 
 Multilinks::~Multilinks()
