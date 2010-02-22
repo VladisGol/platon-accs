@@ -1,4 +1,5 @@
 #include "mainWin.h"
+#include <QMessageBox>
 
 mainWin::mainWin(QWidget *parent)
     : QMainWindow(parent)
@@ -342,9 +343,17 @@ void mainWin::AddFilter()
 		col=tableViewPragma->currentIndex().column();
 		FieldCaption = tableViewPragma->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
 	}
+	//Получим текущее значение фильтра для отображения
+	QString CurrentFilterPattern="";
+	if(SFProxyModelH->filterRegExp()!=QRegExp("") && SFProxyModelH->filterKeyColumn()==col)
+		CurrentFilterPattern=SFProxyModelH->filterRegExp().pattern ();
+	if(SFProxyModelP->filterRegExp()!=QRegExp("") && SFProxyModelH->filterKeyColumn()==col)
+		CurrentFilterPattern=SFProxyModelP->filterRegExp().pattern ();
 
+	//Запросим в диалоговом окне строку фильрации
 	bool ok;
-    QString textExp = QInputDialog::getText(this, tr("Введите условие фильтра"),	tr("Для поля:")+FieldCaption,QLineEdit::Normal,0,&ok);
+    QString textExp = QInputDialog::getText(this, tr("Введите условие фильтра"),	tr("Для поля:")+FieldCaption,QLineEdit::Normal,CurrentFilterPattern,&ok);
+    //Установим значение фильтра если пользователь ввел значение фильрации и нажал кнопку Ok в диалоге
 	if (ok && !textExp.isEmpty())
 	{
 		if(CurrentObjectLevel==Level_Hypotesis)
