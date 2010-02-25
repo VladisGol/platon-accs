@@ -347,7 +347,7 @@ void mainWin::AddFilter()
 	QString CurrentFilterPattern="";
 	if(SFProxyModelH->filterRegExp()!=QRegExp("") && SFProxyModelH->filterKeyColumn()==col)
 		CurrentFilterPattern=SFProxyModelH->filterRegExp().pattern ();
-	if(SFProxyModelP->filterRegExp()!=QRegExp("") && SFProxyModelH->filterKeyColumn()==col)
+	if(SFProxyModelP->filterRegExp()!=QRegExp("") && SFProxyModelP->filterKeyColumn()==col)
 		CurrentFilterPattern=SFProxyModelP->filterRegExp().pattern ();
 
 	//Запросим в диалоговом окне строку фильрации
@@ -360,11 +360,14 @@ void mainWin::AddFilter()
 		{
 			SFProxyModelH->setFilterRegExp(QRegExp(textExp));
 			SFProxyModelH->setFilterKeyColumn(col);
+			tableViewHypotesis->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
+
 		}
 		if(CurrentObjectLevel==Level_Pragma)
 		{
 			SFProxyModelP->setFilterRegExp(QRegExp(textExp));
 			SFProxyModelP->setFilterKeyColumn(col);
+			tableViewPragma->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
 		}
 	}
 }
@@ -374,11 +377,13 @@ void mainWin::RemoveFilter()
 	{
 		SFProxyModelH->setFilterRegExp(QRegExp(""));
 		SFProxyModelH->setFilterKeyColumn(-1);
+		tableViewHypotesis->setToolTip("");
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
 		SFProxyModelP->setFilterRegExp(QRegExp(""));
 		SFProxyModelP->setFilterKeyColumn(-1);
+		tableViewPragma->setToolTip("");
 	}
 	this->action_RemoveFilter->setEnabled(false);
 }
