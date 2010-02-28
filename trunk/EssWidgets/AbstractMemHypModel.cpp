@@ -26,6 +26,7 @@ AbstractMemHypModel::~AbstractMemHypModel()
 	delete FieldsInModel;
 	delete Id_records;
 	delete KeyIterator;
+	HeaderDecorationMap.clear();
 }
 
 int AbstractMemHypModel::columnCount(const QModelIndex & index) const
@@ -175,4 +176,28 @@ QModelIndex AbstractMemHypModel::GetQModelIndexByID(long ID_in)
 	return this->index(Id_records->indexOf(ID_in),0,QModelIndex());
 }
 
+void AbstractMemHypModel::setHeaderIcon(int section, int orientation,QIcon& Icon)
+{
+	//Процедура проверяет наличие в контейнере установленной на элемент заголовка иконки и переопределяет его или
+	//просто добавляет новый элемент с переданной в параметре иконкой
+
+	QString CurrentKey=QString::number(orientation)+"|"+QString::number(section);
+
+	if(HeaderDecorationMap.contains(CurrentKey)) HeaderDecorationMap.erase(HeaderDecorationMap.find(CurrentKey));
+	HeaderDecorationMap.insert(CurrentKey,Icon);
+}
+void AbstractMemHypModel::RemoveHeaderIcon(int section, int orientation)
+{
+	QString CurrentKey=QString::number(orientation)+"|"+QString::number(section);
+	if(HeaderDecorationMap.contains(CurrentKey)) HeaderDecorationMap.erase(HeaderDecorationMap.find(CurrentKey));
+}
+QVariant AbstractMemHypModel::GetHeaderIcon(int section, int orientation) const
+{
+	//Функция возвращает значение для декора (иконку)
+	QString CurrentKey=QString::number(orientation)+"|"+QString::number(section);
+	if(HeaderDecorationMap.contains(CurrentKey))
+		return qVariantFromValue(HeaderDecorationMap.value(CurrentKey));
+	else
+		return QVariant();
+}
 }

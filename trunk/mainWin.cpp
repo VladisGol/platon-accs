@@ -61,6 +61,8 @@ mainWin::mainWin(QWidget *parent)
 			//Устанавливаем размеры виджетов на форме
 			ReadFormWidgetsAppearance();
 			DisableAllActions();
+			//Инициализируем иконку фильтра
+		    icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
 		}
 }
 void mainWin::DisableAllActions()
@@ -362,12 +364,19 @@ void mainWin::AddFilter()
 			SFProxyModelH->setFilterKeyColumn(col);
 			tableViewHypotesis->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
 
+			platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelH->sourceModel();
+			CurModel->setHeaderIcon(col, Qt::Horizontal,icon_filter);
+
 		}
 		if(CurrentObjectLevel==Level_Pragma)
 		{
 			SFProxyModelP->setFilterRegExp(QRegExp(textExp));
 			SFProxyModelP->setFilterKeyColumn(col);
 			tableViewPragma->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
+
+			platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelP->sourceModel();
+			CurModel->setHeaderIcon(col,Qt::Horizontal,icon_filter);
+
 		}
 	}
 }
@@ -375,12 +384,18 @@ void mainWin::RemoveFilter()
 {
 	if(CurrentObjectLevel==Level_Hypotesis)
 	{
+		platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelH->sourceModel();
+		CurModel->RemoveHeaderIcon(SFProxyModelH->filterKeyColumn(),Qt::Horizontal);
+
 		SFProxyModelH->setFilterRegExp(QRegExp(""));
 		SFProxyModelH->setFilterKeyColumn(-1);
 		tableViewHypotesis->setToolTip("");
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
+		platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelP->sourceModel();
+		CurModel->RemoveHeaderIcon(SFProxyModelP->filterKeyColumn(),Qt::Horizontal);
+
 		SFProxyModelP->setFilterRegExp(QRegExp(""));
 		SFProxyModelP->setFilterKeyColumn(-1);
 		tableViewPragma->setToolTip("");

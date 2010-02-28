@@ -18,7 +18,6 @@
 
 namespace platon
 {
-
 class AbstractMemHypModel : public QAbstractTableModel
 {
 public:
@@ -31,6 +30,9 @@ public:
 	pIterator* KeyIterator;
 	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
 	QModelIndex GetQModelIndexByID(long ID_in);				// Функция возвращает значение индекса модели по идентификатору записи
+	void setHeaderIcon(int section, int orientation,QIcon& Icon); //Функция назначения иконки на элемент заголовка
+	void RemoveHeaderIcon(int section, int orientation);			 //Функция удаления иконки с элемента заголовка
+	QVariant GetHeaderIcon(int section, int orientation) const;			 //Функция возвращает значение иконки для указанного в параметрах элемента заголовка
 
 protected:
 	mutable QVector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel
@@ -46,6 +48,7 @@ protected:
 
 	virtual ExtraAttribute* getEAFromEidos(int i) const {return NULL;};			//Функция возвращает ссылку на экстраатрибут по номеру
 	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const {return "";};	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
+	QMap <QString, QIcon> HeaderDecorationMap;			//Контейнер, содержащий элементы декора (иконки)
 };
 
 }
