@@ -48,6 +48,8 @@ QString HypPragmaMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
 QVariant HypPragmaMemModel::headerData(int section, Qt::Orientation orientation,int role) const
 {
 	//Процедура выводит значения надписей столбцов и строк
+	if(role == Qt::DecorationRole)	//Возвращаем иконки
+		return this->GetHeaderIcon(section, orientation);
 
 	if (role != Qt::DisplayRole)
 	         return QVariant();

@@ -18,6 +18,7 @@
 #include "DataClass.h"
 
 
+
 class mainWin : public QMainWindow, public Ui::MainWindow
 
 {
@@ -48,6 +49,7 @@ private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
 	QTimer* DTBaseShifter;
+	QIcon icon_filter;
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	int CurrentObjectLevel;

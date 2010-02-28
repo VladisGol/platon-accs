@@ -46,6 +46,9 @@ QVariant HypotesisMemModel::headerData(int section, Qt::Orientation orientation,
 {
 	//Процедура выводит значения надписей столбцов и строк
 
+	if(role == Qt::DecorationRole)	//Возвращаем иконки
+		return this->GetHeaderIcon(section, orientation);
+
 	if (role != Qt::DisplayRole)
 	         return QVariant();
 
