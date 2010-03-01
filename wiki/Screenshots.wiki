@@ -9,5 +9,5 @@
 Редактирование объекта "Экземпляр" на примере персонального компьютера:
 <div class="separator" style="clear: both; text-align: center;"><a href="http://2.bp.blogspot.com/_WD_GktN32VM/S3fquYyz8BI/AAAAAAAAALQ/Fdqw0I-SWPE/s1600-h/platon2.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://2.bp.blogspot.com/_WD_GktN32VM/S3fquYyz8BI/AAAAAAAAALQ/Fdqw0I-SWPE/s320/platon2.png" /></a></div>
 
-Ссылки на другие объекты ( в программе поддержива.тся ссылки 1:1 и 1:*):
+Ссылки на другие объекты (в программе поддерживаются ссылки 1:1 и 1:ко многим):
 <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_WD_GktN32VM/S3fr3STCanI/AAAAAAAAALo/m4ixu8KzY94/s1600-h/platon5.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/_WD_GktN32VM/S3fr3STCanI/AAAAAAAAALo/m4ixu8KzY94/s320/platon5.png" /></a></div>
