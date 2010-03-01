@@ -1,8 +1,5 @@
 #summary Скриншоты.
 
-Будут выложены в ближайшее время. 
-Coming soon.
-
 Регистрация в системе:
 <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_WD_GktN32VM/S3fqIYqizbI/AAAAAAAAALI/Rr6XgmqMkss/s1600-h/platon0.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/_WD_GktN32VM/S3fqIYqizbI/AAAAAAAAALI/Rr6XgmqMkss/s320/platon0.png" /></a></div><br />
 
@@ -14,5 +11,3 @@ Coming soon.
 
 Ссылки на другие объекты ( в программе поддержива.тся ссылки 1:1 и 1:*):
 <div class="separator" style="clear: both; text-align: center;"><a href="http://1.bp.blogspot.com/_WD_GktN32VM/S3fr3STCanI/AAAAAAAAALo/m4ixu8KzY94/s1600-h/platon5.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="http://1.bp.blogspot.com/_WD_GktN32VM/S3fr3STCanI/AAAAAAAAALo/m4ixu8KzY94/s320/platon5.png" /></a></div>
-
-
