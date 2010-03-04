@@ -34,6 +34,8 @@ mainWin::mainWin(QWidget *parent)
 			QObject::connect(action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
 			QObject::connect(action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
 			QObject::connect(action_View_IDs, SIGNAL(activated()), this, SLOT(ViewID_Activated()));
+			QObject::connect(tableViewHypotesis, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
+			QObject::connect(tableViewPragma, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
 
 			SetEidosView(0);
 
@@ -505,5 +507,6 @@ void mainWin::ViewID_Activated()
 			}
 	}
 }
+
 
 
