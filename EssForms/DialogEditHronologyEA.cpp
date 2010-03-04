@@ -34,6 +34,7 @@ DialogEditHronologyEA::DialogEditHronologyEA(QWidget * parent,AssociatedExtraAtt
     QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 
     this->setWindowTitle(tr("Временной ряд изменения значений атрибута"));
+    SetViewID(DTL->ViewIDs);
     ReadFormWidgetsAppearance();
 
 }
@@ -75,6 +76,28 @@ void DialogEditHronologyEA::WriteFormWidgetsAppearance()
 	delete MyETC;
 }
 
+void DialogEditHronologyEA::SetViewID(bool IsView)
+{
+	//Процедура скрывает или открывает поля идентификаторов объектов
+	if(!IsView)	//Отметка снята
+	{
+		for (int i=0;i<TableView->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = TableView->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				TableView->hideColumn(i);
+		}
+	}
+	else								//Отметка в меню установлена
+	{
+		for (int i=0;i<TableView->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = TableView->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				TableView->showColumn(i);
+		}
+	}
+}
 
 
 }

@@ -55,6 +55,9 @@ protected:
     void ReadFormWidgetsAppearance();
     void WriteFormWidgetsAppearance();
     bool eventFilter(QObject *obj, QEvent *ev);
+    void SetViewID();
+    bool IsViewID;
+
 };
 }
 

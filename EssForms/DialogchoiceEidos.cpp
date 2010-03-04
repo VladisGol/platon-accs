@@ -42,6 +42,7 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID
     if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
     this->setWindowTitle(tr("Укажите класс"));
+    SetViewID(DTL->ViewIDs);
     ReadFormWidgetsAppearance();
 
 }
@@ -94,7 +95,26 @@ void ChoiceEidos_Dialog::WriteFormWidgetsAppearance()
 	delete MyETC;
 }
 
-
-
-
+void ChoiceEidos_Dialog::SetViewID(bool IsView)
+{
+	//Процедура скрывает или открывает поля идентификаторов объектов
+	if(!IsView)	//Отметка снята
+	{
+		for (int i=0;i<treeWidget->columnCount();i++)
+			{
+				QString FieldCaption = treeWidget->headerItem()->text(i);
+				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+					treeWidget->hideColumn(i);
+			}
+	}
+	else								//Отметка в меню установлена
+	{
+		for (int i=0;i<treeWidget->columnCount();i++)
+			{
+				QString FieldCaption = treeWidget->headerItem()->text(i);
+				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+					treeWidget->showColumn(i);
+			}
+	}
+}
 }

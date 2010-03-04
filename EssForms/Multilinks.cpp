@@ -23,6 +23,7 @@ Multilinks::Multilinks(QWidget * parent,  AssociatedExtraAttribute* InAEA): QMai
 
 	FillWidgets(0,0);	//Запоняем таблицу и становимся на первый элемент с координатами row=0,col=0
 
+	SetViewID(DTL->ViewIDs);
 	ReadFormWidgetsAppearance();
 
 }
@@ -56,7 +57,7 @@ void Multilinks::EditLink()
 	int row=tableWidget->currentRow();
 	int col=tableWidget->currentColumn();
 
-	if(row >0 && col >0)	//Проверка на наличие того что есть хоть одна запись и она выбрана
+	if(row >-1 && col >-1)	//Проверка на наличие того что есть хоть одна запись и она выбрана
 	{
 		long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
 
@@ -74,7 +75,7 @@ void Multilinks::DeleteLink()
 	//Удаляем ссылку
 	int row=tableWidget->currentRow();
 	int col=tableWidget->currentColumn();
-	if(row >0 && col >0)	//Проверка на наличие того что есть хоть одна запись и она выбрана
+	if(row >-1 && col >-1)	//Проверка на наличие того что есть хоть одна запись и она выбрана
 	{
 		long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
 
@@ -244,5 +245,29 @@ void Multilinks::WriteFormWidgetsAppearance()
 	MyETC->CloseKey();
 	delete MyETC;
 }
+
+void Multilinks::SetViewID(bool IsView)
+{
+	//Процедура скрывает или открывает поля идентификаторов объектов
+	if(!IsView)	//Отметка снята
+	{
+		for (int i=0;i<tableWidget->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableWidget->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableWidget->hideColumn(i);
+		}
+	}
+	else								//Отметка в меню установлена
+	{
+		for (int i=0;i<tableWidget->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableWidget->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableWidget->showColumn(i);
+		}
+	}
+}
+
 
 }

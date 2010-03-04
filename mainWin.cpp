@@ -33,6 +33,7 @@ mainWin::mainWin(QWidget *parent)
 			QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
 			QObject::connect(action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
 			QObject::connect(action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
+			QObject::connect(action_View_IDs, SIGNAL(activated()), this, SLOT(ViewID_Activated()));
 
 			SetEidosView(0);
 
@@ -193,6 +194,7 @@ void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 		SFProxyModelP->setSourceModel(NULL);
 
 	if(keep4delete!=NULL) delete keep4delete;
+	ViewID_Activated();	//Устанавливаем видимость ID
 }
 
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
@@ -422,8 +424,11 @@ void mainWin::ReadFormWidgetsAppearance()
 
 	if(MyETC->ParamExists("comboBox_Species")) this->comboBox_Species->setCurrentIndex(MyETC->ReadInteger("comboBox_Species"));
 	if(MyETC->ParamExists("EidosID")) this->EidosTreeWidget->findNMakeCurrent(MyETC->ReadInteger("EidosID"));
-
 	SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
+
+	if(MyETC->ParamExists("action_View_IDs")) this->action_View_IDs->setChecked(MyETC->ReadBool("action_View_IDs"));
+	ViewID_Activated();
+
 
 	MyETC->CloseKey();
 	delete MyETC;
@@ -446,8 +451,59 @@ void mainWin::WriteFormWidgetsAppearance()
 
 	MyETC->WriteInteger("comboBox_Species", this->comboBox_Species->currentIndex());
 	MyETC->WriteInteger("EidosID",this->EidosTreeWidget->GetEidosID());
+	MyETC->WriteBool("action_View_IDs",this->action_View_IDs->isChecked());
 
 	MyETC->CloseKey();
 	delete MyETC;
 
 }
+void mainWin::ViewID_Activated()
+{
+	//Слот для изменения отображения идентификаторов объектов в программе
+	this->MyDCl->ViewIDs =action_View_IDs->isChecked();//Устанавливаем значение переменной в Датамодуле
+	if(!this->MyDCl->ViewIDs)	//Отметка снята
+	{
+
+		for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableViewHypotesis->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableViewHypotesis->hideColumn(i);
+		}
+		for (int i=0;i<tableViewPragma->model()->columnCount(QModelIndex());i++)
+			{
+				QString FieldCaption = tableViewPragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+					tableViewPragma->hideColumn(i);
+			}
+		for (int i=0;i<EidosTreeWidget->columnCount();i++)
+			{
+				QString FieldCaption = EidosTreeWidget->headerItem()->text(i);
+				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+					EidosTreeWidget->hideColumn(i);
+			}
+	}
+	else								//Отметка в меню установлена
+	{
+		for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableViewHypotesis->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableViewHypotesis->showColumn(i);
+		}
+		for (int i=0;i<tableViewPragma->model()->columnCount(QModelIndex());i++)
+			{
+				QString FieldCaption = tableViewPragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+					tableViewPragma->showColumn(i);
+			}
+		for (int i=0;i<EidosTreeWidget->columnCount();i++)
+			{
+				QString FieldCaption = EidosTreeWidget->headerItem()->text(i);
+				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+					EidosTreeWidget->showColumn(i);
+			}
+	}
+}
+
+

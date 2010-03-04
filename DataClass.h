@@ -33,6 +33,7 @@ public:
 	QMap <QString, QLibrary*> ArrayDynLib;	//Массив библиотек
 	IBPP::Database DB;						//База данных
 	QDateTime ProgramDateTime;				//Переменная для программного времени
+	bool ViewIDs;							//Переменная отвечающая за то, отображаются идентификаторы объектов или нет
 
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
 	QLibrary* GetLibByName(QString inString);

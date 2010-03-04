@@ -44,6 +44,7 @@ private slots:
 	void AddFilter();	//Слот для задания фитра
 	void RemoveFilter();	//Слот для снятия условий фильтра
 	void DisableAllActions();	//Отключение всех действий на форме
+	void ViewID_Activated();//Управление отображением идентификаторов объектов
 
 private:
 	platon::Eidos* LocalEidos;

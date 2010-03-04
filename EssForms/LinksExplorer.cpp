@@ -8,6 +8,7 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 
 	DataClass* DTL=platon::GetDataModule(this);
 	this->DB=DTL->DB;
+	IsViewID=DTL->ViewIDs;
 
 	LocalEidosH=NULL;
 	LocalEidosP=NULL;
@@ -51,6 +52,7 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 		tabWidget_Prg->setCurrentIndex(1);//Активизируем вкладку со списком прагм
 
 	ClearCorespActions();
+	SetViewID();
 	ReadFormWidgetsAppearance();
 
 }
@@ -178,6 +180,7 @@ void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 	tableView_Hyp->resizeColumnsToContents();
 
 	if(keep4delete!=NULL) delete keep4delete;
+	SetViewID();
 }
 
 void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
@@ -194,6 +197,7 @@ void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 	tableView_Pragma->resizeColumnsToContents();
 
 	if(keep4delete!=NULL) delete keep4delete;
+	SetViewID();
 }
 
 void LinksExplorer::ReadFormWidgetsAppearance()
@@ -223,6 +227,68 @@ void LinksExplorer::WriteFormWidgetsAppearance()
 	delete MyETC;
 }
 
+void LinksExplorer::SetViewID()
+{
+	//Процедура скрывает или открывает поля идентификаторов объектов
+	if(!IsViewID)	//Отметка снята
+	{
+		for (int i=0;i<HEidosTreeWidget->columnCount();i++)
+		{
+			QString FieldCaption = HEidosTreeWidget->headerItem()->text(i);
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				HEidosTreeWidget->hideColumn(i);
+		}
+		for (int i=0;i<PEidosTreeWidget->columnCount();i++)
+		{
+			QString FieldCaption = PEidosTreeWidget->headerItem()->text(i);
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				PEidosTreeWidget->hideColumn(i);
+		}
+		if(tableView_Hyp->model()!=0)	//Если модель установлена
+		for (int i=0;i<tableView_Hyp->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableView_Hyp->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableView_Hyp->hideColumn(i);
+		}
+		if(tableView_Pragma->model()!=0)
+		for (int i=0;i<tableView_Pragma->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableView_Pragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableView_Pragma->hideColumn(i);
+		}
+	}
+	else								//Отметка в меню установлена
+	{
+		for (int i=0;i<HEidosTreeWidget->columnCount();i++)
+		{
+			QString FieldCaption = HEidosTreeWidget->headerItem()->text(i);
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				HEidosTreeWidget->showColumn(i);
+		}
+		for (int i=0;i<PEidosTreeWidget->columnCount();i++)
+		{
+			QString FieldCaption = PEidosTreeWidget->headerItem()->text(i);
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				PEidosTreeWidget->showColumn(i);
+		}
+		if(tableView_Hyp->model()!=0)
+		for (int i=0;i<tableView_Hyp->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableView_Hyp->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableView_Hyp->showColumn(i);
+		}
+		if(tableView_Pragma->model()!=0)
+		for (int i=0;i<tableView_Pragma->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = tableView_Pragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				tableView_Pragma->showColumn(i);
+		}
 
+	}
+}
 
 }
