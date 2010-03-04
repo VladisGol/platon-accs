@@ -36,6 +36,7 @@ protected:
     void ReadFormWidgetsAppearance();
     void WriteFormWidgetsAppearance();
     IBPP::Database DB;
+    void SetViewID(bool IsView);
 
 };
 }

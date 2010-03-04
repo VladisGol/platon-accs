@@ -38,6 +38,7 @@ ChoicePragma_Dialog::ChoicePragma_Dialog(QWidget * parent, platon::Eidos* InEido
     if(this->find(ID_in)) Out_value=ID_in; else Out_value=0;
 
     this->setWindowTitle(tr("Укажите экземпляр"));
+    SetViewID(DTL->ViewIDs);
     ReadFormWidgetsAppearance();
 
 }
@@ -84,6 +85,27 @@ void ChoicePragma_Dialog::WriteFormWidgetsAppearance()
 	MyETC->CloseKey();
 	delete MyETC;
 }
-
+void ChoicePragma_Dialog::SetViewID(bool IsView)
+{
+	//Процедура скрывает или открывает поля идентификаторов объектов
+	if(!IsView)	//Отметка снята
+	{
+		for (int i=0;i<TableView->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = TableView->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				TableView->hideColumn(i);
+		}
+	}
+	else								//Отметка в меню установлена
+	{
+		for (int i=0;i<TableView->model()->columnCount(QModelIndex());i++)
+		{
+			QString FieldCaption = TableView->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+				TableView->showColumn(i);
+		}
+	}
+}
 
 }
