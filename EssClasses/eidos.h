@@ -108,6 +108,9 @@ long Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBelong);
 void BranchDisassemble(const std::string NameOfBranch, std::vector<std::string> &Elements);
 long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBranch);
 std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos);
+std::string GetDLLMD5(IBPP::Database MyDB, std::string NameOfDll);
+void SetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll ,const std::string MD5string);
+
 }
 
 #endif

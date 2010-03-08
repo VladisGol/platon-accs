@@ -8,6 +8,7 @@
 #include "DataClass.h"
 #include "mainWin.h"
 
+
 namespace platon
 {
 
@@ -58,6 +59,9 @@ void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 		//Считываем наименования библиотек помещенных в каталог
 		for(it=DLLList.begin();it!=DLLList.end();++it)
 		{
+		    //	QMessageBox::about (0,tr("1"),CalculatedHash);
+			if(CalcFileMD5(Folder.absoluteFilePath(*it))==GetSavedMD5(*it))	//Проверяем соответствие найденной библиотеки и той,которая прописана в базе данных по MD5
+			{
 				QLibrary* OneLib= new QLibrary(*it);
 				if(!OneLib->isLoaded()) OneLib->load();
 				//Ключ - убираем расширение библиотеки т.к. возможна работа с разными платформами
@@ -67,6 +71,14 @@ void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 
 				sps->showMessage(QObject::tr("Загрузка библиотеки ")+OneLib->fileName(), Qt::AlignRight);
 				aplic->processEvents();
+			}
+			else
+			{
+				QMessageBox::warning(0,tr("Внимание !"),
+						tr("Библиотека ")+Folder.absoluteFilePath(*it)+tr(" не загружена - MD5 сумма не совпадает"),
+						QMessageBox::Ok,QMessageBox::Ok);
+
+			}
 
 		}
 	}
@@ -103,6 +115,26 @@ void DataClass::SetProgramDateTime()
 		ProgramDateTime= QDateTime::currentDateTime();
 	}
 	platon::SetTimestampTemporalCompareFor(this->DB, platon::QDateTime2IBPPTimestamp(ProgramDateTime));
+}
+
+QString DataClass::CalcFileMD5(QString fileName)
+{
+	//Процедура рассчитывает MD5 хэш файла, имя которого передано в параметре
+
+	QString Result="";
+	QFile file(fileName);
+    if (file.open(QIODevice::ReadOnly))
+    {
+    	QByteArray content = file.readAll();
+    	Result = QString::fromAscii(QCryptographicHash::hash(content, QCryptographicHash::Md5).toHex());
+    }
+    return Result;
+}
+QString DataClass::GetSavedMD5(QString fileName)
+{
+	//Процедура по имени файла находит сохраненное значение MD5 в базе данных
+
+	return QString::fromStdString(GetDLLMD5(this->DB, fileName.toStdString()));
 }
 
 }

@@ -15,9 +15,7 @@
 #include <QSplashScreen>
 #include <QMessageBox>
 #include "DialogLogin.h"
-#include <QMessageBox>
 #include <QDateTime>
-
 
 #include "ibpp.h"
 
@@ -38,7 +36,8 @@ public:
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
 	QLibrary* GetLibByName(QString inString);
 	void SetProgramDateTime();
-
+	QString CalcFileMD5(QString fileName);
+	QString GetSavedMD5(QString fileName);
 };
 DataClass* GetDataModule(QObject * fromform);
 
