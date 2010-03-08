@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -506,6 +506,33 @@ void Eidos::AlternateEACaption()
 				CurrentIDEidos=parentvalue;
 			}
 		}
+}
+std::string GetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll)
+{
+	//Получение подписи MD5 по имени библиотеки
+	std::string ForReturn;
+	IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+	IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+	TmpTR->Start();
+	TmpST->Prepare("EXECUTE PROCEDURE GET_MD5DLL(?);");
+	TmpST->Set(1,NameOfDll);
+	TmpST->Execute();
+	TmpST->Get("MD5HASH",ForReturn);
+	TmpTR->Commit();
+	return ForReturn;
+}
+
+void SetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll ,const std::string MD5string)
+{
+	//Процедура записывает строку с суммой MD5 для DLL с именем переданным в параметре
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE SET_MD5DLL(?,?);");
+    TmpST->Set(1,NameOfDll);
+    TmpST->Set(2,MD5string);
+    TmpST->Execute();
+    TmpTR->Commit();
 }
 
 }
