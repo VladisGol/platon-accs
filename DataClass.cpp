@@ -27,14 +27,24 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 		}
 		else
 		{
-			DB = IBPP::DatabaseFactory(LoginDLG->Host->text().toStdString() ,
-										 LoginDLG->Alias->text().toStdString(),
-										 LoginDLG->UserName->text().toStdString(),
-										 LoginDLG->Password->text().toStdString(),
-										"",//Role
-										"UTF8",//codepage
-										"DEFAULT CHARACTER SET RUSSIAN");//Доп параметры
-			DB->Connect();
+			try
+			{
+				DB = IBPP::DatabaseFactory(LoginDLG->Host->text().toStdString() ,
+											 LoginDLG->Alias->text().toStdString(),
+											 LoginDLG->UserName->text().toStdString(),
+											 LoginDLG->Password->text().toStdString(),
+											"",//Role
+											"UTF8",//codepage
+											"DEFAULT CHARACTER SET RUSSIAN");//Доп параметры
+				DB->Connect();
+			}
+			catch (IBPP::Exception& e)
+			{
+				QMessageBox::warning(0,tr("При попытке подключиться к БД возникло исключение:"),
+						QString::fromStdString(e.ErrorMessage()),
+						QMessageBox::Ok,QMessageBox::Ok);
+			}
+
 			if(DB->Connected()) break;
 		}
 	}
