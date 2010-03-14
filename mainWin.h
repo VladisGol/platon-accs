@@ -16,6 +16,7 @@
 #include "LinksExplorer.h"
 #include "dbetc.h"
 #include "DataClass.h"
+#include "aboutprogram.h"
 
 
 
@@ -45,12 +46,14 @@ private slots:
 	void RemoveFilter();	//Слот для снятия условий фильтра
 	void DisableAllActions();	//Отключение всех действий на форме
 	void ViewID_Activated();//Управление отображением идентификаторов объектов
+	void AboutShow();//Вывод дмалогового окна "О программе"
 
 private:
 	platon::Eidos* LocalEidos;
 	platon::Hypotesis* LocalHypotesis;
 	QTimer* DTBaseShifter;
 	QIcon icon_filter;
+	AboutProgram* AboutDlg;
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	int CurrentObjectLevel;
