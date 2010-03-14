@@ -36,6 +36,7 @@ mainWin::mainWin(QWidget *parent)
 			QObject::connect(action_View_IDs, SIGNAL(activated()), this, SLOT(ViewID_Activated()));
 			QObject::connect(tableViewHypotesis, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
 			QObject::connect(tableViewPragma, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
+			QObject::connect(action_About, SIGNAL(activated()), this, SLOT(AboutShow()));
 
 			SetEidosView(0);
 
@@ -65,6 +66,7 @@ mainWin::mainWin(QWidget *parent)
 			DisableAllActions();
 			//Инициализируем иконку фильтра
 		    icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
+		    AboutDlg=0;
 		}
 }
 void mainWin::DisableAllActions()
@@ -507,6 +509,14 @@ void mainWin::ViewID_Activated()
 			}
 	}
 }
+void  mainWin::AboutShow()
+{
+	//Показываем диалоговое окно "О программе"
+	if(AboutDlg==0) AboutDlg =new AboutProgram(this);	//Создаем объект только один раз
+	AboutDlg->exec();
+}
+
+
 
 
 
