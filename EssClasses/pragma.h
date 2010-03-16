@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public

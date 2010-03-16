@@ -110,7 +110,6 @@ QVariant HronologyEaMemModel::ReadValuefromRecord() const
 			OneValue=platon::IBPPTimestamp2QDateTime(MyTs);
 			break;
 		}
-		case platon::ft_RB:
 		case platon::ft_DLL:
 		case platon::ft_LinkHypotesis:
 		case platon::ft_LinkPragma:

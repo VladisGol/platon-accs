@@ -151,7 +151,6 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 						OneValue=LocAlValue;
 						break;
 					}
-					case platon::ft_RB:
 					case platon::ft_DLL:
 					case platon::ft_LinkHypotesis:
 					case platon::ft_LinkPragma:

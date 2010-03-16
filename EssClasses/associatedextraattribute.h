@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -66,7 +66,6 @@ public:
         RoutineInOut     GetDLLValue()const;
         LNK_Value        GetLink2HValue()const;
         LNK_Value        GetLink2PValue()const;
-        long             GetRefBookValue()const;
 
         void SetStringValue(std::string In);
         void SetIntValue(int In);
@@ -76,7 +75,6 @@ public:
         void SetDLLValue(RoutineInOut In);
         void SetLink2HValue(LNK_Value In);
         void SetLink2PValue(LNK_Value In);
-        void SetRefBookValue(long In);
 
         long SetMultiLNKValue(LNK_Value In, long ID_inlist);
         void DeleteMultiLNKValue(long ID_inlist);

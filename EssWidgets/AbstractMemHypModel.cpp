@@ -138,7 +138,6 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 					OneValue=IBPPTimestamp2QDateTime(MyTs);
 					break;
 				}
-				case platon::ft_RB:
 				case platon::ft_DLL:
 				case platon::ft_LinkHypotesis:
 				case platon::ft_LinkPragma:

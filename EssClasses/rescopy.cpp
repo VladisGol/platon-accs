@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -91,9 +91,6 @@ RESCopy* RESCopy::Fork(long ID_ACTCopy_BelongFor)
                                 break;
                         case ft_DateTime:
                                 Destination->GetEAByNum(i)->SetDateTimeValue(Source->GetEAByNum(i)->GetDateTimeValue());
-                                break;
-                        case ft_RB:
-                                Destination->GetEAByNum(i)->SetRefBookValue(Source->GetEAByNum(i)->GetRefBookValue());
                                 break;
                         case ft_DLL:
                                 Destination->GetEAByNum(i)->SetDLLValue(Source->GetEAByNum(i)->GetDLLValue());

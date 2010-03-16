@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -70,7 +70,7 @@ struct LNK_Value
 
 
 enum FieldType {ft_String=1, ft_Integer=3, ft_Boolean=5, ft_Float=6, ft_DateTime=11,ft_FmtMemo=17,
-                ft_RB=101, ft_DLL=102, ft_LinkHypotesis=103, ft_LinkPragma=104, ft_Security=105};
+                ft_DLL=102, ft_LinkHypotesis=103, ft_LinkPragma=104, ft_Security=105};
 
 
 //Класс дополнительных атрибутов реализует функционал дополнительных свойств объектов класса Eidos
