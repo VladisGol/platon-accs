@@ -92,7 +92,6 @@ long ExtraAttribute::Save()
                 case ft_Boolean:
                 case ft_Float:
                 case ft_DateTime:
-       	        case ft_RB:
                 case ft_DLL:
                         break;
                 case ft_LinkHypotesis:

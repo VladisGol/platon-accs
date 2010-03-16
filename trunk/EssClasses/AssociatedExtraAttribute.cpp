@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -60,10 +60,6 @@ std::string AssociatedExtraAttribute::GetVisibleValue()const
                         {
                                 IBPP::Timestamp MyTs=this->GetDateTimeValue();
                                 return ToString(MyTs.Year())+"-"+ToString(MyTs.Month())+"-"+ToString(MyTs.Day());
-                        }
-        	        case ft_RB:
-                        {
-                	        return this->GetStringValue();
                         }
 	                case ft_DLL:
                         {
@@ -218,23 +214,6 @@ LNK_Value AssociatedExtraAttribute::GetLink2PValue()const
         return GetLink2HValue();
 }
 
-long AssociatedExtraAttribute::GetRefBookValue()const
-{
-//Получение идентификатора справочника
-        long ProcReturnValue=0;
-        IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
-        if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
-
-        Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
-        Statement->Execute();
-        if(Statement->Fetch()) Statement->Get("KEYVALUE",(int32_t*)&ProcReturnValue);
-        return ProcReturnValue;
-}
-
-
-
 void AssociatedExtraAttribute::SetStringValue(std::string In)
 {
         IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
@@ -370,28 +349,6 @@ void AssociatedExtraAttribute::SetLink2HValue(LNK_Value In)
 void AssociatedExtraAttribute::SetLink2PValue(LNK_Value In)
 {
         SetLink2HValue(In);
-}
-
-
-void AssociatedExtraAttribute::SetRefBookValue(long In)
-{
-        IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
-        if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
-        /*
-        1  ID_EA_HEADER INTEGER,
-        2  ID_LINK INTEGER,
-        3  MEANING INTEGER,
-        4  ID_RB INTEGER,
-        5  DATE_OF_CHANGE TIMESTAMP)
-        */
-        Statement->Prepare("Execute procedure SET_EA_RB(?,?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
-        Statement->Set(3,(int32_t)In);
-        Statement->Set(4,(int32_t)this->EA->ID_RB_Describer);
-        Statement->Set(5,this->EA->DTValue);
-        Statement->Execute();
-        OwnerHypotesis->CommitProcedure();
 }
 
 long AssociatedExtraAttribute::SetMultiLNKValue(LNK_Value In, long ID_inlist)

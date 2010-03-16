@@ -105,7 +105,6 @@ void EA_OneFrame::fillVisibleWidget()
 			KeepValue=((QDateTimeEdit*)EditableWidget)->dateTime();
 			break;
 		}
-		case platon::ft_RB:
 		case platon::ft_DLL:
 		{
 			DLLButton = new QToolButton(this);
@@ -242,7 +241,6 @@ void EA_OneFrame::Save()
 					EAA->SetDateTimeValue(QDateTime2IBPPTimestamp(((QDateTimeEdit*)EditableWidget)->dateTime()));
 				break;
 			}
-			case platon::ft_RB:
 			case platon::ft_DLL:
 				//Данные значения обрабатываются в процедурах вызова кнопок
 				break;
