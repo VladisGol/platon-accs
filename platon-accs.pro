@@ -13,156 +13,167 @@ DEPENDPATH += . \
     EssClasses \
     EssForms \
     EssWidgets \
-    images \
-    EssWidgets/hugo_model \
-    ibpp/core
+    EidosStudio \
+    images
+unix:DEPENDPATH += ibpp/core
+unix:DEPENDPATH += EssWidgets/hugo_model
+win32:DEPENDPATH += ibpp\core
+win32:DEPENDPATH += EssWidgets\hugo_model
 INCLUDEPATH += . \
     EssForms \
-    ibpp/core \
     EssClasses \
     EssWidgets \
-    EssWidgets/hugo_model
+    EidosStudio \
+    EssWidgets \
+    images
+unix:INCLUDEPATH += ibpp/core
+unix:INCLUDEPATH += EssWidgets/hugo_model
+win32:INCLUDEPATH += ibpp\core
+win32:INCLUDEPATH += EssWidgets\hugo_model
 
 # Input
-HEADERS += EssForms/aboutprogram.h \
+HEADERS += es_mainwindow.h \
+    aboutprogram.h \
     DataClass.h \
     EssentialClass.h \
     mainWin.h \
-    EssClasses/actclass.h \
-    EssClasses/actcopy.h \
-    EssClasses/acttype.h \
-    EssClasses/associatedextraattribute.h \
-    EssClasses/dbetc.h \
-    EssClasses/eidos.h \
-    EssClasses/extraatrib.h \
-    EssClasses/hypotesis.h \
-    EssClasses/objclass.h \
-    EssClasses/objcopy.h \
-    EssClasses/objtype.h \
-    EssClasses/piterator.h \
-    EssClasses/pragma.h \
-    EssClasses/resclass.h \
-    EssClasses/rescopy.h \
-    EssClasses/restype.h \
-    EssClasses/sqlmanager.h \
-    EssClasses/transactionstru.h \
-    EssForms/abstracthip_editform.h \
-    EssForms/DialogchoiceEidos.h \
-    EssForms/DialogchoiceHypotesis.h \
-    EssForms/DialogchoicePragma.h \
-    EssForms/DialogEditHronologyEA.h \
-    EssForms/DialogLogin.h \
-    EssForms/HypotesisEditForm.h \
-    EssForms/LinksExplorer.h \
-    EssForms/Multilinks.h \
-    EssForms/PragmaEditForm.h \
-    EssWidgets/AbstractMemHypModel.h \
-    EssWidgets/commonroutines.h \
-    EssWidgets/EAOneFrame.h \
-    EssWidgets/EidosMemModel.h \
-    EssWidgets/HronologyEaMemModel.h \
-    EssWidgets/HypotesisMemModel.h \
-    EssWidgets/HypPragmaMemModel.h \
-    EssWidgets/LnkComboBox.h \
-    EssWidgets/LnkdEidosMemModel.h \
-    EssWidgets/LnkdHypMemModel.h \
-    EssWidgets/LnkdPragmaMemModel.h \
-    EssWidgets/PragmaMemModel.h \
-    EssWidgets/qeidostreewidget.h \
-    EssWidgets/hugo_model/hypotesismodel.h \
-    EssWidgets/hugo_model/pragmamodel.h \
-    ibpp/core/_ibpp.h \
-    ibpp/core/ibase.h \
-    ibpp/core/iberror.h \
-    ibpp/core/ibpp.h \
-    ibpp/core/_ibpp.cpp \
-    ibpp/core/_dpb.cpp \
-    ibpp/core/_ibs.cpp \
-    ibpp/core/_rb.cpp \
-    ibpp/core/_spb.cpp \
-    ibpp/core/_tpb.cpp \
-    ibpp/core/array.cpp \
-    ibpp/core/blob.cpp \
-    ibpp/core/database.cpp \
-    ibpp/core/date.cpp \
-    ibpp/core/dbkey.cpp \
-    ibpp/core/events.cpp \
-    ibpp/core/exception.cpp \
-    ibpp/core/row.cpp \
-    ibpp/core/service.cpp \
-    ibpp/core/statement.cpp \
-    ibpp/core/time.cpp \
-    ibpp/core/transaction.cpp \
-    ibpp/core/user.cpp
-FORMS += EssForms/aboutprogram.ui \
+    actclass.h \
+    actcopy.h \
+    acttype.h \
+    associatedextraattribute.h \
+    dbetc.h \
+    eidos.h \
+    extraatrib.h \
+    hypotesis.h \
+    objclass.h \
+    objcopy.h \
+    objtype.h \
+    piterator.h \
+    pragma.h \
+    resclass.h \
+    rescopy.h \
+    restype.h \
+    sqlmanager.h \
+    transactionstru.h \
+    abstracthip_editform.h \
+    DialogchoiceEidos.h \
+    DialogchoiceHypotesis.h \
+    DialogchoicePragma.h \
+    DialogEditHronologyEA.h \
+    DialogLogin.h \
+    HypotesisEditForm.h \
+    LinksExplorer.h \
+    Multilinks.h \
+    PragmaEditForm.h \
+    AbstractMemHypModel.h \
+    commonroutines.h \
+    EAOneFrame.h \
+    EidosMemModel.h \
+    HronologyEaMemModel.h \
+    HypotesisMemModel.h \
+    HypPragmaMemModel.h \
+    LnkComboBox.h \
+    LnkdEidosMemModel.h \
+    LnkdHypMemModel.h \
+    LnkdPragmaMemModel.h \
+    PragmaMemModel.h \
+    qeidostreewidget.h \
+    hypotesismodel.h \
+    pragmamodel.h \
+    _ibpp.h \
+    ibase.h \
+    iberror.h \
+    ibpp.h \
+    _ibpp.cpp \
+    _dpb.cpp \
+    _ibs.cpp \
+    _rb.cpp \
+    _spb.cpp \
+    _tpb.cpp \
+    array.cpp \
+    blob.cpp \
+    database.cpp \
+    date.cpp \
+    dbkey.cpp \
+    events.cpp \
+    exception.cpp \
+    row.cpp \
+    service.cpp \
+    statement.cpp \
+    time.cpp \
+    transaction.cpp \
+    user.cpp
+FORMS += es_mainwindow.ui \
+    aboutprogram.ui \
     mainwindow.ui \
-    EssForms/HypotesisEditForm.ui \
-    EssForms/LinksExplorer.ui \
-    EssForms/Multilinks.ui
-SOURCES += EssForms/aboutprogram.cpp \
+    HypotesisEditForm.ui \
+    LinksExplorer.ui \
+    Multilinks.ui
+SOURCES += es_mainwindow.cpp \
+    aboutprogram.cpp \
     DataClass.cpp \
     main.cpp \
     mainWin.cpp \
-    EssClasses/actclass.cpp \
-    EssClasses/actcopy.cpp \
-    EssClasses/acttype.cpp \
-    EssClasses/AssociatedExtraAttribute.cpp \
-    EssClasses/dbetc.cpp \
-    EssClasses/eidos.cpp \
-    EssClasses/extraatrib.cpp \
-    EssClasses/hypotesis.cpp \
-    EssClasses/objclass.cpp \
-    EssClasses/objcopy.cpp \
-    EssClasses/objtype.cpp \
-    EssClasses/piterator.cpp \
-    EssClasses/pragma.cpp \
-    EssClasses/resclass.cpp \
-    EssClasses/rescopy.cpp \
-    EssClasses/restype.cpp \
-    EssClasses/sqlmanager.cpp \
-    EssForms/abstracthip_editform.cpp \
-    EssForms/DialogchoiceEidos.cpp \
-    EssForms/DialogchoiceHypotesis.cpp \
-    EssForms/DialogchoicePragma.cpp \
-    EssForms/DialogEditHronologyEA.cpp \
-    EssForms/DialogLogin.cpp \
-    EssForms/HypotesisEditForm.cpp \
-    EssForms/LinksExplorer.cpp \
-    EssForms/Multilinks.cpp \
-    EssForms/PragmaEditForm.cpp \
-    EssWidgets/AbstractMemHypModel.cpp \
-    EssWidgets/commonroutines.cpp \
-    EssWidgets/EAOneFrame.cpp \
-    EssWidgets/EidosMemModel.cpp \
-    EssWidgets/HronologyEaMemModel.cpp \
-    EssWidgets/HypotesisMemModel.cpp \
-    EssWidgets/HypPragmaMemModel.cpp \
-    EssWidgets/LnkComboBox.cpp \
-    EssWidgets/LnkdEidosMemModel.cpp \
-    EssWidgets/LnkdHypMemModel.cpp \
-    EssWidgets/LnkdPragmaMemModel.cpp \
-    EssWidgets/PragmaMemModel.cpp \
-    EssWidgets/qeidostreewidget.cpp \
-    EssWidgets/hugo_model/hypotesismodel.cpp \
-    EssWidgets/hugo_model/pragmamodel.cpp \
-    ibpp/core/_dpb.cpp \
-    ibpp/core/_ibpp.cpp \
-    ibpp/core/_ibs.cpp \
-    ibpp/core/_rb.cpp \
-    ibpp/core/_spb.cpp \
-    ibpp/core/_tpb.cpp \
-    ibpp/core/all_in_one.cpp \
-    ibpp/core/array.cpp \
-    ibpp/core/blob.cpp \
-    ibpp/core/database.cpp \
-    ibpp/core/date.cpp \
-    ibpp/core/dbkey.cpp \
-    ibpp/core/events.cpp \
-    ibpp/core/exception.cpp \
-    ibpp/core/row.cpp \
-    ibpp/core/service.cpp \
-    ibpp/core/statement.cpp \
-    ibpp/core/time.cpp \
-    ibpp/core/transaction.cpp \
-    ibpp/core/user.cpp
-RESOURCES += images/resources.qrc
+    actclass.cpp \
+    actcopy.cpp \
+    acttype.cpp \
+    AssociatedExtraAttribute.cpp \
+    dbetc.cpp \
+    eidos.cpp \
+    extraatrib.cpp \
+    hypotesis.cpp \
+    objclass.cpp \
+    objcopy.cpp \
+    objtype.cpp \
+    piterator.cpp \
+    pragma.cpp \
+    resclass.cpp \
+    rescopy.cpp \
+    restype.cpp \
+    sqlmanager.cpp \
+    abstracthip_editform.cpp \
+    DialogchoiceEidos.cpp \
+    DialogchoiceHypotesis.cpp \
+    DialogchoicePragma.cpp \
+    DialogEditHronologyEA.cpp \
+    DialogLogin.cpp \
+    HypotesisEditForm.cpp \
+    LinksExplorer.cpp \
+    Multilinks.cpp \
+    PragmaEditForm.cpp \
+    AbstractMemHypModel.cpp \
+    commonroutines.cpp \
+    EAOneFrame.cpp \
+    EidosMemModel.cpp \
+    HronologyEaMemModel.cpp \
+    HypotesisMemModel.cpp \
+    HypPragmaMemModel.cpp \
+    LnkComboBox.cpp \
+    LnkdEidosMemModel.cpp \
+    LnkdHypMemModel.cpp \
+    LnkdPragmaMemModel.cpp \
+    PragmaMemModel.cpp \
+    qeidostreewidget.cpp \
+    hypotesismodel.cpp \
+    pragmamodel.cpp \
+    _dpb.cpp \
+    _ibpp.cpp \
+    _ibs.cpp \
+    _rb.cpp \
+    _spb.cpp \
+    _tpb.cpp \
+    all_in_one.cpp \
+    array.cpp \
+    blob.cpp \
+    database.cpp \
+    date.cpp \
+    dbkey.cpp \
+    events.cpp \
+    exception.cpp \
+    row.cpp \
+    service.cpp \
+    statement.cpp \
+    time.cpp \
+    transaction.cpp \
+    user.cpp
+RESOURCES += resources.qrc
