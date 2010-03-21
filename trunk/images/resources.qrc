@@ -1,5 +1,8 @@
 <RCC>
-  <qresource prefix="PICS" >
+  <qresource prefix="PICS">
+    <file>lavr_add.png</file>
+    <file>lavr_del.png</file>
+    <file>Leaf_rename.png</file>
     <file>filteroff.png</file>
     <file>filter2.png</file>
     <file>konstr.png</file>
