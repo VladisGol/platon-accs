@@ -37,6 +37,7 @@ mainWin::mainWin(QWidget *parent)
 			QObject::connect(tableViewHypotesis, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
 			QObject::connect(tableViewPragma, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
 			QObject::connect(action_About, SIGNAL(activated()), this, SLOT(AboutShow()));
+			QObject::connect(action_ES, SIGNAL(activated()), this, SLOT(ESShow()));
 
 			SetEidosView(0);
 
@@ -515,6 +516,12 @@ void  mainWin::AboutShow()
 	if(AboutDlg==0) AboutDlg =new AboutProgram(this);	//Создаем объект только один раз
 	AboutDlg->exec();
 }
+void mainWin::ESShow()
+{
+	platon::es_mainwindow * es = new platon::es_mainwindow(this);
+	es->show();
+}
+
 
 
 

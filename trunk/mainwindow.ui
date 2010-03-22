@@ -200,13 +200,7 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
-    <property name="title">
-     <string>Файл</string>
-    </property>
-    <addaction name="action_quit"/>
-   </widget>
-   <widget class="QMenu" name="menu_2">
+   <widget class="QMenu" name="menu_5">
     <property name="title">
      <string>Запись</string>
     </property>
@@ -232,10 +226,23 @@
     </property>
     <addaction name="action_About"/>
    </widget>
-   <addaction name="menu"/>
-   <addaction name="menu_2"/>
+   <widget class="QMenu" name="menu_1">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="action_quit"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Классы</string>
+    </property>
+    <addaction name="action_ES"/>
+   </widget>
+   <addaction name="menu_1"/>
+   <addaction name="menu_5"/>
    <addaction name="menu_3"/>
    <addaction name="menu_4"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="layoutDirection">
@@ -350,6 +357,15 @@
   <action name="action_About">
    <property name="text">
     <string>О программе</string>
+   </property>
+  </action>
+  <action name="action_ES">
+   <property name="icon">
+    <iconset resource="images/resources.qrc">
+     <normaloff>:/PICS/Leaf_rename.png</normaloff>:/PICS/Leaf_rename.png</iconset>
+   </property>
+   <property name="text">
+    <string>Эйдос студия</string>
    </property>
   </action>
  </widget>
