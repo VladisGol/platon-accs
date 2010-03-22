@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter_2">
+     <widget class="QSplitter" name="splitter_V">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
@@ -49,7 +49,7 @@
         </property>
        </column>
       </widget>
-      <widget class="QSplitter" name="splitter">
+      <widget class="QSplitter" name="splitter_H">
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>

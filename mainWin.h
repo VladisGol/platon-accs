@@ -17,6 +17,7 @@
 #include "dbetc.h"
 #include "DataClass.h"
 #include "aboutprogram.h"
+#include "es_mainwindow.h"
 
 
 
@@ -46,7 +47,8 @@ private slots:
 	void RemoveFilter();	//Слот для снятия условий фильтра
 	void DisableAllActions();	//Отключение всех действий на форме
 	void ViewID_Activated();//Управление отображением идентификаторов объектов
-	void AboutShow();//Вывод дмалогового окна "О программе"
+	void AboutShow();//Вывод диалогового окна "О программе"
+	void ESShow();	//Запуск Эйдос студии
 
 private:
 	platon::Eidos* LocalEidos;
