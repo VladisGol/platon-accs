@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="PICS">
+    <file>attention_niels_epting_.png</file>
+    <file>bb_txt_.png</file>
+    <file>padlock_aj_ashton_01.png</file>
     <file>lavr_add.png</file>
     <file>lavr_del.png</file>
     <file>Leaf_rename.png</file>

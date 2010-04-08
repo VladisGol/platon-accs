@@ -519,6 +519,8 @@ void  mainWin::AboutShow()
 void mainWin::ESShow()
 {
 	platon::es_mainwindow * es = new platon::es_mainwindow(this);
+	es->ui.EidosTreeWidget->findNMakeCurrent(this->EidosTreeWidget->GetEidosID());
+	es->FillEAGrid(es->ui.EidosTreeWidget->currentItem(),0);
 	es->show();
 }
 

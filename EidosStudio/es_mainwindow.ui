@@ -53,33 +53,7 @@
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QTableWidget" name="tableWidget_EAs">
-        <column>
-         <property name="text">
-          <string>ID</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Поле</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Заголовок</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Тип</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Видимый</string>
-         </property>
-        </column>
-       </widget>
+       <widget class="QTableWidget" name="tableWidget_EAs"/>
        <widget class="QGroupBox" name="groupBox">
         <property name="title">
          <string>Свойства</string>
@@ -114,41 +88,6 @@
            </item>
            <item>
             <widget class="QComboBox" name="comboBox_Type">
-             <item>
-              <property name="text">
-               <string>Целое число</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Логическое</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Вещественное</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Дата-время</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>DLL библиотека</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Ссылка на тип</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Ссылка на экземпляр</string>
-              </property>
-             </item>
              <item>
               <property name="text">
                <string/>
@@ -219,6 +158,19 @@
           </layout>
          </item>
          <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
           <widget class="QGroupBox" name="groupBox_DLL">
            <property name="title">
             <string>DLL</string>
@@ -269,6 +221,19 @@
                </widget>
               </item>
              </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
@@ -348,6 +313,19 @@
                <string>Выводить списком</string>
               </property>
              </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
             </item>
            </layout>
           </widget>
