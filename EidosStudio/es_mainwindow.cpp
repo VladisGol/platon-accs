@@ -23,6 +23,13 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ui.comboBox_Type->addItem(GetEATypeName(ft_LinkPragma),ft_LinkPragma);
 	ui.comboBox_Type->addItem(GetEATypeName(ft_Security),ft_Security);
 
+	ui.comboBox_Species->clear();
+	ui.comboBox_Species->addItem(tr("/"),"ALL");
+	ui.comboBox_Species->addItem(tr("Объекты учета"),"OBJ");
+	ui.comboBox_Species->addItem(tr("Подучетные действия"),"ACT");
+	ui.comboBox_Species->addItem(tr("Ресурсы"),"RES");
+	ui.comboBox_Species->addItem(tr("Нормативно-справочная информация"),"NSI");
+
 	LocalEidos=NULL;
 
 	DataClass* DTL=platon::GetDataModule(this);
@@ -37,14 +44,13 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ViewID_Activated();
 
     QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
-    QObject::connect(ui.tableWidget_EAs, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(EAChoosed(QTableWidgetItem*)));
-    QObject::connect(ui.tableWidget_EAs, SIGNAL(itemActivated(QTableWidgetItem*)), this, SLOT(EAChoosed(QTableWidgetItem*)));
     QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
 
-
 }
+
 void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement)
 {
+	//при выборе экстраатрибута следует загрузить и отобразить его свойства
 	int curRow=CurElement->row();
 	CurrentEA = LocalEidos->GetEAByFieldName(ui.tableWidget_EAs->item(curRow, 2)->text().toStdString());
 	int ComdoIndex=ui.comboBox_Type->findData(CurrentEA->type,Qt::UserRole, Qt::MatchExactly);
@@ -63,9 +69,28 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement)
 	ui.lineEdit_Caption->setText(QString::fromStdString(CurrentEA->GetEACaption()));
 	ui.lineEdit_FieldName->setText(QString::fromStdString(CurrentEA->GetEAFieldName()));
 
+	ComdoIndex=ui.comboBox_Species->findData(QString::fromStdString(CurrentEA->LNK_species),Qt::UserRole, Qt::MatchExactly);
+	ui.comboBox_Species->setCurrentIndex(ComdoIndex);
+
+	ui.lineEdit_Eidos->setText("");
+	if(CurrentEA->LNK_EidosID>0)
+	{
+		Eidos* tmpEidos=new Eidos (this->DB,CurrentEA->LNK_EidosID);
+		ui.lineEdit_Eidos->setText(QString::fromStdString(tmpEidos->GetFullEidosName()));
+		delete tmpEidos;
+	}
+
+	ui.checkBox_alternated->setChecked(CurrentEA->IsCaptionAlternated);
+	if(CurrentEA->IsCaptionAlternated)
+	{
+		Eidos* tmpEidos=new Eidos (this->DB,CurrentEA->AltCaptionEidosID);
+		ui.checkBox_alternated->setToolTip(tr("Псевдоним определен в ")+QString::fromStdString(tmpEidos->GetFullEidosName()));
+		delete tmpEidos;
+	}
 }
 void es_mainwindow::comboTypeChanged(int NewIndex)
 {
+	//При изменеии типа атрибута следует отображать или скрывать присущие конкретным типам атрибутов свойства
 	int EAType=ui.comboBox_Type->itemData(NewIndex,Qt::UserRole).toInt();
 	switch (EAType)
 			{
@@ -110,9 +135,50 @@ void es_mainwindow::Exit()
 	WriteFormWidgetsAppearance();
 	this->close();
 }
+void es_mainwindow::SetAltCaption()
+{
+//Установка псевдонима заголовка текущего экстраатрибута
+	bool ok;
+    QString textExp = QInputDialog::getText(this, tr("Изменение псевдонима заголовка текущего экстраатрибута"),	tr("Новый заголовок:"),QLineEdit::Normal,"",&ok);
+    if (ok && !textExp.isEmpty()) CurrentEA->SetAlterCaption(textExp.toStdString());
+}
+void es_mainwindow::ChangeCheckBoxAlterCaption()
+{
+//Изменение вручную состояния чекбокса псевдонима заголовка
+	if(ui.checkBox_alternated->checkState()==Qt::Unchecked)
+	{
+		if(CurrentEA->AltCaptionEidosID == LocalEidos->GetID())
+		{
+			if(CurrentEA->IsCaptionAlternated==true)
+			{
+				int ret = QMessageBox::critical(this, tr("Удаление псевдонима:"),tr("Вы действительно хотите удалить псевдоним заголовка для текущего атрибута?"),QMessageBox::Yes,QMessageBox::No|QMessageBox::Default);
+				if(ret=QMessageBox::Yes)
+				{
+					CurrentEA->DeleteAlterCaption();
+					//RefreshEAonForm(id);
+				}
+				else
+					ui.checkBox_alternated->setChecked(CurrentEA->IsCaptionAlternated);
+			}
+		}
+		else
+		{
+			ui.checkBox_alternated->setChecked(CurrentEA->IsCaptionAlternated);
+			QMessageBox::information(this, tr("Удаление псевдонима:"),tr("Удалить псевдоним заголовка для текущего атрибута можно только на том уровне Eodos-а, на котором он был определен"));
+		}
+	}
+	else	//Qt::Checked
+	{
+		SetAltCaption();
+	}
+}
 
 void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 {
+	QObject::disconnect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*)));
+	QObject::disconnect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
+	QObject::disconnect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
+
 	ui.tableWidget_EAs->setSortingEnabled(false);
 	ui.tableWidget_EAs->clear(); //Очищаем содержимое таблицы
 
@@ -206,6 +272,12 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 		ui.tableWidget_EAs->hideColumn(0);
 
 	if(keep4delete!=NULL) delete keep4delete;
+	QObject::connect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*)));
+	QObject::connect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
+	QObject::connect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
+	ui.tableWidget_EAs->setCurrentCell(0,1);
+	//EAChoosed(ui.tableWidget_EAs->item(0,1));
+
 }
 
 QString es_mainwindow::GetEATypeName(int typeID)
@@ -304,6 +376,17 @@ void es_mainwindow::ViewID_Activated()
 					ui.EidosTreeWidget->showColumn(i);
 			}
 	}
+}
+
+void es_mainwindow::RefreshEAonForm()
+{
+	//Процедура проводит обновление списка экстраатрибутов и открывает атрибут, идентификатор которого переданв параметре
+	int KeepRow=ui.tableWidget_EAs->currentRow();
+	int KeepCol=ui.tableWidget_EAs->currentColumn();
+	QString EAID4Find=ui.tableWidget_EAs->item(KeepRow,0)->text();//EAID
+
+	FillEAGrid(ui.EidosTreeWidget->currentItem(),0);
+
 }
 
 

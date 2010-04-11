@@ -95,6 +95,7 @@ public:
 
     ExtraAttribute* GetEAByFieldName(std::string FieldName);
     ExtraAttribute* GetEAByNum(int NumEA);
+    ExtraAttribute* GetEAByID(long EAID);
     std::string GetEidosSpecies() const;
     std::string GetFullEidosName()const;
     HypotesisSQLManager* HypotesisSQL;
