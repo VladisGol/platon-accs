@@ -21,13 +21,15 @@ public:
     ~es_mainwindow();
     IBPP::Database DB;
     Ui::es_mainwindowClass ui;
+    void RefreshEAonForm();				//Процедура проводит обновление элементов управления формы для текущего экстраатрибута
 
 public slots:
 	void Exit();
 	void FillEAGrid(QTreeWidgetItem*,int);//Заполнение списка экстраатрибутов в грид
 	void EAChoosed(QTableWidgetItem*);		//Отображение одного элемента из таблицы
 	void comboTypeChanged(int);			//Изменение вида детализации атрибута при смене типа в комбо боксе
-
+	void SetAltCaption();					//Слот заполнения псевдонима экстраатрибута
+	void ChangeCheckBoxAlterCaption();	//Слот ручного изменения состояния чекбокса псевдонима
 
 protected:
     void ReadFormWidgetsAppearance();

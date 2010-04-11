@@ -330,6 +330,22 @@ ExtraAttribute* Eidos::GetEAByNum(int Number)
         return tmpAttrib;
 }
 
+ExtraAttribute* Eidos::GetEAByID(long EAID)
+{
+//Процедура возвращает ссылку на экстраатрибут по идентификатору экстраатрибута
+        ExtraAttribute* tmpAttrib;
+        ExtraAttribute*for_return=NULL;
+        for(unsigned int i=0;i<this->Attributes.size();i++)
+        {
+                tmpAttrib=(ExtraAttribute*)this->Attributes[i];
+                if(tmpAttrib->GetEAID()== EAID)
+                {
+                	for_return=tmpAttrib;
+                	break;
+                }
+        }
+        return for_return;
+}
 
 std::string Eidos::GetEidosSpecies()const
 {
@@ -472,7 +488,7 @@ void Eidos::AlternateEACaption()
 
 		while(CurrentIDEidos>0)		//Проверяем не является ли объект корневым
 		{
-			std::string AlternatedFieldName;
+			long AlternatedHeaderID;
 			std::string AlternatedCaption;
 
 			LocalST->Prepare("SELECT * FROM GET_EA_ALTCAPTIONS(?);");
@@ -481,14 +497,15 @@ void Eidos::AlternateEACaption()
 
 	        while(LocalST->Fetch())
 	        {
-	        	LocalST->Get("FIELD_NAME",AlternatedFieldName);
+	        	LocalST->Get("ID_HEADER",(int32_t*)&AlternatedHeaderID);
 	        	LocalST->Get("NEWCAPTION",AlternatedCaption);
 
-	        	ExtraAttribute*OneEA= this->GetEAByFieldName(AlternatedFieldName);
+	        	ExtraAttribute*OneEA= this->GetEAByID(AlternatedHeaderID);
 	        	if(OneEA->IsCaptionAlternated==false)
 	        	{
 	        		OneEA->Caption=AlternatedCaption;
 	        		OneEA->IsCaptionAlternated=true;
+	        		OneEA->AltCaptionEidosID=CurrentIDEidos;
 	        	}
 	        }
 

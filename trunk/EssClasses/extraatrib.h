@@ -15,6 +15,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
+Project site: http://code.google.com/p/platon-accs/
 
 Ядро системы учета "Платон".
 Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2009г.
@@ -27,7 +28,9 @@ Contacts: e-mail vladisgol@rambler.ru
 Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного
 Применений GNU.
 Связаться с авторами программы вы можете по e-mail vladisgol@rambler.ru
+Cайт проекта http://code.google.com/p/platon-accs/
 */
+
 
 #ifndef ExtraatribH
 #define ExtraatribH
@@ -111,7 +114,8 @@ public:
     long 	LNK_HypID;
     bool	LNK_NeedList;
 
-    bool IsCaptionAlternated;	//Переменная показывающая была ли проведена замена заголовка
+    bool 	IsCaptionAlternated;	//Переменная показывающая была ли проведена замена заголовка
+    long	AltCaptionEidosID;		//Идентификатор ейдоса на уровне которого проведена замена заголовка
 
 	long 	Save();
 	ExtraAttribute();
@@ -130,6 +134,8 @@ public:
 	std::string TemporalListSPName()const;
 
     long RealRecordsCount(void);
+    void SetAlterCaption(std::string NewCaption);
+    void DeleteAlterCaption();
 };
 }
 #endif

@@ -1,6 +1,6 @@
 /*
 software core of accounting system "Platon".
-Copyright (C) 2005-2009 Borisenkov S., Golovyrin V.
+Copyright (C) 2005-2010 Borisenkov S., Golovyrin V.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,7 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
+Project site: http://code.google.com/p/platon-accs/
 
 Ядро системы учета "Платон".
 Авторами программы являются Борисенков Сергей Александрович и Головырин Владислав Владимирович, 2005-2009г.
@@ -27,6 +28,7 @@ Contacts: e-mail vladisgol@rambler.ru
 Для получения более подробной информации ознакомьтесь со Стандартной Общественной Лицензией Ограниченного
 Применений GNU.
 Связаться с авторами программы вы можете по e-mail vladisgol@rambler.ru
+Cайт проекта http://code.google.com/p/platon-accs/
 */
 
 #include "extraatrib.h"
@@ -244,5 +246,45 @@ long ExtraAttribute::RealRecordsCount(void)
 
 std::string ExtraAttribute::TemporalListSPName()const
 {return this->sTemporalListSPName;}
+
+void ExtraAttribute::SetAlterCaption(std::string NewCaption)
+{
+	//Процедура производит изменение унаследованного заголовка экстраатрибута на переданный в параметре
+    IBPP::Transaction LocalTr=IBPP::TransactionFactory(HostEidos->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement LocalST=IBPP::StatementFactory(HostEidos->DB, LocalTr);
+    LocalTr->Start();
+/*
+ SET_EA_ALTCAPTION (
+    ID_EIDOS Integer,
+    ID_HEADER Integer,
+    NEWCAPTION Varchar(255) )
+ */
+    LocalST->Prepare("EXECUTE PROCEDURE SET_EA_ALTCAPTION(?,?,?);");
+
+    LocalST->Set(1,(int32_t)HostEidos->GetID());
+    LocalST->Set(2,(int32_t)this->id);
+    LocalST->Set(3,NewCaption);
+    LocalST->Execute();
+    LocalTr->Commit();
+}
+void ExtraAttribute::DeleteAlterCaption()
+{
+	//Процедура производит удаление псевдонима заголовка экстраатрибута
+    IBPP::Transaction LocalTr=IBPP::TransactionFactory(HostEidos->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement LocalST=IBPP::StatementFactory(HostEidos->DB, LocalTr);
+    LocalTr->Start();
+/*
+ DEL_EA_ALTCAPTION (
+    ID_EIDOS Integer,
+    ID_HEADER Integer)
+ */
+    LocalST->Prepare("EXECUTE PROCEDURE DEL_EA_ALTCAPTION(?,?);");
+
+    LocalST->Set(1,(int32_t)HostEidos->GetID());
+    LocalST->Set(2,(int32_t)this->id);
+    LocalST->Execute();
+    LocalTr->Commit();
+}
+
 
 }
