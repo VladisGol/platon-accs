@@ -5,8 +5,11 @@ namespace platon
 es_mainwindow::es_mainwindow(QWidget *parent)
     : QMainWindow(parent)
 {
+	//Конструктор формы
 	numColsInTableEA=7;
+
 	ui.setupUi(this);
+
 	icon_locked.addPixmap(QPixmap(QString::fromUtf8((":/PICS/padlock_aj_ashton_01.png"))), QIcon::Normal, QIcon::Off);
 	icon_editable.addPixmap(QPixmap(QString::fromUtf8((":/PICS/bb_txt_.png"))), QIcon::Normal, QIcon::Off);
 	icon_occouped.addPixmap(QPixmap(QString::fromUtf8((":/PICS/attention_niels_epting_.png"))), QIcon::Normal, QIcon::Off);
@@ -30,27 +33,61 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ui.comboBox_Species->addItem(tr("Ресурсы"),"RES");
 	ui.comboBox_Species->addItem(tr("Нормативно-справочная информация"),"NSI");
 
+	//Устанавливаем заголовки к таблице атрибутов
+	ui.tableWidget_EAs->setColumnCount(numColsInTableEA);
+	for (int j=0;j<numColsInTableEA;j++)
+	{
+		QTableWidgetItem* OneItem =new QTableWidgetItem();
+		ui.tableWidget_EAs->setHorizontalHeaderItem(j, OneItem);
+	}
+	QStringList labels;
+	labels << tr("ID")<<tr("Статус")<<tr("Поле")<<tr("Заголовок")<<tr("Тип")<<tr("Принадлежит")<<tr("Eidos определения");
+	ui.tableWidget_EAs->setHorizontalHeaderLabels (labels);
+
+
 	LocalEidos=NULL;
+	CurrentEA=NULL;
+	CurEAChanged=false;
 
 	DataClass* DTL=platon::GetDataModule(this);
 	this->DB=DTL->DB;
 	this->IsViewID=DTL->ViewIDs;
-
-	QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(Exit()));
 
 	ui.EidosTreeWidget->SetSpecies("ALL");
 	ui.EidosTreeWidget->AttachToDB(this->DB);
 	ReadFormWidgetsAppearance();
 	ViewID_Activated();
 
+	QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(Exit()));
     QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
     QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
-
 }
 
-void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement)
+void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevElement )
 {
 	//при выборе экстраатрибута следует загрузить и отобразить его свойства
+	QObject::disconnect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.checkBox_Multiple, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.checkBox_NeedList, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.checkBox_Required, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::disconnect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+
+	if(CurEAChanged==true)	//Переход на другой элемент в режиме редактирования свойств атрибута
+	{
+		int ret = QMessageBox::warning(this, tr("Внимание, не сохраненные изменения"),
+		                                tr("Атрибут был изменен\n"
+		                                   "Желаете сохранить изменения?"),
+		                                QMessageBox::Save | QMessageBox::Discard,
+		                                QMessageBox::Save);
+		if(ret==QMessageBox::Save) SaveCurEA();
+	}
+
 	int curRow=CurElement->row();
 	CurrentEA = LocalEidos->GetEAByFieldName(ui.tableWidget_EAs->item(curRow, 2)->text().toStdString());
 	int ComdoIndex=ui.comboBox_Type->findData(CurrentEA->type,Qt::UserRole, Qt::MatchExactly);
@@ -66,6 +103,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement)
 	ui.checkBox_Visible->setChecked(CurrentEA->Visible);
 	ui.checkBox_Temporality->setChecked(CurrentEA->Temporality);
 	ui.checkBox_NeedList->setChecked(CurrentEA->LNK_NeedList);
+	ui.checkBox_Multiple->setChecked(CurrentEA->Multilnk);
 	ui.lineEdit_Caption->setText(QString::fromStdString(CurrentEA->GetEACaption()));
 	ui.lineEdit_FieldName->setText(QString::fromStdString(CurrentEA->GetEAFieldName()));
 
@@ -87,6 +125,37 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement)
 		ui.checkBox_alternated->setToolTip(tr("Псевдоним определен в ")+QString::fromStdString(tmpEidos->GetFullEidosName()));
 		delete tmpEidos;
 	}
+	//Проверяем находится ли атрибут в режиме "только чтение" и если это так, блокируем доступ к элементам управления
+
+	QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.checkBox_Multiple, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.checkBox_NeedList, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.checkBox_Required, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+	QObject::connect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+
+	if(ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->text()==QString("Н/Д"))
+	{
+		IsEAEditable=false;
+		ui.toolButton_ChooseEidos->setEnabled(false);
+		ui.toolButton_ChooseHipotesys->setEnabled(false);
+		ui.lineEdit_Caption->setReadOnly(true);
+		ui.lineEdit_FieldName->setReadOnly(true);
+	}
+	else
+	{
+		IsEAEditable=true;
+		ui.toolButton_ChooseEidos->setEnabled(true);
+		ui.toolButton_ChooseHipotesys->setEnabled(true);
+		ui.lineEdit_Caption->setReadOnly(false);
+		ui.lineEdit_FieldName->setReadOnly(false);
+	}
+	CurEAChanged=false;
 }
 void es_mainwindow::comboTypeChanged(int NewIndex)
 {
@@ -112,8 +181,19 @@ void es_mainwindow::comboTypeChanged(int NewIndex)
 					break;
 				}
 				case ft_LinkHypotesis:
+				{
+					ui.lineEdit_Hipotesys->setVisible(false);
+					ui.toolButton_ChooseHipotesys->setVisible(false);
+					ui.label_LnkHyp->setVisible(false);
+					ui.groupBox_DLL->setVisible(false);
+					ui.groupBox_LNK->setVisible(true);
+					break;
+				}
 				case ft_LinkPragma:
 				{
+					ui.lineEdit_Hipotesys->setVisible(true);
+					ui.toolButton_ChooseHipotesys->setVisible(true);
+					ui.label_LnkHyp->setVisible(true);
 					ui.groupBox_DLL->setVisible(false);
 					ui.groupBox_LNK->setVisible(true);
 					break;
@@ -132,6 +212,7 @@ void es_mainwindow::comboTypeChanged(int NewIndex)
 }
 void es_mainwindow::Exit()
 {
+//Выход из формы
 	WriteFormWidgetsAppearance();
 	this->close();
 }
@@ -152,10 +233,10 @@ void es_mainwindow::ChangeCheckBoxAlterCaption()
 			if(CurrentEA->IsCaptionAlternated==true)
 			{
 				int ret = QMessageBox::critical(this, tr("Удаление псевдонима:"),tr("Вы действительно хотите удалить псевдоним заголовка для текущего атрибута?"),QMessageBox::Yes,QMessageBox::No|QMessageBox::Default);
-				if(ret=QMessageBox::Yes)
+				if(ret==QMessageBox::Yes)
 				{
 					CurrentEA->DeleteAlterCaption();
-					//RefreshEAonForm(id);
+					RefreshEAonForm();
 				}
 				else
 					ui.checkBox_alternated->setChecked(CurrentEA->IsCaptionAlternated);
@@ -170,17 +251,29 @@ void es_mainwindow::ChangeCheckBoxAlterCaption()
 	else	//Qt::Checked
 	{
 		SetAltCaption();
+		RefreshEAonForm();
 	}
 }
 
 void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 {
-	QObject::disconnect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*)));
+	QObject::disconnect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*,QTableWidgetItem*)));
 	QObject::disconnect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
 	QObject::disconnect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
 
+	if(CurEAChanged==true)	//Переход на другой элемент в режиме редактирования свойств атрибута
+	{
+		int ret = QMessageBox::warning(this, tr("Внимание, не сохраненные изменения"),
+										tr("Атрибут был изменен\n"
+										   "Желаете сохранить изменения?"),
+										QMessageBox::Save | QMessageBox::Discard,
+										QMessageBox::Save);
+		if(ret==QMessageBox::Save) SaveCurEA();
+
+	}
+
 	ui.tableWidget_EAs->setSortingEnabled(false);
-	ui.tableWidget_EAs->clear(); //Очищаем содержимое таблицы
+	ui.tableWidget_EAs->clearContents(); //Очищаем внутреннее содержимое таблицы
 
 	Eidos* keep4delete=LocalEidos;
 
@@ -195,17 +288,6 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 	int AttrNumber = LocalEidos->Attributes.size();
 
 	ui.tableWidget_EAs->setRowCount(AttrNumber);	//Устанавливаем число строк таблицы по количеству атрибутов
-	ui.tableWidget_EAs->setColumnCount(numColsInTableEA);
-
-
-	for (int j=0;j<numColsInTableEA;j++)
-	{
-		QTableWidgetItem* OneItem =new QTableWidgetItem();
-		ui.tableWidget_EAs->setHorizontalHeaderItem(j, OneItem);
-	}
-	QStringList labels;
-	labels << tr("ID")<<tr("Статус")<<tr("Поле")<<tr("Заголовок")<<tr("Тип")<<tr("Принадлежит")<<tr("Eidos определения");
-	ui.tableWidget_EAs->setHorizontalHeaderLabels (labels);
 
 	for(int i=0;i<AttrNumber;i++)
 	{
@@ -272,11 +354,12 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 		ui.tableWidget_EAs->hideColumn(0);
 
 	if(keep4delete!=NULL) delete keep4delete;
-	QObject::connect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*)));
+	QObject::connect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*,QTableWidgetItem*)));
 	QObject::connect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
 	QObject::connect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
+
+	CurEAChanged=false;
 	ui.tableWidget_EAs->setCurrentCell(0,1);
-	//EAChoosed(ui.tableWidget_EAs->item(0,1));
 
 }
 
@@ -380,13 +463,50 @@ void es_mainwindow::ViewID_Activated()
 
 void es_mainwindow::RefreshEAonForm()
 {
-	//Процедура проводит обновление списка экстраатрибутов и открывает атрибут, идентификатор которого переданв параметре
-	int KeepRow=ui.tableWidget_EAs->currentRow();
+	//Процедура проводит обновление списка экстраатрибутов и открывает атрибут
 	int KeepCol=ui.tableWidget_EAs->currentColumn();
-	QString EAID4Find=ui.tableWidget_EAs->item(KeepRow,0)->text();//EAID
+	QString EAID4Find=ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),0)->text();//EAID
 
 	FillEAGrid(ui.EidosTreeWidget->currentItem(),0);
+	QList<QTableWidgetItem *> AnItems=ui.tableWidget_EAs->findItems(EAID4Find,Qt::MatchExactly);
+	ui.tableWidget_EAs->setCurrentItem(AnItems.at(0));
+	ui.tableWidget_EAs->setCurrentCell(ui.tableWidget_EAs->currentRow(),KeepCol);
 
+}
+void es_mainwindow::UserTryToEditEA()
+{
+	//Процедура проверяет статус экстраатрибута и если атрибут редактируем, то ставит признак изменения иначе выводит
+	//сообщение о невозможности корректировки свойств атрибута и обновляет свойства атрибута на ранее установленные
+	if(IsEAEditable==true)
+		CurEAChanged=true;
+	else
+	{
+		QMessageBox::information(this, tr("Предупреждение"),tr("Атрибут не может быть изменен, так как ")+ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->toolTip());
+		EAChoosed(ui.tableWidget_EAs->currentItem(),ui.tableWidget_EAs->currentItem());
+	}
+}
+void es_mainwindow::SaveCurEA()
+{
+	//Процедура сохраняет изменения в текущем экстраатрибуте
+	if(CurEAChanged==true)
+	{
+		if(ui.radioButton_BFH->isChecked())
+			CurrentEA->belongTo=ExtraAttribute::_theHypotesis;
+		else
+			CurrentEA->belongTo=ExtraAttribute::_thePragma;
+
+		CurrentEA->Locked= ui.checkBox_Locked->isChecked();
+		CurrentEA->Required=ui.checkBox_Required->isChecked();
+		CurrentEA->Visible=ui.checkBox_Visible->isChecked();
+		CurrentEA->Temporality=ui.checkBox_Temporality->isChecked();
+		CurrentEA->LNK_NeedList=ui.checkBox_NeedList->isChecked();
+		CurrentEA->Multilnk=ui.checkBox_Multiple->isChecked();
+		CurrentEA->SetEACaption(ui.lineEdit_Caption->text().toStdString());
+		CurrentEA->SetEAFieldName(ui.lineEdit_FieldName->text().toStdString());
+		//определение остальных параметров экстраатрибута
+		CurrentEA->Save();
+	}
+	CurEAChanged=false;
 }
 
 
