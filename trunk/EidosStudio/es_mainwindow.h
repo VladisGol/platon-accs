@@ -26,10 +26,12 @@ public:
 public slots:
 	void Exit();
 	void FillEAGrid(QTreeWidgetItem*,int);//Заполнение списка экстраатрибутов в грид
-	void EAChoosed(QTableWidgetItem*);		//Отображение одного элемента из таблицы
+	void EAChoosed(QTableWidgetItem*,QTableWidgetItem*);		//Отображение одного элемента из таблицы
 	void comboTypeChanged(int);			//Изменение вида детализации атрибута при смене типа в комбо боксе
 	void SetAltCaption();					//Слот заполнения псевдонима экстраатрибута
 	void ChangeCheckBoxAlterCaption();	//Слот ручного изменения состояния чекбокса псевдонима
+	void UserTryToEditEA();				//Слот для отслеживания корректировки экстраатрибута
+	void SaveCurEA();
 
 protected:
     void ReadFormWidgetsAppearance();
@@ -45,6 +47,8 @@ private:
 	QIcon icon_editable;
 	QIcon icon_occouped;
 	int numColsInTableEA;
+	bool IsEAEditable;
+	bool CurEAChanged;
 
 };
 }
