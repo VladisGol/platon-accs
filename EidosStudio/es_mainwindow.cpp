@@ -68,7 +68,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	//при выборе экстраатрибута следует загрузить и отобразить его свойства
 	QObject::disconnect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
-	QObject::disconnect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	//QObject::disconnect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
@@ -129,7 +129,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 
 	QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
-	QObject::connect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+	//QObject::connect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));

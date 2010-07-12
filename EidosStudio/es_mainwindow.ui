@@ -213,25 +213,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="comboBox_DLL_Proc"/>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_19">
-              <item>
-               <widget class="QLabel" name="label_MD5_SubscValid">
-                <property name="text">
-                 <string>Подпись не совпадает</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QPushButton" name="pushButton_MD5Subscr">
-                <property name="text">
-                 <string>Подписать MD5</string>
-                </property>
-               </widget>
+               <widget class="QLineEdit" name="lineEdit_DLL_Proc"/>
               </item>
              </layout>
             </item>
@@ -364,7 +346,7 @@
      <x>0</x>
      <y>0</y>
      <width>855</width>
-     <height>26</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
