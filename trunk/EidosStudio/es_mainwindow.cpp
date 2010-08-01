@@ -139,7 +139,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	QObject::connect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 
-	if(ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->text()==QString("Н/Д"))
+	if(ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->text()==QString(tr("Н/Д")))
 	{
 		IsEAEditable=false;
 		ui.toolButton_ChooseEidos->setEnabled(false);
@@ -386,7 +386,7 @@ QString es_mainwindow::GetEATypeName(int typeID)
 			case ft_Security:
 				return tr("Опреденение доступа");
 			default:
-				throw("Указанный тип данных не поддерживается");
+				throw(tr("Указанный тип данных не поддерживается"));
 		}
 }
 
