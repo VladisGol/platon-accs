@@ -399,6 +399,11 @@
    <addaction name="action_Eidos_add"/>
    <addaction name="action_Eidos_del"/>
    <addaction name="action_Eidos_rename"/>
+   <addaction name="separator"/>
+   <addaction name="action_EA_Add"/>
+   <addaction name="action_EA_Del"/>
+   <addaction name="separator"/>
+   <addaction name="action_AltCaption"/>
   </widget>
   <action name="action_quit">
    <property name="icon">
@@ -467,16 +472,28 @@
    </property>
   </action>
   <action name="action_EA_Add">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
+     <normaloff>:/PICS/edit_add.png</normaloff>:/PICS/edit_add.png</iconset>
+   </property>
    <property name="text">
     <string>Добавить новый атрибут</string>
    </property>
   </action>
   <action name="action_EA_Del">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
+     <normaloff>:/PICS/cancel.png</normaloff>:/PICS/cancel.png</iconset>
+   </property>
    <property name="text">
     <string>Удалить текущий атрибут</string>
    </property>
   </action>
   <action name="action_AltCaption">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
+     <normaloff>:/PICS/box_juliane_krug_s.png</normaloff>:/PICS/box_juliane_krug_s.png</iconset>
+   </property>
    <property name="text">
     <string>Установить псевдоним заголовка</string>
    </property>
