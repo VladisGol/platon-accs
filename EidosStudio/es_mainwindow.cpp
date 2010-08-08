@@ -59,8 +59,14 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ViewID_Activated();
 
 	QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(Exit()));
-    QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
-    QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
+        QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
+        QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
+        QObject::connect(ui.action_Eidos_rename, SIGNAL(activated()), this, SLOT(RenameEidos()));
+        QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(AddChildEidos()));
+        QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
+
+        QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
+        ui.action_SaveChanges->setEnabled(false);
 }
 
 void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevElement )
@@ -77,6 +83,8 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	QObject::disconnect(ui.checkBox_Required, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+        QObject::disconnect(ui.lineEdit_Caption, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+        QObject::disconnect(ui.lineEdit_FieldName, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 
 	if(CurEAChanged==true)	//Переход на другой элемент в режиме редактирования свойств атрибута
 	{
@@ -138,6 +146,8 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	QObject::connect(ui.checkBox_Required, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
+        QObject::connect(ui.lineEdit_Caption, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+        QObject::connect(ui.lineEdit_FieldName, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 
 	if(ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->text()==QString(tr("Н/Д")))
 	{
@@ -257,9 +267,11 @@ void es_mainwindow::ChangeCheckBoxAlterCaption()
 
 void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 {
+    //Процедура заполняет таблицу с экстраатрибутами, устанавливая текущим элементом элемент, переданный в параметре CurItem, и колонку переданную в параметре Num
 	QObject::disconnect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*,QTableWidgetItem*)));
 	QObject::disconnect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
 	QObject::disconnect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
+        QObject::disconnect(ui.action_EA_Add, SIGNAL(activated()), this, SLOT(AddOneEA()));
 
 	if(CurEAChanged==true)	//Переход на другой элемент в режиме редактирования свойств атрибута
 	{
@@ -357,9 +369,15 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 	QObject::connect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*,QTableWidgetItem*)));
 	QObject::connect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
 	QObject::connect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
+        QObject::connect(ui.action_EA_Add, SIGNAL(activated()), this, SLOT(AddOneEA()));
 
 	CurEAChanged=false;
-	ui.tableWidget_EAs->setCurrentCell(0,1);
+
+        //Устанавливаем текущим элементом первый элемент и первую видимую колонку
+        if(Num==0 && (!this->IsViewID))
+            ui.tableWidget_EAs->setCurrentCell(0,1);
+        else
+            ui.tableWidget_EAs->setCurrentCell(0,Num);
 
 }
 
@@ -426,7 +444,7 @@ void es_mainwindow::WriteFormWidgetsAppearance()
 	MyETC->WriteInteger("height", this->height());
 
 	QList<int> vals = ui.splitter_V->sizes();
-	MyETC->WriteInteger("splitter_V\\0", vals.at(0));
+        MyETC->WriteInteger("splitter_V\\0", vals.at(0));
 	MyETC->WriteInteger("splitter_V\\1", vals.at(1));
 	vals=ui.splitter_H->sizes();
 	MyETC->WriteInteger("splitter_H\\0", vals.at(0));
@@ -467,7 +485,7 @@ void es_mainwindow::RefreshEAonForm()
 	int KeepCol=ui.tableWidget_EAs->currentColumn();
 	QString EAID4Find=ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),0)->text();//EAID
 
-	FillEAGrid(ui.EidosTreeWidget->currentItem(),0);
+        FillEAGrid(ui.EidosTreeWidget->currentItem(),1);
 	QList<QTableWidgetItem *> AnItems=ui.tableWidget_EAs->findItems(EAID4Find,Qt::MatchExactly);
 	ui.tableWidget_EAs->setCurrentItem(AnItems.at(0));
 	ui.tableWidget_EAs->setCurrentCell(ui.tableWidget_EAs->currentRow(),KeepCol);
@@ -478,7 +496,11 @@ void es_mainwindow::UserTryToEditEA()
 	//Процедура проверяет статус экстраатрибута и если атрибут редактируем, то ставит признак изменения иначе выводит
 	//сообщение о невозможности корректировки свойств атрибута и обновляет свойства атрибута на ранее установленные
 	if(IsEAEditable==true)
+        {
 		CurEAChanged=true;
+                QObject::connect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
+                ui.action_SaveChanges->setEnabled(true);
+        }
 	else
 	{
 		QMessageBox::information(this, tr("Предупреждение"),tr("Атрибут не может быть изменен, так как ")+ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->toolTip());
@@ -507,7 +529,31 @@ void es_mainwindow::SaveCurEA()
 		CurrentEA->Save();
 	}
 	CurEAChanged=false;
+        ui.action_SaveChanges->setEnabled(false);
+        QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
+        RefreshEAonForm();
 }
+void es_mainwindow::AddOneEA()
+{
+    //Процедура создает новый экстраатрибут для текущего эйдоса. По умолчанию создается самый простой тип - строка
+    long id_NewEA=LocalEidos->AddExtraAttribute(QString(tr("Новый экстраатрибут")).toStdString(),platon::ft_String);
+    QString Str4search;
+    Str4search.setNum(id_NewEA);
 
-
+    FillEAGrid(ui.EidosTreeWidget->currentItem(),1);
+    QList<QTableWidgetItem *> AnItems=ui.tableWidget_EAs->findItems(Str4search,Qt::MatchExactly);
+    ui.tableWidget_EAs->setCurrentItem(AnItems.at(0));
+    ui.tableWidget_EAs->setCurrentCell(ui.tableWidget_EAs->currentRow(),1);
+}
+void es_mainwindow::RenameEidos()
+{
+    //Слот для переименования текущего Eidos-а
+}
+void es_mainwindow::AddChildEidos()
+{
+    //Добавить Потомка к Eidos-у
+}
+void es_mainwindow::RemoveChildEidos()
+{
+    //Удалить текущего потомка Eidos-а
 }
