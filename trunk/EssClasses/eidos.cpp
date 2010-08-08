@@ -252,8 +252,9 @@ long Eidos::AddExtraAttribute(std::string Caption, int FieldType)
 
 	//Необходима переработка для перевода на полиморфные объекты
         ExtraAttribute* OneRecord =new ExtraAttribute;
-        OneRecord->Caption =Caption;
+        OneRecord->HostEidos=this;
         OneRecord->id_Class  =this->id;
+        OneRecord->Caption =Caption;
         OneRecord->type =FieldType;
         OneRecord->belongTo =ExtraAttribute::_theHypotesis;
         //Получим уникальное имя поля из БД

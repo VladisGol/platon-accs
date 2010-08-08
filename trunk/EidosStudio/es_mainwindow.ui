@@ -377,6 +377,7 @@
      <string>Текущий атрибут</string>
     </property>
     <addaction name="action_AltCaption"/>
+    <addaction name="action_SaveChanges"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -404,6 +405,7 @@
    <addaction name="action_EA_Del"/>
    <addaction name="separator"/>
    <addaction name="action_AltCaption"/>
+   <addaction name="action_SaveChanges"/>
   </widget>
   <action name="action_quit">
    <property name="icon">
@@ -496,6 +498,15 @@
    </property>
    <property name="text">
     <string>Установить псевдоним заголовка</string>
+   </property>
+  </action>
+  <action name="action_SaveChanges">
+   <property name="icon">
+    <iconset resource="../images/resources.qrc">
+     <normaloff>:/PICS/apply.png</normaloff>:/PICS/apply.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить изменения</string>
    </property>
   </action>
  </widget>
