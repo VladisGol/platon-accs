@@ -62,8 +62,8 @@ es_mainwindow::es_mainwindow(QWidget *parent)
         QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
         QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
         QObject::connect(ui.action_Eidos_rename, SIGNAL(activated()), this, SLOT(RenameEidos()));
-        QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(AddChildEidos()));
-        QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
+        QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
+        QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
 
         QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
         ui.action_SaveChanges->setEnabled(false);
@@ -223,13 +223,13 @@ void es_mainwindow::comboTypeChanged(int NewIndex)
 void es_mainwindow::Exit()
 {
 //Выход из формы
-	WriteFormWidgetsAppearance();
-	this->close();
+    WriteFormWidgetsAppearance();
+    this->close();
 }
 void es_mainwindow::SetAltCaption()
 {
 //Установка псевдонима заголовка текущего экстраатрибута
-	bool ok;
+    bool ok;
     QString textExp = QInputDialog::getText(this, tr("Изменение псевдонима заголовка текущего экстраатрибута"),	tr("Новый заголовок:"),QLineEdit::Normal,"",&ok);
     if (ok && !textExp.isEmpty()) CurrentEA->SetAlterCaption(textExp.toStdString());
 }
@@ -548,12 +548,44 @@ void es_mainwindow::AddOneEA()
 void es_mainwindow::RenameEidos()
 {
     //Слот для переименования текущего Eidos-а
+    long id_eidos=ui.EidosTreeWidget->currentItem()->text(1).toLong();
+    QString CurrentCaption =ui.EidosTreeWidget->currentItem()->text(0);
+
+    bool ok;
+    QString textExp = QInputDialog::getText(this, tr("Переименование текущей ветки Eidos"),	tr("Новое имя:"),QLineEdit::Normal,CurrentCaption,&ok);
+    if (ok && !textExp.isEmpty())
+    {
+        Eidos* tmpEidos=new Eidos (this->DB,id_eidos);
+        tmpEidos->SetName(textExp.toStdString());
+        tmpEidos->Save();
+        delete tmpEidos;
+    }
+    ui.EidosTreeWidget->AttachToDB(this->DB);
+    ui.EidosTreeWidget->findNMakeCurrent(id_eidos);
 }
+
 void es_mainwindow::AddChildEidos()
 {
     //Добавить Потомка к Eidos-у
+    long id_eidos;
+    long id_parent_eidos=ui.EidosTreeWidget->currentItem()->text(1).toLong();
+    bool ok;
+    QString textExp = QInputDialog::getText(this, tr("Добавление ветки Eidos"),	tr("Введите имя ветви:"),QLineEdit::Normal,"",&ok);
+    if (ok && !textExp.isEmpty())
+    {
+        Eidos* tmpEidos=new Eidos (this->DB);
+        tmpEidos->SetParentID(id_parent_eidos);
+        tmpEidos->SetName(textExp.toStdString());
+        tmpEidos->Save();
+        id_eidos=tmpEidos->GetID();
+        delete tmpEidos;
+    }
+    ui.EidosTreeWidget->AttachToDB(this->DB);
+    ui.EidosTreeWidget->findNMakeCurrent(id_eidos);
 }
 void es_mainwindow::RemoveChildEidos()
 {
     //Удалить текущего потомка Eidos-а
+    ;
+}
 }
