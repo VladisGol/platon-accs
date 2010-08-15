@@ -28,7 +28,9 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 
 
 	QObject::connect(HEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
+        QObject::connect(HEidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
 	QObject::connect(PEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
+        QObject::connect(PEidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
 	QObject::connect(action_close, SIGNAL(activated()), this, SLOT(Exit()));
 
 	QObject::connect(tableView_Hyp, SIGNAL(activated(QModelIndex)), this, SLOT(SetCorespActions()));
