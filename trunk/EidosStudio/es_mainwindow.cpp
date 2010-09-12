@@ -63,7 +63,8 @@ es_mainwindow::es_mainwindow(QWidget *parent)
         QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
         QObject::connect(ui.action_Eidos_rename, SIGNAL(activated()), this, SLOT(RenameEidos()));
         QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
-        QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
+        QObject::connect(ui.action_Eidos_del, SIGNAL(activated()), this, SLOT(DeleteEidos()));
+        //QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
 
         QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
         ui.action_SaveChanges->setEnabled(false);
@@ -583,9 +584,31 @@ void es_mainwindow::AddChildEidos()
     ui.EidosTreeWidget->AttachToDB(this->DB);
     ui.EidosTreeWidget->findNMakeCurrent(id_eidos);
 }
-void es_mainwindow::RemoveChildEidos()
+void es_mainwindow::DeleteEidos()
 {
-    //Удалить текущего потомка Eidos-а
-    ;
+    //Удалить текущий элемент Eidos-а
+    //Нужно проверить, что у теккущего элемента нет активных потомков
+    if(platon::NumberChildofEidos(this->DB,ui.EidosTreeWidget->currentItem()->text(1).toLong())==0)
+    {
+        int ret = QMessageBox::warning(this, tr("Внимание,критическая операция"),
+                                        tr("Вы действительно хотите удалить текущий объект\n"
+                                           "КЛАСС?"),
+                                        QMessageBox::Yes | QMessageBox::Cancel,
+                                        QMessageBox::Cancel);
+        if(ret==QMessageBox::Yes)
+        {
+            platon::DeleteEidosItem(this->DB, ui.EidosTreeWidget->currentItem()->text(1).toLong());
+            ui.EidosTreeWidget->AttachToDB(this->DB);
+        }
+    }
+    else
+    {
+        QMessageBox::warning(this, tr("Внимание"),
+                                   tr("Невозможно удалить объект КЛАСС, имеющий потомков"),
+                                   QMessageBox::Ok,
+                                   QMessageBox::Ok);
+    }
+
+
 }
 }

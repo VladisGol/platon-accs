@@ -288,6 +288,41 @@ void mainWin::AddItem()
 }
 void mainWin::DeleteItem()
 {
+    if(CurrentObjectLevel==Level_Hypotesis)
+    {
+            int myrow=tableViewHypotesis->currentIndex().row();
+            if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
+            {
+                int ret = QMessageBox::warning(this, tr("Внимание,критическая операция"),
+                                                tr("Вы действительно хотите удалить объект\n"
+                                                   "ТИП?"),
+                                                QMessageBox::Yes | QMessageBox::Cancel,
+                                                QMessageBox::Cancel);
+                if(ret==QMessageBox::Ok)
+                {
+                    long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+                    platon::DeleteHypotesisItem(this->MyDCl->DB,id_hypotesys);//Удаление объекта Hipotesys
+                }
+            }
+    }
+    if(CurrentObjectLevel==Level_Pragma)
+    {
+            int myrow=tableViewPragma->currentIndex().row();
+            if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
+            {
+                int ret = QMessageBox::warning(this, tr("Внимание,критическая операция"),
+                                                tr("Вы действительно хотите удалить объект\n"
+                                                   "ЭКЗЕМПЛЯР?"),
+                                                QMessageBox::Yes | QMessageBox::Cancel,
+                                                QMessageBox::Cancel);
+                if(ret==QMessageBox::Ok)
+                {
+                    long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
+                    platon::DeletePragmaItem(this->MyDCl->DB,id_pragma);//Удаление объекта Pragma
+                }
+            }
+    }
+    this->RefreshViews();
 }
 void mainWin::Showlinks()
 {

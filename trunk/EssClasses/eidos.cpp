@@ -552,5 +552,52 @@ void SetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll ,const std::stri
     TmpST->Execute();
     TmpTR->Commit();
 }
+void DeleteEidosItem(IBPP::Database MyDB, long ID_EIDOS)
+{
+    //Процедура проводит удаление (пометку к удалению) записи EIDOS по переданному в параметре идентификатору
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE DEL_EIDOS(?);");
+    TmpST->Set(1,(int32_t)ID_EIDOS);
+    TmpST->Execute();
+    TmpTR->Commit();
+}
+void DeleteHypotesisItem(IBPP::Database MyDB, long ID_HYPOTESYS)
+{
+    //Процедура проводит удаление (пометку к удалению) записи HYPOTESYS по переданному в параметре идентификатору
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE DEL_HYPOTESIS(?);");
+    TmpST->Set(1,(int32_t)ID_HYPOTESYS);
+    TmpST->Execute();
+    TmpTR->Commit();
+}
+void DeletePragmaItem(IBPP::Database MyDB, long ID_PRAGMA)
+{
+    //Процедура проводит удаление (пометку к удалению) записи PRAGMA по переданному в параметре идентификатору
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE DEL_PRAGMA(?);");
+    TmpST->Set(1,(int32_t)ID_PRAGMA);
+    TmpST->Execute();
+    TmpTR->Commit();
+}
+int NumberChildofEidos(IBPP::Database MyDB, long ID_EIDOS)
+{
+    //Процедура проводит удаление (пометку к удалению) записи PRAGMA по переданному в параметре идентификатору
+    long ForReturn;
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE GET_NUM_EIDOS_CHILDS(?);");
+    TmpST->Set(1,(int32_t)ID_EIDOS);
+    TmpST->Execute();
+    TmpST->Get("RESULT",(int32_t*)&ForReturn);
+    TmpTR->Commit();
+    return ForReturn;
+}
 
 }

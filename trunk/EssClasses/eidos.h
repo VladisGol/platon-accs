@@ -111,6 +111,10 @@ long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBran
 std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos);
 std::string GetDLLMD5(IBPP::Database MyDB, std::string NameOfDll);
 void SetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll ,const std::string MD5string);
+void DeleteEidosItem(IBPP::Database MyDB, long ID_EIDOS);
+void DeleteHypotesisItem(IBPP::Database MyDB, long ID_HYPOTESYS);
+void DeletePragmaItem(IBPP::Database MyDB, long ID_PRAGMA);
+int NumberChildofEidos(IBPP::Database MyDB, long ID_EIDOS);
 
 }
 

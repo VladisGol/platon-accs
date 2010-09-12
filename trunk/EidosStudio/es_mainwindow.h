@@ -36,7 +36,7 @@ public slots:
         //Слоты для работы с потомками Eidos-а
         void RenameEidos();                             //Слот для переименования текущего Eidos-а
         void AddChildEidos();                           //Добавить Потомка к Eidos-у
-        void RemoveChildEidos();                        //Удалить текущего потомка Eidos-а
+        void DeleteEidos();                             //Удалить текущий Eidos
 
 protected:
         void ReadFormWidgetsAppearance();
