@@ -152,10 +152,10 @@ void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 				OneItem->setExpanded(true);	//Раскрываем все предшествующие элементы списка
 				long idparent =	OneItem->text(2).toInt();
 				if(idparent<=0) break;
-				OneItem=FindEidosByID(EidosTreeWidget, idparent);
-			}
-			iter->Next();
+				OneItem=FindEidosByID(EidosTreeWidget, idparent);                                
+			}			
 		}
+                iter->Next();
 	}
 }
 QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, long ID)
