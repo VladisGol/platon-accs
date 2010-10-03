@@ -1,75 +1,118 @@
 #include "mainWin.h"
 #include <QMessageBox>
 
+
 mainWin::mainWin(QWidget *parent)
     : QMainWindow(parent)
 
 {
-		QTextCodec * codec = QTextCodec::codecForName("UTF-8"); 	//Устанавливаем кодировщик
-		QTextCodec::setCodecForTr(codec);
-		QTextCodec::setCodecForCStrings(codec);
+    QTextCodec * codec = QTextCodec::codecForName("UTF-8"); 	//Устанавливаем кодировщик
+    QTextCodec::setCodecForTr(codec);
+    QTextCodec::setCodecForCStrings(codec);
 
-		setupUi(this);								//Загружаем элементы формы
+    setupUi(this);								//Загружаем элементы формы
 
-		this->MyDCl=new platon::DataClass(this);	//Создаем молуль данных приложения
-		if(this->MyDCl->DB->Connected())			//Если соединение с базой данной при создании модуля прошло успешно
-		{
-			LocalEidos=NULL;
-			LocalHypotesis=NULL;
+    this->MyDCl=new platon::DataClass(this);	//Создаем молуль данных приложения
+    if(this->MyDCl->DB->Connected())			//Если соединение с базой данной при создании модуля прошло успешно
+    {
+        LocalEidos=NULL;
+        LocalHypotesis=NULL;
 
-			QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
-			QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
+        QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
+        QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
 
-			QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
-			QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+        QObject::connect(tableViewHypotesis, SIGNAL(activated(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
+        QObject::connect(tableViewHypotesis, SIGNAL(clicked(QModelIndex)), this, SLOT(SetPragmaView(QModelIndex)));
 
-			//Привязываем элементы управления к событиям
-			QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
-			QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
-			QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
-			QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
-			QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
-			QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
-			QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
-			QObject::connect(action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
-			QObject::connect(action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
-			QObject::connect(action_View_IDs, SIGNAL(activated()), this, SLOT(ViewID_Activated()));
-			QObject::connect(tableViewHypotesis, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
-			QObject::connect(tableViewPragma, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
-			QObject::connect(action_About, SIGNAL(activated()), this, SLOT(AboutShow()));
-			QObject::connect(action_ES, SIGNAL(activated()), this, SLOT(ESShow()));
+        //Привязываем элементы управления к событиям
+        QObject::connect(comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(SetEidosView(int)));
+        QObject::connect(action_edit, SIGNAL(activated()), this, SLOT(EditItem()));
+        QObject::connect(action_add, SIGNAL(activated()), this, SLOT(AddItem()));
+        QObject::connect(action_del, SIGNAL(activated()), this, SLOT(DeleteItem()));
+        QObject::connect(action_refresh, SIGNAL(activated()), this, SLOT(RefreshViews()));
+        QObject::connect(action_links, SIGNAL(activated()), this, SLOT(Showlinks()));
+        QObject::connect(action_quit, SIGNAL(activated()), this, SLOT(CloseForm()));
+        QObject::connect(action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
+        QObject::connect(action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
+        QObject::connect(action_View_IDs, SIGNAL(activated()), this, SLOT(ViewID_Activated()));
+        QObject::connect(tableViewHypotesis, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
+        QObject::connect(tableViewPragma, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
+        QObject::connect(action_About, SIGNAL(activated()), this, SLOT(AboutShow()));
+        QObject::connect(action_ES, SIGNAL(activated()), this, SLOT(ESShow()));
 
-			SetEidosView(0);
+        SetEidosView(0);
 
-			this->EidosTreeWidget->installEventFilter(this);
-			this->tableViewHypotesis->installEventFilter(this);
-			this->tableViewPragma->installEventFilter(this);
-			CurrentObjectLevel=0;
+        this->EidosTreeWidget->installEventFilter(this);
+        this->tableViewHypotesis->installEventFilter(this);
+        this->tableViewPragma->installEventFilter(this);
+        CurrentObjectLevel=0;
 
-			//Программное время
-			this->MyDCl->ProgramDateTime = QDateTime::currentDateTime();
-			DTBaseShifter=new QTimer(this);
-			connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
-			BaseTimeShift();
-			DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
+        //Программное время
+        this->MyDCl->ProgramDateTime = QDateTime::currentDateTime();
+        DTBaseShifter=new QTimer(this);
+        connect(DTBaseShifter, SIGNAL(timeout()), this, SLOT(BaseTimeShift()));
+        BaseTimeShift();
+        DTBaseShifter->start(10*1000);	//Устанавливаем время обновления
 
-			//Выставляем прокси модели для возможности сортировки и фильтрования
-			SFProxyModelH= new QSortFilterProxyModel(this);
-			SFProxyModelP= new QSortFilterProxyModel(this);
+        //Выставляем прокси модели для возможности сортировки и фильтрования
+        SFProxyModelH= new QSortFilterProxyModel(this);
+        SFProxyModelP= new QSortFilterProxyModel(this);
 
-			tableViewPragma->setModel(SFProxyModelP);
-			tableViewPragma->setSortingEnabled(true);
-			tableViewHypotesis->setModel(SFProxyModelH);
-			tableViewHypotesis->setSortingEnabled(true);
+        tableViewPragma->setModel(SFProxyModelP);
+        tableViewPragma->setSortingEnabled(true);
+        tableViewHypotesis->setModel(SFProxyModelH);
+        tableViewHypotesis->setSortingEnabled(true);
 
-			//Устанавливаем размеры виджетов на форме
-			ReadFormWidgetsAppearance();
-			DisableAllActions();
-			//Инициализируем иконку фильтра
-		    icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
-		    AboutDlg=0;
-		}
+        //Устанавливаем размеры виджетов на форме
+        ReadFormWidgetsAppearance();
+        DisableAllActions();
+        //Инициализируем иконку фильтра
+        icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
+        AboutDlg=0;
+        //Контекстные меню реализация по описанию http://www.prog.org.ru/topic_10094_0.html, спасибо "Павлик"
+        ContextMenuEidos=new QMenu(this);
+        ContextMenuHyp=new QMenu(this);
+        ContextMenuPragma=new QMenu(this);
+
+        ContextMenuEidos->addAction(this->action_ES);
+        ContextMenuHyp->addAction(this->action_add);
+        ContextMenuHyp->addAction(this->action_AddFilter);
+        ContextMenuHyp->addAction(this->action_edit);
+        ContextMenuHyp->addAction(this->action_del);
+        ContextMenuHyp->addAction(this->action_links);
+        ContextMenuPragma->addAction(this->action_add);
+        ContextMenuPragma->addAction(this->action_AddFilter);
+        ContextMenuPragma->addAction(this->action_edit);
+        ContextMenuPragma->addAction(this->action_del);
+        ContextMenuPragma->addAction(this->action_links);
+
+        this->EidosTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+        this->tableViewPragma->setContextMenuPolicy(Qt::CustomContextMenu);
+        this->tableViewHypotesis->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(this->EidosTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotEidosCntxMenu(QPoint)));
+        connect(this->tableViewHypotesis, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotHypCntxMenu(QPoint)));
+        connect(this->tableViewPragma, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPragmaCntxMenu(QPoint)));
+
+    }
+
 }
+
+void mainWin::slotEidosCntxMenu(const QPoint &point)    //Слот для реализации контекстного меню в Eidos
+{
+    ContextMenuEidos->popup(this->EidosTreeWidget->mapToGlobal(point));
+}
+
+void mainWin::slotHypCntxMenu(const QPoint &point)      //Слот для реализации контекстного меню в Hypotesis
+{
+    ContextMenuHyp->popup(this->tableViewHypotesis->mapToGlobal(point));
+}
+
+void mainWin::slotPragmaCntxMenu(const QPoint &point)   //Слот для реализации контекстного меню в Pragma
+{
+    ContextMenuPragma->popup(this->tableViewPragma->mapToGlobal(point));
+}
+
+
 void mainWin::DisableAllActions()
 {
 	//Процедура отключает любые действия на форме
@@ -113,22 +156,13 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 		{
 			DisableAllActions();
 			QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
-			if(Species=="OBJ" || Species=="RES")
-			{
-				this->action_add->setEnabled(true);
-				this->action_del->setEnabled(true);
-				this->action_edit->setEnabled(true);
-				this->action_links->setEnabled(true);
-				this->action_refresh->setEnabled(true);
-				this->action_AddFilter->setEnabled(true);
-				if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
-			}
-			else
-			{
-				this->action_del->setEnabled(true);
-				this->action_edit->setEnabled(true);
-				this->action_links->setEnabled(true);
-			}
+                        this->action_add->setEnabled(true);
+                        this->action_del->setEnabled(true);
+                        this->action_edit->setEnabled(true);
+                        this->action_links->setEnabled(true);
+                        this->action_refresh->setEnabled(true);
+                        this->action_AddFilter->setEnabled(true);
+                        if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			CurrentObjectLevel=Level_Pragma;
 		}
 	}
@@ -269,19 +303,37 @@ void mainWin::AddItem()
 		if(id_hypotesys>0)
 		{
 			formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
-			platon::Pragma*formPragma;
+                        platon::Pragma*formPragma=NULL;
 
 			//Создаем экземпляры объектов для формы
 			if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
 			if(Species=="ACT")
-				{
-					; //Необходимо выбрать с каким объектом проводится действие
-				}
+                        {
+                            //Необходимо выбрать с каким объектом проводится действие
+                            platon::ChoiceEidos_Dialog* Localdialog=new platon::ChoiceEidos_Dialog(this,"OBJ",0);
+                            Localdialog->exec();
+                            long ID_Eidos=Localdialog->Out_value;
+
+                            if(ID_Eidos==0)	return;
+
+                            //Выводим список прагм для выбора объекта с которым проводится действие
+                            platon::Eidos *localEidos=new platon::Eidos(this->MyDCl->DB,ID_Eidos);
+                            platon::ChoicePragma_Dialog* PragmaDialog=new platon::ChoicePragma_Dialog(this,localEidos,0);
+                            PragmaDialog->exec();
+                            long ID_ObjCopy=PragmaDialog->Out_value;
+                            delete localEidos;
+                            if(ID_ObjCopy>0)
+                                formPragma=((platon::ACTType*)formHypotesis)->AddACTCopy(ID_ObjCopy);
+                        }
 			if(Species=="RES") formPragma= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Создание ресурса, который размещается "на складе"
 			if(Species=="NSI")	;//Не может быть экземпляров на указанной ветви
-			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,formPragma);
-			md->setWindowTitle(tr("Создание объекта \"Экземпляр\""));
-			md->show();
+                        //Если объект formPragma определен, то открываем форму для редактирования
+                        if (formPragma!=NULL)
+                        {
+                            platon::PragmaEditForm * md=new platon::PragmaEditForm(this,formPragma);
+                            md->setWindowTitle(tr("Создание объекта \"Экземпляр\""));
+                            md->show();
+                        }
 		}
 	}
 	return ;
