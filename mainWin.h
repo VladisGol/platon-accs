@@ -53,6 +53,7 @@ private slots:
         void slotEidosCntxMenu(const QPoint &point);    //Слот для реализации контекстного меню в Eidos
         void slotHypCntxMenu(const QPoint &point);      //Слот для реализации контекстного меню в Hypotesis
         void slotPragmaCntxMenu(const QPoint &point);   //Слот для реализации контекстного меню в Pragma
+        void slotCopySelectedFromView();                //Слот для реализации копирования выделения из
 
 private:
 	platon::Eidos* LocalEidos;

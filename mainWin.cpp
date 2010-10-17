@@ -39,6 +39,7 @@ mainWin::mainWin(QWidget *parent)
         QObject::connect(tableViewPragma, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(EditItem()));
         QObject::connect(action_About, SIGNAL(activated()), this, SLOT(AboutShow()));
         QObject::connect(action_ES, SIGNAL(activated()), this, SLOT(ESShow()));
+        QObject::connect(action_CopyToClipboard, SIGNAL(activated()), this, SLOT(slotCopySelectedFromView()));
 
         SetEidosView(0);
 
@@ -80,12 +81,13 @@ mainWin::mainWin(QWidget *parent)
         ContextMenuHyp->addAction(this->action_edit);
         ContextMenuHyp->addAction(this->action_del);
         ContextMenuHyp->addAction(this->action_links);
+        ContextMenuHyp->addAction(this->action_CopyToClipboard);
         ContextMenuPragma->addAction(this->action_add);
         ContextMenuPragma->addAction(this->action_AddFilter);
         ContextMenuPragma->addAction(this->action_edit);
         ContextMenuPragma->addAction(this->action_del);
         ContextMenuPragma->addAction(this->action_links);
-
+        ContextMenuPragma->addAction(this->action_CopyToClipboard);
         this->EidosTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
         this->tableViewPragma->setContextMenuPolicy(Qt::CustomContextMenu);
         this->tableViewHypotesis->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -95,6 +97,36 @@ mainWin::mainWin(QWidget *parent)
 
     }
 
+}
+
+void mainWin::slotCopySelectedFromView()
+{
+    //Процедура копирует в буфер обмена текущее выделение из грида гипотез.
+    QString cbStr;
+    QClipboard *cb = QApplication::clipboard();
+    QTableView *CurrentTableView=NULL;
+    if(CurrentObjectLevel==Level_Hypotesis)
+        CurrentTableView=tableViewHypotesis;
+    if(CurrentObjectLevel==Level_Pragma)
+        CurrentTableView=tableViewPragma;
+    if(CurrentTableView==NULL)
+        return;
+
+    QModelIndexList list =  CurrentTableView->selectionModel()->selectedIndexes();
+
+    if( list.isEmpty()) return;
+
+    int i, j, firstRow, lastRow, rowCount;
+
+    firstRow = list.first().row();
+    lastRow = list.last().row();
+    rowCount = lastRow - firstRow + 1;
+
+    for(i = 0; i < rowCount; ++i, cbStr += QLatin1Char('\n'))
+    for(j = i; j < list.count(); j += rowCount, cbStr += QLatin1Char('\t'))
+      cbStr += CurrentTableView->model()->data(list[ j ], Qt::DisplayRole).toString();
+
+    cb->setText(cbStr);
 }
 
 void mainWin::slotEidosCntxMenu(const QPoint &point)    //Слот для реализации контекстного меню в Eidos
@@ -123,6 +155,7 @@ void mainWin::DisableAllActions()
 	this->action_refresh->setEnabled(false);
 	this->action_AddFilter->setEnabled(false);
 	this->action_RemoveFilter->setEnabled(false);
+        this->action_CopyToClipboard->setEnabled(false);
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -146,6 +179,7 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 			this->action_links->setEnabled(true);
 			this->action_refresh->setEnabled(true);
 			this->action_AddFilter->setEnabled(true);
+                        this->action_CopyToClipboard->setEnabled(true);
 			if(SFProxyModelH->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			CurrentObjectLevel=Level_Hypotesis;
 		}
@@ -162,6 +196,7 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
                         this->action_links->setEnabled(true);
                         this->action_refresh->setEnabled(true);
                         this->action_AddFilter->setEnabled(true);
+                        this->action_CopyToClipboard->setEnabled(true);
                         if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			CurrentObjectLevel=Level_Pragma;
 		}
