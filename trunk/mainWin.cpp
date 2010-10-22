@@ -101,10 +101,12 @@ mainWin::mainWin(QWidget *parent)
 
 void mainWin::slotCopySelectedFromView()
 {
-    //Процедура копирует в буфер обмена текущее выделение из грида гипотез.
-    QString cbStr;
-    QClipboard *cb = QApplication::clipboard();
+    //Процедура копирует в буфер обмена текущее выделение из текущего грида в HTML формате.
+
+    QString html_string="<table>\n<tr><td>";
+    int i, j, firstRow, lastRow, rowCount;
     QTableView *CurrentTableView=NULL;
+
     if(CurrentObjectLevel==Level_Hypotesis)
         CurrentTableView=tableViewHypotesis;
     if(CurrentObjectLevel==Level_Pragma)
@@ -116,17 +118,20 @@ void mainWin::slotCopySelectedFromView()
 
     if( list.isEmpty()) return;
 
-    int i, j, firstRow, lastRow, rowCount;
-
     firstRow = list.first().row();
     lastRow = list.last().row();
     rowCount = lastRow - firstRow + 1;
 
-    for(i = 0; i < rowCount; ++i, cbStr += QLatin1Char('\n'))
-    for(j = i; j < list.count(); j += rowCount, cbStr += QLatin1Char('\t'))
-      cbStr += CurrentTableView->model()->data(list[ j ], Qt::DisplayRole).toString();
+    for(i = 0; i < rowCount; ++i, html_string +="\n<tr><td>")
+    for(j = i; j < list.count(); j += rowCount, html_string += "<td>")
+      html_string += CurrentTableView->model()->data(list[j], Qt::DisplayRole).toString();
 
-    cb->setText(cbStr);
+    html_string.append("\n</table>");
+
+    QMimeData* md= new QMimeData();
+    md->setHtml(html_string);
+    QApplication::clipboard()->setMimeData(md);
+
 }
 
 void mainWin::slotEidosCntxMenu(const QPoint &point)    //Слот для реализации контекстного меню в Eidos
