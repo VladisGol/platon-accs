@@ -40,6 +40,7 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 	QObject::connect(action_OBJOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
 	QObject::connect(action_ACTOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
 	QObject::connect(action_RESOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
+        QObject::connect(action_copy, SIGNAL(activated()), this, SLOT(slotCopySelectedFromView()));  //Слот копирования в буфер обмена
 
 	this->PEidosTreeWidget->installEventFilter(this);
 	this->HEidosTreeWidget->installEventFilter(this);
@@ -53,11 +54,89 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 	else
 		tabWidget_Prg->setCurrentIndex(1);//Активизируем вкладку со списком прагм
 
+
+        //Контекстные меню реализация по описанию http://www.prog.org.ru/topic_10094_0.html, спасибо "Павлик"
+        ContextMenuHyp=new QMenu(this);
+        ContextMenuPragma=new QMenu(this);
+
+        ContextMenuHyp->addAction(action_HypOpen);
+        ContextMenuHyp->addAction(action_OBJOpen);
+        ContextMenuHyp->addAction(action_ACTOpen);
+        ContextMenuHyp->addAction(action_RESOpen);
+        ContextMenuHyp->addAction(action_copy);
+
+        ContextMenuPragma->addAction(action_HypOpen);
+        ContextMenuPragma->addAction(action_OBJOpen);
+        ContextMenuPragma->addAction(action_ACTOpen);
+        ContextMenuPragma->addAction(action_RESOpen);
+        ContextMenuPragma->addAction(action_copy);
+
+        this->tableView_Hyp->setContextMenuPolicy(Qt::CustomContextMenu);
+        this->tableView_Pragma->setContextMenuPolicy(Qt::CustomContextMenu);
+
+        connect(this->tableView_Hyp, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotHypCntxMenu(QPoint)));
+        connect(this->tableView_Pragma, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPragmaCntxMenu(QPoint)));
+
+
 	ClearCorespActions();
 	SetViewID();
 	ReadFormWidgetsAppearance();
 
 }
+
+void LinksExplorer::slotHypCntxMenu(const QPoint &point)      //Слот для реализации контекстного меню в Hypotesis
+{
+    ContextMenuHyp->popup(this->tableView_Hyp->mapToGlobal(point));
+}
+void LinksExplorer::slotPragmaCntxMenu(const QPoint &point)      //Слот для реализации контекстного меню в Pragma
+{
+    ContextMenuPragma->popup(this->tableView_Pragma->mapToGlobal(point));
+}
+
+void LinksExplorer::slotCopySelectedFromView()
+{
+    //Процедура копирует в буфер обмена текущее выделение из текущего грида в HTML формате.
+
+    QTableView *CurrentTableView=NULL;
+
+    if(this->tabWidget_Prg->currentIndex()==0)  //Гипотезы
+        CurrentTableView=this->tableView_Hyp;
+    if(this->tabWidget_Prg->currentIndex()==1)  //Прагмы
+        CurrentTableView=this->tableView_Pragma;
+    if(CurrentTableView==NULL)
+        return;
+
+    QModelIndexList list =  CurrentTableView->selectionModel()->selectedIndexes();
+
+    if( list.isEmpty()) return;
+
+
+    int firstRow, lastRow, rowCount;
+    firstRow = list.first().row();
+    lastRow = list.last().row();
+    rowCount = lastRow - firstRow+1;
+
+    QString html_string="<table>";
+
+    for(int i = 0; i < rowCount; i++)
+    {
+        html_string +="<tr>";
+        for(int j = i; j < list.count(); j += rowCount)
+        {
+            html_string += "<td>";
+            html_string += CurrentTableView->model()->data(list[j], Qt::DisplayRole).toString();
+            html_string += "</td>";
+        }
+        html_string +="</tr>";
+    }
+    html_string +="</table>";
+
+    QMimeData* md= new QMimeData();
+    md->setHtml(html_string);
+    QApplication::clipboard()->setMimeData(md);
+
+}
+
 bool LinksExplorer::eventFilter(QObject *obj, QEvent *event)
 {
 	if(event->type()==QEvent::FocusIn)
