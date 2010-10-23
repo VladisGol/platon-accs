@@ -50,6 +50,10 @@ public slots:
 	void OpenHypotesis();
 	void OpenPragma();
 
+private slots:
+        void slotHypCntxMenu(const QPoint &point);      //Слот для реализации контекстного меню в Hypotesis
+        void slotPragmaCntxMenu(const QPoint &point);   //Слот для реализации контекстного меню в Pragma
+        void slotCopySelectedFromView();                //Слот для реализации копирования выделения
 
 protected:
     void ReadFormWidgetsAppearance();
@@ -57,6 +61,9 @@ protected:
     bool eventFilter(QObject *obj, QEvent *ev);
     void SetViewID();
     bool IsViewID;
+    QMenu* ContextMenuHyp;
+    QMenu* ContextMenuPragma;
+
 
 };
 }

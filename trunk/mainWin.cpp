@@ -10,9 +10,9 @@ mainWin::mainWin(QWidget *parent)
     QTextCodec::setCodecForTr(codec);
     QTextCodec::setCodecForCStrings(codec);
 
-    setupUi(this);								//Загружаем элементы формы
+    setupUi(this);					//Загружаем элементы формы
 
-    this->MyDCl=new platon::DataClass(this);	//Создаем молуль данных приложения
+    this->MyDCl=new platon::DataClass(this);            //Создаем модуль данных приложения
     if(this->MyDCl->DB->Connected())			//Если соединение с базой данной при создании модуля прошло успешно
     {
         LocalEidos=NULL;
@@ -103,8 +103,6 @@ void mainWin::slotCopySelectedFromView()
 {
     //Процедура копирует в буфер обмена текущее выделение из текущего грида в HTML формате.
 
-    QString html_string="<table>\n<tr><td>";
-    int i, j, firstRow, lastRow, rowCount;
     QTableView *CurrentTableView=NULL;
 
     if(CurrentObjectLevel==Level_Hypotesis)
@@ -118,15 +116,26 @@ void mainWin::slotCopySelectedFromView()
 
     if( list.isEmpty()) return;
 
+
+    int firstRow, lastRow, rowCount;
     firstRow = list.first().row();
     lastRow = list.last().row();
-    rowCount = lastRow - firstRow + 1;
+    rowCount = lastRow - firstRow+1;
 
-    for(i = 0; i < rowCount; ++i, html_string +="\n<tr><td>")
-    for(j = i; j < list.count(); j += rowCount, html_string += "<td>")
-      html_string += CurrentTableView->model()->data(list[j], Qt::DisplayRole).toString();
+    QString html_string="<table>";
 
-    html_string.append("\n</table>");
+    for(int i = 0; i < rowCount; i++)
+    {
+        html_string +="<tr>";
+        for(int j = i; j < list.count(); j += rowCount)
+        {
+            html_string += "<td>";
+            html_string += CurrentTableView->model()->data(list[j], Qt::DisplayRole).toString();
+            html_string += "</td>";
+        }
+        html_string +="</tr>";
+    }
+    html_string +="</table>";
 
     QMimeData* md= new QMimeData();
     md->setHtml(html_string);
