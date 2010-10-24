@@ -63,12 +63,14 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
         ContextMenuHyp->addAction(action_OBJOpen);
         ContextMenuHyp->addAction(action_ACTOpen);
         ContextMenuHyp->addAction(action_RESOpen);
+        ContextMenuHyp->addSeparator();
         ContextMenuHyp->addAction(action_copy);
 
         ContextMenuPragma->addAction(action_HypOpen);
         ContextMenuPragma->addAction(action_OBJOpen);
         ContextMenuPragma->addAction(action_ACTOpen);
         ContextMenuPragma->addAction(action_RESOpen);
+        ContextMenuPragma->addSeparator();
         ContextMenuPragma->addAction(action_copy);
 
         this->tableView_Hyp->setContextMenuPolicy(Qt::CustomContextMenu);

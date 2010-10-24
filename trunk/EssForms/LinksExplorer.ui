@@ -173,6 +173,9 @@
    <property name="text">
     <string>Копировать выделенное в буфер обмена</string>
    </property>
+   <property name="toolTip">
+    <string>Копировать выделенное</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+C</string>
    </property>
