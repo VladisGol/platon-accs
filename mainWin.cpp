@@ -77,17 +77,22 @@ mainWin::mainWin(QWidget *parent)
 
         ContextMenuEidos->addAction(this->action_ES);
         ContextMenuHyp->addAction(this->action_add);
-        ContextMenuHyp->addAction(this->action_AddFilter);
         ContextMenuHyp->addAction(this->action_edit);
         ContextMenuHyp->addAction(this->action_del);
+        ContextMenuHyp->addSeparator();
+        ContextMenuHyp->addAction(this->action_AddFilter);
         ContextMenuHyp->addAction(this->action_links);
+        ContextMenuHyp->addSeparator();
         ContextMenuHyp->addAction(this->action_CopyToClipboard);
-        ContextMenuPragma->addAction(this->action_add);
-        ContextMenuPragma->addAction(this->action_AddFilter);
+        ContextMenuPragma->addAction(this->action_add);        
         ContextMenuPragma->addAction(this->action_edit);
         ContextMenuPragma->addAction(this->action_del);
+        ContextMenuPragma->addSeparator();
+        ContextMenuPragma->addAction(this->action_AddFilter);
         ContextMenuPragma->addAction(this->action_links);
+        ContextMenuPragma->addSeparator();
         ContextMenuPragma->addAction(this->action_CopyToClipboard);
+
         this->EidosTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
         this->tableViewPragma->setContextMenuPolicy(Qt::CustomContextMenu);
         this->tableViewHypotesis->setContextMenuPolicy(Qt::CustomContextMenu);
