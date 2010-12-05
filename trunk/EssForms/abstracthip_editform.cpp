@@ -67,12 +67,14 @@ void AbstarctHipEditForm::DoMultilink(int i)
 	//Процедура выводит окно работы с мнострочной ссылкой
 	AssociatedExtraAttribute* MLAttrib =(AssociatedExtraAttribute*)LocalHypotesis->Attributes[i];	//Атрибут
 	Multilinks* MLForm= new Multilinks(this,MLAttrib);
+        MLForm->setAttribute(Qt::WA_ShowModal, true);
 	MLForm->show();
 }
 void AbstarctHipEditForm::DoLinks()
 {
 	//Процедура отображает форму со ссылками на текущий объект
 	platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,this->LocalHypotesis->GetID(),"ALL");
+        LnkForm->setAttribute(Qt::WA_ShowModal, true);
 	LnkForm->show();
 }
 
@@ -103,6 +105,7 @@ void AbstarctHipEditForm::DoAddAction()
 
 	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,newActioncopy);
 	md->setWindowTitle(tr("Редактирование действия"));
+        md->setAttribute(Qt::WA_ShowModal, true);
 	md->show();
 	//удаление newActioncopy localActType и localEidos - пройдет в деструкторе формы PragmaEditForm
 }
@@ -142,6 +145,7 @@ void AbstarctHipEditForm::DoWriteOffRes()
 
 		platon::PragmaEditForm * md=new platon::PragmaEditForm(this,forkedResCopy);
 		md->setWindowTitle(tr("Редактирование свойств использованного ресурса"));
+                md->setAttribute(Qt::WA_ShowModal, true);
 		md->show();
 		//удаление forkedResCopy localResType и localEidos - пройдет в деструкторе формы PragmaEditForm;
 }
@@ -151,6 +155,7 @@ void AbstarctHipEditForm::DoOpenType()
 
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,((platon::Pragma*)this->LocalHypotesis)->HostHypotesis->GetID());
 	md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+        md->setAttribute(Qt::WA_ShowModal, true);
 	md->show();
 }
 
