@@ -180,6 +180,7 @@ void LinksExplorer::OpenHypotesis()
 	long id_hypotesys=QVariant(tableView_Hyp->model()->data(tableView_Hyp->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
 	md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+        md->setAttribute(Qt::WA_ShowModal, true);
 	md->show();
 }
 void LinksExplorer::OpenPragma()
@@ -189,6 +190,7 @@ void LinksExplorer::OpenPragma()
 	long id_pragma=QVariant(tableView_Pragma->model()->data(tableView_Pragma->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
 	md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
+        md->setAttribute(Qt::WA_ShowModal, true);
 	md->show();
 }
 

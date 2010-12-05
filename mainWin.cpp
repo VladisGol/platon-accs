@@ -314,6 +314,7 @@ void mainWin::EditItem()
 			long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
 			platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
 			md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+                        md->setAttribute(Qt::WA_ShowModal, true);
 			md->show();
 		}
 	}
@@ -325,6 +326,7 @@ void mainWin::EditItem()
 			long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
 			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
 			md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
+                        md->setAttribute(Qt::WA_ShowModal, true);
 			md->show();
 		}
 	}
@@ -347,6 +349,7 @@ void mainWin::AddItem()
 
 		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,formHypotesis);
 		md->setWindowTitle(tr("Создание объекта \"Тип\""));
+                md->setAttribute(Qt::WA_ShowModal, true);
 		md->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
@@ -386,6 +389,7 @@ void mainWin::AddItem()
                         {
                             platon::PragmaEditForm * md=new platon::PragmaEditForm(this,formPragma);
                             md->setWindowTitle(tr("Создание объекта \"Экземпляр\""));
+                            md->setAttribute(Qt::WA_ShowModal, true);
                             md->show();
                         }
 		}
@@ -431,20 +435,22 @@ void mainWin::DeleteItem()
     this->RefreshViews();
 }
 void mainWin::Showlinks()
-{
-	if(CurrentObjectLevel==Level_Hypotesis)
+{    
+        if(CurrentObjectLevel==Level_Hypotesis)
 	{
 		int myrow=tableViewHypotesis->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
-		LnkForm->show();
+                platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
+                LnkForm->setAttribute(Qt::WA_ShowModal, true);
+                LnkForm->show();
 	}
 	if(CurrentObjectLevel==Level_Pragma)
 	{
 		int myrow=tableViewPragma->currentIndex().row();
 		long id_hypotesys=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
-		platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
-		LnkForm->show();
+                platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
+                LnkForm->setAttribute(Qt::WA_ShowModal, true);
+                LnkForm->show();
 	}
 }
 
@@ -662,6 +668,7 @@ void mainWin::ESShow()
 	platon::es_mainwindow * es = new platon::es_mainwindow(this);
 	es->ui.EidosTreeWidget->findNMakeCurrent(this->EidosTreeWidget->GetEidosID());
 	es->FillEAGrid(es->ui.EidosTreeWidget->currentItem(),0);
+        es->setAttribute(Qt::WA_ShowModal, true);
 	es->show();
 }
 
