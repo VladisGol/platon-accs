@@ -29,7 +29,6 @@ public:
     IBPP::Database DB;
     Eidos* LocalEidosH;
     Eidos* LocalEidosP;
-    Hypotesis*LocalHypotesis;
 
     iterLNKS_Hyp* IHyp;
     iterLNKS_Pragma* IPragma;

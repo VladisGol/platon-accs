@@ -107,18 +107,20 @@ void EA_OneFrame::fillVisibleWidget()
 		}
 		case platon::ft_DLL:
 		{
-			DLLButton = new QToolButton(this);
-			DLLButton->setObjectName("DLLButton");
+                    DLLButton = new QToolButton(this);
+                    DLLButton->setObjectName("DLLButton");
 		    QIcon icon1;
 		    icon1.addPixmap(QPixmap(QString::fromUtf8((":/PICS/exec.png"))), QIcon::Normal, QIcon::Off);
 		    DLLButton->setIcon(icon1);
 		    horizontalLayout->addWidget(DLLButton);
-			EditableWidget=new QLineEdit(frame);
-			gridLayoutInFrame->addWidget(EditableWidget);
+                    EditableWidget=new QLineEdit(frame);
+                    gridLayoutInFrame->addWidget(EditableWidget);
 
- 			((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
-			KeepValue=((QLineEdit*)EditableWidget)->text();
-			//toolButton->addAction(DllCalling);
+                    ((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
+                    KeepValue=((QLineEdit*)EditableWidget)->text();
+                    this->DLLAction= new QAction(this);
+                    QObject::connect(DLLButton, SIGNAL(activated()), this, SLOT(CallDllRoutine()));
+                    DLLButton->addAction(DLLAction);
 
 		    break;
 		}
@@ -361,7 +363,13 @@ void EA_OneFrame::CallDllRoutine()
 	}
 	else
 	{
-		//Вызов процедуры из библиотеки. Можно будет описать после разработки процедуры
+        //Вызов процедуры из библиотеки. Можно будет описать после разработки процедуры
+            try {
+
+
+            } catch (...) {
+
+            }
 	}
 
 }
