@@ -202,9 +202,8 @@ void LinksExplorer::Exit()
 
 LinksExplorer::~LinksExplorer()
 {
-	if(LocalEidosH!=NULL) delete LocalEidosH;
-	if(LocalEidosP!=NULL) delete LocalEidosP;
-	delete LocalHypotesis;
+        if(LocalEidosH!=NULL) delete LocalEidosH;
+        if(LocalEidosP!=NULL) delete LocalEidosP;
 }
 void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 {

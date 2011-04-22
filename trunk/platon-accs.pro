@@ -102,7 +102,8 @@ HEADERS += es_mainwindow.h \
     statement.cpp \
     time.cpp \
     transaction.cpp \
-    user.cpp
+    user.cpp \
+    EssWidgets/DLL_plugin.h
 FORMS += es_mainwindow.ui \
     aboutprogram.ui \
     mainwindow.ui \

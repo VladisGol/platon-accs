@@ -28,6 +28,7 @@
 #include "DataClass.h"
 #include <QLibrary>
 #include "LnkComboBox.h"
+#include "DLL_plugin.h"
 
 namespace platon
 {
@@ -56,6 +57,7 @@ protected:
     QWidget* EditableWidget;
     QGridLayout* gridLayoutInFrame;
     AssociatedExtraAttribute * EAA;	//Ассоциированный экстраатрибут с гипотезой
+    QAction * DLLAction;
 };
 
 }
