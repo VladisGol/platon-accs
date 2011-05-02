@@ -117,11 +117,7 @@ void EA_OneFrame::fillVisibleWidget()
                     gridLayoutInFrame->addWidget(EditableWidget);
 
                     ((QLineEdit*)EditableWidget)->setText(tr(EAA->GetVisibleValue().c_str()));
-                    KeepValue=((QLineEdit*)EditableWidget)->text();
-                    this->DLLAction= new QAction(this);
-                    QObject::connect(DLLButton, SIGNAL(activated()), this, SLOT(CallDllRoutine()));
-                    DLLButton->addAction(DLLAction);
-
+                    KeepValue=((QLineEdit*)EditableWidget)->text();                    
 		    break;
 		}
 		case platon::ft_LinkHypotesis:
@@ -355,23 +351,27 @@ void EA_OneFrame::HronologyClick()
 void EA_OneFrame::CallDllRoutine()
 {
 	//Функция вызывает процедуру из динамической библиотеки
-	QLibrary* CalledLib= this->MyDCl->GetLibByName(QString::fromStdString(this->EAA->EA->DLL_FileName));
-	if(CalledLib==NULL)
-	{
-		QString Message=tr("Требуемая процедура '")+QString::fromStdString(this->EAA->EA->DLL_FileName)+tr("' не найдена");
-		QMessageBox::information(this,tr("Внимание"),Message);
-	}
-	else
-	{
-        //Вызов процедуры из библиотеки. Можно будет описать после разработки процедуры
-            try {
 
+        QLibrary* CalledLib= this->MyDCl->GetLibByName(QString::fromStdString(this->EAA->EA->DLL_FileName));
+        if(CalledLib!=NULL) //Найдена библиотека
+        {
+            if(!CalledLib->isLoaded()) CalledLib->load();
+            if(CalledLib->isLoaded()==true) //Библиотека загружена
+            {
+                cProc AnProc = (cProc) CalledLib->resolve(this->EAA->EA->DLL_ProcName.c_str());
+                if(AnProc){                     //Процедура определена
+                        //Вызов процедуры из библиотеки. Можно будет описать после разработки процедуры
+                        try {
+                            AnProc("123");
+                        } catch (...) {
 
-            } catch (...) {
-
+                        }
+                }
+                else QMessageBox::information(this,tr("Внимание"),tr("Требуемая процедура '")+QString::fromStdString(this->EAA->EA->DLL_ProcName)+tr("' в библиотеке '")+QString::fromStdString(this->EAA->EA->DLL_FileName)+tr("' не найдена"));
             }
+            else QMessageBox::information(this,tr("Ошибка загрузки библиотеки"),CalledLib->errorString());
 	}
-
+        else QMessageBox::information(this,tr("Внимание"),tr("Требуемая библиотека '")+QString::fromStdString(this->EAA->EA->DLL_FileName)+tr("' не найдена"));
 }
 
 }

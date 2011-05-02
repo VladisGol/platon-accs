@@ -68,15 +68,16 @@ void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 		QStringList::iterator it;
 		//Считываем наименования библиотек помещенных в каталог
 		for(it=DLLList.begin();it!=DLLList.end();++it)
-		{
-		    //	QMessageBox::about (0,tr("1"),CalculatedHash);
+		{		    
 			if(CalcFileMD5(Folder.absoluteFilePath(*it))==GetSavedMD5(*it))	//Проверяем соответствие найденной библиотеки и той,которая прописана в базе данных по MD5
-			{
-				QLibrary* OneLib= new QLibrary(*it);
-				if(!OneLib->isLoaded()) OneLib->load();
-				//Ключ - убираем расширение библиотеки т.к. возможна работа с разными платформами
-				QString Key= OneLib->fileName().left(OneLib->fileName().lastIndexOf("."));
+			{                                
+                                int PointBeginDot=Folder.absolutePath().length();
+                                QString OneLibFileName=Folder.absoluteFilePath(*it).left(Folder.absoluteFilePath(*it).indexOf('.',PointBeginDot));
+                                QString Key= *it;
+                                Key=Key.left(Key.indexOf('.',0));
 
+                                QLibrary* OneLib= new QLibrary(OneLibFileName);
+                                //Ключ - убираем расширение библиотеки т.к. возможна работа с разными платформами
 				this->ArrayDynLib.insert(Key, OneLib);
 
 				sps->showMessage(QObject::tr("Загрузка библиотеки ")+OneLib->fileName(), Qt::AlignRight);
