@@ -25,6 +25,7 @@ public:
 
 public slots:
 	void Exit();
+        void Start_DLL_Manager();
         void FillEAGrid(QTreeWidgetItem*,int);          //Заполнение списка экстраатрибутов в грид
 	void EAChoosed(QTableWidgetItem*,QTableWidgetItem*);		//Отображение одного элемента из таблицы
 	void comboTypeChanged(int);			//Изменение вида детализации атрибута при смене типа в комбо боксе

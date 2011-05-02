@@ -33,7 +33,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ui.comboBox_Species->addItem(tr("Ресурсы"),"RES");
 	ui.comboBox_Species->addItem(tr("Нормативно-справочная информация"),"NSI");
 
-	//Устанавливаем заголовки к таблице атрибутов
+        //Устанавливаем заголовки к таблице атрибутов
 	ui.tableWidget_EAs->setColumnCount(numColsInTableEA);
 	for (int j=0;j<numColsInTableEA;j++)
 	{
@@ -58,6 +58,9 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ReadFormWidgetsAppearance();
 	ViewID_Activated();
 
+        //Заполняем из датамодуля загруженные динамические библиотеки в comboBox_DLL_Name
+        ui.comboBox_DLL_Name->addItems(DTL->ArrayDynLib.keys());
+
 	QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(Exit()));
         QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
         QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
@@ -65,6 +68,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
         QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
         QObject::connect(ui.action_Eidos_del, SIGNAL(activated()), this, SLOT(DeleteEidos()));
         //QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
+        QObject::connect(ui.action_DLL_manager, SIGNAL(activated()), this, SLOT(Exit()));
 
         QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
         ui.action_SaveChanges->setEnabled(false);
@@ -75,7 +79,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	//при выборе экстраатрибута следует загрузить и отобразить его свойства
 	QObject::disconnect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
-	//QObject::disconnect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+        QObject::disconnect(ui.lineEdit_DLL_Proc, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
@@ -115,6 +119,9 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	ui.checkBox_Multiple->setChecked(CurrentEA->Multilnk);
 	ui.lineEdit_Caption->setText(QString::fromStdString(CurrentEA->GetEACaption()));
 	ui.lineEdit_FieldName->setText(QString::fromStdString(CurrentEA->GetEAFieldName()));
+        //ui.comboBox_DLL_Name->setCurrentIndex(urrentText=QString::fromStdString(CurrentEA->DLL_FileName);
+        ui.lineEdit_DLL_Proc->setText(QString::fromStdString(CurrentEA->DLL_ProcName));
+
 
 	ComdoIndex=ui.comboBox_Species->findData(QString::fromStdString(CurrentEA->LNK_species),Qt::UserRole, Qt::MatchExactly);
 	ui.comboBox_Species->setCurrentIndex(ComdoIndex);
@@ -138,7 +145,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 
 	QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
-	//QObject::connect(ui.comboBox_DLL_Proc, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
+        QObject::connect(ui.lineEdit_DLL_Proc, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 	QObject::connect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
@@ -526,6 +533,10 @@ void es_mainwindow::SaveCurEA()
 		CurrentEA->Multilnk=ui.checkBox_Multiple->isChecked();
 		CurrentEA->SetEACaption(ui.lineEdit_Caption->text().toStdString());
 		CurrentEA->SetEAFieldName(ui.lineEdit_FieldName->text().toStdString());
+                CurrentEA->type=ui.comboBox_Type->itemData(ui.comboBox_Type->currentIndex(),Qt::UserRole).toInt();
+                CurrentEA->DLL_FileName=ui.comboBox_DLL_Name->currentText().toStdString();
+                CurrentEA->DLL_ProcName=ui.lineEdit_DLL_Proc->text().toStdString();
+
 		//определение остальных параметров экстраатрибута
 		CurrentEA->Save();
 	}
@@ -610,5 +621,9 @@ void es_mainwindow::DeleteEidos()
     }
 
 
+}
+void es_mainwindow::Start_DLL_Manager()
+{
+//Запуск менеджера DLL
 }
 }
