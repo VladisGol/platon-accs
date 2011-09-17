@@ -42,5 +42,7 @@
         <file>box_juliane_krug_s.png</file>
         <file>chain_nicu_buculei_01.png</file>
         <file>klipper_dock.png</file>
+        <file>dll_add.png</file>
+        <file>dll_sign.png</file>
     </qresource>
 </RCC>
