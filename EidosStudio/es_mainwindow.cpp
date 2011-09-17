@@ -68,8 +68,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
         QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
         QObject::connect(ui.action_Eidos_del, SIGNAL(activated()), this, SLOT(DeleteEidos()));
         //QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
-        QObject::connect(ui.action_DLL_manager, SIGNAL(activated()), this, SLOT(Exit()));
-
+        QObject::connect(ui.action_DLL_manager, SIGNAL(activated()), this, SLOT(Start_DLL_Manager()));
         QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
         ui.action_SaveChanges->setEnabled(false);
 }
@@ -625,5 +624,6 @@ void es_mainwindow::DeleteEidos()
 void es_mainwindow::Start_DLL_Manager()
 {
 //Запуск менеджера DLL
+    ;
 }
 }
