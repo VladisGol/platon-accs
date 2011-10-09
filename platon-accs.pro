@@ -102,13 +102,15 @@ HEADERS += es_mainwindow.h \
     time.cpp \
     transaction.cpp \
     user.cpp \
-    EssWidgets/DLL_plugin.h
+    EssWidgets/DLL_plugin.h \
+    EidosStudio/dll_handler.h
 FORMS += es_mainwindow.ui \
     aboutprogram.ui \
     mainwindow.ui \
     HypotesisEditForm.ui \
     LinksExplorer.ui \
-    Multilinks.ui
+    Multilinks.ui \
+    EidosStudio/dll_handler.ui
 SOURCES += es_mainwindow.cpp \
     aboutprogram.cpp \
     DataClass.cpp \
@@ -175,5 +177,9 @@ SOURCES += es_mainwindow.cpp \
     statement.cpp \
     time.cpp \
     transaction.cpp \
-    user.cpp
+    user.cpp \
+    EidosStudio/dll_handler.cpp
 RESOURCES += resources.qrc
+
+
+
