@@ -1,8 +1,9 @@
-#ifndef mw_DLL_handler_H
-#define mw_DLL_handler_H
+#ifndef DLL_handler_H
+#define DLL_handler_H
 
 #include <QtGui/QMainWindow>
-//#include "ui_mw_DLL_handler.h"
+#include "ui_dll_handler.h"
+
 #include "EssentialClass.h"
 #include "ibpp.h"
 #include "dbetc.h"
@@ -20,9 +21,10 @@ public:
         mw_DLL_handler(QWidget *parent = 0);
         ~mw_DLL_handler();
         IBPP::Database DB;
-        //Ui::mw_DLL_handler ui;
+        Ui::mw_DLL_handler ui;
 
 public slots:
+        void Exit();
 protected:
         void ReadFormWidgetsAppearance();
         void WriteFormWidgetsAppearance();
@@ -30,4 +32,4 @@ protected:
 private:
 };
 }
-#endif // mw_DLL_handler_H
+#endif // DLL_handler_H

@@ -8,6 +8,7 @@
 #include "dbetc.h"
 #include "DataClass.h"
 #include "qeidostreewidget.h"
+#include "dll_handler.h"
 
 
 namespace platon

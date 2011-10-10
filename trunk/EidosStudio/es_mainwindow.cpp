@@ -624,6 +624,8 @@ void es_mainwindow::DeleteEidos()
 void es_mainwindow::Start_DLL_Manager()
 {
 //Запуск менеджера DLL
-    ;
+    platon::mw_DLL_handler * DLL_handler_form= new platon::mw_DLL_handler(this);
+    DLL_handler_form->setAttribute(Qt::WA_ShowModal, true);
+    DLL_handler_form->show();
 }
 }
