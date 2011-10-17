@@ -25,6 +25,7 @@ public:
 
 public slots:
         void Exit();
+        void FillDLLGrid();
 protected:
         void ReadFormWidgetsAppearance();
         void WriteFormWidgetsAppearance();
