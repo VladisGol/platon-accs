@@ -22,6 +22,7 @@ public:
         ~mw_DLL_handler();
         IBPP::Database DB;
         Ui::mw_DLL_handler ui;
+        DataClass* DTL;
 
 public slots:
         void Exit();

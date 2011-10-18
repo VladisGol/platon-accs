@@ -17,6 +17,16 @@
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QTableWidget" name="tableWidget_reged_dll">
+      <row>
+       <property name="text">
+        <string>1</string>
+       </property>
+      </row>
+      <row>
+       <property name="text">
+        <string>2</string>
+       </property>
+      </row>
       <column>
        <property name="text">
         <string>Имя библиотеки</string>
@@ -27,6 +37,26 @@
         <string>md5 подпись</string>
        </property>
       </column>
+      <item row="0" column="0">
+       <property name="text">
+        <string>lib1</string>
+       </property>
+      </item>
+      <item row="0" column="1">
+       <property name="text">
+        <string>1223</string>
+       </property>
+      </item>
+      <item row="1" column="0">
+       <property name="text">
+        <string>lib2</string>
+       </property>
+      </item>
+      <item row="1" column="1">
+       <property name="text">
+        <string>2345</string>
+       </property>
+      </item>
      </widget>
     </item>
    </layout>
