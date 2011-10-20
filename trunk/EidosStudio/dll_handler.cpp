@@ -10,6 +10,14 @@ mw_DLL_handler::mw_DLL_handler(QWidget *parent)
         DTL=platon::GetDataModule(this);
         this->DB=DTL->DB;
 
+        is_file_process=true;  //Требуется обработка локальной папки с библиотеками
+        QString ProgDir=QDir::currentPath();
+        QDir Folder(ProgDir);
+        if(Folder.cd("DLL")==false)	//Вход в каталог не выполнен
+            is_file_process=false;
+
+        DLL_Folder_name= Folder.absolutePath()+QDir::separator();   //Запоминаем имя папки с библиотеками оканчивающееся системным разделителем
+
         QObject::connect(ui.action_exit, SIGNAL(activated()), this, SLOT(Exit()));
         ReadFormWidgetsAppearance();
         FillDLLGrid();
@@ -18,12 +26,6 @@ mw_DLL_handler::mw_DLL_handler(QWidget *parent)
 void mw_DLL_handler::FillDLLGrid()
 {
     //Процедура заполняет таблицу зарегистрированными в программе библиотеками, устанавливая текущим элементом элемент, переданный в параметре CurItem, и колонку переданную в параметре Num
-
-    bool is_file_process=true;  //Требуется обработка локальной папки с библиотеками
-/*    QString ProgDir=QDir::currentPath();
-    QDir Folder(ProgDir);
-    if(Folder.cd("DLL")==false)	//Вход в каталог не выполнен
-        is_file_process=false;*/
 
     IBPP::Transaction TmpTR=IBPP::TransactionFactory(this->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
     IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, TmpTR);
@@ -73,7 +75,7 @@ void mw_DLL_handler::FillDLLGrid()
 
         if(is_file_process)
         {
-            if(QFile::exists(QString::fromStdString(DLL_Name))) //Файл найден на диске
+            if(QFile::exists(DLL_Folder_name+QString::fromStdString(DLL_Name))) //Файл найден на диске
             {
                 ui.action_dll_subscribe->setEnabled(true);
                 if(DTL->CalcFileMD5(QString::fromStdString(DLL_Name))==DTL->GetSavedMD5(QString::fromStdString(DLL_Name))) //Проверяем совпадение MD5 суммы

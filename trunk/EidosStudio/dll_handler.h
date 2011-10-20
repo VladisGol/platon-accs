@@ -23,6 +23,8 @@ public:
         IBPP::Database DB;
         Ui::mw_DLL_handler ui;
         DataClass* DTL;
+        bool is_file_process;  //Требуется обработка локальной папки с библиотеками
+        QString DLL_Folder_name;
 
 public slots:
         void Exit();
