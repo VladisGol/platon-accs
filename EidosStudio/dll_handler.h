@@ -25,10 +25,15 @@ public:
         DataClass* DTL;
         bool is_file_process;  //Требуется обработка локальной папки с библиотеками
         QString DLL_Folder_name;
+        QMenu * ContextMenu;
 
 public slots:
         void Exit();
         void FillDLLGrid();
+        void AddNewFromFile();
+        void DeleteOneDLLfromDB();
+        void SubscribeOneDLL();
+        void slotCntxMenu(const QPoint &point);
 protected:
         void ReadFormWidgetsAppearance();
         void WriteFormWidgetsAppearance();

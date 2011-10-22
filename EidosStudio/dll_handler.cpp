@@ -19,8 +19,34 @@ mw_DLL_handler::mw_DLL_handler(QWidget *parent)
         DLL_Folder_name= Folder.absolutePath()+QDir::separator();   //Запоминаем имя папки с библиотеками оканчивающееся системным разделителем
 
         QObject::connect(ui.action_exit, SIGNAL(activated()), this, SLOT(Exit()));
+        QObject::connect(ui.action_add_dll, SIGNAL(activated()), this, SLOT(AddNewFromFile()));
+        QObject::connect(ui.action_dll_delete, SIGNAL(activated()), this, SLOT(DeleteOneDLLfromDB()));
+        QObject::connect(ui.action_dll_subscribe, SIGNAL(activated()), this, SLOT(SubscribeOneDLL()));
+
+        ContextMenu=new QMenu(this);
+
+        ContextMenu->addAction(ui.action_add_dll);
+        ContextMenu->addAction(ui.action_dll_delete);
+        ContextMenu->addAction(ui.action_dll_subscribe);
+        ContextMenu->addSeparator();
+        ContextMenu->addAction(ui.action_exit);
+
+        ui.tableWidget_reged_dll->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui.tableWidget_reged_dll, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenu(QPoint)));
+
         ReadFormWidgetsAppearance();
         FillDLLGrid();
+}
+
+mw_DLL_handler::~mw_DLL_handler()
+{
+
+}
+
+
+void mw_DLL_handler::slotCntxMenu(const QPoint &point)      //Слот для реализации контекстного меню в Hypotesis
+{
+    ContextMenu->popup(ui.tableWidget_reged_dll->mapToGlobal(point));
 }
 
 void mw_DLL_handler::FillDLLGrid()
@@ -109,8 +135,67 @@ void mw_DLL_handler::FillDLLGrid()
     //ui.tableWidget->setCurrentCell(0,Num);
 }
 
-mw_DLL_handler::~mw_DLL_handler()
+
+void mw_DLL_handler::AddNewFromFile()
 {
+    QString FullFileName = QFileDialog::getOpenFileName(this, tr("Укажите файл для внесения в базу данных"), DLL_Folder_name, tr("*.*"));
+    if(FullFileName!=NULL)  //Выбор файла осуществлен
+    {
+        QStringList FileL=FullFileName.split(QDir::separator());
+        QString fileName = FileL.at(FileL.count()-1);   //Имя файла последнее в списке
+
+        QString md5 = DTL->CalcFileMD5(FullFileName);
+
+        IBPP::Transaction TmpTR=IBPP::TransactionFactory(this->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+        IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, TmpTR);
+        TmpTR->Start();
+        TmpST->Prepare("EXECUTE PROCEDURE SET_MD5DLL(?,?);");
+        //1- fileName 2 -md5hash
+        TmpST->Set(1, fileName.toStdString());
+        TmpST->Set(2, md5.toStdString());
+        TmpST->Execute();
+        TmpTR->Commit();
+        FillDLLGrid();
+
+    }
+}
+
+void mw_DLL_handler::DeleteOneDLLfromDB()
+{
+    QString DLL_Item_Name=ui.tableWidget_reged_dll->item(ui.tableWidget_reged_dll->currentRow(),0)->text();
+
+    if (QMessageBox::warning(this, tr("Внимание, данная операция необратима"),
+                                    tr("Подтвердите удаление записи о библиотеке ")+DLL_Item_Name,
+                                    QMessageBox::Ok | QMessageBox::Cancel,
+                                    QMessageBox::Cancel)==QMessageBox::Ok)
+    {
+        IBPP::Transaction TmpTR=IBPP::TransactionFactory(this->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+        IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, TmpTR);
+        TmpTR->Start();
+        TmpST->Prepare("EXECUTE PROCEDURE DEL_REGED_DLL(?);");
+        TmpST->Set(1, DLL_Item_Name.toStdString());
+        TmpST->Execute();
+        TmpTR->Commit();
+        FillDLLGrid();
+    }
+}
+
+void mw_DLL_handler::SubscribeOneDLL()
+{
+    QString DLL_Item_Name=ui.tableWidget_reged_dll->item(ui.tableWidget_reged_dll->currentRow(),0)->text();
+
+    QString md5 = DTL->CalcFileMD5(DLL_Folder_name+DLL_Item_Name);
+
+    IBPP::Transaction TmpTR=IBPP::TransactionFactory(this->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
+    IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, TmpTR);
+    TmpTR->Start();
+    TmpST->Prepare("EXECUTE PROCEDURE SET_MD5DLL(?,?);");
+    //1- fileName 2 -md5hash
+    TmpST->Set(1, DLL_Item_Name.toStdString());
+    TmpST->Set(2, md5.toStdString());
+    TmpST->Execute();
+    TmpTR->Commit();
+    FillDLLGrid();
 
 }
 
