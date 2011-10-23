@@ -104,15 +104,15 @@ void mw_DLL_handler::FillDLLGrid()
             if(QFile::exists(DLL_Folder_name+QString::fromStdString(DLL_Name))) //Файл найден на диске
             {
                 ui.action_dll_subscribe->setEnabled(true);
-                if(DTL->CalcFileMD5(QString::fromStdString(DLL_Name))==DTL->GetSavedMD5(QString::fromStdString(DLL_Name))) //Проверяем совпадение MD5 суммы
-                {
-                    __ti2->setTextColor(Qt::red);
-                    __ti2->setToolTip(tr("Сумма MD5 файла не совпадает с суммой прописанной в БД"));
-                }
-                else
+                if(DTL->CalcFileMD5(DLL_Folder_name+QString::fromStdString(DLL_Name))==DTL->GetSavedMD5(QString::fromStdString(DLL_Name))) //Проверяем совпадение MD5 суммы
                 {
                     __ti2->setTextColor(Qt::black);
                     __ti2->setToolTip(tr("Сумма MD5 проверена"));
+                }
+                else
+                {
+                    __ti2->setTextColor(Qt::red);
+                    __ti2->setToolTip(tr("Сумма MD5 файла не совпадает с суммой прописанной в БД"));
                 }            
             }
             else
