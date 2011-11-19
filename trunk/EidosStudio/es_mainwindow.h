@@ -35,14 +35,20 @@ public slots:
 	void UserTryToEditEA();				//Слот для отслеживания корректировки экстраатрибута
         void SaveCurEA();                               //Слот для сохранения текущего экстраатрибута
         void AddOneEA();                                //Слот для создания нового экстраатрибута
+        void AddFilter();                               //Слот установки фильтра
+        void RemoveFilter();                            //Слот удаления фильтра
+
         //Слоты для работы с потомками Eidos-а
         void RenameEidos();                             //Слот для переименования текущего Eidos-а
         void AddChildEidos();                           //Добавить Потомка к Eidos-у
         void DeleteEidos();                             //Удалить текущий Eidos
+        void slotCntxMenuTEA(const QPoint &point);      //Слот для реализации контекстного меню в таблице экстраатрибутов
+        void slotCntxMenuEidosTW(const QPoint &point);   //Слот для реализации контекстного меню в списке Eidos
 
 protected:
         void ReadFormWidgetsAppearance();
         void WriteFormWidgetsAppearance();
+        void ApplyFilter();
 
 private:
 	bool IsViewID;
@@ -53,9 +59,14 @@ private:
 	QIcon icon_locked;
 	QIcon icon_editable;
 	QIcon icon_occouped;
+        QIcon icon_filter;
 	int numColsInTableEA;
 	bool IsEAEditable;
 	bool CurEAChanged;
+        QMap<int, QString> filter_expression;
+        QMenu * ContextMenuTEA;
+        QMenu * ContextMenuEidosTW;
+
 };
 }
 #endif // ES_MAINWINDOW_H

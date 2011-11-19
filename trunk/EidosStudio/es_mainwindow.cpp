@@ -13,6 +13,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	icon_locked.addPixmap(QPixmap(QString::fromUtf8((":/PICS/padlock_aj_ashton_01.png"))), QIcon::Normal, QIcon::Off);
 	icon_editable.addPixmap(QPixmap(QString::fromUtf8((":/PICS/bb_txt_.png"))), QIcon::Normal, QIcon::Off);
 	icon_occouped.addPixmap(QPixmap(QString::fromUtf8((":/PICS/attention_niels_epting_.png"))), QIcon::Normal, QIcon::Off);
+        icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
 
 	//Чтобы можно было идентифицировать подписи комбобокса делаем через функцию
 	ui.comboBox_Type->clear();
@@ -42,8 +43,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	}
 	QStringList labels;
 	labels << tr("ID")<<tr("Статус")<<tr("Поле")<<tr("Заголовок")<<tr("Тип")<<tr("Принадлежит")<<tr("Eidos определения");
-	ui.tableWidget_EAs->setHorizontalHeaderLabels (labels);
-
+        ui.tableWidget_EAs->setHorizontalHeaderLabels(labels);
 
 	LocalEidos=NULL;
 	CurrentEA=NULL;
@@ -68,8 +68,36 @@ es_mainwindow::es_mainwindow(QWidget *parent)
         QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
         QObject::connect(ui.action_Eidos_del, SIGNAL(activated()), this, SLOT(DeleteEidos()));
         //QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
+        QObject::connect(ui.action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
+        QObject::connect(ui.action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
         QObject::connect(ui.action_DLL_manager, SIGNAL(activated()), this, SLOT(Start_DLL_Manager()));
         QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
+
+        //Создаем и прикрепляям к элементам контекстные меню
+        ContextMenuEidosTW=new QMenu(this);
+        ContextMenuEidosTW->addAction(ui.action_SaveChanges);
+        ContextMenuEidosTW->addAction(ui.action_quit);
+        ContextMenuEidosTW->addSeparator();
+        ContextMenuEidosTW->addAction(ui.action_Eidos_add);
+        ContextMenuEidosTW->addAction(ui.action_Eidos_del);
+        ContextMenuEidosTW->addAction(ui.action_Eidos_rename);
+
+        ui.EidosTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui.EidosTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenuEidosTW(QPoint)));
+
+        ContextMenuTEA=new QMenu(this);
+        ContextMenuTEA->addAction(ui.action_SaveChanges);
+        ContextMenuTEA->addAction(ui.action_quit);
+        ContextMenuTEA->addSeparator();
+        ContextMenuTEA->addAction(ui.action_AddFilter);
+        ContextMenuTEA->addAction(ui.action_RemoveFilter);
+        ContextMenuTEA->addSeparator();
+        ContextMenuTEA->addAction(ui.action_EA_Add);
+        ContextMenuTEA->addAction(ui.action_EA_Del);
+
+        ui.tableWidget_EAs->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui.tableWidget_EAs, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenuTEA(QPoint)));
+
         ui.action_SaveChanges->setEnabled(false);
 }
 
@@ -100,7 +128,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 		if(ret==QMessageBox::Save) SaveCurEA();
 	}
 
-	int curRow=CurElement->row();
+        int curRow=CurElement->row();
 	CurrentEA = LocalEidos->GetEAByFieldName(ui.tableWidget_EAs->item(curRow, 2)->text().toStdString());
 	int ComdoIndex=ui.comboBox_Type->findData(CurrentEA->type,Qt::UserRole, Qt::MatchExactly);
 	ui.comboBox_Type->setCurrentIndex(ComdoIndex);
@@ -290,6 +318,8 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 		if(ret==QMessageBox::Save) SaveCurEA();
 
 	}
+        if(filter_expression.count()>0)
+            RemoveFilter();                 //Очищаем выражения фильтра по всем полям
 
 	ui.tableWidget_EAs->setSortingEnabled(false);
 	ui.tableWidget_EAs->clearContents(); //Очищаем внутреннее содержимое таблицы
@@ -628,4 +658,76 @@ void es_mainwindow::Start_DLL_Manager()
     DLL_handler_form->setAttribute(Qt::WA_ShowModal, true);
     DLL_handler_form->show();
 }
+
+void es_mainwindow::AddFilter()
+{
+
+    /* http://stackoverflow.com/questions/6785481/how-to-set-filter-option-in-qtablewidget
+*/
+        QString FieldCaption;
+        int col;
+
+        col=ui.tableWidget_EAs->currentIndex().column();
+        FieldCaption = ui.tableWidget_EAs->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
+
+        //Получим текущее значение фильтра для отображения
+        QString CurrentFilterPattern=filter_expression.value(col);
+
+        //Запросим в диалоговом окне строку фильрации
+        bool ok;
+        QString textExp = QInputDialog::getText(this, tr("Введите условие фильтра"), tr("Для поля:")+FieldCaption,QLineEdit::Normal,CurrentFilterPattern,&ok);
+
+        //Установим значение фильтра если пользователь ввел значение фильрации и нажал кнопку Ok в диалоге
+        if (ok && !textExp.isEmpty())
+        {
+            filter_expression.insert(col,textExp);
+            ApplyFilter();
+            ui.tableWidget_EAs->horizontalHeaderItem(col)->setIcon(icon_filter);
+            ui.tableWidget_EAs->horizontalHeaderItem(col)->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
+        }
+}
+void es_mainwindow::RemoveFilter()
+{
+    QMap<int, QString>::const_iterator iter_j;
+    for (iter_j = filter_expression.constBegin(); iter_j != filter_expression.constEnd(); ++iter_j)
+    {
+        ui.tableWidget_EAs->horizontalHeaderItem(iter_j.key())->setIcon(QIcon());
+        ui.tableWidget_EAs->horizontalHeaderItem(iter_j.key())->setToolTip("");
+    }
+
+    filter_expression.clear();
+    for( int i = 0; i < ui.tableWidget_EAs->rowCount(); ++i )
+    {
+        ui.tableWidget_EAs->setRowHidden(i, false);
+    }
+}
+
+void es_mainwindow::ApplyFilter()
+{
+    QMap<int, QString>::const_iterator iter_j;
+
+    for( int i = 0; i < ui.tableWidget_EAs->rowCount(); ++i )
+    {
+         bool is_correspond = true;
+         for (iter_j = filter_expression.constBegin(); iter_j != filter_expression.constEnd(); ++iter_j)
+         {
+            QTableWidgetItem *item = ui.tableWidget_EAs->item( i, iter_j.key());
+            if(!item->text().contains(iter_j.value()))
+            {
+                is_correspond = false;
+            }
+        }
+        ui.tableWidget_EAs->setRowHidden(i, !is_correspond);
+    }
+}
+void es_mainwindow::slotCntxMenuTEA(const QPoint &point)        //Слот для реализации контекстного меню в таблице экстраатрибутов
+{
+    ContextMenuTEA->popup(ui.tableWidget_EAs->mapToGlobal(point));
+}
+
+void es_mainwindow::slotCntxMenuEidosTW(const QPoint &point)      //Слот для реализации контекстного меню в списке Eidos
+{
+    ContextMenuEidosTW->popup(ui.EidosTreeWidget->mapToGlobal(point));
+}
+
 }
