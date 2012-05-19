@@ -193,14 +193,15 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 		{
 			DisableAllActions();
 			this->action_add->setEnabled(true);
-			this->action_del->setEnabled(true);
+                        if(this->tableViewPragma->model()->rowCount()>0) this->action_del->setEnabled(false);
+                            else this->action_del->setEnabled(true);
 			this->action_edit->setEnabled(true);
 			this->action_links->setEnabled(true);
 			this->action_refresh->setEnabled(true);
 			this->action_AddFilter->setEnabled(true);
                         this->action_CopyToClipboard->setEnabled(true);
 			if(SFProxyModelH->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
-			CurrentObjectLevel=Level_Hypotesis;
+			CurrentObjectLevel=Level_Hypotesis;                        
 		}
 	}
 	if (obj == tableViewPragma)
@@ -403,16 +404,13 @@ void mainWin::DeleteItem()
             int myrow=tableViewHypotesis->currentIndex().row();
             if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
             {
+                long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
                 int ret = QMessageBox::warning(this, tr("Внимание,критическая операция"),
                                                 tr("Вы действительно хотите удалить объект\n"
-                                                   "ТИП?"),
+                                                   "ТИП? ID=")+QString::number(id_hypotesys),
                                                 QMessageBox::Yes | QMessageBox::Cancel,
                                                 QMessageBox::Cancel);
-                if(ret==QMessageBox::Ok)
-                {
-                    long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-                    platon::DeleteHypotesisItem(this->MyDCl->DB,id_hypotesys);//Удаление объекта Hipotesys
-                }
+                if(ret==QMessageBox::Yes) platon::DeleteHypotesisItem(this->MyDCl->DB,id_hypotesys);//Удаление объекта Hipotesys
             }
     }
     if(CurrentObjectLevel==Level_Pragma)
@@ -420,16 +418,13 @@ void mainWin::DeleteItem()
             int myrow=tableViewPragma->currentIndex().row();
             if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
             {
+                long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
                 int ret = QMessageBox::warning(this, tr("Внимание,критическая операция"),
                                                 tr("Вы действительно хотите удалить объект\n"
-                                                   "ЭКЗЕМПЛЯР?"),
+                                                   "ЭКЗЕМПЛЯР? ID=")+QString::number(id_pragma),
                                                 QMessageBox::Yes | QMessageBox::Cancel,
                                                 QMessageBox::Cancel);
-                if(ret==QMessageBox::Ok)
-                {
-                    long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
-                    platon::DeletePragmaItem(this->MyDCl->DB,id_pragma);//Удаление объекта Pragma
-                }
+                if(ret==QMessageBox::Yes) platon::DeletePragmaItem(this->MyDCl->DB,id_pragma);//Удаление объекта Pragma
             }
     }
     this->RefreshViews();
