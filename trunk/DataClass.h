@@ -32,12 +32,15 @@ public:
 	IBPP::Database DB;						//База данных
 	QDateTime ProgramDateTime;				//Переменная для программного времени
 	bool ViewIDs;							//Переменная отвечающая за то, отображаются идентификаторы объектов или нет
+    bool IsDBConnected();                   //Функция возвращающая значение переменной присоединена ли БД
 
 	void LoadDynLib(QSplashScreen* sps, QApplication * aplic);
 	QLibrary* GetLibByName(QString inString);
 	void SetProgramDateTime();
 	QString CalcFileMD5(QString fileName);
 	QString GetSavedMD5(QString fileName);
+private:
+    bool IsDatabaseConnect;
 };
 DataClass* GetDataModule(QObject * fromform);
 

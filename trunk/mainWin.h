@@ -19,9 +19,6 @@
 #include "aboutprogram.h"
 #include "es_mainwindow.h"
 
-
-
-
 class mainWin : public QMainWindow, public Ui::MainWindow
 
 {
@@ -50,10 +47,10 @@ private slots:
 	void ViewID_Activated();//Управление отображением идентификаторов объектов
 	void AboutShow();//Вывод диалогового окна "О программе"
 	void ESShow();	//Запуск Эйдос студии
-        void slotEidosCntxMenu(const QPoint &point);    //Слот для реализации контекстного меню в Eidos
-        void slotHypCntxMenu(const QPoint &point);      //Слот для реализации контекстного меню в Hypotesis
-        void slotPragmaCntxMenu(const QPoint &point);   //Слот для реализации контекстного меню в Pragma
-        void slotCopySelectedFromView();                //Слот для реализации копирования выделения из
+    void slotEidosCntxMenu(const QPoint &point);    //Слот для реализации контекстного меню в Eidos
+    void slotHypCntxMenu(const QPoint &point);      //Слот для реализации контекстного меню в Hypotesis
+    void slotPragmaCntxMenu(const QPoint &point);   //Слот для реализации контекстного меню в Pragma
+    void slotCopySelectedFromView();                //Слот для реализации копирования выделения из
 
 private:
 	platon::Eidos* LocalEidos;
@@ -61,9 +58,9 @@ private:
 	QTimer* DTBaseShifter;
 	QIcon icon_filter;
 	AboutProgram* AboutDlg;
-        QMenu* ContextMenuEidos;
-        QMenu* ContextMenuHyp;
-        QMenu* ContextMenuPragma;
+    QMenu* ContextMenuEidos;
+    QMenu* ContextMenuHyp;
+    QMenu* ContextMenuPragma;
 protected:
 	bool eventFilter(QObject *obj, QEvent *ev);
 	int CurrentObjectLevel;
@@ -72,7 +69,6 @@ protected:
     QSortFilterProxyModel* SFProxyModelP;
     void ReadFormWidgetsAppearance();
     void WriteFormWidgetsAppearance();
-
 
 };
 
