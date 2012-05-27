@@ -18,13 +18,11 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 	this->setObjectName("DataModule");
 	//Вывод диалога регистрации в базе данных
 	platon::Login_Dialog* LoginDLG= new platon::Login_Dialog((mainWin*)parent);
+    IsDatabaseConnect=false;
 	while(true)
 	{
 		if(LoginDLG->exec()==QDialog::Rejected)
-		{
-			((mainWin*)this->parent())->close();	//Посылаем сигнал на закрытие главной формы
-			break;
-		}
+            break;  //Выход без попытки соединения
 		else
 		{
 			try
@@ -36,7 +34,7 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 											"",//Role
 											"UTF8",//codepage
 											"DEFAULT CHARACTER SET RUSSIAN");//Доп параметры
-				DB->Connect();
+				DB->Connect();                
 			}
 			catch (IBPP::Exception& e)
 			{
@@ -45,7 +43,11 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 						QMessageBox::Ok,QMessageBox::Ok);
 			}
 
-			if(DB->Connected()) break;
+            if(DB->Connected())
+            {
+                IsDatabaseConnect=true;
+                break;
+            }
 		}
 	}
 }
@@ -57,42 +59,45 @@ DataClass::~DataClass()
 
 void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
 {
-	//Процедура производит загрузку динамических библиотек в программу
-	this->ArrayDynLib.clear();	//Очищаем массив динамических библиотек
+    if(IsDBConnected())
+    {
+        //Процедура производит загрузку динамических библиотек в программу
+        this->ArrayDynLib.clear();	//Очищаем массив динамических библиотек
 
-	QString ProgDir=QDir::currentPath();
-	QDir Folder(ProgDir);
-	if(Folder.cd("DLL"))	//Если каталог существует
-	{
-		QStringList DLLList=Folder.entryList (QDir::Files, QDir::NoSort);
-		QStringList::iterator it;
-		//Считываем наименования библиотек помещенных в каталог
-		for(it=DLLList.begin();it!=DLLList.end();++it)
-		{		    
-			if(CalcFileMD5(Folder.absoluteFilePath(*it))==GetSavedMD5(*it))	//Проверяем соответствие найденной библиотеки и той,которая прописана в базе данных по MD5
-			{                                
-                                int PointBeginDot=Folder.absolutePath().length();
-                                QString OneLibFileName=Folder.absoluteFilePath(*it).left(Folder.absoluteFilePath(*it).indexOf('.',PointBeginDot));
-                                QString Key= *it;
-                                Key=Key.left(Key.indexOf('.',0));
+        QString ProgDir=QDir::currentPath();
+        QDir Folder(ProgDir);
+        if(Folder.cd("DLL"))	//Если каталог существует
+        {
+            QStringList DLLList=Folder.entryList (QDir::Files, QDir::NoSort);
+            QStringList::iterator it;
+            //Считываем наименования библиотек помещенных в каталог
+            for(it=DLLList.begin();it!=DLLList.end();++it)
+            {
+                if(CalcFileMD5(Folder.absoluteFilePath(*it))==GetSavedMD5(*it))	//Проверяем соответствие найденной библиотеки и той,которая прописана в базе данных по MD5
+                {
+                                    int PointBeginDot=Folder.absolutePath().length();
+                                    QString OneLibFileName=Folder.absoluteFilePath(*it).left(Folder.absoluteFilePath(*it).indexOf('.',PointBeginDot));
+                                    QString Key= *it;
+                                    Key=Key.left(Key.indexOf('.',0));
 
-                                QLibrary* OneLib= new QLibrary(OneLibFileName);
-                                //Ключ - убираем расширение библиотеки т.к. возможна работа с разными платформами
-				this->ArrayDynLib.insert(Key, OneLib);
+                                    QLibrary* OneLib= new QLibrary(OneLibFileName);
+                                    //Ключ - убираем расширение библиотеки т.к. возможна работа с разными платформами
+                    this->ArrayDynLib.insert(Key, OneLib);
 
-				sps->showMessage(QObject::tr("Загрузка библиотеки ")+OneLib->fileName(), Qt::AlignRight);
-				aplic->processEvents();
-			}
-			else
-			{
-				QMessageBox::warning(0,tr("Внимание !"),
-						tr("Библиотека ")+Folder.absoluteFilePath(*it)+tr(" не загружена - MD5 сумма не совпадает"),
-						QMessageBox::Ok,QMessageBox::Ok);
+                    sps->showMessage(QObject::tr("Загрузка библиотеки ")+OneLib->fileName(), Qt::AlignRight);
+                    aplic->processEvents();
+                }
+                else
+                {
+                    QMessageBox::warning(0,tr("Внимание !"),
+                            tr("Библиотека ")+Folder.absoluteFilePath(*it)+tr(" не загружена - MD5 сумма не совпадает"),
+                            QMessageBox::Ok,QMessageBox::Ok);
 
-			}
+                }
 
-		}
-	}
+            }
+        }
+    }
 }
 
 QLibrary* DataClass::GetLibByName(QString inString)
@@ -146,6 +151,10 @@ QString DataClass::GetSavedMD5(QString fileName)
 	//Процедура по имени файла находит сохраненное значение MD5 в базе данных
 
 	return QString::fromStdString(GetDLLMD5(this->DB, fileName.toStdString()));
+}
+bool DataClass::IsDBConnected()
+{
+    return IsDatabaseConnect;
 }
 
 }

@@ -10,10 +10,10 @@ mainWin::mainWin(QWidget *parent)
     QTextCodec::setCodecForTr(codec);
     QTextCodec::setCodecForCStrings(codec);
 
-    setupUi(this);					//Загружаем элементы формы
+    setupUi(this);					//Загружаем элементы формы    
 
     this->MyDCl=new platon::DataClass(this);            //Создаем модуль данных приложения
-    if(this->MyDCl->DB->Connected())			//Если соединение с базой данной при создании модуля прошло успешно
+    if(this->MyDCl->IsDBConnected())			//Если соединение с базой данной при создании модуля прошло успешно
     {
         LocalEidos=NULL;
         LocalHypotesis=NULL;
@@ -99,9 +99,7 @@ mainWin::mainWin(QWidget *parent)
         connect(this->EidosTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotEidosCntxMenu(QPoint)));
         connect(this->tableViewHypotesis, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotHypCntxMenu(QPoint)));
         connect(this->tableViewPragma, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPragmaCntxMenu(QPoint)));
-
     }
-
 }
 
 void mainWin::slotCopySelectedFromView()
@@ -666,9 +664,5 @@ void mainWin::ESShow()
         es->setAttribute(Qt::WA_ShowModal, true);
 	es->show();
 }
-
-
-
-
 
 

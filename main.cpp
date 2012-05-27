@@ -17,9 +17,15 @@ int main(int argc, char *argv[])
     mainWin myAPP;
     myAPP.MyDCl->LoadDynLib(&splash, &app);	//Загружаем библиотеки и отображаем ход процесса на предшествующем окне
     app.processEvents();
-
     splash.finish(&myAPP);
-    myAPP.show();
 
-    return app.exec();
+    if(myAPP.MyDCl->IsDBConnected())
+    {
+        myAPP.show();
+        return app.exec();
+    }
+    else
+    {
+        return 0;
+    }
 }
