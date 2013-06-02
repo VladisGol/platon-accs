@@ -1,0 +1,12 @@
+#ifndef SIMPLE_LIB_GLOBAL_H
+#define SIMPLE_LIB_GLOBAL_H
+
+#include <QtCore/qglobal.h>
+
+#if defined(SIMPLE_LIB_LIBRARY)
+#  define SIMPLE_LIBSHARED_EXPORT Q_DECL_EXPORT
+#else
+#  define SIMPLE_LIBSHARED_EXPORT Q_DECL_IMPORT
+#endif
+
+#endif // SIMPLE_LIB_GLOBAL_H
