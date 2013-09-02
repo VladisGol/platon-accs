@@ -6,7 +6,7 @@ Multilinks::Multilinks(QWidget * parent,  AssociatedExtraAttribute* InAEA): QMai
 {
 	setupUi(this);
 
-	DataClass* DTL=platon::GetDataModule(this);
+    DTL=platon::GetDataModule(this);
 	this->DB=DTL->DB;
 
 	this->AEAttrib=InAEA;
@@ -222,28 +222,23 @@ platon::LNK_Value Multilinks::LNKChoice(platon::LNK_Value InLNK)
 void Multilinks::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
 	int w=800,h=700;
-	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+    if(DTL->ETC_ParamExists("width")) w=DTL->ETC_ReadInteger("width");
+    if(DTL->ETC_ParamExists("height")) h=DTL->ETC_ReadInteger("height");
 	this->resize (w,h);
+    DTL->ETC_CloseKey();
 
-	MyETC->CloseKey();
-	delete MyETC;
 }
 
 void Multilinks::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
-	MyETC->WriteInteger("width", this->width());
-	MyETC->WriteInteger("height", this->height());
-
-	MyETC->CloseKey();
-	delete MyETC;
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
+    DTL->ETC_WriteInteger("width", this->width());
+    DTL->ETC_WriteInteger("height", this->height());
+    DTL->ETC_CloseKey();
 }
 
 void Multilinks::SetViewID(bool IsView)

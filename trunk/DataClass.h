@@ -16,11 +16,13 @@
 #include <QMessageBox>
 #include "DialogLogin.h"
 #include <QDateTime>
+#include "dbetc.h"
 
 #include "ibpp.h"
 
 namespace platon
 {
+enum TypeETC {ETC_database,ETC_localfile};
 //Класс хранящий в себе основные элементы программы, к которым необходим доступ из форм программы
 class DataClass : public QObject
 {
@@ -39,8 +41,26 @@ public:
 	void SetProgramDateTime();
 	QString CalcFileMD5(QString fileName);
 	QString GetSavedMD5(QString fileName);
+
+    // Набор процедур и функций для сохранения параметров открываемых форм
+
+    void SetTypeETC(int TypeForUse);
+    int  GetTypeETC();
+    bool ETC_ParamExists(QString ParamName);
+    void ETC_OpenKey(QString key_val);
+    void ETC_CloseKey();
+    bool ETC_ReadBool(QString ParamName);
+    int  ETC_ReadInteger(QString ParamName);
+    void ETC_WriteBool(QString ParamName, bool InValue);
+    void ETC_WriteInteger(QString ParamName, int InValue);
+
+
 private:
     bool IsDatabaseConnect;
+    DbEtc *MyETC;                           //Объект для сохранения и считывания параметров из БД
+    QSettings* FileETC;                     //Объект для сохранения и считывания параметров из локального файла
+    int usedTypeETC;                            //Какой вид ETC используется
+
 };
 DataClass* GetDataModule(QObject * fromform);
 

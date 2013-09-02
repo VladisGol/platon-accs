@@ -36,7 +36,7 @@ protected:
     void WriteFormWidgetsAppearance();
     IBPP::Database DB;
     void SetViewID(bool IsView);
-
+    DataClass* DTL;
 };
 
 }

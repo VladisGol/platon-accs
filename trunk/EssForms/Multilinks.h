@@ -41,7 +41,7 @@ protected:
     void FillWidgets(int prow,int pcolumn);
     QMap<long,LNK_Value>* LNKMap;
     void SetViewID(bool IsView);
-
+    DataClass* DTL;
 };
 }
 
