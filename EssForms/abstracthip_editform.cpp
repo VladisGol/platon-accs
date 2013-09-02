@@ -208,28 +208,25 @@ void AbstarctHipEditForm::FormFillFrames()
 void AbstarctHipEditForm::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName).toStdString(),true,-1);
-	int w=800,h=700;
-	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
-	this->resize (w,h);
+    MyDCl->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName));
+    int w=800,h=700;
+    if(MyDCl->ETC_ParamExists("width")) w=MyDCl->ETC_ReadInteger("width");
+    if(MyDCl->ETC_ParamExists("height")) h=MyDCl->ETC_ReadInteger("height");
+    this->resize (w,h);
+    MyDCl->ETC_CloseKey();
 
-	MyETC->CloseKey();
-	delete MyETC;
 }
 
 void AbstarctHipEditForm::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName).toStdString(),true,-1);
-	MyETC->WriteInteger("width", this->width());
-	MyETC->WriteInteger("height", this->height());
 
-	MyETC->CloseKey();
-	delete MyETC;
+    MyDCl->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()+"\\"+dbEtcBranchName));
+    MyDCl->ETC_WriteInteger("width", this->width());
+    MyDCl->ETC_WriteInteger("height", this->height());
+    MyDCl->ETC_CloseKey();
+
 }
 
 }

@@ -17,7 +17,7 @@ ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID
 
     VBoxLayout->addWidget(checkBox);
 
-	DataClass* DTL=platon::GetDataModule(this);
+    DTL=platon::GetDataModule(this);
 	this->DB=DTL->DB;
 
     treeWidget = new QEidosTreeWidget (this);
@@ -69,30 +69,25 @@ void ChoiceEidos_Dialog::ReadFormWidgetsAppearance()
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
 	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
 	int w=800,h=700;
 	bool ch=false;
-	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
-	if(MyETC->ParamExists("checkBoxState")) ch=MyETC->ReadBool("checkBoxState");
+    if(DTL->ETC_ParamExists("width")) w=DTL->ETC_ReadInteger("width");
+    if(DTL->ETC_ParamExists("height")) h=DTL->ETC_ReadInteger("height");
+    if(DTL->ETC_ParamExists("checkBoxState")) ch=DTL->ETC_ReadBool("checkBoxState");
 	this->resize (w,h);
 	checkBox->setChecked(ch);
-
-	MyETC->CloseKey();
-	delete MyETC;
+    DTL->ETC_CloseKey();
 }
 
 void ChoiceEidos_Dialog::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
-	MyETC->WriteInteger("width", this->width());
-	MyETC->WriteInteger("height", this->height());
-	MyETC->WriteBool("checkBoxState",checkBox->isChecked());
-
-	MyETC->CloseKey();
-	delete MyETC;
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
+    DTL->ETC_WriteInteger("width", this->width());
+    DTL->ETC_WriteInteger("height", this->height());
+    DTL->ETC_WriteBool("checkBoxState",checkBox->isChecked());
+    DTL->ETC_CloseKey();
 }
 
 void ChoiceEidos_Dialog::SetViewID(bool IsView)

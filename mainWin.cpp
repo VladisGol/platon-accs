@@ -18,6 +18,12 @@ mainWin::mainWin(QWidget *parent)
         LocalEidos=NULL;
         LocalHypotesis=NULL;
 
+        //Устанавливаем значение действия в соотвтетствии с сохраненным значением в БД
+        if(this->MyDCl->GetTypeETC()==platon::ETC_localfile)
+            action_SetTypeETC->setChecked(true);
+        else
+            action_SetTypeETC->setChecked(false);
+
         QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
         QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
 
@@ -40,6 +46,7 @@ mainWin::mainWin(QWidget *parent)
         QObject::connect(action_About, SIGNAL(activated()), this, SLOT(AboutShow()));
         QObject::connect(action_ES, SIGNAL(activated()), this, SLOT(ESShow()));
         QObject::connect(action_CopyToClipboard, SIGNAL(activated()), this, SLOT(slotCopySelectedFromView()));
+        QObject::connect(action_SetTypeETC, SIGNAL(activated()), this, SLOT(slotSetTypeETC()));
 
         SetEidosView(0);
 
@@ -100,6 +107,13 @@ mainWin::mainWin(QWidget *parent)
         connect(this->tableViewHypotesis, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotHypCntxMenu(QPoint)));
         connect(this->tableViewPragma, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotPragmaCntxMenu(QPoint)));
     }
+}
+void mainWin::slotSetTypeETC()
+{
+    if(this->action_SetTypeETC->isChecked())
+        MyDCl->SetTypeETC(platon::ETC_localfile);
+    else
+        MyDCl->SetTypeETC(platon::ETC_database);
 }
 
 void mainWin::slotCopySelectedFromView()
@@ -172,7 +186,7 @@ void mainWin::DisableAllActions()
 	this->action_refresh->setEnabled(false);
 	this->action_AddFilter->setEnabled(false);
 	this->action_RemoveFilter->setEnabled(false);
-        this->action_CopyToClipboard->setEnabled(false);
+    this->action_CopyToClipboard->setEnabled(false);
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
@@ -191,13 +205,14 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 		{
 			DisableAllActions();
 			this->action_add->setEnabled(true);
-                        if(this->tableViewPragma->model()->rowCount()>0) this->action_del->setEnabled(false);
-                            else this->action_del->setEnabled(true);
+            if(this->tableViewPragma->model()->rowCount()>0) this->action_del->setEnabled(false);
+                else this->action_del->setEnabled(true);
 			this->action_edit->setEnabled(true);
 			this->action_links->setEnabled(true);
 			this->action_refresh->setEnabled(true);
 			this->action_AddFilter->setEnabled(true);
-                        this->action_CopyToClipboard->setEnabled(true);
+            this->action_CopyToClipboard->setEnabled(true);
+
 			if(SFProxyModelH->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			CurrentObjectLevel=Level_Hypotesis;                        
 		}
@@ -208,14 +223,14 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
 		{
 			DisableAllActions();
 			QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
-                        this->action_add->setEnabled(true);
-                        this->action_del->setEnabled(true);
-                        this->action_edit->setEnabled(true);
-                        this->action_links->setEnabled(true);
-                        this->action_refresh->setEnabled(true);
-                        this->action_AddFilter->setEnabled(true);
-                        this->action_CopyToClipboard->setEnabled(true);
-                        if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
+            this->action_add->setEnabled(true);
+            this->action_del->setEnabled(true);
+            this->action_edit->setEnabled(true);
+            this->action_links->setEnabled(true);
+            this->action_refresh->setEnabled(true);
+            this->action_AddFilter->setEnabled(true);
+            this->action_CopyToClipboard->setEnabled(true);
+            if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
 			CurrentObjectLevel=Level_Pragma;
 		}
 	}
@@ -551,62 +566,58 @@ void mainWin::RemoveFilter()
 void mainWin::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDCl->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
+
+    MyDCl->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName ()));
 	int w=874,h=744;
-	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+    if(MyDCl->ETC_ParamExists("width")) w=MyDCl->ETC_ReadInteger("width");
+    if(MyDCl->ETC_ParamExists("height")) h=MyDCl->ETC_ReadInteger("height");
 	this->resize (w,h);
 
 	QList<int> vals;
-	if(MyETC->ParamExists("splitter_e\\0")) vals.append(MyETC->ReadInteger("splitter_e\\0")); else vals.append(350);
-	if(MyETC->ParamExists("splitter_e\\1")) vals.append(MyETC->ReadInteger("splitter_e\\1")); else vals.append(762);
+    if(MyDCl->ETC_ParamExists("splitter_e\\0")) vals.append(MyDCl->ETC_ReadInteger("splitter_e\\0")); else vals.append(350);
+    if(MyDCl->ETC_ParamExists("splitter_e\\1")) vals.append(MyDCl->ETC_ReadInteger("splitter_e\\1")); else vals.append(762);
 	splitter_e->setSizes(vals);
 	vals.clear();
-	if(MyETC->ParamExists("splitter_hp\\0")) vals.append(MyETC->ReadInteger("splitter_hp\\0")); else vals.append(361);
-	if(MyETC->ParamExists("splitter_hp\\1")) vals.append(MyETC->ReadInteger("splitter_hp\\1")); else vals.append(362);
+    if(MyDCl->ETC_ParamExists("splitter_hp\\0")) vals.append(MyDCl->ETC_ReadInteger("splitter_hp\\0")); else vals.append(361);
+    if(MyDCl->ETC_ParamExists("splitter_hp\\1")) vals.append(MyDCl->ETC_ReadInteger("splitter_hp\\1")); else vals.append(362);
 	splitter_hp->setSizes(vals);
 
-	if(MyETC->ParamExists("comboBox_Species")) this->comboBox_Species->setCurrentIndex(MyETC->ReadInteger("comboBox_Species"));
-	if(MyETC->ParamExists("EidosID")) this->EidosTreeWidget->findNMakeCurrent(MyETC->ReadInteger("EidosID"));
+    if(MyDCl->ETC_ParamExists("comboBox_Species")) this->comboBox_Species->setCurrentIndex(MyDCl->ETC_ReadInteger("comboBox_Species"));
+    if(MyDCl->ETC_ParamExists("EidosID")) this->EidosTreeWidget->findNMakeCurrent(MyDCl->ETC_ReadInteger("EidosID"));
 	SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
 
-	if(MyETC->ParamExists("action_View_IDs")) this->action_View_IDs->setChecked(MyETC->ReadBool("action_View_IDs"));
+    if(MyDCl->ETC_ParamExists("action_View_IDs")) this->action_View_IDs->setChecked(MyDCl->ETC_ReadBool("action_View_IDs"));
 	ViewID_Activated();
 
-
-	MyETC->CloseKey();
-	delete MyETC;
+    MyDCl->ETC_CloseKey();
 
 }
 void mainWin::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->MyDCl->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
-	MyETC->WriteInteger("width", this->width());
-	MyETC->WriteInteger("height", this->height());
+    MyDCl->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
+    MyDCl->ETC_WriteInteger("width", this->width());
+    MyDCl->ETC_WriteInteger("height", this->height());
 
 	QList<int> vals = this->splitter_e->sizes();
-	MyETC->WriteInteger("splitter_e\\0", vals.at(0));
-	MyETC->WriteInteger("splitter_e\\1", vals.at(1));
+    MyDCl->ETC_WriteInteger("splitter_e\\0", vals.at(0));
+    MyDCl->ETC_WriteInteger("splitter_e\\1", vals.at(1));
 	vals=this->splitter_hp->sizes();
-	MyETC->WriteInteger("splitter_hp\\0", vals.at(0));
-	MyETC->WriteInteger("splitter_hp\\1", vals.at(1));
+    MyDCl->ETC_WriteInteger("splitter_hp\\0", vals.at(0));
+    MyDCl->ETC_WriteInteger("splitter_hp\\1", vals.at(1));
 
-	MyETC->WriteInteger("comboBox_Species", this->comboBox_Species->currentIndex());
-	MyETC->WriteInteger("EidosID",this->EidosTreeWidget->GetEidosID());
-	MyETC->WriteBool("action_View_IDs",this->action_View_IDs->isChecked());
+    MyDCl->ETC_WriteInteger("comboBox_Species", this->comboBox_Species->currentIndex());
+    MyDCl->ETC_WriteInteger("EidosID",this->EidosTreeWidget->GetEidosID());
+    MyDCl->ETC_WriteBool("action_View_IDs",this->action_View_IDs->isChecked());
 
-	MyETC->CloseKey();
-	delete MyETC;
+    MyDCl->ETC_CloseKey();
 
 }
 void mainWin::ViewID_Activated()
 {
 	//Слот для изменения отображения идентификаторов объектов в программе
 	this->MyDCl->ViewIDs =action_View_IDs->isChecked();//Устанавливаем значение переменной в Датамодуле
-	if(!this->MyDCl->ViewIDs)	//Отметка снята
+    if(!this->MyDCl->ViewIDs)	//Отметка снята
 	{
 
 		for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)

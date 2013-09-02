@@ -46,6 +46,11 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
             if(DB->Connected())
             {
                 IsDatabaseConnect=true;
+                MyETC=new platon::DbEtc(this->DB);
+                FileETC= new QSettings("PLATON","Platon-accs");
+                MyETC->OpenKey(QString("ProgramConfig").toStdString(),true,-1);
+                if(MyETC->ParamExists("Use_ETCType")) usedTypeETC = MyETC->ReadInteger("UseETCType");
+                MyETC->CloseKey();
                 break;
             }
 		}
@@ -55,6 +60,7 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 DataClass::~DataClass()
 {
 	// TODO Auto-generated destructor stub
+    if(IsDatabaseConnect==true) delete MyETC;
 }
 
 void DataClass::LoadDynLib(QSplashScreen* sps, QApplication * aplic)
@@ -156,5 +162,126 @@ bool DataClass::IsDBConnected()
 {
     return IsDatabaseConnect;
 }
+
+//Методы для работы с параметрами форм. Работа ведется либо с локальным файлом либо с базой данных
+//локальный файл используется для снижения трафика с сервером базы данных
+void DataClass::SetTypeETC(int TypeForUse)
+{
+    switch(TypeForUse)
+        {
+        case ETC_database:
+        case ETC_localfile:
+            // Для сохранения и присвоения используется только предопределенный тип и запись показателя
+            // проводится только в базу DBETC откуда считывается при старте программы
+
+            MyETC->OpenKey(QString("ProgramConfig").toStdString(),true,-1);
+            MyETC->WriteInteger("UseETCType", TypeForUse);
+            MyETC->CloseKey();
+            usedTypeETC=TypeForUse;
+            break;
+        }
+}
+int  DataClass::GetTypeETC()
+{
+    return (usedTypeETC);
+}
+
+bool DataClass::ETC_ParamExists(QString ParamName)
+{
+    bool ForReturn;
+    switch(usedTypeETC)
+        {
+        case ETC_database:
+            ForReturn = MyETC->ParamExists(ParamName.toStdString());
+            break;
+        case ETC_localfile:
+            ForReturn = FileETC->contains(ParamName);
+            break;
+        }
+    return ForReturn;
+}
+
+void DataClass::ETC_OpenKey(QString key_val)
+{
+    switch(usedTypeETC)
+        {
+        case ETC_database:
+            MyETC->OpenKey(key_val.toStdString(),true,-1);
+            break;
+        case ETC_localfile:
+            FileETC->beginGroup(key_val);
+            break;
+        }
+}
+
+void DataClass::ETC_CloseKey()
+{
+    switch(usedTypeETC)
+        {
+        case ETC_database:
+            MyETC->CloseKey();
+            break;
+        case ETC_localfile:
+            FileETC->endGroup();
+            break;
+        }
+}
+
+bool DataClass::ETC_ReadBool(QString ParamName)
+{
+    bool ForReturn;
+    switch(usedTypeETC)
+        {
+        case ETC_database:
+            ForReturn = MyETC->ReadBool(ParamName.toStdString());
+            break;
+        case ETC_localfile:
+            ForReturn = FileETC->value(ParamName).toBool();
+            break;
+        }
+    return ForReturn;
+}
+
+int  DataClass::ETC_ReadInteger(QString ParamName)
+{
+    int ForReturn;
+    switch(usedTypeETC)
+        {
+        case ETC_database:
+            ForReturn = MyETC->ReadInteger(ParamName.toStdString());
+            break;
+        case ETC_localfile:
+            ForReturn = FileETC->value(ParamName).toInt();
+            break;
+        }
+    return ForReturn;
+}
+
+void DataClass::ETC_WriteBool(QString ParamName, bool InValue)
+{
+    switch(usedTypeETC)
+        {
+        case ETC_database:
+            MyETC->WriteBool(ParamName.toStdString(), InValue);
+            break;
+        case ETC_localfile:
+            FileETC->setValue(ParamName, InValue);
+            break;
+        }
+}
+
+void DataClass::ETC_WriteInteger(QString ParamName, int InValue)
+{
+    switch(usedTypeETC)
+    {
+    case ETC_database:
+        MyETC->WriteInteger(ParamName.toStdString(), InValue);
+        break;
+    case ETC_localfile:
+        FileETC->setValue(ParamName, InValue);
+        break;
+    }
+}
+
 
 }

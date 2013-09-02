@@ -6,7 +6,7 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 {
 	setupUi(this);
 
-	DataClass* DTL=platon::GetDataModule(this);
+    DTL=platon::GetDataModule(this);
 	this->DB=DTL->DB;
 	IsViewID=DTL->ViewIDs;
 
@@ -28,9 +28,9 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 
 
 	QObject::connect(HEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
-        QObject::connect(HEidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
+    QObject::connect(HEidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHGridView(QTreeWidgetItem*,int)));
 	QObject::connect(PEidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
-        QObject::connect(PEidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
+    QObject::connect(PEidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetPGridView(QTreeWidgetItem*,int)));
 	QObject::connect(action_close, SIGNAL(activated()), this, SLOT(Exit()));
 
 	QObject::connect(tableView_Hyp, SIGNAL(activated(QModelIndex)), this, SLOT(SetCorespActions()));
@@ -40,7 +40,7 @@ LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): Q
 	QObject::connect(action_OBJOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
 	QObject::connect(action_ACTOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
 	QObject::connect(action_RESOpen, SIGNAL(activated()), this, SLOT(OpenPragma()));
-        QObject::connect(action_copy, SIGNAL(activated()), this, SLOT(slotCopySelectedFromView()));  //Слот копирования в буфер обмена
+    QObject::connect(action_copy, SIGNAL(activated()), this, SLOT(slotCopySelectedFromView()));  //Слот копирования в буфер обмена
 
 	this->PEidosTreeWidget->installEventFilter(this);
 	this->HEidosTreeWidget->installEventFilter(this);
@@ -287,28 +287,24 @@ void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 void LinksExplorer::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
 	int w=800,h=700;
-	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+    if(DTL->ETC_ParamExists("width")) w=DTL->ETC_ReadInteger("width");
+    if(DTL->ETC_ParamExists("height")) h=DTL->ETC_ReadInteger("height");
 	this->resize (w,h);
+    DTL->ETC_CloseKey();
 
-	MyETC->CloseKey();
-	delete MyETC;
 }
 
 void LinksExplorer::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName()).toStdString(),true,-1);
-	MyETC->WriteInteger("width", this->width());
-	MyETC->WriteInteger("height", this->height());
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
+    DTL->ETC_WriteInteger("width", this->width());
+    DTL->ETC_WriteInteger("height", this->height());
+    DTL->ETC_CloseKey();
 
-	MyETC->CloseKey();
-	delete MyETC;
 }
 
 void LinksExplorer::SetViewID()
