@@ -67,7 +67,6 @@ bool ChoiceEidos_Dialog::find(long ID_searchfor)
 void ChoiceEidos_Dialog::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
 
     DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
 	int w=800,h=700;

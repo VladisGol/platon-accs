@@ -202,26 +202,23 @@ void mw_DLL_handler::SubscribeOneDLL()
 void mw_DLL_handler::ReadFormWidgetsAppearance()
 {
     //Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-    platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-    MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
-    int w=800,h=600;
-    if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-    if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
-    this->resize (w,h);
 
-    MyETC->CloseKey();
-    delete MyETC;
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName ()));
+    int w=800,h=600;
+    if(DTL->ETC_ParamExists("width")) w=DTL->ETC_ReadInteger("width");
+    if(DTL->ETC_ParamExists("height")) h=DTL->ETC_ReadInteger("height");
+    this->resize (w,h);
+    DTL->ETC_CloseKey();
+
 }
 
 void mw_DLL_handler::WriteFormWidgetsAppearance()
 {
     //Процедура записывает в DbETC параметры элементов формы
-    platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-    MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
-    MyETC->WriteInteger("width", this->width());
-    MyETC->WriteInteger("height", this->height());
-    MyETC->CloseKey();
-    delete MyETC;
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName ()));
+    DTL->ETC_WriteInteger("width", this->width());
+    DTL->ETC_WriteInteger("height", this->height());
+    DTL->ETC_CloseKey();
 }
 
 void mw_DLL_handler::Exit()

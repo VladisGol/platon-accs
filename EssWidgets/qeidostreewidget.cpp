@@ -9,6 +9,7 @@ QEidosTreeWidget::QEidosTreeWidget(QWidget* parent)
 
 void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 {
+    DTL=platon::GetDataModule(this);
 	this->MyDB=InDB;
 	MyEidosIter= new  platon::iterEidos(MyDB,Species.toStdString());
 
@@ -19,12 +20,11 @@ void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 	this->headerItem()->setText(1,tr("ID"));
 	this->headerItem()->setText(2,tr("ID_PARENT"));
 
-	MyETC=new platon::DbEtc(this->MyDB);
-	MyETC->OpenKey(QString("WidgetAppearance\\QEidosTreeWidget\\"+this->parent()->objectName ()).toStdString(),true,-1);
-	if(MyETC->ParamExists("Column_Name_width")) this->setColumnWidth ( 0,MyETC->ReadInteger("Column_Name_width"));
-	if(MyETC->ParamExists("Column_ID_width")) this->setColumnWidth ( 1,MyETC->ReadInteger("Column_ID_width"));
-	if(MyETC->ParamExists("Column_ID_PARENT_width")) this->setColumnWidth ( 2,MyETC->ReadInteger("Column_ID_PARENT_width"));
-	MyETC->CloseKey();
+    DTL->ETC_OpenKey(QString("WidgetAppearance\\QEidosTreeWidget\\"+this->parent()->objectName ()));
+    if(DTL->ETC_ParamExists("Column_Name_width")) this->setColumnWidth ( 0,DTL->ETC_ReadInteger("Column_Name_width"));
+    if(DTL->ETC_ParamExists("Column_ID_width")) this->setColumnWidth ( 1,DTL->ETC_ReadInteger("Column_ID_width"));
+    if(DTL->ETC_ParamExists("Column_ID_PARENT_width")) this->setColumnWidth ( 2,DTL->ETC_ReadInteger("Column_ID_PARENT_width"));
+    DTL->ETC_CloseKey();
 
 	while(MyEidosIter->Next())
 	{
@@ -46,7 +46,6 @@ void QEidosTreeWidget::AttachToDB(IBPP::Database InDB)
 		}
 	}
 	delete MyEidosIter;
-	delete MyETC;
 }
 
 QEidosTreeWidget::~QEidosTreeWidget()
@@ -84,11 +83,9 @@ bool QEidosTreeWidget::findNMakeCurrent(long ID_searchfor)
 void QEidosTreeWidget::SaveAppearance()
 {
 //Процедура сохраняет значения внешнего вида виджета
-	MyETC=new platon::DbEtc(this->MyDB);
-	MyETC->OpenKey(QString("WidgetAppearance\\QEidosTreeWidget\\"+this->parent()->objectName ()).toStdString(),true,-1);
-	MyETC->WriteInteger("Column_Name_width", this->columnWidth (0));
-	MyETC->WriteInteger("Column_ID_width", this->columnWidth (1));
-	MyETC->WriteInteger("Column_ID_PARENT_width", this->columnWidth (2));
-	MyETC->CloseKey();
-	delete MyETC;
+    DTL->ETC_OpenKey(QString("WidgetAppearance\\QEidosTreeWidget\\"+this->parent()->objectName ()));
+    DTL->ETC_WriteInteger("Column_Name_width", this->columnWidth (0));
+    DTL->ETC_WriteInteger("Column_ID_width", this->columnWidth (1));
+    DTL->ETC_WriteInteger("Column_ID_PARENT_width", this->columnWidth (2));
+    DTL->ETC_CloseKey();
 }
