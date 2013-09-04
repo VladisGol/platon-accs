@@ -5,14 +5,15 @@
 #include "EssentialClass.h"
 #include "ibpp.h"
 #include "dbetc.h"
+#include "DataClass.h"
 
 class QEidosTreeWidget: public QTreeWidget
 {
 	private:
+        platon::DataClass* DTL;
 		IBPP::Database MyDB;
 		platon::iterEidos* MyEidosIter;
 		QString Species;
-		platon::DbEtc *MyETC;
 	public:
 		QEidosTreeWidget (QWidget* parent);
 		~QEidosTreeWidget();

@@ -49,7 +49,8 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
                 MyETC=new platon::DbEtc(this->DB);
                 FileETC= new QSettings("PLATON","Platon-accs");
                 MyETC->OpenKey(QString("ProgramConfig").toStdString(),true,-1);
-                if(MyETC->ParamExists("Use_ETCType")) usedTypeETC = MyETC->ReadInteger("UseETCType");
+                if(MyETC->ParamExists("UseETCType")) usedTypeETC = MyETC->ReadInteger("UseETCType");
+                else SetTypeETC(ETC_database);
                 MyETC->CloseKey();
                 break;
             }

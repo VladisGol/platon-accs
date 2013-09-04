@@ -10,19 +10,13 @@ mainWin::mainWin(QWidget *parent)
     QTextCodec::setCodecForTr(codec);
     QTextCodec::setCodecForCStrings(codec);
 
-    setupUi(this);					//Загружаем элементы формы    
+    setupUi(this);					//Загружаем элементы формы
 
     this->MyDCl=new platon::DataClass(this);            //Создаем модуль данных приложения
     if(this->MyDCl->IsDBConnected())			//Если соединение с базой данной при создании модуля прошло успешно
     {
         LocalEidos=NULL;
         LocalHypotesis=NULL;
-
-        //Устанавливаем значение действия в соотвтетствии с сохраненным значением в БД
-        if(this->MyDCl->GetTypeETC()==platon::ETC_localfile)
-            action_SetTypeETC->setChecked(true);
-        else
-            action_SetTypeETC->setChecked(false);
 
         QObject::connect(EidosTreeWidget, SIGNAL(itemActivated(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
         QObject::connect(EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(SetHypotesysView(QTreeWidgetItem*,int)));
@@ -91,7 +85,7 @@ mainWin::mainWin(QWidget *parent)
         ContextMenuHyp->addAction(this->action_links);
         ContextMenuHyp->addSeparator();
         ContextMenuHyp->addAction(this->action_CopyToClipboard);
-        ContextMenuPragma->addAction(this->action_add);        
+        ContextMenuPragma->addAction(this->action_add);
         ContextMenuPragma->addAction(this->action_edit);
         ContextMenuPragma->addAction(this->action_del);
         ContextMenuPragma->addSeparator();
@@ -178,51 +172,51 @@ void mainWin::slotPragmaCntxMenu(const QPoint &point)   //Слот для реа
 
 void mainWin::DisableAllActions()
 {
-	//Процедура отключает любые действия на форме
-	this->action_add->setEnabled(false);
-	this->action_del->setEnabled(false);
-	this->action_edit->setEnabled(false);
-	this->action_links->setEnabled(false);
-	this->action_refresh->setEnabled(false);
-	this->action_AddFilter->setEnabled(false);
-	this->action_RemoveFilter->setEnabled(false);
+    //Процедура отключает любые действия на форме
+    this->action_add->setEnabled(false);
+    this->action_del->setEnabled(false);
+    this->action_edit->setEnabled(false);
+    this->action_links->setEnabled(false);
+    this->action_refresh->setEnabled(false);
+    this->action_AddFilter->setEnabled(false);
+    this->action_RemoveFilter->setEnabled(false);
     this->action_CopyToClipboard->setEnabled(false);
 }
 
 bool mainWin::eventFilter(QObject *obj, QEvent *event)
 {
 
-	if (obj == EidosTreeWidget)
-	{
-		if(event->type()==QEvent::FocusIn)
-		{
-			DisableAllActions();//Пока в форме не должны обрабатываться объекты Eidos
-		}
-	}
-	if (obj == tableViewHypotesis)
-	{
-		if(event->type()==QEvent::FocusIn)
-		{
-			DisableAllActions();
-			this->action_add->setEnabled(true);
+    if (obj == EidosTreeWidget)
+    {
+        if(event->type()==QEvent::FocusIn)
+        {
+            DisableAllActions();//Пока в форме не должны обрабатываться объекты Eidos
+        }
+    }
+    if (obj == tableViewHypotesis)
+    {
+        if(event->type()==QEvent::FocusIn)
+        {
+            DisableAllActions();
+            this->action_add->setEnabled(true);
             if(this->tableViewPragma->model()->rowCount()>0) this->action_del->setEnabled(false);
                 else this->action_del->setEnabled(true);
-			this->action_edit->setEnabled(true);
-			this->action_links->setEnabled(true);
-			this->action_refresh->setEnabled(true);
-			this->action_AddFilter->setEnabled(true);
+            this->action_edit->setEnabled(true);
+            this->action_links->setEnabled(true);
+            this->action_refresh->setEnabled(true);
+            this->action_AddFilter->setEnabled(true);
             this->action_CopyToClipboard->setEnabled(true);
 
-			if(SFProxyModelH->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
-			CurrentObjectLevel=Level_Hypotesis;                        
-		}
-	}
-	if (obj == tableViewPragma)
-	{
-		if(event->type()==QEvent::FocusIn)
-		{
-			DisableAllActions();
-			QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
+            if(SFProxyModelH->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
+            CurrentObjectLevel=Level_Hypotesis;
+        }
+    }
+    if (obj == tableViewPragma)
+    {
+        if(event->type()==QEvent::FocusIn)
+        {
+            DisableAllActions();
+            QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
             this->action_add->setEnabled(true);
             this->action_del->setEnabled(true);
             this->action_edit->setEnabled(true);
@@ -231,154 +225,154 @@ bool mainWin::eventFilter(QObject *obj, QEvent *event)
             this->action_AddFilter->setEnabled(true);
             this->action_CopyToClipboard->setEnabled(true);
             if(SFProxyModelP->filterRegExp()!=QRegExp("")) this->action_RemoveFilter->setEnabled(true);
-			CurrentObjectLevel=Level_Pragma;
-		}
-	}
-	return false;
+            CurrentObjectLevel=Level_Pragma;
+        }
+    }
+    return false;
 }
 
 
 void mainWin::SetEidosView(int Row)
 {
-	switch (Row)
-	{
-	case 0:
-		{
-			EidosTreeWidget->SetSpecies("ALL");
-			break;
-		}
-	case 1:
-		{
-			EidosTreeWidget->SetSpecies("OBJ");
-			break;
-		}
-	case 2:
-		{
-			EidosTreeWidget->SetSpecies("ACT");
-			break;
-		}
-	case 3:
-		{
-			EidosTreeWidget->SetSpecies("RES");
-			break;
-		}
-	case 4:
-		{
-			EidosTreeWidget->SetSpecies("NSI");
-		}
-	}
-	EidosTreeWidget->AttachToDB(this->MyDCl->DB);
+    switch (Row)
+    {
+    case 0:
+        {
+            EidosTreeWidget->SetSpecies("ALL");
+            break;
+        }
+    case 1:
+        {
+            EidosTreeWidget->SetSpecies("OBJ");
+            break;
+        }
+    case 2:
+        {
+            EidosTreeWidget->SetSpecies("ACT");
+            break;
+        }
+    case 3:
+        {
+            EidosTreeWidget->SetSpecies("RES");
+            break;
+        }
+    case 4:
+        {
+            EidosTreeWidget->SetSpecies("NSI");
+        }
+    }
+    EidosTreeWidget->AttachToDB(this->MyDCl->DB);
 }
 
 void mainWin::SetHypotesysView(QTreeWidgetItem*CurItem , int Column)
 {
-	platon::Eidos* keep4delete=LocalEidos;
+    platon::Eidos* keep4delete=LocalEidos;
 
 
-	long id_eidos;
-	//Проверяем не впервые ли запущена программа
-	if(CurItem==NULL || CurItem==0)
-		id_eidos=1;	//Выводим root
-	else
-		id_eidos=CurItem->text(1).toLong();
+    long id_eidos;
+    //Проверяем не впервые ли запущена программа
+    if(CurItem==NULL || CurItem==0)
+        id_eidos=1;	//Выводим root
+    else
+        id_eidos=CurItem->text(1).toLong();
 
 
-	LocalEidos=new platon::Eidos(this->MyDCl->DB,id_eidos);
-	platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
-	SFProxyModelH->setSourceModel(MyModel);
-	this->tableViewHypotesis->resizeColumnsToContents();
+    LocalEidos=new platon::Eidos(this->MyDCl->DB,id_eidos);
+    platon::HypotesisMemModel* MyModel=new platon::HypotesisMemModel(LocalEidos, this);
+    SFProxyModelH->setSourceModel(MyModel);
+    this->tableViewHypotesis->resizeColumnsToContents();
 
-	//Прячем фрейм для прагмы в случае если объект входит в ветку нормативно-справочной информации
-	if(QString::fromStdString(LocalEidos->GetEidosSpecies())=="NSI")
-		this->tableViewPragma->setEnabled(false);
-	else
-		this->tableViewPragma->setEnabled(true);
+    //Прячем фрейм для прагмы в случае если объект входит в ветку нормативно-справочной информации
+    if(QString::fromStdString(LocalEidos->GetEidosSpecies())=="NSI")
+        this->tableViewPragma->setEnabled(false);
+    else
+        this->tableViewPragma->setEnabled(true);
 
-	//Инициируем смену значений списка прагм
-	if(tableViewHypotesis->model()->rowCount()>0)
-		SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
-	else
-		SFProxyModelP->setSourceModel(NULL);
+    //Инициируем смену значений списка прагм
+    if(tableViewHypotesis->model()->rowCount()>0)
+        SetPragmaView(tableViewHypotesis->model()->index(0,0,QModelIndex()));
+    else
+        SFProxyModelP->setSourceModel(NULL);
 
-	if(keep4delete!=NULL) delete keep4delete;
-	ViewID_Activated();	//Устанавливаем видимость ID
+    if(keep4delete!=NULL) delete keep4delete;
+    ViewID_Activated();	//Устанавливаем видимость ID
 }
 
 void mainWin::SetPragmaView(const QModelIndex & HypModelindex)
 {
-	platon::Hypotesis* keep4delete=LocalHypotesis;
-	int row=tableViewHypotesis->currentIndex().row();
-	if(row<0) row=0;	//не выбран элемент, значит выбираем самый первый
-	long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(row,0,QModelIndex()))).toInt();
+    platon::Hypotesis* keep4delete=LocalHypotesis;
+    int row=tableViewHypotesis->currentIndex().row();
+    if(row<0) row=0;	//не выбран элемент, значит выбираем самый первый
+    long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(row,0,QModelIndex()))).toInt();
 
-	LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
-	platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(LocalHypotesis, this);
-	SFProxyModelP->setSourceModel(MyModel);
-	this->tableViewPragma->resizeColumnsToContents();
-	if(keep4delete!=NULL) delete keep4delete;
+    LocalHypotesis=new platon::Hypotesis(this->LocalEidos, id_hypotesys);
+    platon::PragmaMemModel* MyModel=new platon::PragmaMemModel(LocalHypotesis, this);
+    SFProxyModelP->setSourceModel(MyModel);
+    this->tableViewPragma->resizeColumnsToContents();
+    if(keep4delete!=NULL) delete keep4delete;
 }
 
 void mainWin::EditItem()
 {
-	if(CurrentObjectLevel==Level_Hypotesis)
-	{
-		int myrow=tableViewHypotesis->currentIndex().row();
-		if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
-		{
-			long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-			platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
-			md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
+    if(CurrentObjectLevel==Level_Hypotesis)
+    {
+        int myrow=tableViewHypotesis->currentIndex().row();
+        if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
+        {
+            long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+            platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
+            md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
                         md->setAttribute(Qt::WA_ShowModal, true);
-			md->show();
-		}
-	}
-	if(CurrentObjectLevel==Level_Pragma)
-	{
-		int myrow=tableViewPragma->currentIndex().row();
-		if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
-		{
-			long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
-			platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
-			md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
+            md->show();
+        }
+    }
+    if(CurrentObjectLevel==Level_Pragma)
+    {
+        int myrow=tableViewPragma->currentIndex().row();
+        if(myrow>=0)	//Из существующих элементов в таблице (если таблица пустая или элемент не выбран, то myrow=-1)
+        {
+            long id_pragma=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
+            platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
+            md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
                         md->setAttribute(Qt::WA_ShowModal, true);
-			md->show();
-		}
-	}
-	return ;
+            md->show();
+        }
+    }
+    return ;
 }
 void mainWin::AddItem()
 {
-	QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
-	platon::Eidos* formEidos=new platon::Eidos(LocalEidos->DB,LocalEidos->GetID());
-	platon::Hypotesis* formHypotesis;
+    QString Species=QString::fromStdString(LocalEidos->GetEidosSpecies());
+    platon::Eidos* formEidos=new platon::Eidos(LocalEidos->DB,LocalEidos->GetID());
+    platon::Hypotesis* formHypotesis;
 
-	if(CurrentObjectLevel==Level_Hypotesis)
-	{
-		//Создаем экземпляры объектов для формы
+    if(CurrentObjectLevel==Level_Hypotesis)
+    {
+        //Создаем экземпляры объектов для формы
 
-		if(Species=="OBJ") formHypotesis= ((platon::OBJClass*)formEidos)->AddOBJType();
-		if(Species=="ACT") formHypotesis= ((platon::ACTClass*)formEidos)->AddACTType();
-		if(Species=="RES") formHypotesis= ((platon::RESClass*)formEidos)->AddRESType();
-		if(Species=="NSI") formHypotesis=new platon::Hypotesis(formEidos,QString(tr("Новый тип нормативно-справочной информации")).toStdString());
+        if(Species=="OBJ") formHypotesis= ((platon::OBJClass*)formEidos)->AddOBJType();
+        if(Species=="ACT") formHypotesis= ((platon::ACTClass*)formEidos)->AddACTType();
+        if(Species=="RES") formHypotesis= ((platon::RESClass*)formEidos)->AddRESType();
+        if(Species=="NSI") formHypotesis=new platon::Hypotesis(formEidos,QString(tr("Новый тип нормативно-справочной информации")).toStdString());
 
-		platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,formHypotesis);
-		md->setWindowTitle(tr("Создание объекта \"Тип\""));
-                md->setAttribute(Qt::WA_ShowModal, true);
-		md->show();
-	}
-	if(CurrentObjectLevel==Level_Pragma)
-	{
-		int myrow=tableViewHypotesis->currentIndex().row();
-		if(myrow==-1) myrow=0;	//Это на случай если сразу перешагнули в окно Pragma без выбора bp Hypotesis
-		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
-		if(id_hypotesys>0)
-		{
-			formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
+        platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,formHypotesis);
+        md->setWindowTitle(tr("Создание объекта \"Тип\""));
+        md->setAttribute(Qt::WA_ShowModal, true);
+        md->show();
+    }
+    if(CurrentObjectLevel==Level_Pragma)
+    {
+        int myrow=tableViewHypotesis->currentIndex().row();
+        if(myrow==-1) myrow=0;	//Это на случай если сразу перешагнули в окно Pragma без выбора bp Hypotesis
+        long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+        if(id_hypotesys>0)
+        {
+            formHypotesis=new platon::Hypotesis(formEidos,id_hypotesys);
                         platon::Pragma*formPragma=NULL;
 
-			//Создаем экземпляры объектов для формы
-			if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
-			if(Species=="ACT")
+            //Создаем экземпляры объектов для формы
+            if(Species=="OBJ") formPragma= ((platon::OBJType*)formHypotesis)->AddOBJCopy();
+            if(Species=="ACT")
                         {
                             //Необходимо выбрать с каким объектом проводится действие
                             platon::ChoiceEidos_Dialog* Localdialog=new platon::ChoiceEidos_Dialog(this,"OBJ",0);
@@ -396,8 +390,8 @@ void mainWin::AddItem()
                             if(ID_ObjCopy>0)
                                 formPragma=((platon::ACTType*)formHypotesis)->AddACTCopy(ID_ObjCopy);
                         }
-			if(Species=="RES") formPragma= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Создание ресурса, который размещается "на складе"
-			if(Species=="NSI")	;//Не может быть экземпляров на указанной ветви
+            if(Species=="RES") formPragma= ((platon::RESType*)formHypotesis)->AddRESCopy(); //Создание ресурса, который размещается "на складе"
+            if(Species=="NSI")	;//Не может быть экземпляров на указанной ветви
                         //Если объект formPragma определен, то открываем форму для редактирования
                         if (formPragma!=NULL)
                         {
@@ -406,9 +400,9 @@ void mainWin::AddItem()
                             md->setAttribute(Qt::WA_ShowModal, true);
                             md->show();
                         }
-		}
-	}
-	return ;
+        }
+    }
+    return ;
 }
 void mainWin::DeleteItem()
 {
@@ -443,166 +437,172 @@ void mainWin::DeleteItem()
     this->RefreshViews();
 }
 void mainWin::Showlinks()
-{    
+{
         if(CurrentObjectLevel==Level_Hypotesis)
-	{
-		int myrow=tableViewHypotesis->currentIndex().row();
-		long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
+    {
+        int myrow=tableViewHypotesis->currentIndex().row();
+        long id_hypotesys=QVariant(tableViewHypotesis->model()->data(tableViewHypotesis->model()->index(myrow,0,QModelIndex()))).toInt();
                 platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
                 LnkForm->setAttribute(Qt::WA_ShowModal, true);
                 LnkForm->show();
-	}
-	if(CurrentObjectLevel==Level_Pragma)
-	{
-		int myrow=tableViewPragma->currentIndex().row();
-		long id_hypotesys=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
+    }
+    if(CurrentObjectLevel==Level_Pragma)
+    {
+        int myrow=tableViewPragma->currentIndex().row();
+        long id_hypotesys=QVariant(tableViewPragma->model()->data(tableViewPragma->model()->index(myrow,0,QModelIndex()))).toInt();
                 platon::LinksExplorer* LnkForm=new platon::LinksExplorer(this,id_hypotesys,"ALL");
                 LnkForm->setAttribute(Qt::WA_ShowModal, true);
                 LnkForm->show();
-	}
+    }
 }
 
 void mainWin::RefreshViews()
 {
 //Процедура обновляет значения в окнах отображения гипотез и прагм
-	if(CurrentObjectLevel==Level_Hypotesis) RefreshHView();
-	if(CurrentObjectLevel==Level_Pragma) RefreshPView();
+    if(CurrentObjectLevel==Level_Hypotesis) RefreshHView();
+    if(CurrentObjectLevel==Level_Pragma) RefreshPView();
 
 }
 void mainWin::RefreshHView()
 {
-	SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
+    SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
 }
 void mainWin::RefreshPView()
 {
-	SetPragmaView(tableViewHypotesis->currentIndex());
+    SetPragmaView(tableViewHypotesis->currentIndex());
 }
 
 
 void mainWin::BaseTimeShift()
 {
 //Процедура - слот производит перевод текущего системного времени в базе данных для корректировки выборок по темпоральным значениям
-	this->MyDCl->SetProgramDateTime();
-	this->statusbar->showMessage(tr("Программное время ")+MyDCl->ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
+    this->MyDCl->SetProgramDateTime();
+    this->statusbar->showMessage(tr("Программное время ")+MyDCl->ProgramDateTime.toString(tr("dd.MMMM.yyyy hh:mm:ss")));
 }
 void mainWin::CloseForm()
 {
-	//Слот закрытия формы. Перед закрытием формы сохраняем параметры формы
-	WriteFormWidgetsAppearance();
-	this->close();
+    //Слот закрытия формы. Перед закрытием формы сохраняем параметры формы
+    WriteFormWidgetsAppearance();
+    this->close();
 }
 void mainWin::AddFilter()
 {
-	QString FieldCaption;
-	int col;
+    QString FieldCaption;
+    int col;
 
-	if(CurrentObjectLevel==Level_Hypotesis)
-	{
-		col=tableViewHypotesis->currentIndex().column();
-		FieldCaption = tableViewHypotesis->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
-	}
-	if(CurrentObjectLevel==Level_Pragma)
-	{
-		col=tableViewPragma->currentIndex().column();
-		FieldCaption = tableViewPragma->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
-	}
-	//Получим текущее значение фильтра для отображения
-	QString CurrentFilterPattern="";
-	if(SFProxyModelH->filterRegExp()!=QRegExp("") && SFProxyModelH->filterKeyColumn()==col)
-		CurrentFilterPattern=SFProxyModelH->filterRegExp().pattern ();
-	if(SFProxyModelP->filterRegExp()!=QRegExp("") && SFProxyModelP->filterKeyColumn()==col)
-		CurrentFilterPattern=SFProxyModelP->filterRegExp().pattern ();
+    if(CurrentObjectLevel==Level_Hypotesis)
+    {
+        col=tableViewHypotesis->currentIndex().column();
+        FieldCaption = tableViewHypotesis->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
+    }
+    if(CurrentObjectLevel==Level_Pragma)
+    {
+        col=tableViewPragma->currentIndex().column();
+        FieldCaption = tableViewPragma->model()->headerData(col,Qt::Horizontal,Qt::DisplayRole).toString();
+    }
+    //Получим текущее значение фильтра для отображения
+    QString CurrentFilterPattern="";
+    if(SFProxyModelH->filterRegExp()!=QRegExp("") && SFProxyModelH->filterKeyColumn()==col)
+        CurrentFilterPattern=SFProxyModelH->filterRegExp().pattern ();
+    if(SFProxyModelP->filterRegExp()!=QRegExp("") && SFProxyModelP->filterKeyColumn()==col)
+        CurrentFilterPattern=SFProxyModelP->filterRegExp().pattern ();
 
-	//Запросим в диалоговом окне строку фильрации
-	bool ok;
+    //Запросим в диалоговом окне строку фильрации
+    bool ok;
     QString textExp = QInputDialog::getText(this, tr("Введите условие фильтра"),	tr("Для поля:")+FieldCaption,QLineEdit::Normal,CurrentFilterPattern,&ok);
     //Установим значение фильтра если пользователь ввел значение фильрации и нажал кнопку Ok в диалоге
-	if (ok && !textExp.isEmpty())
-	{
-		if(CurrentObjectLevel==Level_Hypotesis)
-		{
-			SFProxyModelH->setFilterRegExp(QRegExp(textExp));
-			SFProxyModelH->setFilterKeyColumn(col);
-			tableViewHypotesis->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
+    if (ok && !textExp.isEmpty())
+    {
+        if(CurrentObjectLevel==Level_Hypotesis)
+        {
+            SFProxyModelH->setFilterRegExp(QRegExp(textExp));
+            SFProxyModelH->setFilterKeyColumn(col);
+            tableViewHypotesis->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
 
-			platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelH->sourceModel();
-			CurModel->setHeaderIcon(col, Qt::Horizontal,icon_filter);
+            platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelH->sourceModel();
+            CurModel->setHeaderIcon(col, Qt::Horizontal,icon_filter);
 
-		}
-		if(CurrentObjectLevel==Level_Pragma)
-		{
-			SFProxyModelP->setFilterRegExp(QRegExp(textExp));
-			SFProxyModelP->setFilterKeyColumn(col);
-			tableViewPragma->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
+        }
+        if(CurrentObjectLevel==Level_Pragma)
+        {
+            SFProxyModelP->setFilterRegExp(QRegExp(textExp));
+            SFProxyModelP->setFilterKeyColumn(col);
+            tableViewPragma->setToolTip(tr("Условие фильтра для поля ") +FieldCaption+":"+textExp);
 
-			platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelP->sourceModel();
-			CurModel->setHeaderIcon(col,Qt::Horizontal,icon_filter);
+            platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelP->sourceModel();
+            CurModel->setHeaderIcon(col,Qt::Horizontal,icon_filter);
 
-		}
-	}
+        }
+    }
 }
 void mainWin::RemoveFilter()
 {
-	if(CurrentObjectLevel==Level_Hypotesis)
-	{
-		platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelH->sourceModel();
-		CurModel->RemoveHeaderIcon(SFProxyModelH->filterKeyColumn(),Qt::Horizontal);
+    if(CurrentObjectLevel==Level_Hypotesis)
+    {
+        platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelH->sourceModel();
+        CurModel->RemoveHeaderIcon(SFProxyModelH->filterKeyColumn(),Qt::Horizontal);
 
-		SFProxyModelH->setFilterRegExp(QRegExp(""));
-		SFProxyModelH->setFilterKeyColumn(-1);
-		tableViewHypotesis->setToolTip("");
-	}
-	if(CurrentObjectLevel==Level_Pragma)
-	{
-		platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelP->sourceModel();
-		CurModel->RemoveHeaderIcon(SFProxyModelP->filterKeyColumn(),Qt::Horizontal);
+        SFProxyModelH->setFilterRegExp(QRegExp(""));
+        SFProxyModelH->setFilterKeyColumn(-1);
+        tableViewHypotesis->setToolTip("");
+    }
+    if(CurrentObjectLevel==Level_Pragma)
+    {
+        platon::AbstractMemHypModel* CurModel=(platon::AbstractMemHypModel*)SFProxyModelP->sourceModel();
+        CurModel->RemoveHeaderIcon(SFProxyModelP->filterKeyColumn(),Qt::Horizontal);
 
-		SFProxyModelP->setFilterRegExp(QRegExp(""));
-		SFProxyModelP->setFilterKeyColumn(-1);
-		tableViewPragma->setToolTip("");
-	}
-	this->action_RemoveFilter->setEnabled(false);
+        SFProxyModelP->setFilterRegExp(QRegExp(""));
+        SFProxyModelP->setFilterKeyColumn(-1);
+        tableViewPragma->setToolTip("");
+    }
+    this->action_RemoveFilter->setEnabled(false);
 }
 void mainWin::ReadFormWidgetsAppearance()
 {
-	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+    //Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
+
+    //Устанавливаем значение действия в соотвтетствии с сохраненным значением в БД
+    if(this->MyDCl->GetTypeETC()==platon::ETC_localfile)
+        action_SetTypeETC->setChecked(true);
+    else
+        action_SetTypeETC->setChecked(false);
 
     MyDCl->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName ()));
-	int w=874,h=744;
+    int w=874,h=744;
     if(MyDCl->ETC_ParamExists("width")) w=MyDCl->ETC_ReadInteger("width");
     if(MyDCl->ETC_ParamExists("height")) h=MyDCl->ETC_ReadInteger("height");
-	this->resize (w,h);
+    this->resize (w,h);
 
-	QList<int> vals;
+    QList<int> vals;
     if(MyDCl->ETC_ParamExists("splitter_e\\0")) vals.append(MyDCl->ETC_ReadInteger("splitter_e\\0")); else vals.append(350);
     if(MyDCl->ETC_ParamExists("splitter_e\\1")) vals.append(MyDCl->ETC_ReadInteger("splitter_e\\1")); else vals.append(762);
-	splitter_e->setSizes(vals);
-	vals.clear();
+    splitter_e->setSizes(vals);
+    vals.clear();
     if(MyDCl->ETC_ParamExists("splitter_hp\\0")) vals.append(MyDCl->ETC_ReadInteger("splitter_hp\\0")); else vals.append(361);
     if(MyDCl->ETC_ParamExists("splitter_hp\\1")) vals.append(MyDCl->ETC_ReadInteger("splitter_hp\\1")); else vals.append(362);
-	splitter_hp->setSizes(vals);
+    splitter_hp->setSizes(vals);
 
     if(MyDCl->ETC_ParamExists("comboBox_Species")) this->comboBox_Species->setCurrentIndex(MyDCl->ETC_ReadInteger("comboBox_Species"));
     if(MyDCl->ETC_ParamExists("EidosID")) this->EidosTreeWidget->findNMakeCurrent(MyDCl->ETC_ReadInteger("EidosID"));
-	SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
+    SetHypotesysView(this->EidosTreeWidget->currentItem(),0);
 
     if(MyDCl->ETC_ParamExists("action_View_IDs")) this->action_View_IDs->setChecked(MyDCl->ETC_ReadBool("action_View_IDs"));
-	ViewID_Activated();
+    ViewID_Activated();
 
     MyDCl->ETC_CloseKey();
 
 }
 void mainWin::WriteFormWidgetsAppearance()
 {
-	//Процедура записывает в DbETC параметры элементов формы
+    //Процедура записывает в DbETC параметры элементов формы
     MyDCl->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName()));
     MyDCl->ETC_WriteInteger("width", this->width());
     MyDCl->ETC_WriteInteger("height", this->height());
 
-	QList<int> vals = this->splitter_e->sizes();
+    QList<int> vals = this->splitter_e->sizes();
     MyDCl->ETC_WriteInteger("splitter_e\\0", vals.at(0));
     MyDCl->ETC_WriteInteger("splitter_e\\1", vals.at(1));
-	vals=this->splitter_hp->sizes();
+    vals=this->splitter_hp->sizes();
     MyDCl->ETC_WriteInteger("splitter_hp\\0", vals.at(0));
     MyDCl->ETC_WriteInteger("splitter_hp\\1", vals.at(1));
 
@@ -615,65 +615,65 @@ void mainWin::WriteFormWidgetsAppearance()
 }
 void mainWin::ViewID_Activated()
 {
-	//Слот для изменения отображения идентификаторов объектов в программе
-	this->MyDCl->ViewIDs =action_View_IDs->isChecked();//Устанавливаем значение переменной в Датамодуле
+    //Слот для изменения отображения идентификаторов объектов в программе
+    this->MyDCl->ViewIDs =action_View_IDs->isChecked();//Устанавливаем значение переменной в Датамодуле
     if(!this->MyDCl->ViewIDs)	//Отметка снята
-	{
+    {
 
-		for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)
-		{
-			QString FieldCaption = tableViewHypotesis->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
-			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
-				tableViewHypotesis->hideColumn(i);
-		}
-		for (int i=0;i<tableViewPragma->model()->columnCount(QModelIndex());i++)
-			{
-				QString FieldCaption = tableViewPragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
-				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
-					tableViewPragma->hideColumn(i);
-			}
-		for (int i=0;i<EidosTreeWidget->columnCount();i++)
-			{
-				QString FieldCaption = EidosTreeWidget->headerItem()->text(i);
-				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
-					EidosTreeWidget->hideColumn(i);
-			}
-	}
-	else								//Отметка в меню установлена
-	{
-		for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)
-		{
-			QString FieldCaption = tableViewHypotesis->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
-			if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
-				tableViewHypotesis->showColumn(i);
-		}
-		for (int i=0;i<tableViewPragma->model()->columnCount(QModelIndex());i++)
-			{
-				QString FieldCaption = tableViewPragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
-				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
-					tableViewPragma->showColumn(i);
-			}
-		for (int i=0;i<EidosTreeWidget->columnCount();i++)
-			{
-				QString FieldCaption = EidosTreeWidget->headerItem()->text(i);
-				if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
-					EidosTreeWidget->showColumn(i);
-			}
-	}
+        for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)
+        {
+            QString FieldCaption = tableViewHypotesis->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+            if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+                tableViewHypotesis->hideColumn(i);
+        }
+        for (int i=0;i<tableViewPragma->model()->columnCount(QModelIndex());i++)
+            {
+                QString FieldCaption = tableViewPragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+                if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+                    tableViewPragma->hideColumn(i);
+            }
+        for (int i=0;i<EidosTreeWidget->columnCount();i++)
+            {
+                QString FieldCaption = EidosTreeWidget->headerItem()->text(i);
+                if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+                    EidosTreeWidget->hideColumn(i);
+            }
+    }
+    else								//Отметка в меню установлена
+    {
+        for (int i=0;i<tableViewHypotesis->model()->columnCount(QModelIndex());i++)
+        {
+            QString FieldCaption = tableViewHypotesis->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+            if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+                tableViewHypotesis->showColumn(i);
+        }
+        for (int i=0;i<tableViewPragma->model()->columnCount(QModelIndex());i++)
+            {
+                QString FieldCaption = tableViewPragma->model()->headerData(i,Qt::Horizontal,Qt::DisplayRole).toString();
+                if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+                    tableViewPragma->showColumn(i);
+            }
+        for (int i=0;i<EidosTreeWidget->columnCount();i++)
+            {
+                QString FieldCaption = EidosTreeWidget->headerItem()->text(i);
+                if(FieldCaption.indexOf(QRegExp("^ID"))!=-1)
+                    EidosTreeWidget->showColumn(i);
+            }
+    }
 }
 void  mainWin::AboutShow()
 {
-	//Показываем диалоговое окно "О программе"
-	if(AboutDlg==0) AboutDlg =new AboutProgram(this);	//Создаем объект только один раз
-	AboutDlg->exec();
+    //Показываем диалоговое окно "О программе"
+    if(AboutDlg==0) AboutDlg =new AboutProgram(this);	//Создаем объект только один раз
+    AboutDlg->exec();
 }
 void mainWin::ESShow()
 {
-	platon::es_mainwindow * es = new platon::es_mainwindow(this);
-	es->ui.EidosTreeWidget->findNMakeCurrent(this->EidosTreeWidget->GetEidosID());
-	es->FillEAGrid(es->ui.EidosTreeWidget->currentItem(),0);
-        es->setAttribute(Qt::WA_ShowModal, true);
-	es->show();
+    platon::es_mainwindow * es = new platon::es_mainwindow(this);
+    es->ui.EidosTreeWidget->findNMakeCurrent(this->EidosTreeWidget->GetEidosID());
+    es->FillEAGrid(es->ui.EidosTreeWidget->currentItem(),0);
+    es->setAttribute(Qt::WA_ShowModal, true);
+    es->show();
 }
 
 

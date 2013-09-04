@@ -13,7 +13,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	icon_locked.addPixmap(QPixmap(QString::fromUtf8((":/PICS/padlock_aj_ashton_01.png"))), QIcon::Normal, QIcon::Off);
 	icon_editable.addPixmap(QPixmap(QString::fromUtf8((":/PICS/bb_txt_.png"))), QIcon::Normal, QIcon::Off);
 	icon_occouped.addPixmap(QPixmap(QString::fromUtf8((":/PICS/attention_niels_epting_.png"))), QIcon::Normal, QIcon::Off);
-        icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
+    icon_filter.addPixmap(QPixmap(QString::fromUtf8((":/PICS/filter2.png"))), QIcon::Normal, QIcon::Off);
 
 	//Чтобы можно было идентифицировать подписи комбобокса делаем через функцию
 	ui.comboBox_Type->clear();
@@ -34,7 +34,7 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ui.comboBox_Species->addItem(tr("Ресурсы"),"RES");
 	ui.comboBox_Species->addItem(tr("Нормативно-справочная информация"),"NSI");
 
-        //Устанавливаем заголовки к таблице атрибутов
+    //Устанавливаем заголовки к таблице атрибутов
 	ui.tableWidget_EAs->setColumnCount(numColsInTableEA);
 	for (int j=0;j<numColsInTableEA;j++)
 	{
@@ -43,13 +43,13 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	}
 	QStringList labels;
 	labels << tr("ID")<<tr("Статус")<<tr("Поле")<<tr("Заголовок")<<tr("Тип")<<tr("Принадлежит")<<tr("Eidos определения");
-        ui.tableWidget_EAs->setHorizontalHeaderLabels(labels);
+    ui.tableWidget_EAs->setHorizontalHeaderLabels(labels);
 
 	LocalEidos=NULL;
 	CurrentEA=NULL;
 	CurEAChanged=false;
 
-	DataClass* DTL=platon::GetDataModule(this);
+    DTL=platon::GetDataModule(this);
 	this->DB=DTL->DB;
 	this->IsViewID=DTL->ViewIDs;
 
@@ -58,47 +58,47 @@ es_mainwindow::es_mainwindow(QWidget *parent)
 	ReadFormWidgetsAppearance();
 	ViewID_Activated();
 
-        //Заполняем из датамодуля загруженные динамические библиотеки в comboBox_DLL_Name
-        ui.comboBox_DLL_Name->addItems(DTL->ArrayDynLib.keys());
+    //Заполняем из датамодуля загруженные динамические библиотеки в comboBox_DLL_Name
+    ui.comboBox_DLL_Name->addItems(DTL->ArrayDynLib.keys());
 
-	QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(Exit()));
-        QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
-        QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
-        QObject::connect(ui.action_Eidos_rename, SIGNAL(activated()), this, SLOT(RenameEidos()));
-        QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
-        QObject::connect(ui.action_Eidos_del, SIGNAL(activated()), this, SLOT(DeleteEidos()));
-        //QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
-        QObject::connect(ui.action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
-        QObject::connect(ui.action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
-        QObject::connect(ui.action_DLL_manager, SIGNAL(activated()), this, SLOT(Start_DLL_Manager()));
-        QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
+    QObject::connect(ui.action_quit, SIGNAL(activated()), this, SLOT(Exit()));
+    QObject::connect(ui.EidosTreeWidget, SIGNAL(itemClicked(QTreeWidgetItem* ,int)), this, SLOT(FillEAGrid(QTreeWidgetItem*,int)));
+    QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(comboTypeChanged(int)));
+    QObject::connect(ui.action_Eidos_rename, SIGNAL(activated()), this, SLOT(RenameEidos()));
+    QObject::connect(ui.action_Eidos_add, SIGNAL(activated()), this, SLOT(AddChildEidos()));
+    QObject::connect(ui.action_Eidos_del, SIGNAL(activated()), this, SLOT(DeleteEidos()));
+    //QObject::connect(ui.action_EA_Del, SIGNAL(activated()), this, SLOT(RemoveChildEidos()));
+    QObject::connect(ui.action_AddFilter, SIGNAL(activated()), this, SLOT(AddFilter()));
+    QObject::connect(ui.action_RemoveFilter, SIGNAL(activated()), this, SLOT(RemoveFilter()));
+    QObject::connect(ui.action_DLL_manager, SIGNAL(activated()), this, SLOT(Start_DLL_Manager()));
+    QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
 
-        //Создаем и прикрепляям к элементам контекстные меню
-        ContextMenuEidosTW=new QMenu(this);
-        ContextMenuEidosTW->addAction(ui.action_SaveChanges);
-        ContextMenuEidosTW->addAction(ui.action_quit);
-        ContextMenuEidosTW->addSeparator();
-        ContextMenuEidosTW->addAction(ui.action_Eidos_add);
-        ContextMenuEidosTW->addAction(ui.action_Eidos_del);
-        ContextMenuEidosTW->addAction(ui.action_Eidos_rename);
+    //Создаем и прикрепляям к элементам контекстные меню
+    ContextMenuEidosTW=new QMenu(this);
+    ContextMenuEidosTW->addAction(ui.action_SaveChanges);
+    ContextMenuEidosTW->addAction(ui.action_quit);
+    ContextMenuEidosTW->addSeparator();
+    ContextMenuEidosTW->addAction(ui.action_Eidos_add);
+    ContextMenuEidosTW->addAction(ui.action_Eidos_del);
+    ContextMenuEidosTW->addAction(ui.action_Eidos_rename);
 
-        ui.EidosTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(ui.EidosTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenuEidosTW(QPoint)));
+    ui.EidosTreeWidget->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui.EidosTreeWidget, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenuEidosTW(QPoint)));
 
-        ContextMenuTEA=new QMenu(this);
-        ContextMenuTEA->addAction(ui.action_SaveChanges);
-        ContextMenuTEA->addAction(ui.action_quit);
-        ContextMenuTEA->addSeparator();
-        ContextMenuTEA->addAction(ui.action_AddFilter);
-        ContextMenuTEA->addAction(ui.action_RemoveFilter);
-        ContextMenuTEA->addSeparator();
-        ContextMenuTEA->addAction(ui.action_EA_Add);
-        ContextMenuTEA->addAction(ui.action_EA_Del);
+    ContextMenuTEA=new QMenu(this);
+    ContextMenuTEA->addAction(ui.action_SaveChanges);
+    ContextMenuTEA->addAction(ui.action_quit);
+    ContextMenuTEA->addSeparator();
+    ContextMenuTEA->addAction(ui.action_AddFilter);
+    ContextMenuTEA->addAction(ui.action_RemoveFilter);
+    ContextMenuTEA->addSeparator();
+    ContextMenuTEA->addAction(ui.action_EA_Add);
+    ContextMenuTEA->addAction(ui.action_EA_Del);
 
-        ui.tableWidget_EAs->setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(ui.tableWidget_EAs, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenuTEA(QPoint)));
+    ui.tableWidget_EAs->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui.tableWidget_EAs, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(slotCntxMenuTEA(QPoint)));
 
-        ui.action_SaveChanges->setEnabled(false);
+    ui.action_SaveChanges->setEnabled(false);
 }
 
 void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevElement )
@@ -106,7 +106,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	//при выборе экстраатрибута следует загрузить и отобразить его свойства
 	QObject::disconnect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
-        QObject::disconnect(ui.lineEdit_DLL_Proc, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+    QObject::disconnect(ui.lineEdit_DLL_Proc, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
@@ -115,8 +115,8 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	QObject::disconnect(ui.checkBox_Required, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::disconnect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
-        QObject::disconnect(ui.lineEdit_Caption, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
-        QObject::disconnect(ui.lineEdit_FieldName, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+    QObject::disconnect(ui.lineEdit_Caption, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+    QObject::disconnect(ui.lineEdit_FieldName, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 
 	if(CurEAChanged==true)	//Переход на другой элемент в режиме редактирования свойств атрибута
 	{
@@ -128,8 +128,8 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 		if(ret==QMessageBox::Save) SaveCurEA();
 	}
 
-        int curRow=CurElement->row();
-	CurrentEA = LocalEidos->GetEAByFieldName(ui.tableWidget_EAs->item(curRow, 2)->text().toStdString());
+    int curRow=CurElement->row();
+    CurrentEA = LocalEidos->GetEAByFieldName(ui.tableWidget_EAs->item(curRow, 2)->text().toStdString());
 	int ComdoIndex=ui.comboBox_Type->findData(CurrentEA->type,Qt::UserRole, Qt::MatchExactly);
 	ui.comboBox_Type->setCurrentIndex(ComdoIndex);
 
@@ -146,8 +146,8 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	ui.checkBox_Multiple->setChecked(CurrentEA->Multilnk);
 	ui.lineEdit_Caption->setText(QString::fromStdString(CurrentEA->GetEACaption()));
 	ui.lineEdit_FieldName->setText(QString::fromStdString(CurrentEA->GetEAFieldName()));
-        //ui.comboBox_DLL_Name->setCurrentIndex(urrentText=QString::fromStdString(CurrentEA->DLL_FileName);
-        ui.lineEdit_DLL_Proc->setText(QString::fromStdString(CurrentEA->DLL_ProcName));
+    //ui.comboBox_DLL_Name->setCurrentIndex(urrentText=QString::fromStdString(CurrentEA->DLL_FileName);
+    ui.lineEdit_DLL_Proc->setText(QString::fromStdString(CurrentEA->DLL_ProcName));
 
 
 	ComdoIndex=ui.comboBox_Species->findData(QString::fromStdString(CurrentEA->LNK_species),Qt::UserRole, Qt::MatchExactly);
@@ -172,7 +172,7 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 
 	QObject::connect(ui.comboBox_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.comboBox_DLL_Name, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
-        QObject::connect(ui.lineEdit_DLL_Proc, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+    QObject::connect(ui.lineEdit_DLL_Proc, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 	QObject::connect(ui.comboBox_Species, SIGNAL(currentIndexChanged(int)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.radioButton_BFH, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Locked, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
@@ -181,8 +181,8 @@ void es_mainwindow::EAChoosed(QTableWidgetItem*CurElement,QTableWidgetItem*PrevE
 	QObject::connect(ui.checkBox_Required, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Temporality, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
 	QObject::connect(ui.checkBox_Visible, SIGNAL(toggled(bool)), this, SLOT(UserTryToEditEA()));
-        QObject::connect(ui.lineEdit_Caption, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
-        QObject::connect(ui.lineEdit_FieldName, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+    QObject::connect(ui.lineEdit_Caption, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
+    QObject::connect(ui.lineEdit_FieldName, SIGNAL(textChanged(QString)), this ,SLOT(UserTryToEditEA()));
 
 	if(ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),1)->text()==QString(tr("Н/Д")))
 	{
@@ -306,7 +306,7 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 	QObject::disconnect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*,QTableWidgetItem*)));
 	QObject::disconnect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
 	QObject::disconnect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
-        QObject::disconnect(ui.action_EA_Add, SIGNAL(activated()), this, SLOT(AddOneEA()));
+    QObject::disconnect(ui.action_EA_Add, SIGNAL(activated()), this, SLOT(AddOneEA()));
 
 	if(CurEAChanged==true)	//Переход на другой элемент в режиме редактирования свойств атрибута
 	{
@@ -406,15 +406,15 @@ void es_mainwindow::FillEAGrid(QTreeWidgetItem* CurItem,int Num)
 	QObject::connect(ui.tableWidget_EAs, SIGNAL(currentItemChanged(QTableWidgetItem *, QTableWidgetItem *)), this, SLOT(EAChoosed(QTableWidgetItem*,QTableWidgetItem*)));
 	QObject::connect(ui.action_AltCaption, SIGNAL(activated()), this, SLOT(SetAltCaption()));
 	QObject::connect(ui.checkBox_alternated, SIGNAL(clicked(bool)), this, SLOT(ChangeCheckBoxAlterCaption()));
-        QObject::connect(ui.action_EA_Add, SIGNAL(activated()), this, SLOT(AddOneEA()));
+    QObject::connect(ui.action_EA_Add, SIGNAL(activated()), this, SLOT(AddOneEA()));
 
 	CurEAChanged=false;
 
-        //Устанавливаем текущим элементом первый элемент и первую видимую колонку
-        if(Num==0 && (!this->IsViewID))
-            ui.tableWidget_EAs->setCurrentCell(0,1);
-        else
-            ui.tableWidget_EAs->setCurrentCell(0,Num);
+    //Устанавливаем текущим элементом первый элемент и первую видимую колонку
+    if(Num==0 && (!this->IsViewID))
+        ui.tableWidget_EAs->setCurrentCell(0,1);
+    else
+        ui.tableWidget_EAs->setCurrentCell(0,Num);
 
 }
 
@@ -452,44 +452,39 @@ es_mainwindow::~es_mainwindow()
 void es_mainwindow::ReadFormWidgetsAppearance()
 {
 	//Процедура считывает из DbETC параметры элементов формы и устанавливает их значения
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
+
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName ()));
 	int w=855,h=825;
-	if(MyETC->ParamExists("width")) w=MyETC->ReadInteger("width");
-	if(MyETC->ParamExists("height")) h=MyETC->ReadInteger("height");
+    if(DTL->ETC_ParamExists("width")) w=DTL->ETC_ReadInteger("width");
+    if(DTL->ETC_ParamExists("height")) h=DTL->ETC_ReadInteger("height");
 	this->resize (w,h);
 
 	QList<int> vals;
-	if(MyETC->ParamExists("splitter_V\\0")) vals.append(MyETC->ReadInteger("splitter_V\\0")); else vals.append(847);
-	if(MyETC->ParamExists("splitter_V\\1")) vals.append(MyETC->ReadInteger("splitter_V\\1")); else vals.append(741);
+    if(DTL->ETC_ParamExists("splitter_V\\0")) vals.append(DTL->ETC_ReadInteger("splitter_V\\0")); else vals.append(847);
+    if(DTL->ETC_ParamExists("splitter_V\\1")) vals.append(DTL->ETC_ReadInteger("splitter_V\\1")); else vals.append(741);
 	ui.splitter_V->setSizes(vals);
 	vals.clear();
-	if(MyETC->ParamExists("splitter_H\\0")) vals.append(MyETC->ReadInteger("splitter_H\\0")); else vals.append(473);
-	if(MyETC->ParamExists("splitter_H\\1")) vals.append(MyETC->ReadInteger("splitter_H\\1")); else vals.append(741);
+    if(DTL->ETC_ParamExists("splitter_H\\0")) vals.append(DTL->ETC_ReadInteger("splitter_H\\0")); else vals.append(473);
+    if(DTL->ETC_ParamExists("splitter_H\\1")) vals.append(DTL->ETC_ReadInteger("splitter_H\\1")); else vals.append(741);
 	ui.splitter_H->setSizes(vals);
-
-	MyETC->CloseKey();
-	delete MyETC;
+    DTL->ETC_CloseKey();
 }
 
 void es_mainwindow::WriteFormWidgetsAppearance()
 {
 	//Процедура записывает в DbETC параметры элементов формы
-	platon::DbEtc* MyETC=new platon::DbEtc(this->DB);
-	MyETC->OpenKey(QString("FormsAppearance\\"+this->objectName ()).toStdString(),true,-1);
-	MyETC->WriteInteger("width", this->width());
-	MyETC->WriteInteger("height", this->height());
+
+    DTL->ETC_OpenKey(QString("FormsAppearance\\"+this->objectName ()));
+    DTL->ETC_WriteInteger("width", this->width());
+    DTL->ETC_WriteInteger("height", this->height());
 
 	QList<int> vals = ui.splitter_V->sizes();
-        MyETC->WriteInteger("splitter_V\\0", vals.at(0));
-	MyETC->WriteInteger("splitter_V\\1", vals.at(1));
+    DTL->ETC_WriteInteger("splitter_V\\0", vals.at(0));
+    DTL->ETC_WriteInteger("splitter_V\\1", vals.at(1));
 	vals=ui.splitter_H->sizes();
-	MyETC->WriteInteger("splitter_H\\0", vals.at(0));
-	MyETC->WriteInteger("splitter_H\\1", vals.at(1));
-
-
-	MyETC->CloseKey();
-	delete MyETC;
+    DTL->ETC_WriteInteger("splitter_H\\0", vals.at(0));
+    DTL->ETC_WriteInteger("splitter_H\\1", vals.at(1));
+    DTL->ETC_CloseKey();
 
 }
 
@@ -522,7 +517,7 @@ void es_mainwindow::RefreshEAonForm()
 	int KeepCol=ui.tableWidget_EAs->currentColumn();
 	QString EAID4Find=ui.tableWidget_EAs->item(ui.tableWidget_EAs->currentRow(),0)->text();//EAID
 
-        FillEAGrid(ui.EidosTreeWidget->currentItem(),1);
+    FillEAGrid(ui.EidosTreeWidget->currentItem(),1);
 	QList<QTableWidgetItem *> AnItems=ui.tableWidget_EAs->findItems(EAID4Find,Qt::MatchExactly);
 	ui.tableWidget_EAs->setCurrentItem(AnItems.at(0));
 	ui.tableWidget_EAs->setCurrentCell(ui.tableWidget_EAs->currentRow(),KeepCol);
@@ -562,17 +557,17 @@ void es_mainwindow::SaveCurEA()
 		CurrentEA->Multilnk=ui.checkBox_Multiple->isChecked();
 		CurrentEA->SetEACaption(ui.lineEdit_Caption->text().toStdString());
 		CurrentEA->SetEAFieldName(ui.lineEdit_FieldName->text().toStdString());
-                CurrentEA->type=ui.comboBox_Type->itemData(ui.comboBox_Type->currentIndex(),Qt::UserRole).toInt();
-                CurrentEA->DLL_FileName=ui.comboBox_DLL_Name->currentText().toStdString();
-                CurrentEA->DLL_ProcName=ui.lineEdit_DLL_Proc->text().toStdString();
+        CurrentEA->type=ui.comboBox_Type->itemData(ui.comboBox_Type->currentIndex(),Qt::UserRole).toInt();
+        CurrentEA->DLL_FileName=ui.comboBox_DLL_Name->currentText().toStdString();
+        CurrentEA->DLL_ProcName=ui.lineEdit_DLL_Proc->text().toStdString();
 
 		//определение остальных параметров экстраатрибута
 		CurrentEA->Save();
 	}
 	CurEAChanged=false;
-        ui.action_SaveChanges->setEnabled(false);
-        QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
-        RefreshEAonForm();
+    ui.action_SaveChanges->setEnabled(false);
+    QObject::disconnect(ui.action_SaveChanges, SIGNAL(activated()), this, SLOT(SaveCurEA()));
+    RefreshEAonForm();
 }
 void es_mainwindow::AddOneEA()
 {
