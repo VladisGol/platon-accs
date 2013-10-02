@@ -1,1 +1,0 @@
-Dependies: kinterbasdb
