@@ -59,20 +59,11 @@ class PlatonViewer : public Wt::WApplication
     Wt::WVBoxLayout *vbox_Eidos;
     Wt::WVBoxLayout *vbox_Hip;
     Wt::WVBoxLayout *vbox_Pragma;
-    Wt::WTable *Ptable;
+
     Wt::WTableView * HTView;
     Wt::WTableView * PrView;
     IBPP::Database DB;
 };
-
-
-Wt::WText *PlatonViewer::createTitle(const Wt::WString& title) {
-  Wt::WText *result = new Wt::WText(title);
-  result->setInline(false);
-  result->setStyleClass("title");
-
-  return result;
-}
 
 
 PlatonViewer::PlatonViewer(const Wt::WEnvironment& env)
@@ -98,14 +89,7 @@ PlatonViewer::PlatonViewer(const Wt::WEnvironment& env)
      */
     layout = new Wt::WGridLayout();
 
-    layout->addWidget(createTitle("Class"), 0, 0);
-    layout->addWidget(createTitle("Type"), 0, 1);
-    layout->addWidget(createTitle("Items"), 1, 0);
-    layout->setColumnResizable(0);
-    layout->setColumnResizable(1);
-
     tree = new Wt::WTree();
-    //tree->setSelectionMode(Wt::ExtendedSelection);
     tree->setSelectionMode(Wt::SingleSelection);
 
     Wt::WIconPair *folderIcon = new Wt::WIconPair("icons/document.png","icons/yellow-folder-open.png",false);
@@ -155,6 +139,8 @@ PlatonViewer::PlatonViewer(const Wt::WEnvironment& env)
 
     HTView = new Wt::WTableView();
     PrView = new Wt::WTableView();
+    PrView->setSelectionMode(Wt::SingleSelection);
+    HTView->setSelectionMode(Wt::SingleSelection);
 
     vbox_Hip->addWidget(HTView);
     vbox_Pragma->addWidget(PrView);
@@ -171,7 +157,7 @@ void PlatonViewer::ChooseTheEidos()
             delete MyEidos;
         MyEidos= new platon::Eidos(DB,OneNode->id_Eidos);
         FillHypotesysView();
-        //Ptable->clear();
+        PrView->hide();
     }
 }
 
@@ -186,6 +172,7 @@ void PlatonViewer::FillHypotesysView()
 
 void PlatonViewer::FillPragmaView(const Wt::WModelIndex& item)
 {
+    PrView->show();
     long HipID = boost::any_cast<long>(HTView->model()->data(HTView->model()->index(item.row(),0,WModelIndex())));
 
     this->log("Mouse typed by Hipotesys ID=" + boost::lexical_cast<std::string>(HipID));
