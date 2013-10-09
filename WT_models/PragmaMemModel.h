@@ -20,10 +20,10 @@ public:
     PragmaMemModel(Hypotesis* InHyp, WObject * parent);
     boost::any headerData(int section, Wt::Orientation orientation,int role = Wt::DisplayRole) const;
     int  GetColumnNumberByFieldName(std::string FieldName);
+    void ReadToBuffer() const;
 protected:
 	Hypotesis* MyHyp;
 	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру
-    virtual std::string getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
 
 };
 

@@ -26,25 +26,24 @@ public:
     int rowCount(const WModelIndex &parent = WModelIndex())const;
     int columnCount(const WModelIndex & index) const;
     virtual boost::any data(const WModelIndex &index, int role) const;
-	pIterator* KeyIterator;
-	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
+    pIterator* RecordsIter;
+    void ReadToBuffer()const {;};								// Процедура считывает в буфер все записи
     WModelIndex GetWModelIndexByID(long ID_in);				// Функция возвращает значение индекса модели по идентификатору записи
 
 protected:
-    mutable std::vector <long> * Id_records;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel
-    mutable std::vector <std::map<long,boost::any>*> * FieldsInModel;	//Вектор для хранения значений полей в виде QMap <long,QVariant>
+    mutable std::vector <long> * FieldsID;					//Вектор для хранения ID записи по которой можно будет найти записи в векторе FieldsInModel
+    mutable std::map<std::pair<int,int>,boost::any>* ValuesInModel;	//Вектор для хранения значений полей в виде QMap <long,QVariant>
 
 	mutable int NumCol;										//Число полей в запросе (из числа экстраатрибутов)
 	mutable int LastRequestedReccount;						//Число записей в запросе
 
 	int ReservedColumns;									//Зарезервированное число полей
     virtual boost::any GetDataFromBuffer(const WModelIndex &index) const;
-    void GetOneFieldInBuffer(int FieldNumber, std::map<long,boost::any>* OneMap) const;
+
 
 	Eidos* ForEidos;										//Ссылка на Eidos, по которому идет обработка
 
 	virtual ExtraAttribute* getEAFromEidos(int i) const {return NULL;};			//Функция возвращает ссылку на экстраатрибут по номеру
-    virtual std::string getSQLstringforEA(ExtraAttribute*MyEA) const {return "";};	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
 };
 
 }

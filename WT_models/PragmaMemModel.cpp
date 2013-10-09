@@ -23,11 +23,9 @@ PragmaMemModel::PragmaMemModel(Hypotesis* InHyp, WObject * parent)
 	NumCol=InHyp->HostEidos->PragmaSQL->AttributesList.size();				//Получаем количество полей в запросе
 	ReservedColumns=1;														//Одно зарезервированное поле ID
 
-    Id_records = new std::vector <long>;										//Выделяем необходимую память
-    FieldsInModel= new std::vector <std::map<long,boost::any>*>;
-    for(int i=0;i<NumCol;i++)
-        FieldsInModel->push_back(new std::map<long,boost::any>);
-	KeyIterator=new iterPragma(MyHyp);										//Выставляем итератор ключей записей
+    FieldsID = new std::vector <long>;										//Выделяем необходимую память
+    ValuesInModel= new std::map<std::pair<int,int>,boost::any>;
+    RecordsIter=new iterPragma(MyHyp);										//Выставляем итератор ключей записей
 	ReadToBuffer();															//Считываем значения в буфер
 
 }
@@ -36,15 +34,6 @@ ExtraAttribute* PragmaMemModel::getEAFromEidos(int i) const
 {
 	std::string FieldName = this->ForEidos->PragmaSQL->AttributesList[i].FieldName;
 	return ForEidos->GetEAByFieldName(FieldName);
-}
-
-std::string PragmaMemModel::getSQLstringforEA(ExtraAttribute*MyEA) const
-{
-    std::string SQLString;
-    SQLString="select GET_PRAGMA_LIST.ID id, id_link, meaning from GET_PRAGMA_LIST("+std::string(boost::lexical_cast<std::string>(ForEidos->GetID()))+", "+std::string(boost::lexical_cast<std::string>(MyHyp->GetID()))+") inner join ";
-    SQLString=SQLString+MyEA->NameStoredProc()+"("+std::string(boost::lexical_cast<std::string>(MyEA->GetEAID()))+")";
-    SQLString=SQLString+" on GET_PRAGMA_LIST.ID="+MyEA->NameStoredProc()+".ID_LINK;";
-	return SQLString;
 }
 
 boost::any PragmaMemModel::headerData(int section, Wt::Orientation orientation,int role) const
@@ -85,6 +74,27 @@ int  PragmaMemModel::GetColumnNumberByFieldName(std::string FieldName)
 		}
 	}
 	return -1;	//Ничего не найдено
+}
+void PragmaMemModel::ReadToBuffer() const
+{
+    //Процедура считывает в буфер по полям записи из БД
+
+    RecordsIter->First();
+    LastRequestedReccount=0;
+    while(RecordsIter->Fetched())
+    {
+        platon::Pragma* OnePr = new platon::Pragma(MyHyp,RecordsIter->GetID());
+        for(unsigned int i=0; i<NumCol;i++)
+        {
+            boost::any OneString = Wt::WString(OnePr->GetEAByFieldID(FieldsID->at(i))->GetVisibleValue(),Wt::UTF8);
+            std::pair<int,int> koordinates=std::pair<int,int>(LastRequestedReccount,i);
+            ValuesInModel->insert(std::pair<std::pair<int,int>,boost::any>(koordinates,OneString));
+        }
+        delete OnePr;
+        LastRequestedReccount++;
+        RecordsIter->Next();
+    }
+
 }
 
 }
