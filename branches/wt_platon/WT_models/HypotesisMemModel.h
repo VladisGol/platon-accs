@@ -22,9 +22,9 @@ class HypotesisMemModel: public AbstractMemHypModel
 public:
     HypotesisMemModel(Eidos*, WObject * parent);
     boost::any headerData(int section, Wt::Orientation orientation,int role = Wt::DisplayRole) const;
+    void ReadToBuffer() const;
 protected:
 	virtual ExtraAttribute* getEAFromEidos(int i) const ;		//Процедура возвращает ссылку на экстраатрибут по номеру
-    virtual std::string getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
     HypotesisMemModel(WObject * parent):AbstractMemHypModel(parent){;};//Скрытый конструктор для потомков использующих собственный конструктор
 };
 

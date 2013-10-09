@@ -19,6 +19,8 @@
 #include <boost/lexical_cast.hpp>
 #include "WT_models/HypotesisMemModel.h"
 #include "WT_models/PragmaMemModel.h"
+#include "WT_models/hugo_model/hypotesismodel.h"
+#include "WT_models/hugo_model/pragmamodel.h"
 
 #include "ibpp/core/ibpp.h"
 #include "EssentialClass.h"
@@ -181,7 +183,7 @@ void PlatonViewer::FillPragmaView(const Wt::WModelIndex& item)
     Myhypotesys= new platon::Hypotesis(MyEidos, HipID);
 
     if(PrModel!=NULL) delete PrModel;
-    PrModel= new platon::PragmaMemModel(Myhypotesys, this);
+    PrModel= new platon::PragmaMemModel(this->Myhypotesys, this);
     PrView->setModel(PrModel);
 }
 

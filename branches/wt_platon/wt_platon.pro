@@ -55,7 +55,9 @@ SOURCES += main.cpp \
     EssClasses/actclass.cpp \
     WT_models/HypotesisMemModel.cpp \
     WT_models/AbstractMemHypModel.cpp \
-    WT_models/PragmaMemModel.cpp
+    WT_models/PragmaMemModel.cpp \
+    WT_models/hugo_model/pragmamodel.cpp \
+    WT_models/hugo_model/hypotesismodel.cpp
 
 HEADERS += \
     ibpp/core/ibpp.h \
@@ -83,6 +85,8 @@ HEADERS += \
     EssentialClass.h \
     WT_models/HypotesisMemModel.h \
     WT_models/AbstractMemHypModel.h \
-    WT_models/PragmaMemModel.h
+    WT_models/PragmaMemModel.h \
+    WT_models/hugo_model/pragmamodel.h \
+    WT_models/hugo_model/hypotesismodel.h
 
 
