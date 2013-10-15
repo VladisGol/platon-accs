@@ -29,8 +29,8 @@ HypotesisMemModel::HypotesisMemModel(Eidos* InEidos, WObject * parent)
 
 ExtraAttribute* HypotesisMemModel::getEAFromEidos(int i) const
 {
-	std::string FieldName = this->ForEidos->HypotesisSQL->AttributesList[i].FieldName;
-	return ForEidos->GetEAByFieldName(FieldName);
+    long FieldID = this->ForEidos->HypotesisSQL->AttributesList[i].EAID;
+    return ForEidos->GetEAByID(FieldID);
 }
 
 boost::any HypotesisMemModel::headerData(int section, Wt::Orientation orientation,int role) const
@@ -49,7 +49,7 @@ boost::any HypotesisMemModel::headerData(int section, Wt::Orientation orientatio
 			return "ID";
 		else
 		{
-            return this->ForEidos->HypotesisSQL->AttributesList[section-ReservedColumns].Caption;
+            return getEAFromEidos(section-ReservedColumns)->GetEACaption();
 		}
 	}
 	else
@@ -66,11 +66,17 @@ void HypotesisMemModel::ReadToBuffer() const
     while(RecordsIter->Fetched())
     {
         platon::Hypotesis* OneHyp = new platon::Hypotesis(this->ForEidos,RecordsIter->GetID());
-        for(unsigned int i=0; i<NumCol;i++)
+        for(unsigned int i=0; i<NumCol+ReservedColumns;i++)
         {
-            boost::any OneString = Wt::WString(OneHyp->GetEAByFieldID(FieldsID->at(i))->GetVisibleValue(),Wt::UTF8);
+            boost::any OneString;
+            if(i==0)
+                OneString = OneHyp->GetID();
+            else
+                OneString = Wt::WString(OneHyp->GetEAByFieldID(this->getEAFromEidos(i-ReservedColumns)->GetEAID())->GetVisibleValue(),Wt::UTF8);
+
             std::pair<int,int> koordinates=std::pair<int,int>(LastRequestedReccount,i);
             ValuesInModel->insert(std::pair<std::pair<int,int>,boost::any>(koordinates,OneString));
+
         }
         delete OneHyp;
         LastRequestedReccount++;

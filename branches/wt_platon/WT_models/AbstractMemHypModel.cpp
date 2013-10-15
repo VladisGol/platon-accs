@@ -57,7 +57,7 @@ boost::any AbstractMemHypModel::GetDataFromBuffer(const WModelIndex &index)const
 	int row=index.row();
 	int col=index.column();
 
-    if(col==0) return boost::any(this->FieldsID->at(row));
+    //if(col==0) return boost::any(this->getEAFromEidos(col)->GetEACaption());
 
     std::pair<int,int> koordinates=std::pair<int,int>(row,col);
     boost::any AnValue;
