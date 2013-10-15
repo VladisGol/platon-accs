@@ -32,8 +32,8 @@ PragmaMemModel::PragmaMemModel(Hypotesis* InHyp, WObject * parent)
 
 ExtraAttribute* PragmaMemModel::getEAFromEidos(int i) const
 {
-	std::string FieldName = this->ForEidos->PragmaSQL->AttributesList[i].FieldName;
-	return ForEidos->GetEAByFieldName(FieldName);
+    long FieldID = this->ForEidos->PragmaSQL->AttributesList[i].EAID;
+    return ForEidos->GetEAByID(FieldID);
 }
 
 boost::any PragmaMemModel::headerData(int section, Wt::Orientation orientation,int role) const
@@ -53,7 +53,7 @@ boost::any PragmaMemModel::headerData(int section, Wt::Orientation orientation,i
 			return "ID";
 		else
 		{
-            return this->ForEidos->PragmaSQL->AttributesList[section-ReservedColumns].Caption;
+            return this->getEAFromEidos(section-ReservedColumns)->GetEACaption();
 		}
 	}
     else
@@ -84,11 +84,16 @@ void PragmaMemModel::ReadToBuffer() const
     while(RecordsIter->Fetched())
     {
         platon::Pragma* OnePr = new platon::Pragma(MyHyp,RecordsIter->GetID());
-        for(unsigned int i=0; i<NumCol;i++)
+        for(unsigned int i=0; i<NumCol+ReservedColumns;i++)
         {
-            boost::any OneString = Wt::WString(OnePr->GetEAByFieldID(FieldsID->at(i))->GetVisibleValue(),Wt::UTF8);
-            std::pair<int,int> koordinates=std::pair<int,int>(LastRequestedReccount,i);
+            boost::any OneString;
+            if(i==0)
+                OneString = OnePr->GetID();
+            else
+                OneString = Wt::WString(OnePr->GetEAByFieldID(this->getEAFromEidos(i-ReservedColumns)->GetEAID())->GetVisibleValue(),Wt::UTF8);
+            std::pair<int,int> koordinates=std::pair<int,int>(LastRequestedReccount,i-ReservedColumns);
             ValuesInModel->insert(std::pair<std::pair<int,int>,boost::any>(koordinates,OneString));
+            std::cout<<"LastRequestedReccount =" + boost::lexical_cast<std::string>(LastRequestedReccount);
         }
         delete OnePr;
         LastRequestedReccount++;

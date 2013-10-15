@@ -159,7 +159,7 @@ void PlatonViewer::ChooseTheEidos()
             delete MyEidos;
         MyEidos= new platon::Eidos(DB,OneNode->id_Eidos);
         FillHypotesysView();
-        PrView->hide();
+       // PrView->hide();
     }
 }
 
@@ -174,7 +174,7 @@ void PlatonViewer::FillHypotesysView()
 
 void PlatonViewer::FillPragmaView(const Wt::WModelIndex& item)
 {
-    PrView->show();
+    //PrView->show();
     long HipID = boost::any_cast<long>(HTView->model()->data(HTView->model()->index(item.row(),0,WModelIndex())));
 
     this->log("Mouse typed by Hipotesys ID=" + boost::lexical_cast<std::string>(HipID));
