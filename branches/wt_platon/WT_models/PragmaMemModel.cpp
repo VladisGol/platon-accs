@@ -93,7 +93,7 @@ void PragmaMemModel::ReadToBuffer() const
                 OneString = Wt::WString(OnePr->GetEAByFieldID(this->getEAFromEidos(i-ReservedColumns)->GetEAID())->GetVisibleValue(),Wt::UTF8);
             std::pair<int,int> koordinates=std::pair<int,int>(LastRequestedReccount,i-ReservedColumns);
             ValuesInModel->insert(std::pair<std::pair<int,int>,boost::any>(koordinates,OneString));
-            std::cout<<"LastRequestedReccount =" + boost::lexical_cast<std::string>(LastRequestedReccount);
+            std::cout<<"LastRequestedReccount =" + boost::lexical_cast<std::string>(LastRequestedReccount)<< " i= "+ boost::lexical_cast<std::string>(i) << std::endl;
         }
         delete OnePr;
         LastRequestedReccount++;
