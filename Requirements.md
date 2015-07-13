@@ -1,0 +1,7 @@
+Для компиляции из исходных кодов нужно:
+QT SDK ver 4.5 или выше (http://qt.nokia.com/downloads/downloads#lgpl)
+FireBird client v 2.0 или выше (http://www.firebirdsql.org/index.php?op=files)
+
+На сервере базы данных FireBird server v 2.0 или выше (http://www.firebirdsql.org/index.php?op=files)
+
+Напоминаю, что система в стадии тестирования.
