@@ -14,7 +14,7 @@ class PragmaEditForm  :public AbstarctHipEditForm
 {
 
 public:
-	PragmaEditForm(QWidget * parent, long ID_Pragma);
+	PragmaEditForm(QWidget * parent, int ID_Pragma);
 	PragmaEditForm(QWidget * parent, Pragma* InPr);
 	~PragmaEditForm();
 	Hypotesis*LocalHostHypotesis;

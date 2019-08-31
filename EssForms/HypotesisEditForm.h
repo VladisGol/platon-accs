@@ -14,7 +14,7 @@ class HypotesisEditForm  :public AbstarctHipEditForm
 {
 
 public:
-	HypotesisEditForm(QWidget * parent, long ID_Hypotesys);
+	HypotesisEditForm(QWidget * parent, int  ID_Hypotesys);
 	HypotesisEditForm(QWidget * parent, Hypotesis* InHip);
 	~HypotesisEditForm();
 };

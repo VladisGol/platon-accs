@@ -3,7 +3,7 @@ namespace platon
 {
 
 
-ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID_in): QDialog(parent)
+ChoiceEidos_Dialog::ChoiceEidos_Dialog(QWidget * parent,QString Species, int ID_in): QDialog(parent)
 {
     if (this->objectName().isEmpty())
     	this->setObjectName(QString::fromUtf8("Dialog_Eidos"));
@@ -60,7 +60,7 @@ void ChoiceEidos_Dialog::collapseExp(int state)
 }
 
 
-bool ChoiceEidos_Dialog::find(long ID_searchfor)
+bool ChoiceEidos_Dialog::find(int ID_searchfor)
 {
 	return treeWidget->findNMakeCurrent(ID_searchfor);
 }

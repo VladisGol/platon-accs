@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -50,8 +50,8 @@ class RESCopy : public Pragma
 {
 public:
 	RESCopy(Hypotesis* MyType,IBPP::Timestamp DateCreation);
-	RESCopy(Hypotesis* MyType, long ID_Copy);
-	RESCopy* Fork(long ID_ACTCopy_BelongFor);
+	RESCopy(Hypotesis* MyType, int ID_Copy);
+	RESCopy* Fork(int ID_ACTCopy_BeintFor);
 };
 
 }

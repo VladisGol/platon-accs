@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -65,7 +65,7 @@ namespace platon
 					LocalST->Get("NAMESTOREDPROC",NewRec.StoredProcedureName);
 					NewRec.AliasName="t_"+NewRec.FieldName;
 					NewRec.FieldForRetVal="MEANING";
-					LocalST->Get("ID",(int32_t*)&NewRec.EAID);
+					LocalST->Get("ID",NewRec.EAID);
 					LocalST->Get("FIELDTYPE",NewRec.FieldType);
 					LocalST->Get("CAPTION",NewRec.Caption);
 
@@ -104,7 +104,7 @@ namespace platon
 					LocalST->Get("NAMESTOREDPROC",NewRec.StoredProcedureName);
 					NewRec.AliasName="t_"+NewRec.FieldName;
 					NewRec.FieldForRetVal="KEYVALUE";
-					LocalST->Get("ID",(int32_t*)&NewRec.EAID);
+					LocalST->Get("ID",NewRec.EAID);
 					LocalST->Get("FIELDTYPE",NewRec.FieldType);
 					LocalST->Get("CAPTION",NewRec.Caption);
 					AttributesList.push_back(NewRec);

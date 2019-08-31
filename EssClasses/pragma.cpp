@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -38,7 +38,7 @@ Pragma::Pragma(Hypotesis* MyHypotesis,IBPP::Timestamp DateCreation)
 {
 //Конструктор класса типов для создания нового элемента в БД. В качестве параметров
 //передается название типа, а также идентификатор класса к которому принадлежит элемент
-        BelongIdent=ExtraAttribute::_thePragma;
+        BeintIdent=ExtraAttribute::_thePragma;
         Autocommited=true;
         this->HostEidos=MyHypotesis->HostEidos;
         this->HostHypotesis=MyHypotesis;
@@ -49,11 +49,11 @@ Pragma::Pragma(Hypotesis* MyHypotesis,IBPP::Timestamp DateCreation)
         this->GetEAByFieldName("PragmaDate")->SetDateTimeValue(DateCreation); //Заносим дату создания в обязательный экстраатрибут
         PragmaSQL= new PragmaSQLManager(this);
 }
-Pragma::Pragma(Hypotesis* MyHypotesis, long ID_Pragma)
+Pragma::Pragma(Hypotesis* MyHypotesis, int ID_Pragma)
 {
 //Конструктор класса типов для извлечения из базы уже имеющегося объекта. В качестве параметра
 //используется идентификатор объекта типа, записанного в БД
-        BelongIdent=ExtraAttribute::_thePragma;
+        BeintIdent=ExtraAttribute::_thePragma;
         Autocommited=true;
 
         this->HostEidos=MyHypotesis->HostEidos;
@@ -64,11 +64,11 @@ Pragma::Pragma(Hypotesis* MyHypotesis, long ID_Pragma)
         IBPP::Statement LocalST=IBPP::StatementFactory(this->HostEidos->DB, TransactionIBPP);
         if(!TransactionIBPP->Started()) TransactionIBPP->Start();
 
-        long ID_returned;
+        int ID_returned;
         LocalST->Prepare("EXECUTE PROCEDURE GET_PRAGMA(?);");
-        LocalST->Set(1,(int32_t)ID_Pragma);
+        LocalST->Set(1,ID_Pragma);
         LocalST->Execute();
-        LocalST->Get("ID",(int32_t*)&ID_returned);
+        LocalST->Get("ID",ID_returned);
         CommitProcedure();
 
         //Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
@@ -85,24 +85,24 @@ Pragma::Pragma(Hypotesis* MyHypotesis, long ID_Pragma)
         PragmaSQL= new PragmaSQLManager(this);
 }
 
-long Pragma::Save()
+int Pragma::Save()
 {
 //Процедура сохраняет значение атрибутов(не экстраатрибутов) в таблице экземпляров объектов учета
         IBPP::Statement LocalST=IBPP::StatementFactory(this->HostEidos->DB, TransactionIBPP);
         if(!TransactionIBPP->Started()) TransactionIBPP->Start();
 
-        long ID_returned;
+        int ID_returned;
         LocalST->Prepare("EXECUTE PROCEDURE SET_PRAGMA(?,?,?);");
-        LocalST->Set(1,(int32_t)this->ID);
-        LocalST->Set(2,(int32_t)HostEidos->GetID());
-        LocalST->Set(3,(int32_t)HostHypotesis->GetID());
+        LocalST->Set(1,this->ID);
+        LocalST->Set(2,HostEidos->GetID());
+        LocalST->Set(3,HostHypotesis->GetID());
         LocalST->Execute();
-        LocalST->Get("ID_OUT",(int32_t*)&ID_returned);
+        LocalST->Get("ID_OUT",ID_returned);
         CommitProcedure();
         return ID_returned;
 }
 
-void Pragma::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Eidos, long &ID_Hypotesis)
+void Pragma::GetEidosHypotesisIDS(IBPP::Database MyDB, int ID_IN,int &ID_Eidos, int &ID_Hypotesis)
 {
 //Статическая процедура которая извлекает информацию по объекту типа Hypotesis из базы данных
 //без создания самого объекта. Возвращается ID Eidos и для совместимости с потомком копируется
@@ -112,15 +112,15 @@ void Pragma::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Eidos
         IBPP::Statement LocalST=IBPP::StatementFactory(MyDB, LocalTr);
         LocalTr->Start();
 
-        long ID_retHyp;
-        long ID_retEidos;
-        long ID;
+        int ID_retHyp;
+        int ID_retEidos;
+        int ID;
         LocalST->Prepare("EXECUTE PROCEDURE GET_PRAGMA(?);");
-        LocalST->Set(1,(int32_t)ID_IN);
+        LocalST->Set(1,ID_IN);
         LocalST->Execute();
-        LocalST->Get("ID_HYPOTESIS",(int32_t*)&ID_retHyp);
-        LocalST->Get("ID_EIDOS",(int32_t*)&ID_retEidos);
-        LocalST->Get("ID",(int32_t*)&ID);
+        LocalST->Get("ID_HYPOTESIS",ID_retHyp);
+        LocalST->Get("ID_EIDOS",ID_retEidos);
+        LocalST->Get("ID",ID);
         LocalTr->Commit();
 
         if(ID==ID_IN)
@@ -137,7 +137,7 @@ void Pragma::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Eidos
         }
 }
 
-std::string Pragma::GetLinkedPragmaSQL(long IDLinkEA)const
+std::string Pragma::GetLinkedPragmaSQL(int IDLinkEA)const
 {
 //Процедура возвращает строку SQL для вывода списка прилинкованных Pragma по экстраатрибуту, идентификатор которого
 //передан в параметре (не номер, а идентификатор в БД)
@@ -161,7 +161,7 @@ std::string Pragma::GetPragmaName()
 
         std::string val_returned;
         LocalST->Prepare("select get_pragma_name_list.meaning TITLE from get_pragma_name_list where get_pragma_name_list.id=?;");
-        LocalST->Set(1,(int32_t)this->ID);
+        LocalST->Set(1,this->ID);
         LocalST->Execute();
         if(LocalST->Fetch()) LocalST->Get("TITLE",val_returned);
         CommitProcedure();

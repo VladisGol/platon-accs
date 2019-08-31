@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru 
 
@@ -44,13 +44,13 @@ ACTType::ACTType(Eidos* MyACTClass,std::string NameType)
 {
 }
 
-ACTType::ACTType(Eidos* MyACTClass, long ID_Type)
+ACTType::ACTType(Eidos* MyACTClass, int ID_Type)
 		:Hypotesis(MyACTClass,ID_Type)
 {
 }
 
 
-ACTCopy* ACTType::GetACTCopy(long ACTID)
+ACTCopy* ACTType::GetACTCopy(int ACTID)
 {
 //Процедура создает объект типа ACTCopy принадлежащий к текущему классу объектов учета
 //на основании идентификатора паереданного в параметре
@@ -58,7 +58,7 @@ ACTCopy* ACTType::GetACTCopy(long ACTID)
         return TmpPtr;
 }
 
-ACTCopy* ACTType::AddACTCopy(long OBJID)
+ACTCopy* ACTType::AddACTCopy(int OBJID)
 {
 //Процедура создает объект типа ACTCopy принадлежащий к текущему классу объектов учета
 //на основании идентификатора паереданного в параметре

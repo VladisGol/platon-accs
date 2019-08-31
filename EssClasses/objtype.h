@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru 
 
@@ -44,8 +44,8 @@ class OBJType : public Hypotesis
 public:
         OBJType();
 	OBJType(Eidos* MyOBJClass,std::string NameType);
-        OBJType(Eidos* MyOBJClass, long ID_Type);
-        OBJCopy* GetOBJCopy(long OBJID);
+        OBJType(Eidos* MyOBJClass, int ID_Type);
+        OBJCopy* GetOBJCopy(int OBJID);
         OBJCopy* AddOBJCopy();
 };
 }

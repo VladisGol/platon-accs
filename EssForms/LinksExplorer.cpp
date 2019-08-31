@@ -2,7 +2,7 @@
 
 namespace platon
 {
-LinksExplorer::LinksExplorer(QWidget * parent, long ID_in, QString InSpecies): QMainWindow(parent)
+LinksExplorer::LinksExplorer(QWidget * parent, int ID_in, QString InSpecies): QMainWindow(parent)
 {
 	setupUi(this);
 
@@ -165,7 +165,7 @@ void LinksExplorer::SetCorespActions()
 	}
 	else
 	{
-		long id_eidos= PEidosTreeWidget->currentItem ()->text(1).toLong();
+		int id_eidos= PEidosTreeWidget->currentItem ()->text(1).toInt();
 		QString Species=QString::fromStdString(platon::GetEidosSpecies(this->DB,id_eidos));
 		if(Species=="OBJ")action_OBJOpen->setVisible(true);
 		if(Species=="ACT")action_ACTOpen->setVisible(true);
@@ -177,7 +177,7 @@ void LinksExplorer::OpenHypotesis()
 {
 	//Открыть окно с гипотезой
 	int myrow=tableView_Hyp->currentIndex().row();
-	long id_hypotesys=QVariant(tableView_Hyp->model()->data(tableView_Hyp->model()->index(myrow,0,QModelIndex()))).toInt();
+	int id_hypotesys=QVariant(tableView_Hyp->model()->data(tableView_Hyp->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::HypotesisEditForm * md=new platon::HypotesisEditForm(this,id_hypotesys);
 	md->setWindowTitle(tr("Редактирование объекта \"Тип\""));
         md->setAttribute(Qt::WA_ShowModal, true);
@@ -187,7 +187,7 @@ void LinksExplorer::OpenPragma()
 {
 	//Открыть окно с прагмой
 	int myrow=tableView_Pragma->currentIndex().row();
-	long id_pragma=QVariant(tableView_Pragma->model()->data(tableView_Pragma->model()->index(myrow,0,QModelIndex()))).toInt();
+	int id_pragma=QVariant(tableView_Pragma->model()->data(tableView_Pragma->model()->index(myrow,0,QModelIndex()))).toInt();
 	platon::PragmaEditForm * md=new platon::PragmaEditForm(this,id_pragma);
 	md->setWindowTitle(tr("Редактирование объекта \"Экземпляр\""));
         md->setAttribute(Qt::WA_ShowModal, true);
@@ -232,7 +232,7 @@ void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
 			while(true)
 			{
 				OneItem->setExpanded(true);	//Раскрываем все предшествующие элементы списка
-				long idparent =	OneItem->text(2).toInt();
+				int idparent =	OneItem->text(2).toInt();
 				if(idparent<=0) break;
 				OneItem=FindEidosByID(EidosTreeWidget, idparent);                                
 			}			
@@ -240,7 +240,7 @@ void LinksExplorer::PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator * iter)
                 iter->Next();
 	}
 }
-QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, long ID)
+QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, int ID)
 {
 	QList<QTreeWidgetItem *> FoundedItem = EidosTreeWidget->findItems (QString::number(ID), Qt::MatchExactly | Qt::MatchRecursive,1 );
 	if(FoundedItem.count()>0)      //Найден искомый элемент
@@ -253,7 +253,7 @@ QTreeWidgetItem * LinksExplorer::FindEidosByID(QTreeWidget* EidosTreeWidget, lon
 void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 {
 	platon::Eidos* keep4delete;
-	long id_eidos=CurItem->text(1).toLong();
+	int id_eidos=CurItem->text(1).toInt();
 
 	keep4delete=LocalEidosH;
 
@@ -270,7 +270,7 @@ void LinksExplorer::SetHGridView(QTreeWidgetItem*CurItem , int Column)
 void LinksExplorer::SetPGridView(QTreeWidgetItem*CurItem , int Column)
 {
 	platon::Eidos* keep4delete;
-	long id_eidos=CurItem->text(1).toLong();
+	int id_eidos=CurItem->text(1).toInt();
 
 	keep4delete=LocalEidosP;
 

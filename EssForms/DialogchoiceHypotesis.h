@@ -25,9 +25,9 @@ public:
     HypotesisMemModel* Model;
     QSortFilterProxyModel* SFProxyModel;
     QDialogButtonBox *buttonBox;
-    ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* InEidos, long ID_in);
-    long Out_value;
-    bool find(long ID_searchfor);
+    ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* InEidos, int ID_in);
+    int Out_value;
+    bool find(int ID_searchfor);
 
 public slots:
 	void ExitWithAccept();

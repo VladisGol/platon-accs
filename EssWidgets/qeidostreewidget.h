@@ -20,7 +20,7 @@ class QEidosTreeWidget: public QTreeWidget
 		void AttachToDB(IBPP::Database InDB);
 		void SetSpecies(const QString InSpecies);
 		void SaveAppearance();
-		long GetEidosID();
-		bool findNMakeCurrent(long ID_searchfor);
+		int GetEidosID();
+		bool findNMakeCurrent(int ID_searchfor);
 };
 #endif

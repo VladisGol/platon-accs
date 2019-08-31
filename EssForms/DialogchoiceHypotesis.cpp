@@ -2,7 +2,7 @@
 namespace platon
 {
 
-ChoiceHypotesis_Dialog::ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* InEidos, long ID_in): QDialog(parent)
+ChoiceHypotesis_Dialog::ChoiceHypotesis_Dialog(QWidget * parent, platon::Eidos* InEidos, int ID_in): QDialog(parent)
 {
     if (this->objectName().isEmpty())
     	this->setObjectName(QString::fromUtf8("Dialog"));
@@ -51,7 +51,7 @@ void ChoiceHypotesis_Dialog::ExitWithAccept()
 	WriteFormWidgetsAppearance();
 	this->accept();
 }
-bool ChoiceHypotesis_Dialog::find(long ID_searchfor)
+bool ChoiceHypotesis_Dialog::find(int ID_searchfor)
 {
 	QModelIndex founded_item= SFProxyModel->mapFromSource(Model->GetQModelIndexByID(ID_searchfor));
 	if(founded_item.row()==0) return false;

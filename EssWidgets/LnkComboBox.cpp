@@ -28,13 +28,13 @@ LnkHypComboBox::LnkHypComboBox(Eidos* InEidos, QWidget * parent)
 	}
 }
 
-int LnkHypComboBox::SetCurrentIndexByID(long ID)
+int LnkHypComboBox::SetCurrentIndexByID(int ID)
 {
 	int IndexNumber=this->findData(QVariant::fromValue(ID),Qt::UserRole,Qt::MatchExactly);
 	this->setCurrentIndex(IndexNumber);
 	return IndexNumber;
 }
-long LnkHypComboBox::GetCurrentID()
+int LnkHypComboBox::GetCurrentID()
 {
 	return this->itemData(this->currentIndex(),Qt::UserRole).toInt();
 }
@@ -62,13 +62,13 @@ LnkHypPragmaComboBox::LnkHypPragmaComboBox(Eidos* InEidos, QWidget * parent)
 	}
 }
 
-int LnkHypPragmaComboBox::SetCurrentIndexByID(long ID)
+int LnkHypPragmaComboBox::SetCurrentIndexByID(int ID)
 {
 	int IndexNumber=this->findData(QVariant::fromValue(ID),Qt::UserRole,Qt::MatchExactly);
 	this->setCurrentIndex(IndexNumber);
 	return IndexNumber;
 }
-long LnkHypPragmaComboBox::GetCurrentID()
+int LnkHypPragmaComboBox::GetCurrentID()
 {
 	return this->itemData(this->currentIndex(),Qt::UserRole).toInt();
 }

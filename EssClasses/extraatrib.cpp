@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 Project site: http://code.google.com/p/platon-accs/
@@ -68,7 +68,7 @@ std::string ExtraAttribute::GetEACaption()const
 	return Caption;
 }
 
-long ExtraAttribute::Save()
+int ExtraAttribute::Save()
 {
 //Процедура записывает содержимое одного описателя атрибута
 
@@ -114,14 +114,14 @@ long ExtraAttribute::Save()
         IBPP::Statement LocalST=IBPP::StatementFactory(HostEidos->DB, LocalTr);
         LocalTr->Start();
 
-        long ID_returned;
+        int ID_returned;
         /*
 CREATE PROCEDURE SET_EIDOSEXTRAATTRIB (
 1    id integer,
 2    id_eidos integer,
 3    caption varchar(255),
 4    fieldtype integer,
-5    id_belongfor integer,
+5    id_beintfor integer,
 6    id_rb_describer integer,
 7    dll_filename varchar(64),
 8    dll_procname varchar(64),
@@ -140,12 +140,12 @@ returns (
         */
         LocalST->Prepare("EXECUTE PROCEDURE SET_EIDOSEXTRAATTRIB(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);");
 
-        LocalST->Set(1,(int32_t)this->id);
-        LocalST->Set(2,(int32_t)HostEidos->GetID());
+        LocalST->Set(1,this->id);
+        LocalST->Set(2,HostEidos->GetID());
         LocalST->Set(3,this->Caption);
-        LocalST->Set(4,(int32_t)this->type);
-        LocalST->Set(5,(int32_t)this->belongTo);
-        LocalST->Set(6,(int32_t)this->ID_RB_Describer);
+        LocalST->Set(4,this->type);
+        LocalST->Set(5,this->belongTo);
+        LocalST->Set(6,this->ID_RB_Describer);
         LocalST->Set(7,this->DLL_FileName);
         LocalST->Set(8,this->DLL_ProcName);
         LocalST->Set(9,this->FieldName);
@@ -155,12 +155,12 @@ returns (
         LocalST->Set(13,this->Locked);
         LocalST->Set(14,this->Multilnk);
         LocalST->Set(15,this->LNK_species);
-        LocalST->Set(16,(int32_t)this->LNK_EidosID);
-        LocalST->Set(17,(int32_t)this->LNK_HypID);
+        LocalST->Set(16,this->LNK_EidosID);
+        LocalST->Set(17,this->LNK_HypID);
         LocalST->Set(18,this->LNK_NeedList);
 
         LocalST->Execute();
-        LocalST->Get("ID_OUT",(int32_t*)&ID_returned);
+        LocalST->Get("ID_OUT",ID_returned);
         LocalTr->Commit();
         return ID_returned;
 }
@@ -201,7 +201,7 @@ std::string ExtraAttribute::GetClass_NodeName()const
 	return strClass_NodeName;
 }
 
-long ExtraAttribute::GetEAID()const
+int ExtraAttribute::GetEAID()const
 {
 //Получаем ID дополнительного атрибута
         return id;
@@ -226,19 +226,19 @@ std::string ExtraAttribute::NameStoredProc()const
 	return this->sNameStoredProc;
 }
 
-long ExtraAttribute::RealRecordsCount(void)
+int ExtraAttribute::RealRecordsCount(void)
 {
 //Функция возвращает количество записей данного экстраатрибута в таблице имя которой указано в
 //защищенной переменной TableName, значение которой устанавливается в классах потомках
-        long ObjectCount;
+        int ObjectCount;
         IBPP::Transaction LocalTr=IBPP::TransactionFactory(HostEidos->DB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
         IBPP::Statement LocalST=IBPP::StatementFactory(HostEidos->DB, LocalTr);
         LocalTr->Start();
         std::string SQLForRequest="select count(ID_LINK) NumRec from "+this->NameStoredProc()+"(?);";
         LocalST->Prepare(SQLForRequest);
-        LocalST->Set(1,(int32_t)this->GetEAID());
+        LocalST->Set(1,this->GetEAID());
         LocalST->Execute();
-        if(LocalST->Fetch())LocalST->Get("NumRec",(int32_t*)&ObjectCount);
+        if(LocalST->Fetch())LocalST->Get("NumRec",ObjectCount);
         LocalTr->Commit();
         return ObjectCount;
 }
@@ -261,8 +261,8 @@ void ExtraAttribute::SetAlterCaption(std::string NewCaption)
  */
     LocalST->Prepare("EXECUTE PROCEDURE SET_EA_ALTCAPTION(?,?,?);");
 
-    LocalST->Set(1,(int32_t)HostEidos->GetID());
-    LocalST->Set(2,(int32_t)this->id);
+    LocalST->Set(1,HostEidos->GetID());
+    LocalST->Set(2,this->id);
     LocalST->Set(3,NewCaption);
     LocalST->Execute();
     LocalTr->Commit();
@@ -280,8 +280,8 @@ void ExtraAttribute::DeleteAlterCaption()
  */
     LocalST->Prepare("EXECUTE PROCEDURE DEL_EA_ALTCAPTION(?,?);");
 
-    LocalST->Set(1,(int32_t)HostEidos->GetID());
-    LocalST->Set(2,(int32_t)this->id);
+    LocalST->Set(1,HostEidos->GetID());
+    LocalST->Set(2,this->id);
     LocalST->Execute();
     LocalTr->Commit();
 }

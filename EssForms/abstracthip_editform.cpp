@@ -83,7 +83,7 @@ void AbstarctHipEditForm::DoAddAction()
 	//Процедура добавляет действие для текущего объекта
 	ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,"ACT",0);
 	Localdialog->exec();
-	long ID_Eidos=Localdialog->Out_value;
+	int ID_Eidos=Localdialog->Out_value;
 
 	if(ID_Eidos==0)	return;
 
@@ -91,7 +91,7 @@ void AbstarctHipEditForm::DoAddAction()
 	platon::Eidos *localEidos=new platon::Eidos(this->DB,ID_Eidos);
 	ChoiceHypotesis_Dialog* HypotesisDialog=new ChoiceHypotesis_Dialog(this,localEidos,0);
 	HypotesisDialog->exec();
-	long ID_ActType=HypotesisDialog->Out_value;
+	int ID_ActType=HypotesisDialog->Out_value;
 
 	if(ID_ActType==0)
 	{
@@ -114,7 +114,7 @@ void AbstarctHipEditForm::DoWriteOffRes()
 	//Процедура списывает ресурс на проведение действия
 		ChoiceEidos_Dialog* Localdialog=new ChoiceEidos_Dialog(this,"RES",0);
 		Localdialog->exec();
-		long ID_Eidos=Localdialog->Out_value;
+		int ID_Eidos=Localdialog->Out_value;
 
 		if(ID_Eidos==0)	return;
 
@@ -126,7 +126,7 @@ void AbstarctHipEditForm::DoWriteOffRes()
 		PragmaDialog->SFProxyModel->setFilterRegExp("^$");	//Устанавливаем фильтр для записей складского учета без производных на списание
 		PragmaDialog->SFProxyModel->setFilterKeyColumn(filteredColumn);
 		PragmaDialog->exec();
-		long ID_RESCopy=PragmaDialog->Out_value;
+		int ID_RESCopy=PragmaDialog->Out_value;
 
 		if(ID_RESCopy==0)
 		{
@@ -134,7 +134,7 @@ void AbstarctHipEditForm::DoWriteOffRes()
 			return;
 		}
 
-		long ideidos,idhyp;
+		int ideidos,idhyp;
 		platon::Pragma::GetEidosHypotesisIDS(this->DB,ID_RESCopy,ideidos,idhyp);
 
 		platon::RESType * localResType= new platon::RESType(localEidos,idhyp);

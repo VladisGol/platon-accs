@@ -88,7 +88,7 @@ int HypotesisModel::ReadToBuffer(int RowInit , int RowInBuffer, int RowCount) co
 			}
 			if(this->objectName()=="PragmaModel")
 			{
-				long ID_Hyp,ID_Eidos;
+				int ID_Hyp,ID_Eidos;
 				platon::Pragma::GetEidosHypotesisIDS(ForEidos->DB,MyIterator->GetID(),ID_Eidos,ID_Hyp);
 				platon::Hypotesis* tmpHyp=new platon::Hypotesis(ForEidos,ID_Hyp);
 				MyHyp=new platon::Pragma(tmpHyp,MyIterator->GetID());

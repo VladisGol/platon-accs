@@ -84,7 +84,7 @@ void AbstractMemHypModel::GetOneFieldInBuffer(int FieldNumber, QMap<long,QVarian
 	OneMap->clear();
 	iterHypotesis* MyIterator=new iterHypotesis(ForEidos);
 	ExtraAttribute* MyEA;
-	long Key;
+	int Key;
 
 	MyEA=getEAFromEidos(FieldNumber);	//Получаем экстраатрибут
 	QString SQLString= getSQLstringforEA(MyEA);
@@ -166,11 +166,11 @@ QVariant AbstractMemHypModel::GetDataFromBuffer(const QModelIndex &index)const
 	if(col==0) return QVariant::fromValue(Id_records->at(row));
 
 	QMap<long,QVariant>* OneMap=FieldsInModel->at(col-1);
-	long key=Id_records->at(row);
+	int key=Id_records->at(row);
 	QVariant ForReturn = OneMap->value(key);
 	return ForReturn;
 }
-QModelIndex AbstractMemHypModel::GetQModelIndexByID(long ID_in)
+QModelIndex AbstractMemHypModel::GetQModelIndexByID(int ID_in)
 {
 	return this->index(Id_records->indexOf(ID_in),0,QModelIndex());
 }

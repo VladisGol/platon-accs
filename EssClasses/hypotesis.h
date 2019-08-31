@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -51,25 +51,25 @@ class AssociatedExtraAttribute;
 class Hypotesis
 {
 protected:
-	long ID;
+	int ID;
 	void Initialize();
     void CopyExtraatributesFromHostEidos();
-    int BelongIdent;
+    int BeintIdent;
     void CleanExtraAttributes();
 public:
 	Eidos* HostEidos;
     Hypotesis(){return;};
 	Hypotesis(Eidos* MyObjClass,std::string NameType);
-    Hypotesis(Eidos* MyObjClass, long ID_Type);
+    Hypotesis(Eidos* MyObjClass, int ID_Type);
 	~Hypotesis();
-	long GetID()const;
+	int GetID()const;
     std::vector <AssociatedExtraAttribute*> Attributes;
 	int NumEAByFieldName(std::string FieldName)const;
-    int NumEAByID(long FieldID)const;
+    int NumEAByID(int FieldID)const;
     AssociatedExtraAttribute* GetEAByFieldName(std::string FieldName);
-    AssociatedExtraAttribute* GetEAByFieldID(long FieldID);
+    AssociatedExtraAttribute* GetEAByFieldID(int FieldID);
     AssociatedExtraAttribute* GetEAByNum(int NumEA);
-    long Save();
+    int Save();
 
     void SetHypotesName(std::string value);
     std::string GetHypotesName();
@@ -77,7 +77,7 @@ public:
    	void CommitProcedure();
     bool Autocommited;
    	void FillEASQLProp();
-    static void GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Eidos, long &ID_Hypotesis);
+    static void GetEidosHypotesisIDS(IBPP::Database MyDB, int ID_IN,int &ID_Eidos, int &ID_Hypotesis);
     IBPP::Transaction TransactionIBPP;
     PragmaSQLManager* PragmaSQL;
 };

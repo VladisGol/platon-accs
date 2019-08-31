@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -43,9 +43,9 @@ class ACTType : public Hypotesis
 public:
 	ACTType();
 	ACTType(Eidos* MyACTClass,std::string NameType);
-	ACTType(Eidos* MyACTClass, long ID_Type);
-	ACTCopy* GetACTCopy(long ACTID);
-	ACTCopy* AddACTCopy(long OBJID);
+	ACTType(Eidos* MyACTClass, int ID_Type);
+	ACTCopy* GetACTCopy(int ACTID);
+	ACTCopy* AddACTCopy(int OBJID);
 };
 }
 #endif

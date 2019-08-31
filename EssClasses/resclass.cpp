@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru 
 
@@ -34,7 +34,7 @@ Contacts: e-mail vladisgol@rambler.ru
 
 using namespace platon;
 
-RESClass::RESClass(IBPP::Database MyDB, long ID_IN)
+RESClass::RESClass(IBPP::Database MyDB, int ID_IN)
 		:Eidos(MyDB, ID_IN)
 {
 	//Перегруженный конструктор в качестве параметра получает идентификатор
@@ -49,7 +49,7 @@ RESClass::RESClass(IBPP::Database MyDB)
         //объекта класса
         Species="RES";
 }
-RESType* RESClass::GetRESType(long RESID)
+RESType* RESClass::GetRESType(int RESID)
 {
 //Процедура создает объект типа OBJType принадлежащий к текущему классу объектов учета
 //на основании идентификатора паереданного в параметре

@@ -13,7 +13,7 @@ Multilinks::Multilinks(QWidget * parent,  AssociatedExtraAttribute* InAEA): QMai
 
 	MyIter=NULL;
 
-	LNKMap=new QMap<long,LNK_Value>;
+	LNKMap=new QMap<int,LNK_Value>;
 	RatedLinks=false;	//Не показывать кратность ссылок
 
 	QObject::connect(action_Exit, SIGNAL(activated()), this, SLOT(Exit()));
@@ -59,7 +59,7 @@ void Multilinks::EditLink()
 
 	if(row >-1 && col >-1)	//Проверка на наличие того что есть хоть одна запись и она выбрана
 	{
-		long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
+		int idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
 
 		platon::LNK_Value EditedLNKValue;
 		EditedLNKValue= LNKChoice(LNKMap->value(idml));
@@ -77,7 +77,7 @@ void Multilinks::DeleteLink()
 	int col=tableWidget->currentColumn();
 	if(row >-1 && col >-1)	//Проверка на наличие того что есть хоть одна запись и она выбрана
 	{
-		long idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
+		int idml=tableWidget->item(row, 0)->data(Qt::DisplayRole).toInt();
 
 		QMessageBox::StandardButton reply;
 		reply = QMessageBox::information(this, tr("Внимание, необратимая операция"), tr("Подтвердите удаление ссылки"),QMessageBox::Yes | QMessageBox::No);
@@ -147,7 +147,7 @@ platon::LNK_Value Multilinks::LNKChoice(platon::LNK_Value InLNK)
 	//Процедура выводит диалоговые окна для выбора конкретного значения идентификатора
 	platon::LNK_Value localLNKVal=InLNK;
 
-	long ID_Eidos, ID_Hyp;
+	int ID_Eidos, ID_Hyp;
 	if(AEAttrib->EA->type==platon::ft_LinkHypotesis)
 	{
 		if(AEAttrib->EA->LNK_EidosID==0)	//Выводим список эйдосов

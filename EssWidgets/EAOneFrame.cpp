@@ -250,7 +250,7 @@ void EA_OneFrame::Save()
 				{
 					if(EAA->EA->type==platon::ft_LinkPragma)
 					{
-						long ID=((LnkHypPragmaComboBox*)EditableWidget)->GetCurrentID();
+						int ID=((LnkHypPragmaComboBox*)EditableWidget)->GetCurrentID();
 						if(KeepValue.toInt()!=ID)
 						{
 							platon::LNK_Value localLNKVal;
@@ -262,7 +262,7 @@ void EA_OneFrame::Save()
 					}
 					else
 					{
-						long ID=((LnkHypComboBox*)EditableWidget)->GetCurrentID();
+						int ID=((LnkHypComboBox*)EditableWidget)->GetCurrentID();
 						if(KeepValue.toInt()!=ID)
 						{
 							platon::LNK_Value localLNKVal;
@@ -286,7 +286,7 @@ void EA_OneFrame::Save()
 
 void EA_OneFrame::LNKClick()
 {
-	long ID_Eidos, ID_Hyp;
+	int ID_Eidos, ID_Hyp;
 	if(EAA->EA->type==platon::ft_LinkHypotesis)
 	{
 		if(EAA->EA->LNK_EidosID==0)	//Выводим список эйдосов

@@ -29,7 +29,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 	pIterator* KeyIterator;
 	void ReadToBuffer()const;								// Процедура считывает в буфер все записи
-	QModelIndex GetQModelIndexByID(long ID_in);				// Функция возвращает значение индекса модели по идентификатору записи
+	QModelIndex GetQModelIndexByID(int ID_in);				// Функция возвращает значение индекса модели по идентификатору записи
 	void setHeaderIcon(int section, int orientation,QIcon& Icon); //Функция назначения иконки на элемент заголовка
 	void RemoveHeaderIcon(int section, int orientation);			 //Функция удаления иконки с элемента заголовка
 	QVariant GetHeaderIcon(int section, int orientation) const;			 //Функция возвращает значение иконки для указанного в параметрах элемента заголовка

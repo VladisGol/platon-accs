@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru 
 
@@ -39,11 +39,11 @@ ACTCopy::ACTCopy(Hypotesis* MyType,IBPP::Timestamp DateCreation)
 	:Pragma(MyType,DateCreation)
 {
 }
-ACTCopy::ACTCopy(Hypotesis* MyType, long ID_Copy)
+ACTCopy::ACTCopy(Hypotesis* MyType, int ID_Copy)
 	:Pragma(MyType, ID_Copy)
 {
 }
-ACTCopy::ACTCopy(Hypotesis* MyType,IBPP::Timestamp DateCreation, long OBJ_ID)
+ACTCopy::ACTCopy(Hypotesis* MyType,IBPP::Timestamp DateCreation, int OBJ_ID)
 	:Pragma(MyType,DateCreation)
 {
 //Действие привязывается к объекту учета с кратностью 1

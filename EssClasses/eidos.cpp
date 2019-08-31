@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -57,7 +57,7 @@ Eidos::~Eidos()
         delete PragmaSQL;
 }
 
-Eidos::Eidos(IBPP::Database MyDB, long ID_IN)
+Eidos::Eidos(IBPP::Database MyDB, int ID_IN)
 {
 	//Перегруженный конструктор в качестве параметра получает идентификатор
         //объекта класса
@@ -94,7 +94,7 @@ void Eidos::GetExtraAttributesSet()
 	if(this->id_parent>0)	//Нужно получить дополнительные атрибуты объектов выше по иерархии
 	{
 		Eidos* tmp = new Eidos(this->DB);	//Временный объект аналогичного класса
-		long Parent_ID=this->id_parent;
+		int Parent_ID=this->id_parent;
 		do
 		{
 			GetData(tmp,Parent_ID);	//Заполняем атрибуты временного класса
@@ -107,7 +107,7 @@ void Eidos::GetExtraAttributesSet()
 	FullName="/"+FullName;  //Приписываем лидирующий слэш
 }
 
-void Eidos::GetData(Eidos* InClass, long ID_IN)
+void Eidos::GetData(Eidos* InClass, int ID_IN)
 {
 //Процедура опрашивает БД на свойства, сохраненные для объекта типа Eidos (переданного в параметре)
 //и заполняет данными поля класса. В случае если запись для объекта в БД отсутствует вызывается ошибка
@@ -116,15 +116,15 @@ void Eidos::GetData(Eidos* InClass, long ID_IN)
         IBPP::Statement LocalST=IBPP::StatementFactory(DB, LocalTR);
         if(!LocalTR->Started())LocalTR->Start();
         LocalST->Prepare("SELECT * FROM GET_EIDOS(?);");
-        LocalST->Set(1,(int32_t)ID_IN);
+        LocalST->Set(1,ID_IN);
         LocalST->Execute();
 
         //Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
         if(LocalST->Fetch())
         {
         	//Получаем значения сохраненные в БД для указанного объекта
-				LocalST->Get("id",(int32_t*)&InClass->id);
-                LocalST->Get("ID_PARENT",(int32_t*)&InClass->id_parent);
+				LocalST->Get("id",InClass->id);
+                LocalST->Get("ID_PARENT",InClass->id_parent);
                 LocalST->Get("NAME",InClass->Name);
                 LocalST->Get("SPECIES",InClass->Species);
         }
@@ -143,7 +143,7 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
         IBPP::Statement LocalST=IBPP::StatementFactory(DB, LocalTR);
         if(!LocalTR->Started())LocalTR->Start();
         LocalST->Prepare("select * from GET_EIDOSEXTRAATTRIB_LIST(?);");
-        LocalST->Set(1,(int32_t)InObj->id);
+        LocalST->Set(1,InObj->id);
         LocalST->Execute();
 
         //Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
@@ -153,11 +153,11 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
                 OneRecord=new ExtraAttribute;
 
                 LocalST->Get("FIELDTYPE",OneRecord->type);
-                LocalST->Get("ID",(int32_t*)&OneRecord->id);
+                LocalST->Get("ID",OneRecord->id);
                 LocalST->Get("CAPTION",OneRecord->Caption);
                 OneRecord->id_Class  =InObj->id;
-                LocalST->Get("ID_BELONGFOR",(int32_t*)&OneRecord->belongTo);
-                LocalST->Get("ID_RB_DESCRIBER",(int32_t*)&OneRecord->ID_RB_Describer);
+                LocalST->Get("ID_BELONGFOR",OneRecord->belongTo);
+                LocalST->Get("ID_RB_DESCRIBER",OneRecord->ID_RB_Describer);
                 LocalST->Get("DLL_FILENAME",OneRecord->DLL_FileName);
                 LocalST->Get("DLL_PROCNAME",OneRecord->DLL_ProcName);
                 LocalST->Get("FIELDNAME",OneRecord->FieldName);
@@ -170,8 +170,8 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
                 LocalST->Get("TEMPORALLISTSPNAME",OneRecord->sTemporalListSPName);
                 LocalST->Get("Multilnk",OneRecord->Multilnk);
                 LocalST->Get("LNK_species",OneRecord->LNK_species);
-                LocalST->Get("LNK_EidosID",(int32_t*)&OneRecord->LNK_EidosID);
-                LocalST->Get("LNK_HypID",(int32_t*)&OneRecord->LNK_HypID);
+                LocalST->Get("LNK_EidosID",OneRecord->LNK_EidosID);
+                LocalST->Get("LNK_HypID",OneRecord->LNK_HypID);
                 LocalST->Get("LNK_NeedList",OneRecord->LNK_NeedList);
 
 
@@ -182,7 +182,7 @@ void Eidos::QueryForExtraAttrib(Eidos* InObj)
         }
 }
 
-void Eidos::SetParentID(long value)
+void Eidos::SetParentID(int value)
 {//Потенциально небезопасная процедура надо доработать проверку на наличие у изменяемых эйдосов прагм и гипотез для контроля за целостностью данных
 	if(id_parent != value )
 	{
@@ -198,7 +198,7 @@ void Eidos::SetParentID(long value)
 		}
 	}
 }
-long Eidos::GetParentID()const
+int Eidos::GetParentID()const
 {
 	return id_parent;
 }
@@ -216,12 +216,12 @@ void Eidos::Save()
         IBPP::Statement LocalST=IBPP::StatementFactory(DB, LocalTR);
         if(!LocalTR->Started())LocalTR->Start();
         LocalST->Prepare("EXECUTE PROCEDURE SET_EIDOS(?,?,?,?);");
-        LocalST->Set(1,(int32_t)this->id);
-        LocalST->Set(2,(int32_t)this->id_parent);
+        LocalST->Set(1,this->id);
+        LocalST->Set(2,this->id_parent);
         LocalST->Set(3,this->Name);
         LocalST->Set(4,this->Species);
         LocalST->Execute();
-        LocalST->Get("ID_OUT",(int32_t*)&this->id);
+        LocalST->Get("ID_OUT",this->id);
         LocalTR->Commit();
 }
 
@@ -246,7 +246,7 @@ std::string Eidos::GetName()const
 }
 
 
-long Eidos::AddExtraAttribute(std::string Caption, int FieldType)
+int Eidos::AddExtraAttribute(std::string Caption, int FieldType)
 {
 //Процедура добавляет дополнительный атрибут к объекту
 
@@ -270,7 +270,7 @@ long Eidos::AddExtraAttribute(std::string Caption, int FieldType)
         return OneRecord->id;
 }
 
-long Eidos::GetID()const
+int Eidos::GetID()const
 {
 //Получаем ID Eidos-а
 	return id;
@@ -331,7 +331,7 @@ ExtraAttribute* Eidos::GetEAByNum(int Number)
         return tmpAttrib;
 }
 
-ExtraAttribute* Eidos::GetEAByID(long EAID)
+ExtraAttribute* Eidos::GetEAByID(int EAID)
 {
 //Процедура возвращает ссылку на экстраатрибут по идентификатору экстраатрибута
         ExtraAttribute* tmpAttrib;
@@ -374,39 +374,39 @@ void SetTimestampTemporalCompareFor(IBPP::Database MyDB, IBPP::Timestamp DTForSe
         TmpTR->Commit();
 }
 
-long Get_EAID_ByName(IBPP::Database MyDB,std::string NameOfEA)
+int Get_EAID_ByName(IBPP::Database MyDB,std::string NameOfEA)
 {
 //Процедура получает значение идентификатора экстраатрибута из базы по заданному имени
-        long ID_ForReturn;
+        int ID_ForReturn;
         IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
         IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
         TmpTR->Start();
         TmpST->Prepare("EXECUTE PROCEDURE EA_NUM_BY_NAME(?);");
         TmpST->Set(1,NameOfEA);
         TmpST->Execute();
-        TmpST->Get("ID_EA",(int32_t*)&ID_ForReturn);
+        TmpST->Get("ID_EA",ID_ForReturn);
         TmpTR->Commit();
 
         return ID_ForReturn;
 }
 
-long Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBelong)
+int Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBeint)
 {
 //Процедура получает значение идентификатора экстраатрибута из базы по заданному имени
-        long ID_ForReturn;
+        int ID_ForReturn;
         IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
         IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
         TmpTR->Start();
         TmpST->Prepare("EXECUTE PROCEDURE GET_ID_TOPSPECIES(?);");
-        TmpST->Set(1,NameOfBelong);
+        TmpST->Set(1,NameOfBeint);
         TmpST->Execute();
-        TmpST->Get("ID_TOP_SPECIES",(int32_t*)&ID_ForReturn);
+        TmpST->Get("ID_TOP_SPECIES",ID_ForReturn);
         TmpTR->Commit();
 
         return ID_ForReturn;
 
 }
-std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos)
+std::string GetEidosSpecies(IBPP::Database MyDB, int id_eidos)
 {
 //Функция возвращает тип Эйдоса (ACT, OBJ)
 	std::string ForReturn;
@@ -414,7 +414,7 @@ std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos)
     IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
     TmpTR->Start();
     TmpST->Prepare("EXECUTE PROCEDURE GET_EIDOS(?);");
-    TmpST->Set(1,(int32_t)id_eidos);
+    TmpST->Set(1,id_eidos);
     TmpST->Execute();
     TmpST->Get("SPECIES",ForReturn);
     TmpTR->Commit();
@@ -446,12 +446,12 @@ void BranchDisassemble(const std::string NameOfBranch, std::vector<std::string> 
         }
 }
 
-long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBranch)
+int GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBranch)
 {
 //Процедура разбирает содержание ветки, переданной в параметре на составляющие и создает
 //запрос, который двигаясь по иерархии возвращает идентификатор эйдоса. Корректная строка ветки должна иметь
 //символы разделителя '/' как в начале строки так и в конце
-        long ID_ForReturn=0;
+        int ID_ForReturn=0;
         std::string SQLRequest;
         std::vector <std::string> Elements;
 
@@ -472,7 +472,7 @@ long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBran
                 TmpTR->Start();
                 TmpST->Prepare(SQLRequest);
                 TmpST->Execute();
-                if(TmpST->Fetch())TmpST->Get("id",(int32_t*)&ID_ForReturn);
+                if(TmpST->Fetch())TmpST->Get("id",ID_ForReturn);
                 TmpTR->Commit();
         }
         return ID_ForReturn;
@@ -485,20 +485,20 @@ void Eidos::AlternateEACaption()
 		IBPP::Statement EIDOS_ST=IBPP::StatementFactory(DB, LocalTR);
 		if(!LocalTR->Started())LocalTR->Start();
 
-		long CurrentIDEidos=this->GetID();
+		int CurrentIDEidos=this->GetID();
 
 		while(CurrentIDEidos>0)		//Проверяем не является ли объект корневым
 		{
-			long AlternatedHeaderID;
+			int AlternatedHeaderID;
 			std::string AlternatedCaption;
 
 			LocalST->Prepare("SELECT * FROM GET_EA_ALTCAPTIONS(?);");
-			LocalST->Set(1,(int32_t)CurrentIDEidos);
+			LocalST->Set(1,CurrentIDEidos);
 			LocalST->Execute();
 
 	        while(LocalST->Fetch())
 	        {
-	        	LocalST->Get("ID_HEADER",(int32_t*)&AlternatedHeaderID);
+	        	LocalST->Get("ID_HEADER",AlternatedHeaderID);
 	        	LocalST->Get("NEWCAPTION",AlternatedCaption);
 
 	        	ExtraAttribute*OneEA= this->GetEAByID(AlternatedHeaderID);
@@ -512,15 +512,15 @@ void Eidos::AlternateEACaption()
 
 			//Загружаем данные класса, записанные в БД
 			EIDOS_ST->Prepare("SELECT * FROM GET_EIDOS(?);");
-			EIDOS_ST->Set(1,(int32_t)CurrentIDEidos);
+			EIDOS_ST->Set(1,CurrentIDEidos);
 			EIDOS_ST->Execute();
 
 			//Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
 			if(EIDOS_ST->Fetch())
 			{
 				//Получаем значения сохраненные в БД для указанного объекта
-				long parentvalue;
-				EIDOS_ST->Get("ID_PARENT",(int32_t*)&parentvalue);
+				int parentvalue;
+				EIDOS_ST->Get("ID_PARENT",parentvalue);
 				CurrentIDEidos=parentvalue;
 			}
 		}
@@ -552,50 +552,50 @@ void SetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll ,const std::stri
     TmpST->Execute();
     TmpTR->Commit();
 }
-void DeleteEidosItem(IBPP::Database MyDB, long ID_EIDOS)
+void DeleteEidosItem(IBPP::Database MyDB, int ID_EIDOS)
 {
     //Процедура проводит удаление (пометку к удалению) записи EIDOS по переданному в параметре идентификатору
     IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
     IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
     TmpTR->Start();
     TmpST->Prepare("EXECUTE PROCEDURE DEL_EIDOS(?);");
-    TmpST->Set(1,(int32_t)ID_EIDOS);
+    TmpST->Set(1,ID_EIDOS);
     TmpST->Execute();
     TmpTR->Commit();
 }
-void DeleteHypotesisItem(IBPP::Database MyDB, long ID_HYPOTESYS)
+void DeleteHypotesisItem(IBPP::Database MyDB, int ID_HYPOTESYS)
 {
     //Процедура проводит удаление (пометку к удалению) записи HYPOTESYS по переданному в параметре идентификатору
     IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
     IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
     TmpTR->Start();
     TmpST->Prepare("EXECUTE PROCEDURE DEL_HYPOTESIS(?);");
-    TmpST->Set(1,(int32_t)ID_HYPOTESYS);
+    TmpST->Set(1,ID_HYPOTESYS);
     TmpST->Execute();
     TmpTR->Commit();
 }
-void DeletePragmaItem(IBPP::Database MyDB, long ID_PRAGMA)
+void DeletePragmaItem(IBPP::Database MyDB, int ID_PRAGMA)
 {
     //Процедура проводит удаление (пометку к удалению) записи PRAGMA по переданному в параметре идентификатору
     IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
     IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
     TmpTR->Start();
     TmpST->Prepare("EXECUTE PROCEDURE DEL_PRAGMA(?);");
-    TmpST->Set(1,(int32_t)ID_PRAGMA);
+    TmpST->Set(1,ID_PRAGMA);
     TmpST->Execute();
     TmpTR->Commit();
 }
-int NumberChildofEidos(IBPP::Database MyDB, long ID_EIDOS)
+int NumberChildofEidos(IBPP::Database MyDB, int ID_EIDOS)
 {
     //Процедура проводит удаление (пометку к удалению) записи PRAGMA по переданному в параметре идентификатору
-    long ForReturn;
+    int ForReturn;
     IBPP::Transaction TmpTR=IBPP::TransactionFactory(MyDB,IBPP::amWrite, IBPP::ilConcurrency, IBPP::lrWait);
     IBPP::Statement TmpST=IBPP::StatementFactory(MyDB, TmpTR);
     TmpTR->Start();
     TmpST->Prepare("EXECUTE PROCEDURE GET_NUM_EIDOS_CHILDS(?);");
-    TmpST->Set(1,(int32_t)ID_EIDOS);
+    TmpST->Set(1,ID_EIDOS);
     TmpST->Execute();
-    TmpST->Get("RESULT",(int32_t*)&ForReturn);
+    TmpST->Get("RESULT",ForReturn);
     TmpTR->Commit();
     return ForReturn;
 }

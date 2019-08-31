@@ -116,7 +116,7 @@ int EidosMemModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
-QList<QVariant> EidosMemModel::GetColumnsData(QString Title, long ID)
+QList<QVariant> EidosMemModel::GetColumnsData(QString Title, int ID)
 {
 	QList<QVariant> columnData;
 	columnData << Title;

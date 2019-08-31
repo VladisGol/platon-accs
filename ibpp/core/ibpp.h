@@ -68,7 +68,7 @@
 // the standard exact precision types definitions of C 99 standard are used.
 
 #if defined(_MSC_VER) || defined(__DMC__) || defined(__BCPLUSPLUS__)
-// C99 пїЅ7.18.1.1 Exact-width integer types (only those used by IBPP)
+// C99 �7.18.1.1 Exact-width integer types (only those used by IBPP)
 #if defined(_MSC_VER) && (_MSC_VER < 1300)	// MSVC 6 should be < 1300
 	typedef short int16_t;
 	typedef int int32_t;
@@ -78,9 +78,9 @@
 	typedef __int32 int32_t;
 	typedef unsigned __int32 uint32_t;
 #endif
-	typedef int64_t int64_t;
+	typedef __int64 int64_t;
 #else
-	#include <stdint.h>			// C99 (пїЅ7.18) integer types definitions
+	#include <stdint.h>			// C99 (�7.18) integer types definitions
 #endif
 
 #if !defined(_)
@@ -90,10 +90,6 @@
 #include <exception>
 #include <string>
 #include <vector>
-#include <limits>
-#include <cstring>
-#include <sstream>
-
 
 namespace IBPP
 {

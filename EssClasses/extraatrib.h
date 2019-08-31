@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 Project site: http://code.google.com/p/platon-accs/
@@ -67,7 +67,7 @@ struct RoutineInOut
 
 struct LNK_Value
 {
-        long LinkTo;    //ID объекта, на который указывает ссылка
+        int LinkTo;    //ID объекта, на который указывает ссылка
         float Ratio;    //Кратность
 };
 
@@ -85,9 +85,9 @@ class ExtraAttribute
 	friend class Eidos;
         friend class AssociatedExtraAttribute;
 private:
-	long id;
+	int id;
 	std::string Caption;
-	long    id_Class; 		//Идентификатор объекта класса к которому относится атрибут (если = текущему, значит объект хозяин)
+	int    id_Class; 		//Идентификатор объекта класса к которому относится атрибут (если = текущему, значит объект хозяин)
 	std::string strClass_NodeName;	//Имя класса к которому относится атрибут (для отображения наследования)
 	std::string FieldName;
 	std::string sNameStoredProc;
@@ -96,11 +96,11 @@ private:
 public:
     Eidos* HostEidos;
 	//Нумератор для указания к какому виду класса относится атрибут
-	enum _BelongFor {_theHypotesis=1, _thePragma};
+	enum _BeintFor {_theHypotesis=1, _thePragma};
 
     int		type;			//Тип, используются константы описанные в TFieldType + 101(RB) и 102(DLL)
     int     belongTo;		//Принадлежность экстраатрибута к классу Hypotesis или Pragma
-	long	ID_RB_Describer;	//(для типа 101)Указатель на запись в таблице описателей справочников
+	int	ID_RB_Describer;	//(для типа 101)Указатель на запись в таблице описателей справочников
     std::string	DLL_FileName;   //(для типа 102)Имя файла динамической библиотеки
     std::string	DLL_ProcName;	//(для типа 102)Имя процедуры динамической библиотеки
     bool	Temporality;		//(только для экстраатрибутов, принадлежащих к Embodiment) Темпоральный (или хронологический) экстраатрибут
@@ -110,14 +110,14 @@ public:
     bool    Locked;                 //Записание экстраатрибута от возможности изменения
     bool    Multilnk;               //Используется ли в ссылочном атрибуте множественная связь
     std::string	LNK_species;
-    long 	LNK_EidosID;
-    long 	LNK_HypID;
+    int 	LNK_EidosID;
+    int 	LNK_HypID;
     bool	LNK_NeedList;
 
     bool 	IsCaptionAlternated;	//Переменная показывающая была ли проведена замена заголовка
-    long	AltCaptionEidosID;		//Идентификатор ейдоса на уровне которого проведена замена заголовка
+    int	AltCaptionEidosID;		//Идентификатор ейдоса на уровне которого проведена замена заголовка
 
-	long 	Save();
+	int 	Save();
 	ExtraAttribute();
 	~ExtraAttribute();
 
@@ -125,7 +125,7 @@ public:
 	void  SetEACaption(std::string value);
 
     std::string GetClass_NodeName()const;
-    long GetEAID()const;
+    int GetEAID()const;
 
     void SetEAFieldName(std::string value);
     std::string GetEAFieldName()const;		//Применимость атрибута к объектам программы
@@ -133,7 +133,7 @@ public:
     std::string NameStoredProc()const;
 	std::string TemporalListSPName()const;
 
-    long RealRecordsCount(void);
+    int RealRecordsCount(void);
     void SetAlterCaption(std::string NewCaption);
     void DeleteAlterCaption();
 };

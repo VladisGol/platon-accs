@@ -17,9 +17,9 @@ namespace platon
 
 class LnkdHypPragmaMemModel: public HypPragmaMemModel
 {
-	long ID_in;
+	int ID_in;
 public:
-	LnkdHypPragmaMemModel(Eidos* InEidos,long IDIn ,QObject * parent);
+	LnkdHypPragmaMemModel(Eidos* InEidos,int IDIn ,QObject * parent);
 protected:
 	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
 

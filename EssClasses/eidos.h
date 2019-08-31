@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -53,14 +53,14 @@ class ExtraAttribute;
 class Eidos
 {
 private:
-	long id;         						//Идентификатор объекта
-    long id_parent;                 //Ссылка на предшественника
+	int id;         						//Идентификатор объекта
+    int id_parent;                 //Ссылка на предшественника
 
     std::string Name;
     std::string FullName;
 
 	void Initialize();
-	void GetData(Eidos* InClass,long ID_IN);
+	void GetData(Eidos* InClass,int ID_IN);
 	void QueryForExtraAttrib(Eidos* InObj);
 	void CleanExtraAttributes();
 
@@ -77,25 +77,25 @@ public:
     IBPP::Timestamp DT;           //Дата время
 
 	Eidos(IBPP::Database MyDB);
-	Eidos(IBPP::Database MyDB, long ID_IN);
+	Eidos(IBPP::Database MyDB, int ID_IN);
 	~Eidos();
 
 	std::vector <ExtraAttribute*> Attributes;
 
 	void Save();
 
-	long AddExtraAttribute(std::string Name, int FieldType);
+	int AddExtraAttribute(std::string Name, int FieldType);
 	int NumEAByFieldName(std::string FieldName) const;
 
-	long GetParentID() const;
-	void SetParentID(long value);
+	int GetParentID() const;
+	void SetParentID(int value);
 	void SetName(std::string value);
 	std::string GetName()const;
-	long GetID()const;
+	int GetID()const;
 
     ExtraAttribute* GetEAByFieldName(std::string FieldName);
     ExtraAttribute* GetEAByNum(int NumEA);
-    ExtraAttribute* GetEAByID(long EAID);
+    ExtraAttribute* GetEAByID(int EAID);
     std::string GetEidosSpecies() const;
     std::string GetFullEidosName()const;
     HypotesisSQLManager* HypotesisSQL;
@@ -104,17 +104,17 @@ public:
 };
 
 void SetTimestampTemporalCompareFor(IBPP::Database MyDB, IBPP::Timestamp DTForSet);
-long Get_EAID_ByName(IBPP::Database MyDB,std::string NameOfEA);
-long Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBelong);
+int Get_EAID_ByName(IBPP::Database MyDB,std::string NameOfEA);
+int Get_TopIDBySpecies(IBPP::Database MyDB,std::string NameOfBeint);
 void BranchDisassemble(const std::string NameOfBranch, std::vector<std::string> &Elements);
-long GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBranch);
-std::string GetEidosSpecies(IBPP::Database MyDB, long id_eidos);
+int GetEidosIDByBranchFullName(IBPP::Database MyDB,const std::string NameOfBranch);
+std::string GetEidosSpecies(IBPP::Database MyDB, int id_eidos);
 std::string GetDLLMD5(IBPP::Database MyDB, std::string NameOfDll);
 void SetDLLMD5(IBPP::Database MyDB, const std::string NameOfDll ,const std::string MD5string);
-void DeleteEidosItem(IBPP::Database MyDB, long ID_EIDOS);
-void DeleteHypotesisItem(IBPP::Database MyDB, long ID_HYPOTESYS);
-void DeletePragmaItem(IBPP::Database MyDB, long ID_PRAGMA);
-int NumberChildofEidos(IBPP::Database MyDB, long ID_EIDOS);
+void DeleteEidosItem(IBPP::Database MyDB, int ID_EIDOS);
+void DeleteHypotesisItem(IBPP::Database MyDB, int ID_HYPOTESYS);
+void DeletePragmaItem(IBPP::Database MyDB, int ID_PRAGMA);
+int NumberChildofEidos(IBPP::Database MyDB, int ID_EIDOS);
 
 }
 

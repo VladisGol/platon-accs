@@ -24,9 +24,9 @@ public:
     QEidosTreeWidget *treeWidget;
     QDialogButtonBox *buttonBox;
     QCheckBox*checkBox;
-    ChoiceEidos_Dialog(QWidget * parent,QString Species, long ID_in);
-    long Out_value;
-    bool find(long ID_searchfor);
+    ChoiceEidos_Dialog(QWidget * parent,QString Species, int ID_in);
+    int Out_value;
+    bool find(int ID_searchfor);
 
 public slots:
 	void ExitWithAccept();

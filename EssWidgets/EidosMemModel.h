@@ -58,7 +58,7 @@ protected:
     TreeItem *rootItem;
     QString Species;
 	QList<QVariant> GetRootData();
-	QList<QVariant> GetColumnsData(QString Title, long ID);
+	QList<QVariant> GetColumnsData(QString Title, int ID);
     int AdditionalColumnsNumber;
     EidosMemModel(QObject *parent):QAbstractItemModel(parent){;};
 };

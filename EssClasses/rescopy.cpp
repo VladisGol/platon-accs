@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -40,17 +40,17 @@ RESCopy::RESCopy(Hypotesis* MyType,IBPP::Timestamp DateCreation)
 	:Pragma(MyType,DateCreation)
 {
 }
-RESCopy::RESCopy(Hypotesis* MyType, long ID_Copy)
+RESCopy::RESCopy(Hypotesis* MyType, int ID_Copy)
 	:Pragma(MyType, ID_Copy)
 {
 }
 
 
-RESCopy* RESCopy::Fork(long ID_ACTCopy_BelongFor)
+RESCopy* RESCopy::Fork(int ID_ACTCopy_BeintFor)
 {
 //Процедура создает копию текущего объекта экземпляра ресурса
 //копируя в порождаемый объект все экстраатрибуты, после чего
-//в ЭА LNK_ACTBelongFor помещается значение переданное в параметре
+//в ЭА LNK_ACTBeintFor помещается значение переданное в параметре
 // - идентификатор экземпляра действия на которое списывается порождаемый ресурс
 // в ЭА LNK_ForkedRES помещается идентификатор экземпляра ресурса от которого
 //произошло отщепление.
@@ -70,7 +70,7 @@ RESCopy* RESCopy::Fork(long ID_ACTCopy_BelongFor)
 				std::string curFieldName =((AssociatedExtraAttribute*)Source->Attributes[i])->EA->GetEAFieldName();
 				if(curFieldName=="Remainder") continue;
 				if(curFieldName=="PragmaDate") continue;
-				if(curFieldName=="LNK_ACTBelongFor") continue;
+				if(curFieldName=="LNK_ACTBeintFor") continue;
 				if(curFieldName=="LNK_ForkedRES") continue;
 				if(curFieldName=="Quantity") continue;
 
@@ -118,9 +118,9 @@ RESCopy* RESCopy::Fork(long ID_ACTCopy_BelongFor)
 
         LNK_Value LNK;
 
-        LNK.LinkTo=ID_ACTCopy_BelongFor;
+        LNK.LinkTo=ID_ACTCopy_BeintFor;
         LNK.Ratio=1;
-        FosteredRESCopy->GetEAByFieldName("LNK_ACTBelongFor")->SetLink2PValue(LNK);
+        FosteredRESCopy->GetEAByFieldName("LNK_ACTBeintFor")->SetLink2PValue(LNK);
 
         LNK.LinkTo=this->GetID();
         LNK.Ratio=1;

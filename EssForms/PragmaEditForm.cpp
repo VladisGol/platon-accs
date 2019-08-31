@@ -2,13 +2,13 @@
 
 namespace platon
 {
-PragmaEditForm::PragmaEditForm(QWidget * parent, long ID_Pragma): AbstarctHipEditForm(parent)
+PragmaEditForm::PragmaEditForm(QWidget * parent, int ID_Pragma): AbstarctHipEditForm(parent)
 {
 	this->setObjectName("PragmaEditForm");
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
 
-	long EidosID, HypotesysID;
+	int EidosID, HypotesysID;
 
 	Pragma::GetEidosHypotesisIDS(DB, ID_Pragma,EidosID,HypotesysID);
 	if(EidosID>0)	//Проверяем найдены ли среди прагм заданная в параметре

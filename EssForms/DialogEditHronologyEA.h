@@ -26,7 +26,7 @@ public:
     HronologyEaMemModel *Model;
     QDialogButtonBox *buttonBox;
     DialogEditHronologyEA(QWidget * parent, AssociatedExtraAttribute* OneAEA);
-    long Out_value;
+    int Out_value;
 
 public slots:
 	void ExitWithAccept();

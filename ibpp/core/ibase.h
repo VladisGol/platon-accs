@@ -94,8 +94,8 @@ typedef unsigned char   ISC_UCHAR;
 typedef char            ISC_SCHAR;
 
 #if (defined(WIN32) || defined(_WIN32) || defined(__WIN32__)) && !defined(__GNUC__)
-typedef int64_t                         ISC_INT64;
-typedef unsigned int64_t        ISC_UINT64;
+typedef __int64                         ISC_INT64;
+typedef unsigned __int64        ISC_UINT64;
 #else
 typedef long long int                   ISC_INT64;
 typedef unsigned long long int  ISC_UINT64;

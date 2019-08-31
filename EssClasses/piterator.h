@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -48,7 +48,7 @@ namespace platon
                 void Initialize();
                 bool IsFetched;
                 bool IsStarted;
-                long RowNum;
+                int RowNum;
 	public:
 				~pIterator();
                 IBPP::Database DB;
@@ -57,12 +57,12 @@ namespace platon
                 std::string SQL_string;				//Строка SQL по которой производится выборка можно переопределить до первого вызова First() или Next()
                 std::string SQL_string_forreccount; //Строка SQL по которой производится расчет числа записей
 
-                long First();
-                long Next();
+                int First();
+                int Next();
                 bool Fetched();
-                long GetID();
-                long GetRowNum();
-                long GetRowCount();
+                int GetID();
+                int GetRowNum();
+                int GetRowCount();
 
 	};
 
@@ -71,20 +71,20 @@ namespace platon
 	public:
 		iterEidos(IBPP::Database inDB,std::string Species);
         std::string GetTitle();
-		long GetParentID();
+		int GetParentID();
 	};
 	class iterHypotesis :public pIterator		//Итератор получения всех Hypotesis по Eidos-у
 	{
 	public:
 		iterHypotesis(Eidos* InEidos);
-		iterHypotesis(IBPP::Database inDB,long ID_Eidos);
+		iterHypotesis(IBPP::Database inDB,int ID_Eidos);
 		std::string GetTitle();
 	};
 	class iterPragma :public pIterator		//Итератор получения Pragma
 	{
 	public:
 		iterPragma(Hypotesis* InHyp);			//  по Hypotesis
-		iterPragma(IBPP::Database inDB,long ID_Eidos, long ID_Hypotesis);
+		iterPragma(IBPP::Database inDB,int ID_Eidos, int ID_Hypotesis);
 		iterPragma(Eidos* InEidos);			//  по Eidos-у
         std::string GetTitle();
 	};
@@ -112,15 +112,15 @@ namespace platon
 	{
 	public:
 		iterLNKS_Hyp(IBPP::Database inDB);
-		void MasterChanged(long LEidosID,long ID_in);
-		long EidosID;
-		long ID_in;
+		void MasterChanged(int LEidosID,int ID_in);
+		int EidosID;
+		int ID_in;
 	};
 
 	class iterLNKS_HEidos :public pIterator			//Итератор получения Eidos-ов ссылающихся объектов с типом Hypotesis	{
 	{
 	public:
-		iterLNKS_HEidos(IBPP::Database inDB,long ID_in);
+		iterLNKS_HEidos(IBPP::Database inDB,int ID_in);
 		iterLNKS_Hyp* DetailIter;
 	};
 
@@ -128,15 +128,15 @@ namespace platon
 	{
 	public:
 		iterLNKS_Pragma(IBPP::Database inDB);
-		void MasterChanged(long LEidosID,long ID_in);
-		long EidosID;
-		long ID_in;
+		void MasterChanged(int LEidosID,int ID_in);
+		int EidosID;
+		int ID_in;
 	};
 
 	class iterLNKS_PEidos :public pIterator			//Итератор получения Eidos-ов ссылающихся объектов с типом Pragma
 	{
 	public:
-		iterLNKS_PEidos(IBPP::Database inDB,long ID_in);
+		iterLNKS_PEidos(IBPP::Database inDB,int ID_in);
 		iterLNKS_Pragma* DetailIter;
 	};
 

@@ -39,7 +39,7 @@ protected:
     AssociatedExtraAttribute* AEAttrib;
     iterMultilink* MyIter;
     void FillWidgets(int prow,int pcolumn);
-    QMap<long,LNK_Value>* LNKMap;
+    QMap<int,LNK_Value>* LNKMap;
     void SetViewID(bool IsView);
     DataClass* DTL;
 };

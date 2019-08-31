@@ -80,7 +80,7 @@ void HypPragmaMemModel::ReadToBuffer() const
 
 	while(KeyIterator->Fetched())
 	{
-		long idrecord=KeyIterator->GetID();
+		int idrecord=KeyIterator->GetID();
 		QVariant Name_Val=tr(((iterHypPragma*)KeyIterator)->GetTitle().c_str());
 		Id_records->append(idrecord);
 		NameMap->insert(idrecord,Name_Val);

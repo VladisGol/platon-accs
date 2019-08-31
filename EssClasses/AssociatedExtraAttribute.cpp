@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -95,8 +95,8 @@ std::string AssociatedExtraAttribute::GetStringValue()const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
         if(Statement->Fetch()) Statement->Get("MEANING",ProcReturnValue);
         return ProcReturnValue;
@@ -109,10 +109,10 @@ int AssociatedExtraAttribute::GetIntValue()const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
-        if(Statement->Fetch()) Statement->Get("MEANING",(int32_t*)&ProcReturnValue);
+        if(Statement->Fetch()) Statement->Get("MEANING",ProcReturnValue);
         return ProcReturnValue;
 }
 bool AssociatedExtraAttribute::GetBoolValue()const
@@ -123,8 +123,8 @@ bool AssociatedExtraAttribute::GetBoolValue()const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
         if(Statement->Fetch()) Statement->Get("MEANING",ProcReturnValue);
         return ProcReturnValue;
@@ -137,8 +137,8 @@ float AssociatedExtraAttribute::GetFloatValue() const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
         if(Statement->Fetch()) Statement->Get("MEANING",ProcReturnValue);
         return ProcReturnValue;
@@ -152,8 +152,8 @@ IBPP::Timestamp AssociatedExtraAttribute::GetDateTimeValue()const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
         if(Statement->Fetch()) Statement->Get("MEANING",ProcReturnValue);
         return ProcReturnValue;
@@ -170,8 +170,8 @@ RoutineInOut AssociatedExtraAttribute::GetDLLValue()const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
 
         if(Statement->Fetch())
@@ -196,13 +196,13 @@ LNK_Value AssociatedExtraAttribute::GetLink2HValue()const
         if(!this->OwnerHypotesis->TransactionIBPP->Started()) this->OwnerHypotesis->TransactionIBPP->Start();
 
         Statement->Prepare("Select * from "+this->EA->NameStoredProc()+"(?) where ID_LINK =?;");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Execute();
 
         if(Statement->Fetch())
         {
-                Statement->Get("KEYVALUE",(int32_t*)&ProcReturnValue.LinkTo);
+                Statement->Get("KEYVALUE",ProcReturnValue.LinkTo);
                 Statement->Get("RATIO",&ProcReturnValue.Ratio);
         }
 
@@ -225,8 +225,8 @@ void AssociatedExtraAttribute::SetStringValue(std::string In)
         4 DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_SIMPLE_STR(?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Set(3,In);     //MEANING
         Statement->Set(4,this->EA->DTValue);
         Statement->Execute();
@@ -243,9 +243,9 @@ void AssociatedExtraAttribute::SetIntValue(int In)
         4 DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_SIMPLE_INT(?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
-        Statement->Set(3,(int32_t)In);     //MEANING
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
+        Statement->Set(3,In);     //MEANING
         Statement->Set(4,this->EA->DTValue);
         Statement->Execute();
         OwnerHypotesis->CommitProcedure();
@@ -261,8 +261,8 @@ void AssociatedExtraAttribute::SetBoolValue(bool In)
         4 DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_SIMPLE_INT(?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Set(3,In);     //MEANING
         Statement->Set(4,this->EA->DTValue);
         Statement->Execute();
@@ -279,8 +279,8 @@ void AssociatedExtraAttribute::SetFloatValue(float In)
         4 DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_SIMPLE_NUM(?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Set(3,In);     //MEANING
         Statement->Set(4,this->EA->DTValue);
         Statement->Execute();
@@ -297,8 +297,8 @@ void AssociatedExtraAttribute::SetDateTimeValue(IBPP::Timestamp In)
         4 DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_SIMPLE_DATE(?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Set(3,In);     //MEANING
         Statement->Set(4,this->EA->DTValue);
         Statement->Execute();
@@ -316,8 +316,8 @@ void AssociatedExtraAttribute::SetDLLValue(RoutineInOut In)
         5  DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_DLL(?,?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
         Statement->Set(3,In.VisibleValue);
         Statement->Set(4,In.Key);
         Statement->Set(5,this->EA->DTValue);
@@ -338,9 +338,9 @@ void AssociatedExtraAttribute::SetLink2HValue(LNK_Value In)
         5 DATE_OF_CHANGE TIMESTAMP)
         */
         Statement->Prepare("Execute procedure SET_EA_LNK(?,?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
-        Statement->Set(3,(int32_t)In.LinkTo); //MEANING
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
+        Statement->Set(3,In.LinkTo); //MEANING
         Statement->Set(4,In.Ratio);     //RATIO
         Statement->Set(5,this->EA->DTValue);
         Statement->Execute();
@@ -351,10 +351,10 @@ void AssociatedExtraAttribute::SetLink2PValue(LNK_Value In)
         SetLink2HValue(In);
 }
 
-long AssociatedExtraAttribute::SetMultiLNKValue(LNK_Value In, long ID_inlist)
+int AssociatedExtraAttribute::SetMultiLNKValue(LNK_Value In, int ID_inlist)
 {
 // Функция вызывает хранимую процедуру для добавления или редактирования множественной ссылки
-        long ProcReturnValue=0;
+        int ProcReturnValue=0;
 
         if(this->EA->Multilnk==false) throw ("Операция для данного типа данных не поддерживается");
 
@@ -373,18 +373,18 @@ long AssociatedExtraAttribute::SetMultiLNKValue(LNK_Value In, long ID_inlist)
         ID_OUT INTEGER)
         */
         Statement->Prepare("Execute procedure SET_EA_MULTILNK(?,?,?,?,?)");
-        Statement->Set(1,(int32_t)this->EA->GetEAID());
-        Statement->Set(2,(int32_t)OwnerHypotesis->GetID());
-        Statement->Set(3,(int32_t)In.LinkTo);
+        Statement->Set(1,this->EA->GetEAID());
+        Statement->Set(2,OwnerHypotesis->GetID());
+        Statement->Set(3,In.LinkTo);
         Statement->Set(4,In.Ratio);                     //RATIO
-        Statement->Set(5,(int32_t)ID_inlist);           //ID_INLIST
+        Statement->Set(5,ID_inlist);           //ID_INLIST
         Statement->Execute();
-        Statement->Get("ID_OUT",(int32_t*)&ProcReturnValue);
+        Statement->Get("ID_OUT",ProcReturnValue);
 
         OwnerHypotesis->CommitProcedure();
         return ProcReturnValue;
 }
-void AssociatedExtraAttribute::DeleteMultiLNKValue(long ID_inlist)
+void AssociatedExtraAttribute::DeleteMultiLNKValue(int ID_inlist)
 {
 	//Функция удаляет одно вхождение многострочной ссылки, идентификатор которого передан в параметре
     IBPP::Statement Statement=IBPP::StatementFactory(this->OwnerHypotesis->HostEidos->DB, this->OwnerHypotesis->TransactionIBPP);
@@ -394,8 +394,8 @@ void AssociatedExtraAttribute::DeleteMultiLNKValue(long ID_inlist)
 	2  ID_LINE
 	*/
 	Statement->Prepare("Execute procedure DEL_EA_MULTILNK_LINE(?,?);");
-	Statement->Set(1,(int32_t)this->EA->GetEAID());
-	Statement->Set(2,(int32_t)ID_inlist);
+	Statement->Set(1,this->EA->GetEAID());
+	Statement->Set(2,ID_inlist);
 	Statement->Execute();
 
 	OwnerHypotesis->CommitProcedure();

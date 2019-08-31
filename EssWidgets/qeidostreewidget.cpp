@@ -59,13 +59,13 @@ void QEidosTreeWidget::SetSpecies(const QString InSpecies)
 	Species=InSpecies;
 }
 
-long QEidosTreeWidget::GetEidosID()
+int QEidosTreeWidget::GetEidosID()
 {
 	//Функция возвращает текущее значение идентификатора эйдоса
 	return this->currentItem()->text(1).toLong();
 }
 
-bool QEidosTreeWidget::findNMakeCurrent(long ID_searchfor)
+bool QEidosTreeWidget::findNMakeCurrent(int ID_searchfor)
 {
 
 	QList<QTreeWidgetItem *> FoundedItem = this->findItems (QString::number(ID_searchfor), Qt::MatchExactly | Qt::MatchRecursive,1 );

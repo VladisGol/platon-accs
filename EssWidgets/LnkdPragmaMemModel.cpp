@@ -11,7 +11,7 @@
 namespace platon
 {
 
-LnkdHypPragmaMemModel::LnkdHypPragmaMemModel(Eidos* InEidos,long IDin ,QObject * parent)
+LnkdHypPragmaMemModel::LnkdHypPragmaMemModel(Eidos* InEidos,int IDin ,QObject * parent)
 					:HypPragmaMemModel(parent)
 {
 	setObjectName("LnkdHypPragmaMemModel");

@@ -2,13 +2,13 @@
 
 namespace platon
 {
-HypotesisEditForm::HypotesisEditForm(QWidget * parent, long ID_Hypotesys): AbstarctHipEditForm(parent)
+HypotesisEditForm::HypotesisEditForm(QWidget * parent, int ID_Hypotesys): AbstarctHipEditForm(parent)
 {
 	this->setObjectName("HypotesisEditForm");
 	MyDCl=platon::GetDataModule(this);
 	this->DB=MyDCl->DB;
 
-	long EidosID,HypotesysID;
+	int EidosID,HypotesysID;
 	Hypotesis::GetEidosHypotesisIDS(DB, ID_Hypotesys,EidosID,HypotesysID);
 	if(EidosID>0)	//Проверяем найдены ли среди гипотез заданная в параметре
 	{

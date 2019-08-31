@@ -22,8 +22,8 @@ class LnkHypComboBox: public QComboBox
 public:
 	LnkHypComboBox(Eidos* InEidos, QWidget * parent);
 	~LnkHypComboBox();
-	int SetCurrentIndexByID(long ID);
-	long GetCurrentID();
+	int SetCurrentIndexByID(int ID);
+	int GetCurrentID();
 protected:
 	Eidos* MyEidos;
 	iterHypotesis* MyIter;
@@ -37,8 +37,8 @@ class LnkHypPragmaComboBox: public QComboBox
 public:
 	LnkHypPragmaComboBox(Eidos* InEidos, QWidget * parent);
 	~LnkHypPragmaComboBox();
-	int SetCurrentIndexByID(long ID);
-	long GetCurrentID();
+	int SetCurrentIndexByID(int ID);
+	int GetCurrentID();
 protected:
 	Eidos* MyEidos;
 	iterHypPragma* MyIter;

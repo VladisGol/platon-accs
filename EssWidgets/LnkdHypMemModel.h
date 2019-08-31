@@ -17,9 +17,9 @@ namespace platon
 
 class LnkdHypMemModel: public HypotesisMemModel
 {
-	long ID_in;
+	int ID_in;
 public:
-	LnkdHypMemModel(Eidos* InEidos,long IDIn ,QObject * parent);
+	LnkdHypMemModel(Eidos* InEidos,int IDIn ,QObject * parent);
 protected:
 	virtual QString getSQLstringforEA(ExtraAttribute*MyEA) const;	//Функция возвращает заполненную SQL строку для получения 1 экстраатрибута
 

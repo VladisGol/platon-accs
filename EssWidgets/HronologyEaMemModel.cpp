@@ -58,7 +58,7 @@ void HronologyEaMemModel::ReadToBuffer() const
 
 	while(KeyIterator->Fetched())
 	{
-		long idrecord=KeyIterator->GetID();
+		int idrecord=KeyIterator->GetID();
 		QVariant Val=ReadValuefromRecord();
 		QVariant DT_Val=platon::IBPPTimestamp2QDateTime(((iterTemporalityListofOneEA*)KeyIterator)->GetGateTime());
 		Id_records->append(idrecord);

@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -42,7 +42,7 @@ namespace platon
                 IsStarted=false;
                 RowNum=0;
         }
-        long pIterator::First()
+        int pIterator::First()
         {
                 if(!LocalTR->Started())LocalTR->Start();
                 LocalST->Prepare(SQL_string);
@@ -52,7 +52,7 @@ namespace platon
                 RowNum=1;
                 return this->GetID();
         }
-        long pIterator::Next()
+        int pIterator::Next()
         {
                 if(IsStarted)
                 {
@@ -68,26 +68,26 @@ namespace platon
                 return IsFetched;
         }
 
-	long pIterator::GetID()
+	int pIterator::GetID()
 	{
 		//Процедура возвращает значение поля ID из текущей записи
-        long RetVal=0;
-        if(IsFetched) LocalST->Get("ID",(int32_t*)&RetVal);
+        int RetVal=0;
+        if(IsFetched) LocalST->Get("ID",RetVal);
 		return RetVal;
 	}
-	long pIterator::GetRowNum()
+	int pIterator::GetRowNum()
 	{
 		return this->RowNum;
 	}
-	long pIterator::GetRowCount()
+	int pIterator::GetRowCount()
 	{
 		//Возвращаем число записей
-		long RetVal;
+		int RetVal;
 		IBPP::Statement TmpST=IBPP::StatementFactory(this->DB, LocalTR);
 		if(!LocalTR->Started())LocalTR->Start();
 		TmpST->Prepare(SQL_string_forreccount);
 		TmpST->Execute();
-        if(TmpST->Fetch()) TmpST->Get("recordscount",(int32_t*)&RetVal);
+        if(TmpST->Fetch()) TmpST->Get("recordscount",RetVal);
         return RetVal;
 	}
 
@@ -98,10 +98,10 @@ namespace platon
         SQL_string="select id, id_parent,name TITLE from GET_EIDOS_LIST('"+Species+"');";
         SQL_string_forreccount="select count(id) recordscount from GET_EIDOS_LIST('"+Species+"');";
 	}
-	long iterEidos::GetParentID()
+	int iterEidos::GetParentID()
 	{
-		long RetVal=0;
-        if(IsFetched) LocalST->Get("ID_PARENT",(int32_t*)&RetVal);
+		int RetVal=0;
+        if(IsFetched) LocalST->Get("ID_PARENT",RetVal);
 		return RetVal;
 	}
 	std::string iterEidos::GetTitle()
@@ -120,7 +120,7 @@ namespace platon
         SQL_string="select get_hypotesis_name_list.id ID, get_hypotesis_name_list.meaning TITLE from get_hypotesis_name_list("+ToString(InEidos->GetID())+");";
         SQL_string_forreccount="select count(get_hypotesis_name_list.id) recordscount from get_hypotesis_name_list("+ToString(InEidos->GetID())+");";
 	}
-	iterHypotesis::iterHypotesis(IBPP::Database inDB,long ID_Eidos)
+	iterHypotesis::iterHypotesis(IBPP::Database inDB,int ID_Eidos)
 	{
 		this->DB=inDB;
         Initialize();
@@ -141,7 +141,7 @@ namespace platon
         SQL_string_forreccount="select count(get_pragma_list.id) recordscount from get_pragma_list("+ToString(InHyp->HostEidos->GetID())+", "+ToString(InHyp->GetID())+");";
 	}
 
-	iterPragma::iterPragma(IBPP::Database inDB,long ID_Eidos, long ID_Hypotesis)
+	iterPragma::iterPragma(IBPP::Database inDB,int ID_Eidos, int ID_Hypotesis)
 	{
         this->DB=inDB;
         Initialize();
@@ -175,7 +175,7 @@ namespace platon
 		return RetVal;
 	}
 
-	iterLNKS_HEidos::iterLNKS_HEidos(IBPP::Database inDB,long ID_in)
+	iterLNKS_HEidos::iterLNKS_HEidos(IBPP::Database inDB,int ID_in)
 	{
         this->DB=inDB;
         Initialize();
@@ -191,7 +191,7 @@ namespace platon
 		this->ID_in=0;
 
 	}
-	void iterLNKS_Hyp::MasterChanged(long LEidosID,long ID_in_par)
+	void iterLNKS_Hyp::MasterChanged(int LEidosID,int ID_in_par)
 	{
 		this->EidosID=LEidosID;
 		this->ID_in=ID_in_par;
@@ -199,7 +199,7 @@ namespace platon
         SQL_string_forreccount="select count(ID_HYPOTESIS) recordscount from GET_LINKED_HYPLIST("+ToString(ID_in)+") WHERE ID_EIDOS="+ToString(LEidosID)+";";
 	}
 
-	iterLNKS_PEidos::iterLNKS_PEidos(IBPP::Database inDB,long ID_in)
+	iterLNKS_PEidos::iterLNKS_PEidos(IBPP::Database inDB,int ID_in)
 	{
         this->DB=inDB;
         Initialize();
@@ -215,7 +215,7 @@ namespace platon
 		this->ID_in=0;
 	}
 
-	void iterLNKS_Pragma::MasterChanged(long LEidosID,long ID_in_par)
+	void iterLNKS_Pragma::MasterChanged(int LEidosID,int ID_in_par)
 	{
 		this->EidosID=LEidosID;
 		this->ID_in=ID_in_par;
@@ -260,7 +260,7 @@ namespace platon
         ProcReturnValue.Ratio=1;
         if(IsFetched)
 		{
-        	LocalST->Get("KEYVALUE",(int32_t*)&ProcReturnValue.LinkTo);
+        	LocalST->Get("KEYVALUE",ProcReturnValue.LinkTo);
         	LocalST->Get("RATIO",ProcReturnValue.Ratio);
 		}
         return ProcReturnValue;

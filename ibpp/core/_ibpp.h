@@ -61,6 +61,7 @@
 
 #include <limits>
 #include <string>
+#include <cstring>
 #include <vector>
 #include <sstream>
 #include <cstdarg>
@@ -1065,11 +1066,11 @@ private:
 	DatabaseImpl* mDatabase;		// Attached database
 	TransactionImpl* mTransaction;	// Attached transaction
 	RowImpl* mInRow;
-	//bool* mInMissing;			// Quels paramÐ¸tres n'ont pas Ð¹tÐ¹ spÐ¹cifiÐ¹s
+	//bool* mInMissing;			// Quels paramètres n'ont pas été spécifiés
 	RowImpl* mOutRow;
 	bool mResultSetAvailable;	// Executed and result set is available
 	bool mCursorOpened;			// dsql_set_cursor_name was called
-	IBPP::STT mType;			// Type de requÐ¸te
+	IBPP::STT mType;			// Type de requète
 	std::string mSql;			// Last SQL statement prepared or executed
 
 	// Internal Methods
@@ -1254,8 +1255,8 @@ private:
 	ISC_QUAD			mId;
 	bool				mDescribed;
 	ISC_ARRAY_DESC		mDesc;
-	DatabaseImpl*  		mDatabase;		// Database attachÐ¹e
-	TransactionImpl*	mTransaction;	// Transaction attachÐ¹e
+	DatabaseImpl*  		mDatabase;		// Database attachée
+	TransactionImpl*	mTransaction;	// Transaction attachée
 	void*				mBuffer;		// Buffer for native data
 	int					mBufferSize;	// Size of this buffer in bytes
 	int					mElemCount;		// Count of elements in this array

@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru 
 
@@ -44,13 +44,13 @@ OBJType::OBJType(Eidos* MyOBJClass,std::string NameType)
 {
 }
 
-OBJType::OBJType(Eidos* MyOBJClass, long ID_Type)
+OBJType::OBJType(Eidos* MyOBJClass, int ID_Type)
 		:Hypotesis(MyOBJClass,ID_Type)
 {
 }
 
 
-OBJCopy* OBJType::GetOBJCopy(long OBJID)
+OBJCopy* OBJType::GetOBJCopy(int OBJID)
 {
 //Процедура создает объект типа OBJCopy принадлежащий к текущему классу объектов учета
 //на основании идентификатора паереданного в параметре

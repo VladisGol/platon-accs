@@ -29,7 +29,7 @@ QVariant LnkdEidosMemModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) return item->data(index.column());
     else if(role == Qt::FontRole)
     {
-		long ID=data(index.sibling(index.row(),1), Qt::DisplayRole).toInt();
+		int ID=data(index.sibling(index.row(),1), Qt::DisplayRole).toInt();
 		if(FoundedCountOnBranchID.count(ID)>0)
 			return qvariant_cast<QFont>(this->SelectedFont);
 		else

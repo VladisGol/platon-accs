@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -53,11 +53,11 @@ namespace platon
 		public:
 			Hypotesis* HostHypotesis;
 			Pragma ( Hypotesis* MyType,IBPP::Timestamp DateCreation );
-			Pragma ( Hypotesis* MyType, long ID_Copy );
-			long Save();
-			std::string GetLinkedPragmaSQL ( long IDLinkEA )const;
+			Pragma ( Hypotesis* MyType, int ID_Copy );
+			int Save();
+			std::string GetLinkedPragmaSQL ( int IDLinkEA )const;
 			std::string GetLinkedPragmaSQL ( std::string LinkEAName )const;
-			static void GetEidosHypotesisIDS ( IBPP::Database MyDB, long ID_IN,long &ID_Eidos, long &ID_Hypotesis );
+			static void GetEidosHypotesisIDS ( IBPP::Database MyDB, int ID_IN,int &ID_Eidos, int &ID_Hypotesis );
 			std::string GetPragmaName();
 	};
 }

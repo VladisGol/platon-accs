@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -56,7 +56,7 @@ namespace platon
 			std::string Caption;
 
 			int FieldType;
-			long EAID;
+			int EAID;
 
 	};
 
@@ -70,7 +70,7 @@ namespace platon
                 std::string SQL_string;
                 bool IsFetched;
                 bool IsStarted;
-                long EidosID;
+                int EidosID;
 	public:
 		void Clear();
 		~SQLManager();
@@ -95,7 +95,7 @@ namespace platon
         };
         class PragmaSQLManager: public SQLManager
         {
-        	long HypotesisID;
+        	int HypotesisID;
         public:
 		const std::string SQLString();
                 PragmaSQLManager(Hypotesis* Hi);

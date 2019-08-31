@@ -23,7 +23,7 @@ class LinksExplorer  :public QMainWindow, public Ui_LinksExplorer
     Q_OBJECT
 
 public:
-	LinksExplorer(QWidget * parent, long ID_in, QString InSpecies);
+	LinksExplorer(QWidget * parent, int ID_in, QString InSpecies);
 	~LinksExplorer();
 
     IBPP::Database DB;
@@ -34,11 +34,11 @@ public:
     iterLNKS_Pragma* IPragma;
     iterLNKS_HEidos* IEidosH;
     iterLNKS_PEidos* IEidosP;
-    long IDFor;
+    int IDFor;
 
 
     void PaintingEidos(QTreeWidget* EidosTreeWidget,pIterator*);
-    QTreeWidgetItem * FindEidosByID(QTreeWidget* EidosTreeWidget, long ID);
+    QTreeWidgetItem * FindEidosByID(QTreeWidget* EidosTreeWidget, int ID);
 
 public slots:
 	void Exit();

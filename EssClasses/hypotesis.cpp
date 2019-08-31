@@ -12,7 +12,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 Lesser General Public License for more details.
 
 You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
+License aint with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 Contacts: e-mail vladisgol@rambler.ru
 
@@ -37,7 +37,7 @@ Hypotesis::Hypotesis(Eidos* MyEidos,std::string NameHypotesis)
 {
 //Конструктор класса типов для создания нового элемента в БД. В качестве параметров
 //передается название типа, а также идентификатор класса к которому принадлежит элемент
-        BelongIdent=ExtraAttribute::_theHypotesis;
+        BeintIdent=ExtraAttribute::_theHypotesis;
         this->HostEidos=MyEidos;
         Autocommited=false;
         Initialize();
@@ -48,12 +48,12 @@ Hypotesis::Hypotesis(Eidos* MyEidos,std::string NameHypotesis)
         PragmaSQL= new PragmaSQLManager(this);
 }
 
-Hypotesis::Hypotesis(Eidos* MyEidos, long ID_Hypotesis)
+Hypotesis::Hypotesis(Eidos* MyEidos, int ID_Hypotesis)
 {
 //Конструктор класса типов для извлечения из базы уже имеющегося объекта. В качестве параметра
 //используется идентификатор объекта типа, записанного в БД
 	//Загружаем данные класса, записанные в БД
-        BelongIdent=ExtraAttribute::_theHypotesis;
+        BeintIdent=ExtraAttribute::_theHypotesis;
         this->HostEidos=MyEidos;
         Autocommited=false;
         Initialize();
@@ -61,11 +61,11 @@ Hypotesis::Hypotesis(Eidos* MyEidos, long ID_Hypotesis)
         IBPP::Statement LocalST=IBPP::StatementFactory(this->HostEidos->DB, TransactionIBPP);
         if(!TransactionIBPP->Started()) TransactionIBPP->Start();
 
-        long ID_returned;
+        int ID_returned;
         LocalST->Prepare("EXECUTE PROCEDURE GET_HYPOTESIS(?);");
-        LocalST->Set(1,(int32_t)ID_Hypotesis);
+        LocalST->Set(1,ID_Hypotesis);
         LocalST->Execute();
-        LocalST->Get("ID",(int32_t*)&ID_returned);
+        LocalST->Get("ID",ID_returned);
         CommitProcedure();
 
         //Проверяем совпадает ли идентификатор запрошенного объекта с возвращенным
@@ -99,7 +99,7 @@ Hypotesis::~Hypotesis()
         delete PragmaSQL;
 }
 
-long Hypotesis::GetID()const
+int Hypotesis::GetID()const
 {
 //Чтение значение поля ID
 	return ID;
@@ -114,7 +114,7 @@ void Hypotesis::CopyExtraatributesFromHostEidos()
         for(unsigned int i=0;i<this->HostEidos->Attributes.size();i++)
         {
                 tmpAttrib=(ExtraAttribute*)this->HostEidos->Attributes[i];
-                if(tmpAttrib->belongTo==BelongIdent)
+                if(tmpAttrib->belongTo==BeintIdent)
                 {
                         AssociatedExtraAttribute* MyAttrib = new AssociatedExtraAttribute(tmpAttrib,this);
                         Attributes.push_back(MyAttrib);
@@ -139,7 +139,7 @@ int Hypotesis::NumEAByFieldName(std::string FieldName)const
         return for_return;
 }
 
-int Hypotesis::NumEAByID(long FieldID)const
+int Hypotesis::NumEAByID(int FieldID)const
 {
 //Функция находит и возвращает по имени атрибута его номер в случае если объект не найден, возвращается -1
         AssociatedExtraAttribute* tmpAttrib;
@@ -168,7 +168,7 @@ AssociatedExtraAttribute* Hypotesis::GetEAByFieldName(std::string FieldName)
         return tmpAttrib;
 }
 
-AssociatedExtraAttribute* Hypotesis::GetEAByFieldID(long FieldID)
+AssociatedExtraAttribute* Hypotesis::GetEAByFieldID(int FieldID)
 {
 //Процедура возвращает ссылку на экстраатрибут по имени поля экстраатрибута
 
@@ -186,18 +186,18 @@ AssociatedExtraAttribute* Hypotesis::GetEAByNum(int Number)
         return tmpAttrib;
 }
 
-long Hypotesis::Save()
+int Hypotesis::Save()
 {
 //Процедура сохраняет значение атрибутов(не экстраатрибутов) в таблице типов объектов
         IBPP::Statement LocalST=IBPP::StatementFactory(this->HostEidos->DB, TransactionIBPP);
         if(!TransactionIBPP->Started()) TransactionIBPP->Start();
 
-        long ID_returned;
+        int ID_returned;
         LocalST->Prepare("EXECUTE PROCEDURE SET_HYPOTESIS(?,?);");
-        LocalST->Set(1,(int32_t)this->ID);
-        LocalST->Set(2,(int32_t)HostEidos->GetID());
+        LocalST->Set(1,this->ID);
+        LocalST->Set(2,HostEidos->GetID());
         LocalST->Execute();
-        LocalST->Get("ID_OUT",(int32_t*)&ID_returned);
+        LocalST->Get("ID_OUT",ID_returned);
         CommitProcedure();
         return ID_returned;
 }
@@ -223,7 +223,7 @@ void Hypotesis::CommitProcedure()
 }
 
 
-void Hypotesis::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Eidos, long &ID_Hypotesis)
+void Hypotesis::GetEidosHypotesisIDS(IBPP::Database MyDB, int ID_IN,int &ID_Eidos, int &ID_Hypotesis)
 {
 //Статическая процедура которая извлекает информацию по объекту типа Hypotesis из базы данных
 //без создания самого объекта. Возвращается ID Eidos и для совместимости с потомком копируется
@@ -233,13 +233,13 @@ void Hypotesis::GetEidosHypotesisIDS(IBPP::Database MyDB, long ID_IN,long &ID_Ei
         IBPP::Statement LocalST=IBPP::StatementFactory(MyDB, LocalTr);
         LocalTr->Start();
 
-        long ID_retHyp;
-        long ID_retEidos;
+        int ID_retHyp;
+        int ID_retEidos;
         LocalST->Prepare("EXECUTE PROCEDURE GET_HYPOTESIS(?);");
-        LocalST->Set(1,(int32_t)ID_IN);
+        LocalST->Set(1,ID_IN);
         LocalST->Execute();
-        LocalST->Get("ID",(int32_t*)&ID_retHyp);
-        LocalST->Get("ID_EIDOS",(int32_t*)&ID_retEidos);
+        LocalST->Get("ID",ID_retHyp);
+        LocalST->Get("ID_EIDOS",ID_retEidos);
         LocalTr->Commit();
 
         if(ID_retHyp==ID_IN)
