@@ -1,6 +1,10 @@
 config += qt \
     debug
-win32:DEFINES += IBPP_WINDOWS
+
+win32:DEFINES -= UNICODE
+win32:DEFINES += IBPP_WINDOWS=value
+win32:LIBS += Advapi32.lib
+
 unix:DEFINES += IBPP_LINUX IBPP_GCC
 unix:LIBS += -lfbclient -L./lib
 # #####################################################################
