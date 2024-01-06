@@ -1,28 +1,17 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//	File    : $Id: array.cpp 54 2006-03-27 16:07:44Z epocman $
-//	Subject : IBPP, Array class implementation
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	(C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
-//
-//	The contents of this file are subject to the IBPP License (the "License");
-//	you may not use this file except in compliance with the License.  You may
-//	obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
-//	file which must have been distributed along with this file.
-//
-//	This software, distributed under the License, is distributed on an "AS IS"
-//	basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
-//	License for the specific language governing rights and limitations
-//	under the License.
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	COMMENTS
-//	* Tabulations should be set every four characters when editing this file.
-//
-///////////////////////////////////////////////////////////////////////////////
+//	Array class implementation
+/*
+    (C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
+
+    The contents of this file are subject to the IBPP License (the "License");
+    you may not use this file except in compliance with the License.  You may
+    obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
+    file which must have been distributed along with this file.
+
+    This software, distributed under the License, is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
+    License for the specific language governing rights and limitations
+    under the License.
+*/
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786 4996)
@@ -55,7 +44,7 @@ void ArrayImpl::Describe(const std::string& table, const std::string& column)
 	ResetId();	// Re-use this array object if was previously assigned
 
 	IBS status;
-	(*gds.Call()->m_array_lookup_bounds)(status.Self(), mDatabase->GetHandlePtr(),
+	(*getGDS().Call()->m_array_lookup_bounds)(status.Self(), mDatabase->GetHandlePtr(),
 		mTransaction->GetHandlePtr(), const_cast<char*>(table.c_str()),
 			const_cast<char*>(column.c_str()), &mDesc);
 	if (status.Errors())
@@ -205,7 +194,7 @@ void ArrayImpl::ReadTo(IBPP::ADT adtype, void* data, int datacount)
 
 	IBS status;
 	ISC_LONG lenbuf = mBufferSize;
-	(*gds.Call()->m_array_get_slice)(status.Self(), mDatabase->GetHandlePtr(),
+	(*getGDS().Call()->m_array_get_slice)(status.Self(), mDatabase->GetHandlePtr(),
 		mTransaction->GetHandlePtr(), &mId, &mDesc, mBuffer, &lenbuf);
 	if (status.Errors())
 		throw SQLExceptionImpl(status, "Array::ReadTo", _("isc_array_get_slice failed."));
@@ -890,7 +879,7 @@ void ArrayImpl::WriteFrom(IBPP::ADT adtype, const void* data, int datacount)
 
 	IBS status;
 	ISC_LONG lenbuf = mBufferSize;
-	(*gds.Call()->m_array_put_slice)(status.Self(), mDatabase->GetHandlePtr(),
+	(*getGDS().Call()->m_array_put_slice)(status.Self(), mDatabase->GetHandlePtr(),
 		mTransaction->GetHandlePtr(), &mId, &mDesc, mBuffer, &lenbuf);
 	if (status.Errors())
 		throw SQLExceptionImpl(status, "Array::WriteFrom", _("isc_array_put_slice failed."));
@@ -1039,7 +1028,3 @@ ArrayImpl::~ArrayImpl()
 	try { if (mBuffer != 0) delete [] (char*)mBuffer; }
 		catch (...) {}
 }
-
-//
-//	EOF
-//

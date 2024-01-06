@@ -1,28 +1,17 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//	File    : $Id: statement.cpp 85 2006-07-23 11:10:57Z epocman $
 //	Subject : IBPP, Service class implementation
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	(C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
-//
-//	The contents of this file are subject to the IBPP License (the "License");
-//	you may not use this file except in compliance with the License.  You may
-//	obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
-//	file which must have been distributed along with this file.
-//
-//	This software, distributed under the License, is distributed on an "AS IS"
-//	basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
-//	License for the specific language governing rights and limitations
-//	under the License.
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	COMMENTS
-//	* Tabulations should be set every four characters when editing this file.
-//
-///////////////////////////////////////////////////////////////////////////////
+/*
+    (C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
+
+    The contents of this file are subject to the IBPP License (the "License");
+    you may not use this file except in compliance with the License.  You may
+    obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
+    file which must have been distributed along with this file.
+
+    This software, distributed under the License, is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
+    License for the specific language governing rights and limitations
+    under the License.
+*/
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786 4996)
@@ -33,9 +22,16 @@
 
 #include "_ibpp.h"
 
+#include <cctype>
+#include <functional>
+#include <array>
+
 #ifdef HAS_HDRSTOP
 #pragma hdrstop
 #endif
+
+#include <iostream>
+#include <algorithm>
 
 using namespace ibpp_internals;
 
@@ -55,14 +51,14 @@ void StatementImpl::Prepare(const std::string& sql)
 		throw LogicExceptionImpl("Statement::Prepare", _("SQL statement can't be 0."));
 
 	// Saves the SQL sentence, only for reporting reasons in case of errors
-	mSql = sql;
+	mSql = ParametersParser(sql);
 
 	IBS status;
 
 	// Free all resources currently attached to this Statement, then allocate
 	// a new statement descriptor.
 	Close();
-	(*gds.Call()->m_dsql_allocate_statement)(status.Self(), mDatabase->GetHandlePtr(), &mHandle);
+	(*getGDS().Call()->m_dsql_allocate_statement)(status.Self(), mDatabase->GetHandlePtr(), &mHandle);
 	if (status.Errors())
 		throw SQLExceptionImpl(status, "Statement::Prepare",
 			_("isc_dsql_allocate_statement failed"));
@@ -75,14 +71,15 @@ void StatementImpl::Prepare(const std::string& sql)
 	// So we prefer to get them a little bit larger than needed than the other way.
 	int16_t inEstimate = 0;
 	int16_t outEstimate = 1;
-	for (size_t i = 0; i < strlen(sql.c_str()); i++)
+	size_t len = strlen(mSql.c_str());
+	for (size_t i = 0; i < len; i++)
 	{
-		if (sql[i] == '?') ++inEstimate;
-		if (sql[i] == ',') ++outEstimate;
+		if (mSql[i] == '?') ++inEstimate;
+		if (mSql[i] == ',') ++outEstimate;
 	}
 
 	/*
-	DebugStream()<< "Prepare(\""<< sql<< "\")"<< fds;
+	DebugStream()<< "Prepare(\""<< mSql<< "\")"<< fds;
 	DebugStream()<< _("Estimation: ")<< inEstimate<< _(" IN parameters and ")
 			<< outEstimate<< _(" OUT columns")<< fds;
 	*/
@@ -92,8 +89,8 @@ void StatementImpl::Prepare(const std::string& sql)
 	mOutRow->AddRef();
 
 	status.Reset();
-	(*gds.Call()->m_dsql_prepare)(status.Self(), mTransaction->GetHandlePtr(),
-		&mHandle, (short)sql.length(), const_cast<char*>(sql.c_str()),
+	(*getGDS().Call()->m_dsql_prepare)(status.Self(), mTransaction->GetHandlePtr(),
+		&mHandle, 0, const_cast<char*>(mSql.c_str()),
 			short(mDatabase->Dialect()), mOutRow->Self());
 	if (status.Errors())
 	{
@@ -108,7 +105,7 @@ void StatementImpl::Prepare(const std::string& sql)
 	status.Reset();
 	char itemsReq[] = {isc_info_sql_stmt_type};
 	char itemsRes[8];
-	(*gds.Call()->m_dsql_sql_info)(status.Self(), &mHandle, 1, itemsReq,
+	(*getGDS().Call()->m_dsql_sql_info)(status.Self(), &mHandle, 1, itemsReq,
 		sizeof(itemsRes), itemsRes);
 	if (status.Errors())
 	{
@@ -125,7 +122,10 @@ void StatementImpl::Prepare(const std::string& sql)
 			case isc_info_sql_stmt_update :		mType = IBPP::stUpdate; break;
 			case isc_info_sql_stmt_delete :		mType = IBPP::stDelete; break;
 			case isc_info_sql_stmt_ddl :		mType = IBPP::stDDL; break;
-			case isc_info_sql_stmt_exec_procedure : mType = IBPP::stExecProcedure; break;
+			case isc_info_sql_stmt_exec_procedure :	mType = IBPP::stExecProcedure; break;
+			case isc_info_sql_stmt_start_trans:	mType = IBPP::stStartTransaction; break;
+			case isc_info_sql_stmt_commit:		mType = IBPP::stCommitTransaction; break;
+			case isc_info_sql_stmt_rollback:	mType = IBPP::stRollbackTransaction; break;
 			case isc_info_sql_stmt_select_for_upd : mType = IBPP::stSelectUpdate; break;
 			case isc_info_sql_stmt_set_generator :	mType = IBPP::stSetGenerator; break;
 			case isc_info_sql_stmt_savepoint :	mType = IBPP::stSavePoint; break;
@@ -161,7 +161,7 @@ void StatementImpl::Prepare(const std::string& sql)
 
 		mOutRow->Resize(mOutRow->Columns());
 		status.Reset();
-		(*gds.Call()->m_dsql_describe)(status.Self(), &mHandle, 1, mOutRow->Self());
+		(*getGDS().Call()->m_dsql_describe)(status.Self(), &mHandle, 1, mOutRow->Self());
 		if (status.Errors())
 		{
 			Close();
@@ -177,7 +177,7 @@ void StatementImpl::Prepare(const std::string& sql)
 		mInRow->AddRef();
 
 		status.Reset();
-		(*gds.Call()->m_dsql_describe_bind)(status.Self(), &mHandle, 1, mInRow->Self());
+		(*getGDS().Call()->m_dsql_describe_bind)(status.Self(), &mHandle, 1, mInRow->Self());
 		if (status.Errors())
 		{
 			Close();
@@ -208,7 +208,7 @@ void StatementImpl::Prepare(const std::string& sql)
 
 			mInRow->Resize(mInRow->Columns());
 			status.Reset();
-			(*gds.Call()->m_dsql_describe_bind)(status.Self(), &mHandle, 1, mInRow->Self());
+			(*getGDS().Call()->m_dsql_describe_bind)(status.Self(), &mHandle, 1, mInRow->Self());
 			if (status.Errors())
 			{
 				Close();
@@ -244,10 +244,10 @@ void StatementImpl::Plan(std::string& plan)
 		throw LogicExceptionImpl("Statement::Plan", _("Database must be connected."));
 
 	IBS status;
-	RB result(4096);
+	RB result(65535);
 	char itemsReq[] = {isc_info_sql_get_plan};
 
-	(*gds.Call()->m_dsql_sql_info)(status.Self(), &mHandle, 1, itemsReq,
+	(*getGDS().Call()->m_dsql_sql_info)(status.Self(), &mHandle, 1, itemsReq,
 								   result.Size(), result.Self());
 	if (status.Errors()) throw SQLExceptionImpl(status,
 								"Statement::Plan", _("isc_dsql_sql_info failed."));
@@ -275,7 +275,7 @@ void StatementImpl::Execute(const std::string& sql)
 	if (mType == IBPP::stSelect)
 	{
 		// Could return a result set (none, single or multi rows)
-		(*gds.Call()->m_dsql_execute)(status.Self(), mTransaction->GetHandlePtr(),
+		(*getGDS().Call()->m_dsql_execute)(status.Self(), mTransaction->GetHandlePtr(),
 			&mHandle, 1, mInRow == 0 ? 0 : mInRow->Self());
 		if (status.Errors())
 		{
@@ -285,16 +285,12 @@ void StatementImpl::Execute(const std::string& sql)
 			throw SQLExceptionImpl(status, context.c_str(),
 				_("isc_dsql_execute failed"));
 		}
-		if (mOutRow != 0)
-		{
-			mResultSetAvailable = true;
-			mCursorOpened = true;
-		}
+		if (mOutRow != 0) mResultSetAvailable = true;
 	}
 	else
 	{
 		// Should return at most a single row
-		(*gds.Call()->m_dsql_execute2)(status.Self(), mTransaction->GetHandlePtr(),
+		(*getGDS().Call()->m_dsql_execute2)(status.Self(), mTransaction->GetHandlePtr(),
 			&mHandle, 1, mInRow == 0 ? 0 : mInRow->Self(),
 			mOutRow == 0 ? 0 : mOutRow->Self());
 		if (status.Errors())
@@ -330,7 +326,7 @@ void StatementImpl::CursorExecute(const std::string& cursor, const std::string& 
 	CursorFree();	// Free a previous 'cursor' if any
 
 	IBS status;
-	(*gds.Call()->m_dsql_execute)(status.Self(), mTransaction->GetHandlePtr(),
+	(*getGDS().Call()->m_dsql_execute)(status.Self(), mTransaction->GetHandlePtr(),
 		&mHandle, 1, mInRow == 0 ? 0 : mInRow->Self());
 	if (status.Errors())
 	{
@@ -342,7 +338,7 @@ void StatementImpl::CursorExecute(const std::string& cursor, const std::string& 
 	}
 
 	status.Reset();
-	(*gds.Call()->m_dsql_set_cursor_name)(status.Self(), &mHandle, const_cast<char*>(cursor.c_str()), 0);
+	(*getGDS().Call()->m_dsql_set_cursor_name)(status.Self(), &mHandle, const_cast<char*>(cursor.c_str()), 0);
 	if (status.Errors())
 	{
 		//Close();	Commented because Execute error should not free the statement
@@ -369,7 +365,7 @@ void StatementImpl::ExecuteImmediate(const std::string& sql)
 
 	IBS status;
 	Close();
-    (*gds.Call()->m_dsql_execute_immediate)(status.Self(), mDatabase->GetHandlePtr(),
+    (*getGDS().Call()->m_dsql_execute_immediate)(status.Self(), mDatabase->GetHandlePtr(),
     	mTransaction->GetHandlePtr(), 0, const_cast<char*>(sql.c_str()),
     		short(mDatabase->Dialect()), 0);
     if (status.Errors())
@@ -390,20 +386,22 @@ int StatementImpl::AffectedRows()
 	if (mDatabase->GetHandle() == 0)
 		throw LogicExceptionImpl("Statement::AffectedRows", _("Database must be connected."));
 
-	int count;
+	int count(0);
 	IBS status;
 	RB result;
 	char itemsReq[] = {isc_info_sql_records};
 
-	(*gds.Call()->m_dsql_sql_info)(status.Self(), &mHandle, 1, itemsReq,
+	(*getGDS().Call()->m_dsql_sql_info)(status.Self(), &mHandle, 1, itemsReq,
 		result.Size(), result.Self());
 	if (status.Errors()) throw SQLExceptionImpl(status,
 			"Statement::AffectedRows", _("isc_dsql_sql_info failed."));
 
-	if (mType == IBPP::stInsert)
-			count = result.GetValue(isc_info_sql_records, isc_info_req_insert_count);
-	else if (mType == IBPP::stUpdate)
-			count = result.GetValue(isc_info_sql_records, isc_info_req_update_count);
+	// Cover the INSERT or UPDATE case
+	if (mType == IBPP::stInsert || mType == IBPP::stUpdate)
+	{
+		count += result.GetValue(isc_info_sql_records, isc_info_req_insert_count);
+		count += result.GetValue(isc_info_sql_records, isc_info_req_update_count);
+	}
 	else if (mType == IBPP::stDelete)
 			count = result.GetValue(isc_info_sql_records, isc_info_req_delete_count);
 	else if (mType == IBPP::stSelect)
@@ -420,7 +418,7 @@ bool StatementImpl::Fetch()
 			_("No statement has been executed or no result set available."));
 
 	IBS status;
-	int code = (*gds.Call()->m_dsql_fetch)(status.Self(), &mHandle, 1, mOutRow->Self());
+	ISC_STATUS code = (*getGDS().Call()->m_dsql_fetch)(status.Self(), &mHandle, 1, mOutRow->Self());
 	if (code == 100)	// This special code means "no more rows"
 	{
 		mResultSetAvailable = false;
@@ -437,6 +435,9 @@ bool StatementImpl::Fetch()
 			_("isc_dsql_fetch failed."));
 	}
 
+    // Close the 'implicit' cursor to allow for forther Execute() calls
+    // on the prepared statement without fetching up to the last row
+	mCursorOpened = true;
 	return true;
 }
 
@@ -450,7 +451,7 @@ bool StatementImpl::Fetch(IBPP::Row& row)
 	row = rowimpl;
 
 	IBS status;
-	int code = (*gds.Call()->m_dsql_fetch)(status.Self(), &mHandle, 1,
+	ISC_STATUS code = (*getGDS().Call()->m_dsql_fetch)(status.Self(), &mHandle, 1,
 					rowimpl->Self());
 	if (code == 100)	// This special code means "no more rows"
 	{
@@ -488,7 +489,7 @@ void StatementImpl::Close()
 	if (mHandle != 0)
 	{
 		IBS status;
-		(*gds.Call()->m_dsql_free_statement)(status.Self(), &mHandle, DSQL_drop);
+		(*getGDS().Call()->m_dsql_free_statement)(status.Self(), &mHandle, DSQL_drop);
 		mHandle = 0;
 		if (status.Errors())
 			throw SQLExceptionImpl(status, "Statement::Close(DSQL_drop)",
@@ -668,6 +669,350 @@ void StatementImpl::Set(int param, const IBPP::Value& value)
 }
 */
 
+int StatementImpl::ParameterNum(const std::string& name) { //Dubious use, because we can have 2 :parameters with the same name!
+                                                        //Maybe, remove this method?
+    if (name.empty())
+        throw LogicExceptionImpl("Statement::ColumnNum", _("Parameter name <empty> not found."));
+    std::vector<int> params = this->FindParamsByName(name);
+    if (params.size()>0)
+        return params.at(0);  //Already returns ID+1
+    throw LogicExceptionImpl("Statement::ColumnNum", _("Could not find matching parameter."));
+}
+
+std::vector<int> StatementImpl::FindParamsByName(std::string name) {
+    if (name.empty())
+		throw LogicExceptionImpl("Statement::FindParamsByName", _("Parameter name <empty> not found."));
+
+    std::vector<int> params;
+    unsigned int i;
+    for(i=0;i < parametersDetailedByName_.size() ; i++) {
+        if (parametersDetailedByName_.at(i) == name)
+            params.push_back(i+1);
+    }
+    return params;
+}
+
+std::vector<std::string> StatementImpl::ParametersByName() {
+  std::vector<std::string> vt;
+  vt.reserve(parametersByName_.size());
+  for(unsigned int i=0;i < parametersByName_.size() ; i++) {
+      vt.push_back(parametersByName_.at(i));
+  }
+  return vt;
+}
+
+std::string StatementImpl::ParametersParser(std::string sql)
+{
+
+
+    unsigned int i;
+    bool isDMLcheck = false;
+    
+    parametersByName_.clear();
+    parametersDetailedByName_.clear();
+
+    //Improve this part, verify the SQL, if is really necessary to process the parameters this time
+    //Can be done in the begin
+
+    //Here we verify, the job done recently was time lost?
+    std::string isDML(sql);
+
+    isDML.erase(isDML.begin(), std::find_if(isDML.begin(), isDML.end(), [](int c) { return !std::isspace(c); })); //lTrim
+
+    std::transform(isDML.begin(), isDML.end(), isDML.begin(), [](char c) { return (char)std::toupper(c); }); //UpperCase (only bothered about ASCII text, cast is okay)
+
+    std::string isDML4 = isDML.substr(0, 4);  std::string isDML6 = isDML.substr(0, 6);  std::string isDML7 = isDML.substr(0, 7);
+
+    std::array<std::string, 6> dml =
+    {
+        "INSERT",
+        "UPDATE",
+        "DELETE",
+        "SELECT",
+        "EXECUTE",
+        "WITH"
+    };
+    std::array<std::string, 6> check =
+    {
+        isDML6,
+        isDML6,
+        isDML6,
+        isDML6,
+        isDML7,
+        isDML4
+    };
+    for (i = 0; i<dml.size(); i++) {
+        if (check.at(i) == dml.at(i))
+        {
+            if (dml.at(i) == "EXECUTE")//is execute procedure or execute block? else, is DML for sure
+            {
+                auto x = dml.at(i).size();
+                while (std::isspace(isDML.at(x)) && x<isDML.size())
+                    x++;
+                char p = isDML.at(x);
+                //std::cout << "Char:"<<p << std::endl;
+                if (p != 'P')//Procedure: execute procedure $sp(:params), OK to replace, else, use original, break loop
+                    break;     //I don't want to replace :parameters inside an execute block..
+                               //TODO:
+                               //It is possible to insert parameters in the begin of the block, example:
+                               //execute block (x double precision = ?, y double precision = ?)
+                               //But it will need more work to do it
+                               //Source: http://www.firebirdsql.org/refdocs/langrefupd20-execblock.html
+
+            }            
+            isDMLcheck = true;
+            break;
+        }
+
+    }
+    if (!isDMLcheck) {
+        //Probably is DDL... don't replace parameters then
+
+        //std::cout << sql << std::endl;
+        return sql;
+    }
+
+
+
+
+
+
+    //ctor
+    bool comment = false, blockComment = false, palavra = false, quote = false, doubleQuote = false;
+    std::ostringstream temp, sProcessedSQL;
+    std::string debugProcessedSQL="";
+
+    for(i= 0; i < sql.length(); i++){
+        char nextChar=0;
+        char previousChar=0;
+        if (i < sql.length()-1)
+            nextChar=sql.at(i+1);
+        if (i > 0)
+            previousChar=sql.at(i-1);
+
+        if ((sql.at(i)=='\n') || (sql.at(i)=='\r')) {
+            comment = false;
+            //sProcessedSQL << sql.at(i);
+        }else if (sql.at(i)=='-' && nextChar=='-' && !quote && !doubleQuote  && !blockComment) {
+            comment = true;
+        }else if (sql.at(i)=='/' && nextChar=='*' && !quote && !doubleQuote  && !blockComment) {
+            blockComment = true;
+        }else if (previousChar=='*' && sql.at(i)=='/' && blockComment) {
+            blockComment = false;
+            continue;
+        }else if (sql.at(i)=='\'' && !doubleQuote && !quote && !comment && !blockComment) {
+            quote = true;
+            sProcessedSQL << sql.at(i);
+        }else if (sql.at(i)=='\'' && quote && !comment && !blockComment) {
+            quote = false;
+            //sProcessedSQL << sql.at(i);
+        }else if (sql.at(i)=='\"' && !quote && !doubleQuote && !comment && !blockComment) {
+            doubleQuote = true;
+            sProcessedSQL << sql.at(i);
+        }else if (sql.at(i)=='\"' && doubleQuote) {
+            doubleQuote = false;
+
+        } else if (quote || doubleQuote)
+        {
+            sProcessedSQL << sql.at(i);
+        }
+        if (!(comment || blockComment || quote || doubleQuote ) || palavra || sql.at(i)=='\n' || sql.at(i)=='\r')
+        {
+            comment = false;  //New line?
+            if (sql.at(i)=='?'){
+
+                if (FindParamsByName("?").size() == 0)//if first time:
+                    parametersByName_.push_back("?");
+                parametersDetailedByName_.push_back("?");
+            }
+            if (sql.at(i)==':'){
+                palavra = true;
+                //comeco = i;
+            }else if (palavra) {
+                if (std::isalnum(sql.at(i)) || sql.at(i)=='_' || sql.at(i)=='$')
+                { //A-Z 0-9 _
+                    temp << (char)std::toupper(sql.at(i));
+                    if (i==sql.length()-1)  //se o I esta no fim do SQL...
+                        goto fimPalavra;
+                }else{
+                    fimPalavra :
+                    palavra = false;
+
+                    //cout << "sqletro encontrado: \""<< temp.str()<<"\""<<endl;
+                    sProcessedSQL << "?"<<"/*:"<<temp.str()<<"*/";
+                    if (!(std::isalnum(sql.at(i)) || sql.at(i)=='_' || sql.at(i)=='$'))
+                        sProcessedSQL << sql.at(i);
+                    std::vector<int> tmp = FindParamsByName(temp.str());
+                    if (tmp.size() == 0)//If first time
+                        parametersByName_.push_back(temp.str());
+                    parametersDetailedByName_.push_back(temp.str());
+                    temp.str(std::string());temp.clear(); //Limpar StringStream
+                }
+            }
+            else
+            {
+                sProcessedSQL << sql.at(i);
+            }
+        }
+        debugProcessedSQL = sProcessedSQL.str();
+    }
+  std::cout << "sProcessedSQL: " << sProcessedSQL.str() << std::endl;
+
+  return sProcessedSQL.str();
+}
+
+void StatementImpl::SetNull(std::string param) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        SetNull(*it);
+    }
+}
+void StatementImpl::Set(std::string param, int64_t value){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+
+void StatementImpl::Set(std::string param, int32_t value){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+
+void StatementImpl::Set(std::string param, int16_t value){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+
+void StatementImpl::Set(std::string param, float value){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+
+void StatementImpl::Set(std::string param, double value){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+
+void StatementImpl::Set(std::string param, const void* bindata, int len) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, bindata, len);
+    }
+}
+void StatementImpl::Set(std::string param, const std::string& s){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, s);
+    }
+}
+void StatementImpl::Set(std::string param, const char* cstring){
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, cstring);
+    }
+}
+void StatementImpl::Set(std::string param, const IBPP::Timestamp& value) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+void StatementImpl::Set(std::string param, const IBPP::Time& value) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+void StatementImpl::Set(std::string param, const IBPP::Date& value) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+void StatementImpl::Set(std::string param, const IBPP::DBKey& key) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, key);
+    }
+}
+void StatementImpl::Set(std::string param, const IBPP::Blob& blob) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, blob);
+    }
+}
+void StatementImpl::Set(std::string param, const IBPP::Array& array) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, array);
+    }
+}
+void StatementImpl::Set(std::string param, bool value) {
+    std::vector<int> params = FindParamsByName(param);
+    if (params.size()==0){
+        throw LogicExceptionImpl("Statement::Set[Value]", _("Parameter does not exists."));
+    }
+    for (std::vector<int>::iterator it = params.begin() ; it != params.end(); ++it) {
+        Set(*it, value);
+    }
+}
+
+
+
 bool StatementImpl::IsNull(int column)
 {
 	if (mOutRow == 0)
@@ -772,6 +1117,14 @@ bool StatementImpl::Get(int column, int64_t& retvalue)
 	return mOutRow->Get(column, retvalue);
 }
 
+bool StatementImpl::Get(int column, IBPP::ibpp_int128_t& retvalue)
+{
+	if (mOutRow == 0)
+		throw LogicExceptionImpl("Statement::Get", _("The row is not initialized."));
+
+	return mOutRow->Get(column, retvalue);
+}
+
 bool StatementImpl::Get(int column, float* retvalue)
 {
 	if (mOutRow == 0)
@@ -807,6 +1160,23 @@ bool StatementImpl::Get(int column, double& retvalue)
 
 	return mOutRow->Get(column, retvalue);
 }
+
+bool StatementImpl::Get(int column, IBPP::ibpp_dec16_t& retvalue)
+{
+	if (mOutRow == 0)
+		throw LogicExceptionImpl("Statement::Get", _("The row is not initialized."));
+
+	return mOutRow->Get(column, retvalue);
+}
+
+bool StatementImpl::Get(int column, IBPP::ibpp_dec34_t& retvalue)
+{
+	if (mOutRow == 0)
+		throw LogicExceptionImpl("Statement::Get", _("The row is not initialized."));
+
+	return mOutRow->Get(column, retvalue);
+}
+
 
 bool StatementImpl::Get(int column, IBPP::Timestamp& timestamp)
 {
@@ -1067,7 +1437,7 @@ const IBPP::Value StatementImpl::Get(const std::string& name)
 int StatementImpl::Columns()
 {
 	if (mOutRow == 0)
-		throw LogicExceptionImpl("Statement::Columns", _("The row is not initialized."));
+		return 0;
 
 	return mOutRow->Columns();
 }
@@ -1271,7 +1641,7 @@ void StatementImpl::CursorFree()
 		if (mHandle != 0)
 		{
 			IBS status;
-			(*gds.Call()->m_dsql_free_statement)(status.Self(), &mHandle, DSQL_close);
+			(*getGDS().Call()->m_dsql_free_statement)(status.Self(), &mHandle, DSQL_close);
 			if (status.Errors())
 				throw SQLExceptionImpl(status, "StatementImpl::CursorFree(DSQL_close)",
 					_("isc_dsql_free_statement failed."));
@@ -1279,15 +1649,13 @@ void StatementImpl::CursorFree()
 	}
 }
 
-StatementImpl::StatementImpl(DatabaseImpl* database, TransactionImpl* transaction,
-	const std::string& sql)
+StatementImpl::StatementImpl(DatabaseImpl* database, TransactionImpl* transaction)
 	: mRefCount(0), mHandle(0), mDatabase(0), mTransaction(0),
 	mInRow(0), mOutRow(0),
 	mResultSetAvailable(false), mCursorOpened(false), mType(IBPP::stUnknown)
 {
 	AttachDatabaseImpl(database);
 	if (transaction != 0) AttachTransactionImpl(transaction);
-	if (! sql.empty()) Prepare(sql);
 }
 
 StatementImpl::~StatementImpl()
@@ -1300,6 +1668,3 @@ StatementImpl::~StatementImpl()
 		catch (...) { }
 }
 
-//
-//	EOF
-//

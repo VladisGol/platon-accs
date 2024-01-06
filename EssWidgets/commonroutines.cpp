@@ -18,14 +18,17 @@ IBPP::Timestamp QDateTime2IBPPTimestamp(QDateTime InVal)
 {
 //Функция переводит дату время из формата QDateTime в формат IBPP::Timestamp
 
-	int y, mo, d, h, mi, s;
+    int y, mo, d, h, mi, s, t, tz;
+
 	y=QString(InVal.toString("yyyy")).toInt();
 	mo=QString(InVal.toString("MM")).toInt();
 	d=QString(InVal.toString("dd")).toInt();
 	h=QString(InVal.toString("hh")).toInt();
 	mi=QString(InVal.toString("mm")).toInt();
-	s=QString(InVal.toString("ss")).toInt();
-	return IBPP::Timestamp(y, mo, d, h, mi, s);
+	s=QString(InVal.toString("ss")).toInt();    
+    t=0;
+    tz=0;
+    return IBPP::Timestamp(y, mo, d,IBPP::Time::TimezoneMode::tmNone, h, mi, s, t, tz);
 }
 }
 

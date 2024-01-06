@@ -264,6 +264,7 @@ QVariant HypotesisModel::headerData(int section, Qt::Orientation orientation,int
 	{
 		return QString::number(section);
 	}
+    return QVariant();
 }
 
 QVariant HypotesisModel::data(const QModelIndex &index, int role) const

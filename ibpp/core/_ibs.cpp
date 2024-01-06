@@ -1,29 +1,18 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//	File    : $Id: _ibs.cpp 54 2006-03-27 16:07:44Z epocman $
-//	Subject : IBPP, internal Status class implementation
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	(C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
-//
-//	The contents of this file are subject to the IBPP License (the "License");
-//	you may not use this file except in compliance with the License.  You may
-//	obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
-//	file which must have been distributed along with this file.
-//
-//	This software, distributed under the License, is distributed on an "AS IS"
-//	basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
-//	License for the specific language governing rights and limitations
-//	under the License.
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	COMMENTS
-//	* Tabulations should be set every four characters when editing this file.
-//
-///////////////////////////////////////////////////////////////////////////////
+//	Internal Status class implementation
+/*
+    (C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
 
+    The contents of this file are subject to the IBPP License (the "License");
+    you may not use this file except in compliance with the License.  You may
+    obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
+    file which must have been distributed along with this file.
+
+    This software, distributed under the License, is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
+    License for the specific language governing rights and limitations
+    under the License.
+
+*/
 #ifdef _MSC_VER
 #pragma warning(disable: 4786 4996)
 #ifndef _DEBUG
@@ -63,13 +52,22 @@ const char* IBS::ErrorMessage() const
 	message<< _("Engine Code    : ")<< EngineCode()<< "\n";
 
 	// Compiles the message (Engine part)
+    #if defined(FB_API_VER) && FB_API_VER >= 20
+    const ISC_STATUS* error = &mVector[0];
+    try { (*gds.Call()->m_interpret)(msg, sizeof(msg), &error);}
+    #else
 	ISC_STATUS* error = &mVector[0];
 	try { (*gds.Call()->m_interprete)(msg, &error); }
-	catch(...) { msg[0] = '\0'; }
+    #endif
+    catch(...) { msg[0] = '\0'; }
 	message<< _("Engine Message :")<< "\n"<< msg;
 	try
 	{
-		while ((*gds.Call()->m_interprete)(msg, &error))
+        #if defined(FB_API_VER) && FB_API_VER >= 20
+        while ((*gds.Call()->m_interpret)(msg, sizeof(msg), &error))
+        #else
+        while ((*gds.Call()->m_interprete)(msg, &error))
+        #endif
 			message<< "\n"<< msg;
 	}
 	catch (...) { }
@@ -101,7 +99,3 @@ IBS::IBS(IBS& copied)
 {
 	memcpy(mVector, copied.mVector, sizeof(mVector));
 }
-
-//
-//	EOF
-//

@@ -168,7 +168,6 @@ SOURCES += es_mainwindow.cpp \
     _rb.cpp \
     _spb.cpp \
     _tpb.cpp \
-    all_in_one.cpp \
     array.cpp \
     blob.cpp \
     database.cpp \

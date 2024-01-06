@@ -1,29 +1,17 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//	File    : $Id: date.cpp 54 2006-03-27 16:07:44Z epocman $
-//	Subject : IBPP, Date class implementation
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	(C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
-//
-//	The contents of this file are subject to the IBPP License (the "License");
-//	you may not use this file except in compliance with the License.  You may
-//	obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
-//	file which must have been distributed along with this file.
-//
-//	This software, distributed under the License, is distributed on an "AS IS"
-//	basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
-//	License for the specific language governing rights and limitations
-//	under the License.
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	COMMENTS
-//	* Tabulations should be set every four characters when editing this file.
-//
-///////////////////////////////////////////////////////////////////////////////
+// Date class implementation
+/*
+    (C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
 
+    The contents of this file are subject to the IBPP License (the "License");
+    you may not use this file except in compliance with the License.  You may
+    obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
+    file which must have been distributed along with this file.
+
+    This software, distributed under the License, is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
+    License for the specific language governing rights and limitations
+    under the License.
+*/
 #ifdef _MSC_VER
 #pragma warning(disable: 4786 4996)
 #ifndef _DEBUG
@@ -37,7 +25,7 @@
 #pragma hdrstop
 #endif
 
-#include <time.h>		// Can't use <ctime> thanks to MSVC6 buggy library
+#include <ctime>
 
 using namespace ibpp_internals;
 
@@ -145,8 +133,8 @@ IBPP::Date& IBPP::Date::operator=(const IBPP::Date& assigned)
 }
 
 // The following date calculations were inspired by web pages found on
-// Peter Baum web homepage at 'http://www.capecod.net/~pbaum/'.
-// His contact info is at : 'http://home.capecod.net/~pbaum/contact.htm'.
+// Peter Baum web homepage at 'http://mysite.verizon.net/aesir_research/date/date0.htm'.
+// His contact info is at : 'http://mysite.verizon.net/aesir_research/contact.htm'.
 // Please, understand that Peter Baum is not related to this IBPP project.
 // So __please__, do not contact him regarding IBPP matters.
 
@@ -205,5 +193,3 @@ bool IBPP::itod (int *pdate, int year, int month, int day)
 	*pdate = result;
 	return true;
 }
-
-//	Eof

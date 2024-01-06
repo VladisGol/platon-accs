@@ -1,29 +1,20 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//	File    : $Id: _rb.cpp 54 2006-03-27 16:07:44Z epocman $
-//	Subject : IBPP, internal RB class implementation
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	(C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
-//
-//	The contents of this file are subject to the IBPP License (the "License");
-//	you may not use this file except in compliance with the License.  You may
-//	obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
-//	file which must have been distributed along with this file.
-//
-//	This software, distributed under the License, is distributed on an "AS IS"
-//	basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
-//	License for the specific language governing rights and limitations
-//	under the License.
-//
-///////////////////////////////////////////////////////////////////////////////
-//
-//	COMMENTS
+//	Internal RB class implementation
 //	* RB == Result Block/Buffer, see Interbase 6.0 C-API
-//	* Tabulations should be set every four characters when editing this file.
-//
-///////////////////////////////////////////////////////////////////////////////
+
+/*
+    (C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
+
+    The contents of this file are subject to the IBPP License (the "License");
+    you may not use this file except in compliance with the License.  You may
+    obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
+    file which must have been distributed along with this file.
+
+    This software, distributed under the License, is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
+    License for the specific language governing rights and limitations
+    under the License.
+*/
+
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786 4996)
@@ -129,6 +120,45 @@ int RB::GetCountValue(char token)
 	return value;
 }
 
+void RB::GetDetailedCounts(IBPP::DatabaseCounts& counts, char token)
+{
+    char *p = FindToken(token);
+
+	if (p == 0)
+		throw LogicExceptionImpl("RB::GetCountValue", _("Token not found."));
+
+	// len is the number of bytes in the following array
+	int len = (*gds.Call()->m_vax_integer)(p+1, 2);
+	p += 3;
+	while (len > 0)
+	{
+        // Each array item is 6 bytes : 2 bytes for the relation_id
+        // and 4 bytes for the count value
+        int id    = (*gds.Call()->m_vax_integer)(p,   2);
+        int value = (*gds.Call()->m_vax_integer)(p+2, 4);
+
+        IBPP::DatabaseCounts::iterator it = counts.find(id);
+        if (it == counts.end())
+        {
+            IBPP::CountInfo ci;
+            counts.insert(std::pair<int, IBPP::CountInfo>(id, ci));
+            it = counts.find(id);
+        }
+        if (token == isc_info_insert_count)
+            (*it).second.inserts += value;
+        if (token == isc_info_update_count)
+            (*it).second.updates += value;
+        if (token == isc_info_delete_count)
+            (*it).second.deletes += value;
+        if (token == isc_info_read_idx_count)
+            (*it).second.readIndex += value;
+        if (token == isc_info_read_seq_count)
+            (*it).second.readSequence += value;
+        p += 6;
+        len -= 6;
+	}
+}
+
 int RB::GetValue(char token, char subtoken)
 {
 	int value;
@@ -197,7 +227,3 @@ RB::~RB()
 	try { delete [] mBuffer; }
 		catch (...) { }
 }
-
-//
-//	EOF
-//

@@ -39,7 +39,7 @@ DataClass::DataClass(QObject *parent=0) :QObject(parent)
 			catch (IBPP::Exception& e)
 			{
 				QMessageBox::warning(0,tr("При попытке подключиться к БД возникло исключение:"),
-						QString::fromStdString(e.ErrorMessage()),
+                        QString::fromStdString(e.what()),
 						QMessageBox::Ok,QMessageBox::Ok);
 			}
 

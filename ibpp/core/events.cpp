@@ -1,26 +1,6 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//	File    : $Id: _epb.cpp 54 2006-03-27 16:07:44Z epocman $
 //	Subject : IBPP, internal EventsImpl class implementation
 //
-///////////////////////////////////////////////////////////////////////////////
-//
-//	(C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
-//
-//	The contents of this file are subject to the IBPP License (the "License");
-//	you may not use this file except in compliance with the License.  You may
-//	obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
-//	file which must have been distributed along with this file.
-//
-//	This software, distributed under the License, is distributed on an "AS IS"
-//	basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
-//	License for the specific language governing rights and limitations
-//	under the License.
-//
-///////////////////////////////////////////////////////////////////////////////
-//
 //	COMMENTS
-//	* Tabulations should be set every four characters when editing this file.
 //
 //	SPECIAL WARNING COMMENT (by Olivier Mascia, 2000 Nov 12)
 //	The way this source file handles events is not publicly documented, in
@@ -45,8 +25,20 @@
 //	class, directly based on work by Val Samko.
 //	The whole event handling has then be completely redesigned, based on the old
 //	EPB class to bring up the current IBPP::Events implementation.
-//
-///////////////////////////////////////////////////////////////////////////////
+
+/*
+    (C) Copyright 2000-2006 T.I.P. Group S.A. and the IBPP Team (www.ibpp.org)
+    The contents of this file are subject to the IBPP License (the "License");
+    you may not use this file except in compliance with the License.  You may
+    obtain a copy of the License at http://www.ibpp.org or in the 'license.txt'
+    file which must have been distributed along with this file.
+
+    This software, distributed under the License, is distributed on an "AS IS"
+    basis, WITHOUT WARRANTY OF ANY KIND, either express or implied.  See the
+    License for the specific language governing rights and limitations
+    under the License.
+*/
+
 
 #ifdef _MSC_VER
 #pragma warning(disable: 4786 4996)
@@ -216,7 +208,7 @@ void EventsImpl::Queue()
 		IBS vector;
 		mTrapped = false;
 		mQueued = true;
-		(*gds.Call()->m_que_events)(vector.Self(), mDatabase->GetHandlePtr(), &mId,
+		(*getGDS().Call()->m_que_events)(vector.Self(), mDatabase->GetHandlePtr(), &mId,
 			short(mEventBuffer.size()), &mEventBuffer[0],
 				(isc_callback)EventHandler, (char*)this);
 
@@ -245,7 +237,7 @@ void EventsImpl::Cancel()
 		// subsequent to the execution of isc_cancel_events().
 		mTrapped = false;
 		mQueued = false;
-		(*gds.Call()->m_cancel_events)(vector.Self(), mDatabase->GetHandlePtr(), &mId);
+		(*getGDS().Call()->m_cancel_events)(vector.Self(), mDatabase->GetHandlePtr(), &mId);
 
 	    if (vector.Errors())
 		{
@@ -366,7 +358,3 @@ EventsImpl::~EventsImpl()
 	try { if (mDatabase != 0) mDatabase->DetachEventsImpl(this); }
 		catch (...) { }
 }
-
-//
-//	EOF
-//

@@ -44,6 +44,7 @@ QVariant HronologyEaMemModel::headerData(int section, Qt::Orientation orientatio
 	{
 		return QString::number(section);
 	}
+    return QVariant();
 }
 void HronologyEaMemModel::ReadToBuffer() const
 {
